@@ -1,0 +1,88 @@
+/* NOTES
+	- bootstrap.css : updated all references from 768 to 808 because the menu would wrap around to a new line at 807. To prevent this, just switch to the mobile view at 808 instead.	
+*/
+
+/* http://stackoverflow.com/questions/609273/convert-an-image-to-grayscale-in-html-css */
+img.text-muted{
+    filter: grayscale(100%); /* Current draft standard */
+    -webkit-filter: grayscale(100%); /* New WebKit */
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%); 
+    -o-filter: grayscale(100%); /* Not yet supported in Gecko, Opera or IE */ 
+    filter: url(resources.svg#desaturate); /* Gecko */
+    filter: gray; /* IE */
+    -webkit-filter: grayscale(1); /* Old WebKit */
+}
+/* http://jsfiddle.net/KyleMit/Wc4xt/ */
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";    
+    float: right; 
+    color: grey; 
+}
+.panel-heading a.collapsed:after {
+    content: "\e080";
+}
+
+.jumbotron {
+	background-image:url('../images/headerPublic.png'); 
+	color:white; 
+	min-height: 295px;
+}
+
+.page-header {
+	margin-top: 0px;
+}
+
+.page-header h2 {
+	margin-top: 0px;
+}
+
+@media (min-width: 1200px) {
+	img.bigMap {
+		float:right;
+	}
+	img.medMap {
+		display:none;
+	}
+	img.smallMap {
+		display:none;
+	}
+	.band-member-notice {
+		padding-top:0px;
+	}
+}
+
+@media (max-width: 1199px) and (min-width: 992px) {
+	.band-member-notice {
+		float:right;
+	}
+}
+
+@media (max-width: 1199px) and (min-width: 808px) {
+	img.bigMap {
+		display: none;
+	}
+	img.medMap {
+	}
+	img.smallMap {
+		display:none;
+	}
+	.band-member-notice {
+		margin-top:25px;
+	}
+}
+
+@media (max-width: 807px) {
+	img.bigMap {
+		display: none;
+	}
+	img.medMap {
+		display: none;
+	}
+	img.smallMap {
+	}
+	.band-member-notice {
+		margin-top:25px;
+	}
+}
