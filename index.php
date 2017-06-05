@@ -118,11 +118,12 @@
 			?>
           </p>
           <p><a class="btn btn-default" href="concerts.php" role="button">View more &raquo;</a></p>
+          <? if($concert) { ?>
           <p><a href="#show" style="font-size: 8px;" onclick="showAlerts()">Band Member?</a>
 	          <div id="bandAlerts" style="display:none">
 		          <?
-	  				if ($concert['pants'] == 0) {
-						echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a black pants concert</div>";
+					if ($concert['pants'] == 0) {
+							echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a black pants concert</div>";
 					}
 					elseif ($concert['pants'] == 1) {
 						echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a tan pants concert</div>";
@@ -133,6 +134,7 @@
 				?>
 	          </div>
           </p>
+          <? } //End if concert ?>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
