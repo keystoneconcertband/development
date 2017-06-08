@@ -10,7 +10,6 @@
 		/* PUBLIC FUNCTIONS */
 		public function __construct($authReq) {
 			new kcbBase();
-			$mbrDB
 			$this->setDB(new memberDB());
 			
 			if($authReq){
