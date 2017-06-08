@@ -1,8 +1,6 @@
 <?
-	ini_set('display_errors',1);
-	ini_set('display_startup_errors',1);
-	error_reporting(-1);
-
+	// kcbBase is it's parent
+ 	include_once("kcbBase.class.php");
  	include_once("member.db.class.php");
  	 	
 	class member {
@@ -10,12 +8,16 @@
 		private $db;
 		
 		/* PUBLIC FUNCTIONS */
-		public function __construct() {
+		public function __construct($authReq) {
+			new kcbBase();
+			$mbrDB
 			$this->setDB(new memberDB());
 			
-			if(!isset($_SESSION)) {
-			     session_start();
-			}		
+			if($authReq){
+				if(!$this->validSession()) {
+					header('Location: reauth.php');
+				}
+			}
 		}
 		
 		public function getIpAddress() {
@@ -115,6 +117,16 @@
 			}
 
 			return $response;
+		}
+		
+		// Makes sure that the email and auth_cd_guid exists in the session
+		public function validSession() {
+			$validSession = false;
+			if(isset($_SESSION['email']) && isset($_SESSION['auth_cd_guid'])){
+				$validSession = true;
+			}
+			
+			return $validSession;
 		}
 		
 		/* PRIVATE FUNCTIONS */

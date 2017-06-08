@@ -1,13 +1,6 @@
 <?
-	ini_set('display_errors',1);
-	ini_set('display_startup_errors',1);
-	error_reporting(-1);
-
-	session_start();
-	
-	// TODO:
-	// Validate user can be here (should be built in for all "member" pages.
-	// Get first name for "welcome"
+	include_once('../includes/class/member.class.php'); 
+	new member(true);
 ?>
 
 <!DOCTYPE html>

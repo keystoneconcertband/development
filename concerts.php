@@ -1,8 +1,9 @@
+<? 	include_once('includes/class/concerts.class.php');
+	new Concerts();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<? include_once('includes/class/kcbBase.class.php');new kcbBase();?>
-	<? include_once('includes/class/concerts.class.php');?>
 	<? require 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band concert schedule.">
 

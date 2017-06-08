@@ -1,9 +1,11 @@
+<?
+	include_once('includes/class/concerts.class.php');
+	new Concerts();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<? include_once('includes/class/kcbBase.class.php');new kcbBase();?>
-	<? include_once('includes/class/concerts.class.php');?>
-	<? require('includes/common_meta.php'); ?>
+	<? require('includes/common_meta.php');	?>
     <meta name="description" content="Keystone Concert Band is an organization to foster, promote, and increase the musical knowledge and appreciation of the general public by operating and maintaining a concert band and by presenting performances of music.">
 
     <title>KCB Refresh</title>

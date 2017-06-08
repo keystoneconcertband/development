@@ -1,6 +1,6 @@
 <?  # Note this has to be first because of the session check
-	include_once('includes/class/kcbBase.class.php');new kcbBase();
-	include_once('includes/class/member.class.php');new member();
+	include_once('includes/class/member.class.php');
+	$mbr = new member(false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -166,8 +166,8 @@
 </html>
 <?
 function getInstrument($instrument) {
+	global $mbr; // yes this is "global" but the new has be included at the top otherwise sessions state cannot be started.
 	$counter = 0;
-	$mbr = new member();
 	$members = $mbr->getMembers($instrument);
 
 	if(count($members) == 0){

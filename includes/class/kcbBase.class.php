@@ -1,11 +1,15 @@
 <?
 	/*
-		This class is the base KCB class. All functions related to pages should be placed in here.
+		This class is the base KCB class. All top level functions should be included here
 	*/	
 	class kcbBase {
 		public function __construct() {
 			// Show errors if dev environment
 			$this->defaultSettings($this->isDevEnv());
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+			}
 		}
 		
 		private function defaultSettings($showErrors) {
