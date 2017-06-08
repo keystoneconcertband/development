@@ -13,11 +13,14 @@
 
 	<? require '../includes/common_css.php'; ?>
 	
+	<!--
+		Not sure what this was for? Removed 6/8/17
 	<style type="text/css">
 		.row .col-lg-12 ul li {
 			margin-bottom: 10px;
 		}
 		</style>
+	-->
   </head>
 
   <body>
@@ -74,27 +77,6 @@
 		    </div>
 		  </div>
 		</div>
-<!--
-		        <div class="col-sm-4">
-			        <a href="#" onfocus="">
-		          <img class="img-circle" src="../images/info.png" alt="Info Image" width="140" height="140">
-		          <h2>My Info</h2>
-		          <p>Update your information stored with the KCB</p>
-			        </a>
-		        </div>
-
-		        <div class="col-sm-4">
-		          <img class="img-circle" src="../images/group-of-people.png" alt="Member Image" width="140" height="140">
-		          <h2>Members</h2>
-		          <p>View the other band member's information</p>
-		        </div>
-
-		        <div class="col-sm-4">
-		          <img class="img-circle" src="../images/logo_concert.jpg" alt="Music Image" width="140" height="140">
-		          <h2>Music</h2>
-		          <p>View and post links to the music the band plays.</p>
-		        </div>
--->
 		</div>
 		<? require '../includes/footer.php'; ?>
 	</div> <!-- /container -->
