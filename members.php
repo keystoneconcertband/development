@@ -1,7 +1,6 @@
-<?  # Note this has to be first because of the session check
+<?
 	include_once('includes/class/member.class.php');
-	global $mbr;
-	$mbr = new member(false);
+	$mbr = new Member(false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,6 +166,7 @@
 </html>
 <?
 function getInstrument($instrument) {
+	global $mbr; // This must be in this function so that it can access the variable defined outside it.
 	$counter = 0;
 	$members = $mbr->getMembers($instrument);
 

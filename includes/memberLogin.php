@@ -5,7 +5,7 @@
 	$email = isset($_REQUEST["email"]) ? $_REQUEST["email"] : null;
 	$auth_cd = isset($_REQUEST["auth_cd"]) ? $_REQUEST["auth_cd"] : null;
 	$auth_remember = isset($_REQUEST["auth_remember"]) ? $_REQUEST["auth_remember"] : null;
-	$mbr = new member(false);
+	$mbr = new Member(false);
 		
 	if($email != null && $auth_cd == null) {
 		echo $mbr->login($email);

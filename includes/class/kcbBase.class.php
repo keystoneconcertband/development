@@ -2,7 +2,7 @@
 	/*
 		This class is the base KCB class. All top level functions should be included here
 	*/	
-	class kcbBase {
+	class KcbBase {
 		public function __construct() {
 			// Show errors if dev environment
 			$this->defaultSettings($this->isDevEnv());

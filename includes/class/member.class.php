@@ -3,14 +3,14 @@
  	include_once("kcbBase.class.php");
  	include_once("member.db.class.php");
  	 	
-	class member {
+	class Member {
 		private $kcbCookie = "KCB_Cookie";
 		private $db;
 		
 		/* PUBLIC FUNCTIONS */
 		public function __construct($authReq) {
-			new kcbBase();
-			$this->setDB(new memberDB());
+			new KcbBase();
+			$this->setDB(new MemberDB());
 			
 			if($authReq){
 				if(!$this->validSession()) {

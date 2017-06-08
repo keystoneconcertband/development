@@ -1,6 +1,6 @@
 <?
 	include_once('../includes/class/member.class.php'); 
-	new member(true);
+	new Member(true);
 ?>
 
 <!DOCTYPE html>

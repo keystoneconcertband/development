@@ -2,11 +2,11 @@
  	include_once("kcbBase.class.php");
  	include_once("concerts.db.class.php");
  	
-	class Concerts {
+	class Concert {
 		private $db;
 
 		public function __construct() {
-			new kcbBase();
+			new KcbBase();
 			$this->db = new ConcertDb();
 		}
 				

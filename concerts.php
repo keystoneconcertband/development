@@ -1,6 +1,7 @@
-<? 	include_once('includes/class/concerts.class.php');
+<? 	
+	include_once('includes/class/concerts.class.php');
 	global $cncrts;
-	$cncrts = new Concerts();
+	$cncrts = new Concert();
 ?>
 <!DOCTYPE html>
 <html lang="en">

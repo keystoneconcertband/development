@@ -1,7 +1,7 @@
 <?
  	include_once("db.class.php");
  	 	
-	class memberDB {
+	class MemberDB {
 		private $db;
 		
 		/* PUBLIC FUNCTIONS */
