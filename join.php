@@ -107,6 +107,12 @@
 				      </div>
 				    </div>
 				    <div class="form-group">
+				      <label for="inputEmail" class="col-lg-2 control-label">* Instrument(s) played</label>
+				      <div class="col-lg-10">
+				        <input type="text" class="form-control" id="inputInstrument" placeholder="Instruments">
+				      </div>
+				    </div>
+				    <div class="form-group">
 				      <label for="txtComments" class="col-lg-2 control-label">* Comments/Questions</label>
 				      <div class="col-lg-10">
 				        <textarea class="form-control" rows="3" id="txtComments"></textarea>
