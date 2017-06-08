@@ -1,5 +1,6 @@
 <? 	include_once('includes/class/concerts.class.php');
-	new Concerts();
+	global $cncrts;
+	$cncrts = new Concerts();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +39,6 @@
 				</div>
 				<?
 					$rowNbr = 1;
-					$cncrts = new concerts();
 					$concerts = $cncrts->getConcertSchedule();
 						
 					if(!$concerts) {

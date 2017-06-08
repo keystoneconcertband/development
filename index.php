@@ -1,6 +1,7 @@
 <?
 	include_once('includes/class/concerts.class.php');
-	new Concerts();
+	global $cncrts;
+	$cncrts = new Concerts();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,8 +95,7 @@
           <h2>Upcoming Concert</h2>
           <p>
 	          <?
-          		$cncrt = new concerts();
-				$concert = $cncrt->getCurrentConcert();
+				$concert = $cncrts->getCurrentConcert();
 								
 				if(!$concert) {
 					echo "<h4>There are no upcoming concerts.</h4>Our concert series is done for the season. Please check back again in early Spring to see our new concert schedule!";
