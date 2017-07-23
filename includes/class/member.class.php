@@ -310,6 +310,13 @@
 		private function saveSession($email, $guid) {
 			$_SESSION["email"] = $email;
 			$_SESSION["auth_cd_guid"] = $guid;
+			
+			// Get member info to store in session
+			$member = $this->getDb()->getMember($email);
+			$_SESSION['accountType'] = $member['accountType'];
+			$_SESSION['office'] = $member['office'];
+			$_SESSION['firstName'] = $member['firstName'];
+			$_SESSION['lastName'] = $member['lastName'];
 		}
 	}
 ?>
