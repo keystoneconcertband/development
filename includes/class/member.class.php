@@ -41,7 +41,13 @@
 				else {
 					// Validate that the cookie auth code matches what is in the database
 					if(!$this->isValidAuthCookie($email)) {
-						$response = "auth_failed_invalid_cookie";
+						// Send auth email, user's cookie is bad
+						if($this->sendAuthEmail($email) <> 'db_error') {						
+							$response = "auth_failed_invalid_cookie";
+						}
+						else {
+							$response = "db_error";
+						}
 					}
 					else {
 						// Update login count and last login date.
