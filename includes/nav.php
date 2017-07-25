@@ -24,7 +24,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Members <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/members/index.php">Member Home</a></li>
-						<li><a href="#">My Info</a></li>
+						<li><a href="/members/myInfo.php">My Info</a></li>
 						<li><a href="#">Members</a></li>
 						<li><a href="#">Music</a></li>
 						<? if (isset($_SESSION["admin_level"])) { ?>

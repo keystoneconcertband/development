@@ -47,7 +47,7 @@ new Member(true);
 		</div>
 		<div class="row">
 		  <div class="col-sm-6 col-md-4">
-		  <a href="#" class="kcb-a">
+		  <a href="myInfo.php" class="kcb-a">
 		    <div class="thumbnail" style="background-color: #f5a651;">
 		      <div class="caption">
 		        <h3>My Info</h3>
