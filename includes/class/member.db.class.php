@@ -20,7 +20,7 @@
 		// Gets the member information
 		public function getMember($email) {
 			$this->getDb()->bind("email", $email);
-			return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName, m.text, m.carrier, m.displayFullName, m.doNotDisplay, m.lastLogon, m.logonCount, m.auth_cd_guid, m.est_dt_tm, m.lst_tran_dt_tm, m.disabled_dt_tm, m.disabled, m.lst_mod_by, m.est_by FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email");
+			return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName, m.text, m.carrier, m.displayFullName, m.doNotDisplay, m.lastLogon, m.logonCount, m.auth_cd_guid, m.disabled_dt_tm, m.disabled, a.address1, a.address2, a.city, a.state, a.zip, a.home_phone FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid LEFT OUTER JOIN KCB_Address a ON a.member_uid=m.uid WHERE e.email_address = :email");
 		}
 
 		// Checks that the account shouldn't be locked out because more than 3 auth_code attempts were made in the last hour.
@@ -47,6 +47,18 @@
 			$retVal = $this->getDb()->single("SELECT m.auth_cd_guid FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email");
 
 			return $retVal;
+		}
+		
+		// Get all the email addresses for the user
+		public function getEmailAddresses($uid) {
+			$this->getDb()->bind("uid", $uid);
+			return $this->getDb()->query("SELECT email_address FROM KCB_email_address WHERE member_uid = :uid");
+		}
+		
+		// Get all instruments for the user
+		public function getMemberInstruments($uid) {
+			$this->getDb()->bind("uid", $uid);
+			return $this->getDb()->query("SELECT instrument FROM KCB_instrument WHERE member_uid = :uid");
 		}
 		
 		/* UPDATE FUNCTIONS */

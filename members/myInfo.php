@@ -1,6 +1,7 @@
 <?php
 include_once '../includes/class/member.class.php';
-new Member(true);
+$mbr = new Member(true);
+$member = $mbr->getMember($_SESSION['email']);
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +13,8 @@ new Member(true);
     <title>My Personal Information - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
+    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
   </head>
 
   <body>
@@ -32,79 +35,172 @@ new Member(true);
 				<div class="page-header">
 					<h2>My Information</h2>
 				</div>
-				View and update the information the band currently has on file for you.<br>
-				<form class="form-horizontal">
-				  <fieldset>
-				    <legend>Legend</legend>
-				    <div class="form-group">
-				      <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="inputEmail" placeholder="Email">
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-				      <div class="col-lg-10">
-				        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-				        <div class="checkbox">
-				          <label>
-				            <input type="checkbox"> Checkbox
-				          </label>
-				        </div>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
-				      <div class="col-lg-10">
-				        <textarea class="form-control" rows="3" id="textArea"></textarea>
-				        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label class="col-lg-2 control-label">Radios</label>
-				      <div class="col-lg-10">
-				        <div class="radio">
-				          <label>
-				            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-				            Option one is this
-				          </label>
-				        </div>
-				        <div class="radio">
-				          <label>
-				            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-				            Option two can be something else
-				          </label>
-				        </div>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label for="select" class="col-lg-2 control-label">Selects</label>
-				      <div class="col-lg-10">
-				        <select class="form-control" id="select">
-				          <option>1</option>
-				          <option>2</option>
-				          <option>3</option>
-				          <option>4</option>
-				          <option>5</option>
-				        </select>
-				        <br>
-				        <select multiple="" class="form-control">
-				          <option>1</option>
-				          <option>2</option>
-				          <option>3</option>
-				          <option>4</option>
-				          <option>5</option>
-				        </select>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <div class="col-lg-10 col-lg-offset-2">
-				        <button type="reset" class="btn btn-default">Cancel</button>
-				        <button type="submit" class="btn btn-primary">Submit</button>
-				      </div>
-				    </div>
-				  </fieldset>
-				</form>
+				If any of your information has changed, please use the form below to update it.<br/><br>
+				<div class="well bs-component">
+					<form class="form-horizontal">
+						<fieldset>
+						    <legend>Personal Information</legend>
+						    <div class="form-group">
+						      <div class="col-sm-6">
+						        <label for="inputFirstName" class="control-label">First Name</label>
+						        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>">
+						      </div>
+						      <div class="col-sm-6">
+						        <label for="inputLastName" class="control-label">Last Name</label>
+						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>">
+						      </div>
+						      <div class="col-sm-12">
+							      <div class="checkbox">
+								      <label>
+									  	<input type="checkbox" <?= $member['displayFullName'] == '1' ? 'checked="checked"' : ''; ?>> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong><?= $member['firstName']  ?> <?= substr($member['lastName'], 0, 1)  ?></strong></em>
+								      </label>
+							      </div>
+						      </div>
+						    </div>
+							<div class="form-group">
+						      <div class="col-lg-12">
+						        <label for="inputHomePhoneNbr" class="control-label">Home Phone Nbr</label>
+						        <input type="text" class="form-control" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>">
+						      </div>
+							</div>
+							<div class="form-group">
+						      <div class="col-lg-12">
+						        <label for="inputAddress" class="control-label">Address</label>
+						        <input type="text" class="form-control" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>">
+						      </div>
+							</div>
+							<div class="form-group">
+						      <div class="col-lg-12">
+						        <label for="inputAddress2" class="control-label">Address 2</label>
+						        <input type="text" class="form-control" id="inputAddress2" placeholder="Address" value="<?= $member['address2']?>">
+						      </div>
+							</div>
+							<div class="form-group">
+						      <div class="col-sm-6">
+						        <label for="inputCity" class="control-label">City</label>
+						        <input type="text" class="form-control" id="inputCity" placeholder="Address" value="<?= $member['city']?>">
+						      </div>
+						      <div class="col-sm-2">
+						        <label for="inputState" class="control-label">State</label>
+						        <input type="text" class="form-control" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="">
+						      </div>
+						      <div class="col-sm-4">
+						        <label for="inputZip" class="control-label">Zip Code</label>
+						        <input type="text" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>">
+						      </div>
+							</div>
+						    <div class="form-group">
+						    <?php
+								$emailAddresses = $mbr->getEmailAddresses($_SESSION['uid']);
+								$i = 1;
+								// Loop through each user email and create textboxes for each
+								if(count($emailAddresses) == 0){
+									echo("There are no members who currently play this instrument!<br /><a href='join.php'>Come join us!</a>");
+								}
+								else {
+									foreach ($emailAddresses as $email) {
+							?>
+						      <div class="col-lg-12">
+						        <label for="inputEmail<?=$i?>" class="control-label">Email <?=$i?></label>
+						        <input type="text" class="form-control" id="inputEmail<?=$i?>" placeholder="Email Address" value="<?=$email['email_address']?> ">
+						      </div>
+							<?php
+										$i++;
+									}
+								}
+							?>
+						    </div>
+						</fieldset>
+						<div class="form-group">
+						</div>
+						<fieldset>
+						  <legend>Band Information</legend>
+							<div class="form-group">
+						      <div class="col-lg-12">
+						        <label for="inputCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
+						        <input type="text" class="form-control" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>">
+						      </div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-12">
+						        	<label for="inputCarrier" class="control-label">Cell Phone Carrier</label>
+									<select class="form-control" id="inputCarrier">
+										<option value="0">Select an option</option>
+										<option value="txt.att.net" <?= $member['carrier'] == 'txt.att.net' ? ' selected="selected"' : '';?>>AT&amp;T</option>
+										<option value="messaging.sprintpcs.com" <?= $member['carrier'] == 'messaging.sprintpcs.com' ? ' selected="selected"' : '';?>>Sprint</option>
+										<option value="tmomail.net" <?= $member['carrier'] == 'tmomail.net' ? ' selected="selected"' : '';?>>TMobile</option>
+										<option value="mmst5.tracfone.com" <?= $member['carrier'] == 'mmst5.tracfone.com' ? ' selected="selected"' : '';?>>TracFone</option>
+										<option value="vtext.com" <?= $member['carrier'] == 'vtext.com' ? ' selected="selected"' : '';?>>Verizon</option>
+										<option value="vmobl.com" <?= $member['carrier'] == 'vmobl.com' ? ' selected="selected"' : '';?>>Virgin</option>
+							        </select>								
+							    </div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-12">
+									<?php
+										$instruments[] = $mbr->getMemberInstruments($_SESSION['uid']);
+										
+										// This isn't working correctly yet.
+										var_dump($instruments);
+									?>
+									<label for="inputInstrument" class="control-label">Instrument(s)</label><br>
+									<div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
+				                        <input type="checkbox" id="baritone" value="baritone" name="inputInstrument[]" <?if(in_array('baritone', $instruments)) echo('checked="checked"');?>>
+				                        <label for="baritone"> Baritone</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="bassClarinet" value="bassClarinet" name="inputInstrument[]" <?if(in_array('bassClarinet', $instruments)) echo('checked="checked"');?>>
+				                        <label for="bassClarinet"> Bass Clarinet</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="bassoon" value="bassoon" name="inputInstrument[]" <?if(in_array('bassoon', $instruments)) echo('checked="checked"');?>>
+				                        <label for="bassoon"> Bassoon</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="clarinet" value="clarinet" name="inputInstrument[]" <?if(in_array('clarinet', $instruments)) echo('checked="checked"');?>>
+				                        <label for="clarinet"> Clarinet</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="flute" value="flute" name="inputInstrument[]" <?if(in_array('flute', $instruments)) echo('checked="checked"');?>>
+				                        <label for="flute"> Flute</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="frenchHorn" value="frenchHorn" name="inputInstrument[]" <?if(in_array('frenchHorn', $instruments)) echo('checked="checked"');?>>
+				                        <label for="frenchHorn"> French Horn</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="saxophone" value="saxophone" name="inputInstrument[]" <?if(in_array('saxophone', $instruments)) echo('checked="checked"');?>>
+				                        <label for="saxophone"> Saxophone</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="trombone" value="trombone" name="inputInstrument[]" <?if(in_array('trombone', $instruments)) echo('checked="checked"');?>>
+				                        <label for="trombone"> Trombone</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="trumpet" value="trumpet" name="inputInstrument[]" <?if(in_array('trumpet', $instruments)) echo('checked="checked"');?>>
+				                        <label for="bassoon"> Trumpet</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="tuba" value="tuba" name="inputInstrument[]" <?if(in_array('tuba', $instruments)) echo('checked="checked"');?>>
+				                        <label for="tuba"> Tuba</label>
+				                    </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="percussion" value="percussion" name="inputInstrument[]" <?if(in_array('percussion', $instruments)) echo('checked="checked"');?>>
+				                        <label for="percussion"> Percussion</label>
+				                    </div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-group">
+						</div>
+						<div class="form-group">
+						  <div class="col-lg-12">
+						    <button type="reset" class="btn btn-default">Cancel</button>
+						    <button type="submit" class="btn btn-primary">Submit</button>
+						  </div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 		<?php require '../includes/footer.php'; ?>

@@ -28,6 +28,21 @@
 			return $this->getDb()->getMembers($instrument);
 		}
 		
+		// Gets the current member by email
+		public function getMember($email) {
+			return $this->getDb()->getMember($email);
+		}
+		
+		// Gets all the email addresses for the user
+		public function getEmailAddresses($uid) {
+			return $this->getDb()->getEmailAddresses($uid);
+		}
+		
+		// Gets all the instruments for the user
+		public function getMemberInstruments($uid) {
+			return $this->getDb()->getMemberInstruments($uid);
+		}
+		
 		// Main login function
 		public function login($email) {
 			$response = $this->isValidUser($email);
@@ -313,6 +328,7 @@
 			
 			// Get member info to store in session
 			$member = $this->getDb()->getMember($email);
+			$_SESSION['uid'] = $member['UID'];
 			$_SESSION['accountType'] = $member['accountType'];
 			$_SESSION['office'] = $member['office'];
 			$_SESSION['firstName'] = $member['firstName'];
