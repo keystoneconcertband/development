@@ -25,7 +25,7 @@ img.text-muted{
 }
 
 .jumbotron {
-	background-image:url('../images/headerPublic.png'); 
+	background-image:url('/images/headerPublic.png'); 
 	color:white; 
 	min-height: 295px;
 }
