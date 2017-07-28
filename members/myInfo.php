@@ -1,6 +1,6 @@
 <?php
-include_once '../includes/class/member.class.php';
-$mbr = new Member(true);
+include_once '../includes/class/updateMember.class.php';
+$mbr = new UpdateMember();
 $member = $mbr->getMember($_SESSION['email']);
 ?>
 
