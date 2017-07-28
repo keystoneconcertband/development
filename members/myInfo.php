@@ -106,7 +106,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							?>
 						      	<div class="col-lg-12 extraEmail">
 						        	<label for="inputEmail<?=$i?>" class="control-label" id="lblEmail<?=$i?>" name="lblEmail<?=$i?>">Email <?=$i?></label>
-									<input type="text" class="form-control" id="inputEmail<?=$i?>" placeholder="Email Address" value="<?=$email['email_address']?>">
+									<input type="text" class="form-control" id="inputEmail[]" placeholder="Email Address" value="<?=$email['email_address']?>">
 								</div>
 							<?php
 										$i++;
@@ -115,7 +115,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							?>
 						      	<div class="col-lg-12 extraEmailTemplate">
 						        	<label for="inputEmail" class="control-label" id="lblEmail" name="lblEmail">Email</label>
-									<input type="text" class="form-control" id="inputEmail" placeholder="Email Address" name="inputEmail">
+									<input type="text" class="form-control" id="inputEmail[]" placeholder="Email Address" name="inputEmail">
 							    </div>
 						    </div>
 						    <div class="form-group">
@@ -207,8 +207,8 @@ $member = $mbr->getMember($_SESSION['email']);
 						</div>
 						<div class="form-group">
 						  <div class="col-lg-12">
-						    <button type="reset" class="btn btn-default">Cancel</button>
 						    <button type="submit" class="btn btn-primary">Submit</button>
+						    <button type="reset" class="btn btn-default">Cancel</button>
 						  </div>
 						</div>
 					</form>
@@ -236,7 +236,6 @@ $member = $mbr->getMember($_SESSION['email']);
 			$html.find('[name=lblEmail]').text("Email " + len);
 			$html.find('[name=lblEmail]').attr('for', "inputEmail" + len);
 			$html.find('[name=lblEmail]').attr('name', "lblEmail" + len);
-			$html.find('[name=inputEmail]')[0].id="inputEmail" + len;
 			$html.find('[name=inputEmail]')[0].name="inputEmail" + len;
 			
 			return $html.html();    
