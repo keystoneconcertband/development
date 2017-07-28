@@ -15,6 +15,11 @@ $member = $mbr->getMember($_SESSION['email']);
 	<?php require '../includes/common_css.php'; ?>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/css/checkboxes.min.css"/>
+    <style type="text/css">
+	    .extraEmailTemplate {
+		    display:none;
+		}
+	</style>
   </head>
 
   <body>
@@ -50,11 +55,10 @@ $member = $mbr->getMember($_SESSION['email']);
 						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>">
 						      </div>
 						      <div class="col-sm-12">
-							      <div class="checkbox">
-								      <label>
-									  	<input type="checkbox" <?= $member['displayFullName'] == '1' ? 'checked="checked"' : ''; ?>> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong><?= $member['firstName']  ?> <?= substr($member['lastName'], 0, 1)  ?></strong></em>
-								      </label>
-							      </div>
+				                    <div class="checkbox checkbox-success checkbox-inline">
+				                        <input type="checkbox" id="inputFullName" value="1" name="inputFullName" <?= $member['displayFullName'] == '1' ? 'checked="checked"' : ''; ?>>
+				                        <label for="inputFullName"> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong><?= $member['firstName']  ?> <?= substr($member['lastName'], 0, 1)  ?></strong></em></label>
+				                    </div>
 						      </div>
 						    </div>
 							<div class="form-group">
@@ -89,7 +93,7 @@ $member = $mbr->getMember($_SESSION['email']);
 						        <input type="text" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>">
 						      </div>
 							</div>
-						    <div class="form-group">
+						    <div class="form-group" id="emailContainer">
 						    <?php
 								$emailAddresses = $mbr->getEmailAddresses($_SESSION['uid']);
 								$i = 1;
@@ -100,15 +104,26 @@ $member = $mbr->getMember($_SESSION['email']);
 								else {
 									foreach ($emailAddresses as $email) {
 							?>
-						      <div class="col-lg-12">
-						        <label for="inputEmail<?=$i?>" class="control-label">Email <?=$i?></label>
-						        <input type="text" class="form-control" id="inputEmail<?=$i?>" placeholder="Email Address" value="<?=$email['email_address']?> ">
-						      </div>
+						      	<div class="col-lg-12 extraEmail">
+						        	<label for="inputEmail<?=$i?>" class="control-label" id="lblEmail<?=$i?>" name="lblEmail<?=$i?>">Email <?=$i?></label>
+									<input type="text" class="form-control" id="inputEmail<?=$i?>" placeholder="Email Address" value="<?=$email['email_address']?>">
+								</div>
 							<?php
 										$i++;
 									}
 								}
 							?>
+						      	<div class="col-lg-12 extraEmailTemplate">
+						        	<label for="inputEmail" class="control-label" id="lblEmail" name="lblEmail">Email</label>
+									<input type="text" class="form-control" id="inputEmail" placeholder="Email Address" name="inputEmail">
+							    </div>
+						    </div>
+						    <div class="form-group">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-default btn-xs" id="addRow">
+									  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Email
+									</button>
+								</div>
 						    </div>
 						</fieldset>
 						<div class="form-group">
@@ -139,53 +154,50 @@ $member = $mbr->getMember($_SESSION['email']);
 								<div class="col-lg-12">
 									<?php
 										$instruments[] = $mbr->getMemberInstruments($_SESSION['uid']);
-										
-										// This isn't working correctly yet.
-										var_dump($instruments);
 									?>
 									<label for="inputInstrument" class="control-label">Instrument(s)</label><br>
 									<div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
-				                        <input type="checkbox" id="baritone" value="baritone" name="inputInstrument[]" <?if(in_array('baritone', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="baritone" value="baritone" name="inputInstrument[]" <?if($mbr->in_multiarray('baritone', $instruments)) echo('checked="checked"');?>>
 				                        <label for="baritone"> Baritone</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="bassClarinet" value="bassClarinet" name="inputInstrument[]" <?if(in_array('bassClarinet', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="bassClarinet" value="bassClarinet" name="inputInstrument[]" <?if($mbr->in_multiarray('bassClarinet', $instruments)) echo('checked="checked"');?>>
 				                        <label for="bassClarinet"> Bass Clarinet</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="bassoon" value="bassoon" name="inputInstrument[]" <?if(in_array('bassoon', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="bassoon" value="bassoon" name="inputInstrument[]" <?if($mbr->in_multiarray('bassoon', $instruments)) echo('checked="checked"');?>>
 				                        <label for="bassoon"> Bassoon</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="clarinet" value="clarinet" name="inputInstrument[]" <?if(in_array('clarinet', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="clarinet" value="clarinet" name="inputInstrument[]" <?if($mbr->in_multiarray('clarinet', $instruments)) echo('checked="checked"');?>>
 				                        <label for="clarinet"> Clarinet</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="flute" value="flute" name="inputInstrument[]" <?if(in_array('flute', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="flute" value="flute" name="inputInstrument[]" <?if($mbr->in_multiarray('flute', $instruments)) echo('checked="checked"');?>>
 				                        <label for="flute"> Flute</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="frenchHorn" value="frenchHorn" name="inputInstrument[]" <?if(in_array('frenchHorn', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="frenchHorn" value="frenchHorn" name="inputInstrument[]" <?if($mbr->in_multiarray('frenchHorn', $instruments)) echo('checked="checked"');?>>
 				                        <label for="frenchHorn"> French Horn</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="saxophone" value="saxophone" name="inputInstrument[]" <?if(in_array('saxophone', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="saxophone" value="saxophone" name="inputInstrument[]" <?if($mbr->in_multiarray('saxophone', $instruments)) echo('checked="checked"');?>>
 				                        <label for="saxophone"> Saxophone</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="trombone" value="trombone" name="inputInstrument[]" <?if(in_array('trombone', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="trombone" value="trombone" name="inputInstrument[]" <?if($mbr->in_multiarray('trombone', $instruments)) echo('checked="checked"');?>>
 				                        <label for="trombone"> Trombone</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="trumpet" value="trumpet" name="inputInstrument[]" <?if(in_array('trumpet', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="trumpet" value="trumpet" name="inputInstrument[]" <?if($mbr->in_multiarray('trumpet', $instruments)) echo('checked="checked"');?>>
 				                        <label for="bassoon"> Trumpet</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="tuba" value="tuba" name="inputInstrument[]" <?if(in_array('tuba', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="tuba" value="tuba" name="inputInstrument[]" <?if($mbr->in_multiarray('tuba', $instruments)) echo('checked="checked"');?>>
 				                        <label for="tuba"> Tuba</label>
 				                    </div>
 				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="percussion" value="percussion" name="inputInstrument[]" <?if(in_array('percussion', $instruments)) echo('checked="checked"');?>>
+				                        <input type="checkbox" id="percussion" value="percussion" name="inputInstrument[]" <?if($mbr->in_multiarray('percussion', $instruments)) echo('checked="checked"');?>>
 				                        <label for="percussion"> Percussion</label>
 				                    </div>
 								</div>
@@ -207,5 +219,28 @@ $member = $mbr->getMember($_SESSION['email']);
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
+	<script>
+		$(document).ready(function () {
+			$('#addRow').click(function () {
+				$('<div/>', {
+					'class' : 'col-lg-12 extraEmail', html: GetHtml()
+				}).hide().appendTo('#emailContainer').slideDown('slow');//Get the html from template and hide and slideDown for transtion.
+			});
+		});
+			
+		function GetHtml() //Get the template and update the input field names
+		{
+			var len = $('.extraEmail').length + 1;
+			var $html = $('.extraEmailTemplate').clone();
+			$html.find('[name=lblEmail]')[0].id="lblEmail" + len;
+			$html.find('[name=lblEmail]').text("Email " + len);
+			$html.find('[name=lblEmail]').attr('for', "inputEmail" + len);
+			$html.find('[name=lblEmail]').attr('name', "lblEmail" + len);
+			$html.find('[name=inputEmail]')[0].id="inputEmail" + len;
+			$html.find('[name=inputEmail]')[0].name="inputEmail" + len;
+			
+			return $html.html();    
+		}
+	</script>
   </body>
 </html>
