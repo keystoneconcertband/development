@@ -1,5 +1,5 @@
 <?
-	// kcbBase is it's parent
+	// kcbBase is its parent
  	include_once("kcbBase.class.php");
  	include_once("member.db.class.php");
  	 	
