@@ -48,11 +48,11 @@ $member = $mbr->getMember($_SESSION['email']);
 						    <div class="form-group">
 						      <div class="col-sm-6">
 						        <label for="inputFirstName" class="control-label">First Name</label>
-						        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>">
+						        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>" required="true">
 						      </div>
 						      <div class="col-sm-6">
 						        <label for="inputLastName" class="control-label">Last Name</label>
-						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>">
+						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>" required="true">
 						      </div>
 						      <div class="col-sm-12">
 				                    <div class="checkbox checkbox-success checkbox-inline">
@@ -70,7 +70,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-lg-12">
 						        <label for="inputAddress" class="control-label">Address</label>
-						        <input type="text" class="form-control" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>">
+						        <input type="text" class="form-control" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>" required="true">
 						      </div>
 							</div>
 							<div class="form-group">
@@ -82,15 +82,15 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-6">
 						        <label for="inputCity" class="control-label">City</label>
-						        <input type="text" class="form-control" id="inputCity" placeholder="Address" value="<?= $member['city']?>">
+						        <input type="text" class="form-control" id="inputCity" placeholder="Address" value="<?= $member['city']?>" required="true">
 						      </div>
 						      <div class="col-sm-2">
 						        <label for="inputState" class="control-label">State</label>
-						        <input type="text" class="form-control" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="">
+						        <input type="text" class="form-control" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="" required="true">
 						      </div>
 						      <div class="col-sm-4">
 						        <label for="inputZip" class="control-label">Zip Code</label>
-						        <input type="text" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>">
+						        <input type="text" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true">
 						      </div>
 							</div>
 						    <div class="form-group" id="emailContainer">
@@ -221,13 +221,25 @@ $member = $mbr->getMember($_SESSION['email']);
 	<?php require '../includes/common_js.php'; ?>
 	<script>
 		$(document).ready(function () {
+	    	var options = {
+	    		url: 'memberUpdate.php',
+	    		type: 'POST',
+	    		beforeSubmit: validate,
+	    		success: showSuccess }
+	        $('#kcbMemberInfo').ajaxForm(options);
+	        
+		    var msg = getParameterByName('err');
+		    if(msg != "") {
+	        	$("#majorFailure").show();
+				$("#errMsg").html(msg);
+		    }
 			$('#addRow').click(function () {
 				$('<div/>', {
 					'class' : 'col-lg-12 extraEmail', html: GetHtml()
-				}).hide().appendTo('#emailContainer').slideDown('slow');//Get the html from template and hide and slideDown for transtion.
+				}).hide().appendTo('#emailContainer').slideDown('slow'); //Get the html from template and hide and slideDown for transtion.
 			});
 		});
-			
+
 		function GetHtml() //Get the template and update the input field names
 		{
 			var len = $('.extraEmail').length + 1;
@@ -240,6 +252,30 @@ $member = $mbr->getMember($_SESSION['email']);
 			
 			return $html.html();    
 		}
+		
+	    function validate(formData, jqForm, options) {
+		    // need this!!! http://1000hz.github.io/bootstrap-validator/#validator-markup
+	        var form = jqForm[0];
+	    
+			else if(form.text.value.length !== 10 && form.text.value.length !== 0) {
+	        	$("#errorMsg").html("Enter the full 10 digit phone number.");
+			}
+			else if (form.text.value.length > 1 && form.carrier.value === '0' ) {
+	        	$("#errorMsg").html("Carrier is required when you enter your phone number.");
+			}
+	        else {
+	        	if(form.text.value.length === 0) {
+		        	form.carrier.value = 0;
+	        	}
+	        	
+	        	$("#failure").hide();
+	        	$("#success").show();
+	
+	        	return true;
+	        }
+	        
+	        return false;
+	    }
 	</script>
   </body>
 </html>

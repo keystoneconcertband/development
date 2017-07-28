@@ -26,7 +26,11 @@
 		public function getMemberInstruments($uid) {
 			return $this->getDb()->getMemberInstruments($uid);
 		}
-				
+		
+		public function updateMemberInformation() {
+			
+		}
+		
 		public function in_multiarray($elem, $array)
 		{
 		    while (current($array) !== false) {
