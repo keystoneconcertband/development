@@ -42,7 +42,7 @@ $member = $mbr->getMember($_SESSION['email']);
 				</div>
 				If any of your information has changed, please use the form below to update it.<br/><br>
 				<div class="well bs-component">
-					<form class="form-horizontal">
+					<form class="form-horizontal" id="memberInfo">
 						<fieldset>
 						    <legend>Personal Information</legend>
 						    <div class="form-group">
@@ -221,6 +221,14 @@ $member = $mbr->getMember($_SESSION['email']);
 	<?php require '../includes/common_js.php'; ?>
 	<script>
 		$(document).ready(function () {
+			$('#addRow').click(function () {
+				$('<div/>', {
+					'class' : 'col-lg-12 extraEmail', html: GetHtml()
+				}).hide().appendTo('#emailContainer').slideDown('slow'); //Get the html from template and hide and slideDown for transtion.
+			});
+		});
+
+		function submitForm() {
 	    	var options = {
 	    		url: 'memberUpdate.php',
 	    		type: 'POST',
@@ -233,13 +241,7 @@ $member = $mbr->getMember($_SESSION['email']);
 	        	$("#majorFailure").show();
 				$("#errMsg").html(msg);
 		    }
-			$('#addRow').click(function () {
-				$('<div/>', {
-					'class' : 'col-lg-12 extraEmail', html: GetHtml()
-				}).hide().appendTo('#emailContainer').slideDown('slow'); //Get the html from template and hide and slideDown for transtion.
-			});
-		});
-
+		}
 		function GetHtml() //Get the template and update the input field names
 		{
 			var len = $('.extraEmail').length + 1;
@@ -253,8 +255,20 @@ $member = $mbr->getMember($_SESSION['email']);
 			return $html.html();    
 		}
 		
+		$("#memberInfo").validator().on("submit", function (event) {
+		    if (event.isDefaultPrevented()) {
+		        // handle the invalid form...
+		    } else {
+		        // everything looks good!
+		        event.preventDefault();
+		        submitForm();
+		    }
+		});
+		
 	    function validate(formData, jqForm, options) {
 		    // need this!!! http://1000hz.github.io/bootstrap-validator/#validator-markup
+		    // https://webdesign.tutsplus.com/tutorials/building-a-bootstrap-contact-form-using-php-and-ajax--cms-23068
+		    
 	        var form = jqForm[0];
 	    
 			else if(form.text.value.length !== 10 && form.text.value.length !== 0) {
