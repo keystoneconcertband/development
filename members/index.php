@@ -12,6 +12,7 @@ new Member(true);
     <title>Member Area - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
+	<link href="/css/member.css" rel="stylesheet">
 
 	<style type="text/css">
 		a.kcb-a:hover {
@@ -46,9 +47,49 @@ new Member(true);
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="myInfo.php" class="kcb-a">
+					<div class="panel price panel-red">
+						<div class="panel-heading  text-center">
+						<h3>My Info</h3>
+						</div>
+						<ul class="list-group list-group-flush text-center">
+							<li class="list-group-item"><i class="icon-ok text-danger"></i> Update your information stored with the KCB</li>
+						</ul>
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="#" class="kcb-a">
+					<div class="panel price panel-blue">
+						<div class="panel-heading arrow_box text-center">
+						<h3>Members</h3>
+						</div>
+						<ul class="list-group list-group-flush text-center">
+							<li class="list-group-item"><i class="icon-ok text-info"></i> View the other band member's information</li>
+						</ul>
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="music.php" class="kcb-a">
+					<div class="panel price panel-green">
+						<div class="panel-heading arrow_box text-center">
+						<h3>Music</h3>
+						</div>
+						<ul class="list-group list-group-flush text-center">
+							<li class="list-group-item"><i class="icon-ok text-success"></i> View and post links to the music the band plays</li>
+						</ul>
+					</div>
+				</a>
+			</div>
+
+		<!--
 		  <div class="col-sm-6 col-md-4">
 		  <a href="myInfo.php" class="kcb-a">
-		    <div class="thumbnail" style="background-color: #f5a651;">
+		    <div class="thumbnail" style="background-color: #EF5A5C;">
 		      <div class="caption">
 		        <h3>My Info</h3>
 		        <p>Update your information stored with the KCB</p>
@@ -58,7 +99,7 @@ new Member(true);
 		  </div>
 		  <div class="col-sm-6 col-md-4">
 		  <a href="#" class="kcb-a">
-		    <div class="thumbnail" style="background-color: #2998dc;">
+		    <div class="thumbnail" style="background-color: #73A3D4;">
 		      <div class="caption">
 		        <h3>Members</h3>
 		        <p>View the other band member's information</p>
@@ -67,16 +108,15 @@ new Member(true);
 		  </a>
 		  </div>
 		  <div class="col-sm-6 col-md-4">
-		    <a href="#" class="kcb-a">
-		    <div class="thumbnail" style="background-color: #16812a">
+		    <a href="music.php" class="kcb-a">
+		    <div class="thumbnail" style="background-color: #65C965">
 		      <div class="caption">
 		        <h3>Music</h3>
 		        <p>View and post links to the music the band plays</p>
 		      </div>
 		    </div>
 		    </a>
-		  </div>
-		</div>
+		  </div>-->
 		</div>
 		<?php require '../includes/footer.php'; ?>
 	</div> <!-- /container -->
