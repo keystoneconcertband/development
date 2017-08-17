@@ -40,7 +40,6 @@ $member = $mbr->getMember($_SESSION['email']);
 				<div class="page-header">
 					<h2>My Information</h2>
 				</div>
-				If any of your information has changed, please use the form below to update it.<br/><br>
 				<div class="well bs-component">
 					<form class="form-horizontal" id="memberInfo">
 						<fieldset>
