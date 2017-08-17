@@ -85,38 +85,6 @@ new Member(true);
 					</div>
 				</a>
 			</div>
-
-		<!--
-		  <div class="col-sm-6 col-md-4">
-		  <a href="myInfo.php" class="kcb-a">
-		    <div class="thumbnail" style="background-color: #EF5A5C;">
-		      <div class="caption">
-		        <h3>My Info</h3>
-		        <p>Update your information stored with the KCB</p>
-		      </div>
-		    </div>
-		  </a>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		  <a href="#" class="kcb-a">
-		    <div class="thumbnail" style="background-color: #73A3D4;">
-		      <div class="caption">
-		        <h3>Members</h3>
-		        <p>View the other band member's information</p>
-		      </div>
-		    </div>
-		  </a>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <a href="music.php" class="kcb-a">
-		    <div class="thumbnail" style="background-color: #65C965">
-		      <div class="caption">
-		        <h3>Music</h3>
-		        <p>View and post links to the music the band plays</p>
-		      </div>
-		    </div>
-		    </a>
-		  </div>-->
 		</div>
 		<?php require '../includes/footer.php'; ?>
 	</div> <!-- /container -->
