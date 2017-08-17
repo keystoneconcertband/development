@@ -25,8 +25,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="/members/index.php">Member Home</a></li>
 						<li><a href="/members/myInfo.php">My Info</a></li>
-						<li><a href="#">Members</a></li>
-						<li><a href="#">Music</a></li>
+						<li><a href="/members/members.php">Members</a></li>
+						<li><a href="/members/music.php">Music</a></li>
 						<? if (isset($_SESSION["admin_level"])) { ?>
 						<li role="separator" class="divider"></li>
 						<li><a href="#">Add new users</a></li>
