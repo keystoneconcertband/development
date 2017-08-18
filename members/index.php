@@ -61,7 +61,7 @@ new Member(true);
 			</div>
 			
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="#" class="kcb-a">
+				<a href="members.php" class="kcb-a">
 					<div class="panel price panel-blue">
 						<div class="panel-heading arrow_box text-center">
 						<h3>Members</h3>
