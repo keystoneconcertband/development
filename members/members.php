@@ -75,7 +75,12 @@ new ProtectedMember();
 		            { "data": "fullName" },
 		            { "data": "email",
 			            "render": function (data,type,row,meta) {
-				      		return '<a href="mailto:'+data+'">'+data+'</a>';
+				            if(data === null) {
+					        	return "";
+					        }
+					        else {
+					      		return '<a href="mailto:'+data+'">'+data+'</a>';
+					      	}
 				    	} 
 				    },
 		            { "data": "text",
