@@ -66,7 +66,7 @@ new ProtectedMember();
 		    $('#kcbMusicTable').DataTable( {
 			    responsive: true,
 				stateSave: true,
-				"order": [[ -1, "asc" ]],
+				"order": [[0, "asc" ]],
 			    "ajax": {
 				    "url":"/includes/getAllActiveMembers.php",
 					"dataSrc": ""
