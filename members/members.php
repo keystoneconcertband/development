@@ -38,7 +38,7 @@ new ProtectedMember();
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h2>Members</h2>
+					<h2>Current Members</h2>
 				</div>
 				<table id="kcbMusicTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					<thead>
@@ -71,34 +71,25 @@ new ProtectedMember();
 				    "url":"/includes/getAllActiveMembers.php",
 					"dataSrc": ""
 				},
+				//https://datatables.net/reference/option/rowCallback
+				"rowCallback": function( row, data, index ) {
+				    if ( data.email !== null ) {
+				      $('td:eq(1)', row).html( '<a href="mailto:'+data.email+'">'+data.email+'</a>' );
+				    }
+				    if(data.text !== null) {
+				      $('td:eq(2)', row).html( data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
+				    }
+				    if(data.home_phone !== null) {
+				      $('td:eq(3)', row).html( data.home_phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
+				    }
+				    
+				    // Make Address field one thing
+				  },
 				"columns": [
 		            { "data": "fullName" },
-		            { "data": "email",
-			            "render": function (data,type,row,meta) {
-				            if(data === null) {
-					        	return "";
-					        }
-					        else {
-					      		return '<a href="mailto:'+data+'">'+data+'</a>';
-					      	}
-				    	} 
-				    },
-		            { "data": "text",
-			            "render": function(data,type,row,meta){
-				            if(data !== null) {
-					            data = data.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');					            
-				            }
-				            return data;
-			            }
-		            },
-		            { "data": "home_phone",
-			            "render": function(data,type,row,meta){
-				            if(data !== null) {
-					            data = data.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');					            
-				            }
-				            return data;
-			            }			            
-		            },
+		            { "data": "email" },
+		            { "data": "text" },
+		            { "data": "home_phone" },
 		            { "data": "address1" },
 		            { "data": "address2" },
 		            { "data": "city" },
