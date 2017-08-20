@@ -47,9 +47,10 @@
 		}
 		
 		// Get Auth Cd GUID
-		public function getAuthCdGuid($email) {
+		public function getAuthCdGuid($email, $cookieAuthCd) {
 			$this->getDb()->bind("email", $email);
-			$retVal = $this->getDb()->single("SELECT m.auth_cd_guid FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email");
+			$this->getDb()->bind("cookieAuthCd", $cookieAuthCd);
+			$retVal = $this->getDb()->single("SELECT 1 FROM KCB_member_auth a INNER JOIN KCB_Members m ON a.member_uid=m.uid INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email AND a.auth_cd_guid = :cookieAuthCd");
 
 			return $retVal;
 		}
@@ -70,7 +71,8 @@
 		public function setAuthCd($email, $guid) {
 			$this->getDb()->bind("auth_cd_guid", $guid);
 			$this->getDb()->bind("email", $email);
-			$retVal = $this->getDb()->query("UPDATE KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid SET auth_cd_guid = :auth_cd_guid WHERE e.email_address = :email");
+			$this->getDb()->bind("email2", $email);
+			$retVal = $this->getDb()->query("INSERT INTO KCB_member_auth (member_uid, auth_cd_guid, estbd_by, estbd_dt_tm, lst_tran_dt_tm) select m.uid, :auth_cd_guid, :email, now(), now() from KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email2");
 
 			return $retVal;
 		}

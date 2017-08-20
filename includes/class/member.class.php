@@ -59,7 +59,7 @@
 						$this->getDb()->updateLastLogin($email);
 
 						// Save email address since user's session is now valid to continue.
-						$this->saveSession($email, $this->getDb()->getAuthCdGuid($email));
+						$this->saveSession($email, $this->getDb()->getAuthCdGuid($email, $this->getAuthCdFromCookie()));
 					}
 				}
 			}
@@ -279,12 +279,22 @@
 				// Email must match the cookieEmail
 				if($email == $cookieEmail) {
 					// Only check if the cookie email matches the email the user is logging in from
-					$auth_cd_guid = $this->getDb()->getAuthCdGuid($email);
-					$response = $auth_cd_guid == $cookieAuthCd;
+					$auth_cd_guid = $this->getDb()->getAuthCdGuid($email, $cookieAuthCd);
+					$response = $auth_cd_guid != null;
 				}				
 			}
 			
 			return $response;
+		}
+		
+		private function getAuthCdFromCookie() {
+			$authCd = "";
+			if(isset($_COOKIE[$this->kcbCookie])) {
+				$pieces = explode(",", $_COOKIE[$this->kcbCookie]);
+			    $authCd =  $pieces[1];
+			}
+			
+			return $authCd;
 		}
 		
 		// Increase the invalid cd count
