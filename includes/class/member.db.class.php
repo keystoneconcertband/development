@@ -20,7 +20,7 @@
 		// Gets the member information
 		public function getMember($email) {
 			$this->getDb()->bind("email", $email);
-			return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName, m.text, m.carrier, m.displayFullName, m.doNotDisplay, m.lastLogon, m.logonCount, m.auth_cd_guid, m.disabled_dt_tm, m.disabled, a.address1, a.address2, a.city, a.state, a.zip, a.home_phone FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid LEFT OUTER JOIN KCB_Address a ON a.member_uid=m.uid WHERE e.email_address = :email");
+			return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName, m.text, m.carrier, m.displayFullName, m.doNotDisplay, m.lastLogon, m.logonCount, m.disabled_dt_tm, m.disabled, a.address1, a.address2, a.city, a.state, a.zip, a.home_phone FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid LEFT OUTER JOIN KCB_Address a ON a.member_uid=m.uid WHERE e.email_address = :email");
 		}
 
 		// Gets all active members
@@ -116,8 +116,8 @@
 		public function logLogin($email, $success) {
 			$this->getDb()->bind("email", $email);
 			$this->getDb()->bind("success", $success);
-			$retVal = $this->getDb()->query("INSERT INTO KCB_logon_audit (valid, logonValue, logonDateTime) VALUES(:success, :email, now())");			
-
+			$retVal = $this->getDb()->query("INSERT INTO KCB_logon_audit (valid, logonValue, estbd_dt_tm) VALUES(:success, :email, now())");
+					
 			return $retVal;
 		}
 
