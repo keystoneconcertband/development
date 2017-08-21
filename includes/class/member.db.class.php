@@ -72,7 +72,7 @@
 			$this->getDb()->bind("auth_cd_guid", $guid);
 			$this->getDb()->bind("email", $email);
 			$this->getDb()->bind("email2", $email);
-			$retVal = $this->getDb()->query("INSERT INTO KCB_member_auth (member_uid, auth_cd_guid, estbd_by, estbd_dt_tm, lst_tran_dt_tm) select m.uid, :auth_cd_guid, :email, now(), now() from KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email2");
+			$retVal = $this->getDb()->query("INSERT INTO KCB_member_auth (member_uid, auth_cd_guid, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) select m.uid, :auth_cd_guid, :email, now(), :email, now() from KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email2");
 
 			return $retVal;
 		}
@@ -99,7 +99,7 @@
 			$this->getDb()->bind("ip_address_upd", $ipAddress);
 			$this->getDb()->bind("auth_cd_upd", $randomNumber);
 						
-			$retVal = $this->getDb()->query("INSERT INTO KCB_login_cd (KCB_Members_UID, auth_cd, invalid_count, ip_address, lst_tran_dt_tm) VALUES(:KCB_Members_UID, :auth_cd, :invalid_count, :ip_address, now()) ON DUPLICATE KEY UPDATE auth_cd=:auth_cd_upd, ip_address=:ip_address_upd, invalid_count=:invalid_count_upd, lst_tran_dt_tm=now()");	
+			$retVal = $this->getDb()->query("INSERT INTO KCB_login_cd (KCB_Members_UID, auth_cd, invalid_count, ip_address, estbd_dt_tm, lst_tran_dt_tm) VALUES(:KCB_Members_UID, :auth_cd, :invalid_count, :ip_address, now(), now()) ON DUPLICATE KEY UPDATE auth_cd=:auth_cd_upd, ip_address=:ip_address_upd, invalid_count=:invalid_count_upd, lst_tran_dt_tm=now()");	
 			
 			return $retVal;
 		}
