@@ -46,11 +46,7 @@ new ProtectedMember();
 						<th>Primary Email Address</th>
 						<th>Cell Phone</th>
 						<th>Home Phone</th>
-						<th>Address 1</th>
-						<th>Address 2</th>
-						<th>City</th>
-						<th>State</th>
-						<th>Zip</th>
+						<th>Address</th>
 						<th>KCB Office Held</th>
 					</thead>
 				</table>
@@ -71,30 +67,52 @@ new ProtectedMember();
 				    "url":"/includes/getAllActiveMembers.php",
 					"dataSrc": ""
 				},
-				//https://datatables.net/reference/option/rowCallback
-				"rowCallback": function( row, data, index ) {
-				    if ( data.email !== null ) {
-				      $('td:eq(1)', row).html( '<a href="mailto:'+data.email+'">'+data.email+'</a>' );
-				    }
-				    if(data.text !== null) {
-				      $('td:eq(2)', row).html( data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
-				    }
-				    if(data.home_phone !== null) {
-				      $('td:eq(3)', row).html( data.home_phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
-				    }
-				    
-				    // Make Address field one thing
-				  },
 				"columns": [
 		            { "data": "fullName" },
-		            { "data": "email" },
-		            { "data": "text" },
-		            { "data": "home_phone" },
-		            { "data": "address1" },
-		            { "data": "address2" },
-		            { "data": "city" },
-		            { "data": "state" },
-		            { "data": "zip" },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.email) {
+			                return '<a href="mailto:'+data.email+'">'+data.email+'</a>';						
+						}
+						else {
+							return "";
+						}
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.text) {
+		                	return data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+		                }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.home_phone) {
+		                	return data.home_phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+		                }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+					    if(data.address1) {
+						    var addr = data.address1 + '<br />';
+						    							
+							if(data.address2) {
+								addr += data.address2 + '<br />';
+							}
+							
+							addr += data.city + ', ' + data.state + ' ' + data.zip;
+							
+							return addr;
+					    }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
 		            { "data": "office" }
 		        ]
 	        });
