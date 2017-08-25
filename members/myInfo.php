@@ -98,7 +98,12 @@ $member = $mbr->getMember($_SESSION['email']);
 								$i = 1;
 								// Loop through each user email and create textboxes for each
 								if(count($emailAddresses) == 0){
-									echo("There are no members who currently play this instrument!<br /><a href='join.php'>Come join us!</a>");
+							?>
+						      	<div class="col-lg-12 extraEmail">
+						        	<label for="inputEmail1" class="control-label" id="lblEmail1" name="lblEmail1">Email</label>
+									<input type="text" class="form-control" id="inputEmail[]" placeholder="Email Address" value="">
+								</div>
+							<?
 								}
 								else {
 									foreach ($emailAddresses as $email) {
