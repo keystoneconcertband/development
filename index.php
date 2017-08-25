@@ -148,7 +148,7 @@
           <img class="img-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
           <h2>Amazon Smile</h2>
           <p>Use amazon.com. Buy products. Amazon donates. It's just that simple.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="amazon.php" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
 
