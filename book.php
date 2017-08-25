@@ -63,7 +63,7 @@
 				      </div>
 				    </div>
 				    <div class="form-group">
-				      <label for="txtComments" class="col-lg-2 control-label">* Comments/Questions</label>
+				      <label for="txtComments" class="col-lg-2 control-label">* Booking Information</label>
 				      <div class="col-lg-10">
 				        <textarea class="form-control" rows="3" id="txtComments"></textarea>
 				        <span class="help-block"></span>
