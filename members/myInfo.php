@@ -41,19 +41,25 @@ $member = $mbr->getMember($_SESSION['email']);
 					<h2>My Information</h2>
 				</div>
 				<div class="well bs-component">
-					<form class="form-horizontal" id="memberInfo">
+					<form class="form-horizontal" id="memberInfo" data-toggle="validator">
 						<fieldset>
 						    <legend>Personal Information</legend>
 						    <div class="form-group">
-						      <div class="col-sm-6">
-						        <label for="inputFirstName" class="control-label">First Name</label>
-						        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>" required="true">
-						      </div>
-						      <div class="col-sm-6">
-						        <label for="inputLastName" class="control-label">Last Name</label>
-						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>" required="true">
-						      </div>
 						      <div class="col-sm-12">
+						        <label for="inputFirstName" class="control-label">First Name</label>
+						        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>" required="true" maxlength="50" data-error="First name is required.">
+								<div class="help-block with-errors"></div>
+						      </div>
+						    </div>
+						    <div class="form-group">
+						      <div class="col-sm-12">
+						        <label for="inputLastName" class="control-label">Last Name</label>
+						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>" required="true" maxlength="50" data-error="Last name is required.">
+								<div class="help-block with-errors"></div>
+						      </div>
+						    </div>
+						    <div class="form-group">
+						      <div class="col-lg-12">
 				                    <div class="checkbox checkbox-success checkbox-inline">
 				                        <input type="checkbox" id="inputFullName" value="1" name="inputFullName" <?= $member['displayFullName'] == '1' ? 'checked="checked"' : ''; ?>>
 				                        <label for="inputFullName"> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong><?= $member['firstName']  ?> <?= substr($member['lastName'], 0, 1)  ?></strong></em></label>
@@ -61,35 +67,45 @@ $member = $mbr->getMember($_SESSION['email']);
 						      </div>
 						    </div>
 							<div class="form-group">
-						      <div class="col-lg-12">
+						      <div class="col-sm-12">
 						        <label for="inputHomePhoneNbr" class="control-label">Home Phone Nbr</label>
-						        <input type="text" class="form-control" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>">
+						        <input type="number" class="form-control" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>" data-minlength="10" maxlength="10">
+								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
-						      <div class="col-lg-12">
+						      <div class="col-sm-12">
 						        <label for="inputAddress" class="control-label">Address</label>
-						        <input type="text" class="form-control" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>" required="true">
+						        <input type="text" class="form-control" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>" required="true" maxlength="255" data-error="Address is required.">
+								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
-						      <div class="col-lg-12">
+						      <div class="col-sm-12">
 						        <label for="inputAddress2" class="control-label">Address 2</label>
-						        <input type="text" class="form-control" id="inputAddress2" placeholder="Address" value="<?= $member['address2']?>">
+						        <input type="text" class="form-control" id="inputAddress2" placeholder="Address" value="<?= $member['address2']?>" maxlength="255">
+								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
-						      <div class="col-sm-6">
+						      <div class="col-sm-12">
 						        <label for="inputCity" class="control-label">City</label>
-						        <input type="text" class="form-control" id="inputCity" placeholder="Address" value="<?= $member['city']?>" required="true">
+						        <input type="text" class="form-control" id="inputCity" placeholder="Address" value="<?= $member['city']?>" required="true" maxlength="100">
+								<div class="help-block with-errors"></div>
 						      </div>
+							</div>
+							<div class="form-group">
 						      <div class="col-sm-2">
 						        <label for="inputState" class="control-label">State</label>
-						        <input type="text" class="form-control" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="" required="true">
+						        <input type="text" class="form-control" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="" required="true" maxlength="2">
+								<div class="help-block with-errors"></div>
 						      </div>
+							</div>
+							<div class="form-group">
 						      <div class="col-sm-4">
 						        <label for="inputZip" class="control-label">Zip Code</label>
-						        <input type="text" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true">
+						        <input type="number" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
+								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 						    <div class="form-group" id="emailContainer">
@@ -101,25 +117,27 @@ $member = $mbr->getMember($_SESSION['email']);
 							?>
 						      	<div class="col-lg-12 extraEmail">
 						        	<label for="inputEmail1" class="control-label" id="lblEmail1" name="lblEmail1">Email</label>
-									<input type="text" class="form-control" id="inputEmail[]" placeholder="Email Address" value="">
+									<input type="email" class="form-control" id="inputEmail[]" placeholder="Email Address" value="" maxlength="100" required="true" data-error="Email must be in a valid format and is required.">
+									<div class="help-block with-errors"></div>
 								</div>
 							<?
 								}
 								else {
 									foreach ($emailAddresses as $email) {
 							?>
-						      	<div class="col-lg-12 extraEmail">
+						      	<div class="col-sm-12 extraEmail">
 						        	<label for="inputEmail<?=$i?>" class="control-label" id="lblEmail<?=$i?>" name="lblEmail<?=$i?>">Email <?=$i?></label>
-									<input type="text" class="form-control" id="inputEmail[]" placeholder="Email Address" value="<?=$email['email_address']?>">
+									<input type="email" class="form-control" id="inputEmail[]" placeholder="Email Address" value="<?=$email['email_address']?>" maxlength="100" data-error="Email must be in a valid format.">
+									<div class="help-block with-errors"></div>
 								</div>
 							<?php
 										$i++;
 									}
 								}
 							?>
-						      	<div class="col-lg-12 extraEmailTemplate">
+						      	<div class="col-sm-12 extraEmailTemplate">
 						        	<label for="inputEmail" class="control-label" id="lblEmail" name="lblEmail">Email</label>
-									<input type="text" class="form-control" id="inputEmail[]" placeholder="Email Address" name="inputEmail">
+									<input type="email" class="form-control" id="inputEmail[]" placeholder="Email Address" name="inputEmail" maxlength="100">
 							    </div>
 						    </div>
 						    <div class="form-group">
@@ -135,13 +153,14 @@ $member = $mbr->getMember($_SESSION['email']);
 						<fieldset>
 						  <legend>Band Information</legend>
 							<div class="form-group">
-						      <div class="col-lg-12">
+						      <div class="col-sm-12">
 						        <label for="inputCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
-						        <input type="text" class="form-control" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>">
+						        <input type="number" class="form-control" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>" data-minlength="10" maxlength="10">
+								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-12">
+								<div class="col-sm-12">
 						        	<label for="inputCarrier" class="control-label">Cell Phone Carrier</label>
 									<select class="form-control" id="inputCarrier">
 										<option value="0">Select an option</option>
@@ -151,11 +170,12 @@ $member = $mbr->getMember($_SESSION['email']);
 										<option value="mmst5.tracfone.com" <?= $member['carrier'] == 'mmst5.tracfone.com' ? ' selected="selected"' : '';?>>TracFone</option>
 										<option value="vtext.com" <?= $member['carrier'] == 'vtext.com' ? ' selected="selected"' : '';?>>Verizon</option>
 										<option value="vmobl.com" <?= $member['carrier'] == 'vmobl.com' ? ' selected="selected"' : '';?>>Virgin</option>
-							        </select>								
+							        </select>
+									<div class="help-block with-errors"></div>
 							    </div>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-12">
+								<div class="col-sm-12">
 									<?php
 										$instruments[] = $mbr->getMemberInstruments($_SESSION['uid']);
 									?>
@@ -213,6 +233,7 @@ $member = $mbr->getMember($_SESSION['email']);
 						  <div class="col-lg-12">
 						    <button type="submit" class="btn btn-primary">Submit</button>
 						    <button type="reset" class="btn btn-default">Cancel</button>
+							<div id="msgSubmit" class="h4 hidden"></div>
 						  </div>
 						</div>
 					</form>
@@ -223,6 +244,7 @@ $member = $mbr->getMember($_SESSION['email']);
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
+	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script>
 		$(document).ready(function () {
 			$('#addRow').click(function () {
@@ -231,21 +253,46 @@ $member = $mbr->getMember($_SESSION['email']);
 				}).hide().appendTo('#emailContainer').slideDown('slow'); //Get the html from template and hide and slideDown for transtion.
 			});
 		});
-
-		function submitForm() {
-	    	var options = {
-	    		url: 'memberUpdate.php',
-	    		type: 'POST',
-	    		beforeSubmit: validate,
-	    		success: showSuccess }
-	        $('#kcbMemberInfo').ajaxForm(options);
-	        
-		    var msg = getParameterByName('err');
-		    if(msg != "") {
-	        	$("#majorFailure").show();
-				$("#errMsg").html(msg);
+		
+		$("#memberInfo").validator().on("submit", function (event) {
+			// If cell phone is entered, require carrier field
+			var cell = $("#inputCellPhoneNbr").val();
+			if(cell !== null) {
+				$("inputCarrier").prop("required", "true");
+				.validator('update')
+			}
+			else {
+				$("inputCarrier").prop("required", "false");
+				.validator('update')
+			}
+			
+		    if (event.isDefaultPrevented()) {
+		        formError();
+		        submitMSG(false, "Oops looks like you have a validation error above. Check for errors above.");
+		    } else {
+		        // everything looks good!
+		        event.preventDefault();
+		        submitForm();
 		    }
+		});
+		
+		function submitForm() {
+			$.ajax(
+			{
+		        type: "POST",
+		        url: "",
+		        data: json,
+		        success : function(text){
+		            if (text == "success"){
+		                formSuccess();
+		            } else {
+		                formError();
+		                submitMSG(false,text);
+		            }
+		        }
+		    });
 		}
+
 		function GetHtml() //Get the template and update the input field names
 		{
 			var len = $('.extraEmail').length + 1;
@@ -259,16 +306,26 @@ $member = $mbr->getMember($_SESSION['email']);
 			return $html.html();    
 		}
 		
-		$("#memberInfo").validator().on("submit", function (event) {
-		    if (event.isDefaultPrevented()) {
-		        // handle the invalid form...
-		    } else {
-		        // everything looks good!
-		        event.preventDefault();
-		        submitForm();
-		    }
-		});
+		function formSuccess(){
+		    submitMSG(true, "Your information has been updated!")
+		}
 		
+		function formError(){
+		    $("#contactForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+		        $(this).removeClass();
+		    });
+		}
+		
+		function submitMSG(valid, msg){
+		    if(valid){
+		        var msgClasses = "h4 tada animated text-success";
+		    } else {
+		        var msgClasses = "h4 text-danger";
+		    }
+		    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
+		}
+		
+		/*
 	    function validate(formData, jqForm, options) {
 		    // need this!!! http://1000hz.github.io/bootstrap-validator/#validator-markup
 		    // https://webdesign.tutsplus.com/tutorials/building-a-bootstrap-contact-form-using-php-and-ajax--cms-23068
@@ -293,7 +350,7 @@ $member = $mbr->getMember($_SESSION['email']);
 	        }
 	        
 	        return false;
-	    }
+	    }*/
 	</script>
   </body>
 </html>
