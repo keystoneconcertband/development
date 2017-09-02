@@ -162,7 +162,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 								<div class="col-sm-12">
 						        	<label for="inputCarrier" class="control-label">Cell Phone Carrier</label>
-									<select class="form-control" id="inputCarrier">
+									<select class="form-control" id="inputCarrier" data-carrier>
 										<option value="0">Select an option</option>
 										<option value="txt.att.net" <?= $member['carrier'] == 'txt.att.net' ? ' selected="selected"' : '';?>>AT&amp;T</option>
 										<option value="messaging.sprintpcs.com" <?= $member['carrier'] == 'messaging.sprintpcs.com' ? ' selected="selected"' : '';?>>Sprint</option>
@@ -254,28 +254,30 @@ $member = $mbr->getMember($_SESSION['email']);
 			});
 		});
 		
+		$("#memberInfo").validator({
+		    custom: {
+		        'carrier': function($el) {
+			        var cell = $("#inputCellPhoneNbr").val();
+			        var carrier = $("#inputCarrier").val();
+			        
+			        if(cell !== '' && carrier === '0') {
+				    	return "Carrier is required when cell phone nbr is entered.";   
+			        }
+			    }
+		    }
+		});
+		
 		$("#memberInfo").validator().on("submit", function (event) {
-			// If cell phone is entered, require carrier field
-			var cell = $("#inputCellPhoneNbr").val();
-			if(cell !== null) {
-				$("inputCarrier").prop("required", "true");
-				.validator('update')
-			}
-			else {
-				$("inputCarrier").prop("required", "false");
-				.validator('update')
-			}
-			
 		    if (event.isDefaultPrevented()) {
 		        formError();
-		        submitMSG(false, "Oops looks like you have a validation error above. Check for errors above.");
+		        submitMSG(false, "Oops! Looks like you have a validation error above. Check for errors above.");
 		    } else {
 		        // everything looks good!
 		        event.preventDefault();
 		        submitForm();
 		    }
 		});
-		
+
 		function submitForm() {
 			$.ajax(
 			{
@@ -324,33 +326,6 @@ $member = $mbr->getMember($_SESSION['email']);
 		    }
 		    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
 		}
-		
-		/*
-	    function validate(formData, jqForm, options) {
-		    // need this!!! http://1000hz.github.io/bootstrap-validator/#validator-markup
-		    // https://webdesign.tutsplus.com/tutorials/building-a-bootstrap-contact-form-using-php-and-ajax--cms-23068
-		    
-	        var form = jqForm[0];
-	    
-			else if(form.text.value.length !== 10 && form.text.value.length !== 0) {
-	        	$("#errorMsg").html("Enter the full 10 digit phone number.");
-			}
-			else if (form.text.value.length > 1 && form.carrier.value === '0' ) {
-	        	$("#errorMsg").html("Carrier is required when you enter your phone number.");
-			}
-	        else {
-	        	if(form.text.value.length === 0) {
-		        	form.carrier.value = 0;
-	        	}
-	        	
-	        	$("#failure").hide();
-	        	$("#success").show();
-	
-	        	return true;
-	        }
-	        
-	        return false;
-	    }*/
 	</script>
   </body>
 </html>
