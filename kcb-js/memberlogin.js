@@ -17,7 +17,7 @@ $("#memberLogin").click(function () {
 	else if (!$("#auth_cd").val()) {
 		$.ajax({
 			type: "GET",
-			url: "includes/memberLogin.php",
+			url: "includes/membersServer.php",
 			cache: false,
 			data: {email: $("#email").val()}
 		}).done(function( msg ) {
