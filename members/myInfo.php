@@ -47,14 +47,14 @@ $member = $mbr->getMember($_SESSION['email']);
 						    <div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputFirstName" class="control-label">First Name</label>
-						        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>" required="true" maxlength="50" data-error="First name is required.">
+						        <input type="text" class="form-control" name="inputFirstName" id="inputFirstName" placeholder="First Name" value="<?= $member['firstName']?>" required="true" maxlength="50" data-error="First name is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 						    </div>
 						    <div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputLastName" class="control-label">Last Name</label>
-						        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>" required="true" maxlength="50" data-error="Last name is required.">
+						        <input type="text" class="form-control" name="inputLastName" id="inputLastName" placeholder="Last Name" value="<?= $member['lastName']?>" required="true" maxlength="50" data-error="Last name is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 						    </div>
@@ -69,42 +69,42 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputHomePhoneNbr" class="control-label">Home Phone Nbr</label>
-						        <input type="number" class="form-control" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>" data-minlength="10" maxlength="10">
+						        <input type="number" class="form-control" name="inputHomePhoneNbr" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>" data-minlength="10" maxlength="10">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputAddress" class="control-label">Address</label>
-						        <input type="text" class="form-control" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>" required="true" maxlength="255" data-error="Address is required.">
+						        <input type="text" class="form-control" name="inputAddress" id="inputAddress" placeholder="Address" value="<?= $member['address1']?>" required="true" maxlength="255" data-error="Address is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputAddress2" class="control-label">Address 2</label>
-						        <input type="text" class="form-control" id="inputAddress2" placeholder="Address" value="<?= $member['address2']?>" maxlength="255">
+						        <input type="text" class="form-control" name="inputAddress2" id="inputAddress2" placeholder="Address" value="<?= $member['address2']?>" maxlength="255">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputCity" class="control-label">City</label>
-						        <input type="text" class="form-control" id="inputCity" placeholder="Address" value="<?= $member['city']?>" required="true" maxlength="100">
+						        <input type="text" class="form-control" name="inputCity" id="inputCity" placeholder="Address" value="<?= $member['city']?>" required="true" maxlength="100">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-2">
 						        <label for="inputState" class="control-label">State</label>
-						        <input type="text" class="form-control" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="" required="true" maxlength="2">
+						        <input type="text" class="form-control" name="inputState" id="inputState" placeholder="Address" value="<?= $member['state']?>" disabled="true" required="true" maxlength="2">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-4">
 						        <label for="inputZip" class="control-label">Zip Code</label>
-						        <input type="number" class="form-control" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
+						        <input type="number" class="form-control" name="inputZip" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
@@ -117,7 +117,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							?>
 						      	<div class="col-lg-12 extraEmail">
 						        	<label for="inputEmail1" class="control-label" id="lblEmail1" name="lblEmail1">Email</label>
-									<input type="email" class="form-control" id="inputEmail[]" placeholder="Email Address" value="" maxlength="100" required="true" data-error="Email must be in a valid format and is required.">
+									<input type="email" class="form-control" name="inputEmail[]" id="inputEmail[]" placeholder="Email Address" value="" maxlength="100" required="true" data-error="Email must be in a valid format and is required.">
 									<div class="help-block with-errors"></div>
 								</div>
 							<?
@@ -127,7 +127,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							?>
 						      	<div class="col-sm-12 extraEmail">
 						        	<label for="inputEmail<?=$i?>" class="control-label" id="lblEmail<?=$i?>" name="lblEmail<?=$i?>">Email <?=$i?></label>
-									<input type="email" class="form-control" id="inputEmail[]" placeholder="Email Address" value="<?=$email['email_address']?>" maxlength="100" data-error="Email must be in a valid format.">
+									<input type="email" class="form-control" name="inputEmail[]" id="inputEmail[]" placeholder="Email Address" value="<?=$email['email_address']?>" maxlength="100" data-error="Email must be in a valid format.">
 									<div class="help-block with-errors"></div>
 								</div>
 							<?php
@@ -137,7 +137,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							?>
 						      	<div class="col-sm-12 extraEmailTemplate">
 						        	<label for="inputEmail" class="control-label" id="lblEmail" name="lblEmail">Email</label>
-									<input type="email" class="form-control" id="inputEmail[]" placeholder="Email Address" name="inputEmail" maxlength="100">
+									<input type="email" class="form-control" name="inputEmail[]" id="inputEmail[]" placeholder="Email Address" maxlength="100">
 							    </div>
 						    </div>
 						    <div class="form-group">
@@ -155,14 +155,14 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
-						        <input type="number" class="form-control" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>" data-minlength="10" maxlength="10">
+						        <input type="number" class="form-control" name="inputCellPhoneNbr" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>" data-minlength="10" maxlength="10">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
 						        	<label for="inputCarrier" class="control-label">Cell Phone Carrier</label>
-									<select class="form-control" id="inputCarrier" data-carrier>
+									<select class="form-control" name="inputCarrier" id="inputCarrier" data-carrier>
 										<option value="0">Select an option</option>
 										<option value="txt.att.net" <?= $member['carrier'] == 'txt.att.net' ? ' selected="selected"' : '';?>>AT&amp;T</option>
 										<option value="messaging.sprintpcs.com" <?= $member['carrier'] == 'messaging.sprintpcs.com' ? ' selected="selected"' : '';?>>Sprint</option>

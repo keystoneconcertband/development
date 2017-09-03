@@ -32,12 +32,12 @@ $("#memberInfo").validator().on("submit", function (event) {
 function submitForm() {
 	$.ajax(
 	{
-        url: "",
+        url: "myInfoServer.php",
         type: "POST",
 		dataType : 'json', 
         data: $("#memberInfo").serialize(),
         success: function(text){
-            if (text == "success"){
+            if (text === "success"){
                 formSuccess();
             } else {
                 formError();
@@ -64,7 +64,7 @@ function GetHtml() //Get the template and update the input field names
 }
 
 function formSuccess(){
-    submitMSG(true, "Your information has been updated!")
+    submitMSG(true, "Your information has been updated!");
 }
 
 function formError(){
