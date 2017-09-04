@@ -122,6 +122,10 @@
 			return $retVal;
 		}
 
+		public function updateMember($mbrArray) {
+			
+		}
+		
 		/* PRIVATE FUNCTIONS */
 		private function getDb() {
 			return $this->db;
@@ -129,6 +133,24 @@
 		
 		private function setDb($db) {
         	$this->db = $db;
-    	}		
+    	}
+    			
+		private function addEmail($email, $uid, $updateUser) {
+			$this->getDb()->bind("uid", $uid);
+			$this->getDb()->bind("email", $email);
+			$this->getDb()->bind("updateUser1", $updateUser);
+			$this->getDb()->bind("updateUser2", $updateUser);
+			$retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, est_dt_tm, est_by, lst_tran_dt_tm, lst_mod_by) VALUES(:uid, :email, now(), :updateUser1, now(), :updateUser2)");
+		
+			return $retVal;
+		}
+		
+		private function delEmail($email, $uid) {
+			$this->getDb()->bind("uid", $uid);
+			$this->getDb()->bind("email", $email);
+			$retVal = $this->getDb()->query("DELETE FROM KCB_email_address WHERE member_uid=:uid AND email_address=:email");
+			
+			return $retVal;
+		}
 	}
 ?>

@@ -69,7 +69,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputHomePhoneNbr" class="control-label">Home Phone Nbr</label>
-						        <input type="number" class="form-control" name="inputHomePhoneNbr" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>" data-minlength="10" maxlength="10">
+						        <input type="tel" class="form-control" name="inputHomePhoneNbr" id="inputHomePhoneNbr" placeholder="Home Phone Number - NOT your cell phone number." value="<?= $member['home_phone']?>" data-minlength="10" maxlength="10">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
@@ -104,7 +104,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-4">
 						        <label for="inputZip" class="control-label">Zip Code</label>
-						        <input type="number" class="form-control" name="inputZip" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
+						        <input type="tel" class="form-control" name="inputZip" id="inputZip" placeholder="Address" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
@@ -155,7 +155,7 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="inputCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
-						        <input type="number" class="form-control" name="inputCellPhoneNbr" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>" data-minlength="10" maxlength="10">
+						        <input type="tel" class="form-control" name="inputCellPhoneNbr" id="inputCellPhoneNbr" placeholder="Cell Phone Number" value="<?= $member['text']?>" data-minlength="10" maxlength="10">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>

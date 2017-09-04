@@ -30,7 +30,8 @@
 		}
 		else {
 			$emailExists = false;
-			foreach ($_POST['inputEmail'] as $vlu) {
+			// array_filter will filter out any "blank" entries.
+			foreach (array_filter($_POST['inputEmail']) as $vlu) {
 				if($vlu !== '') {
 					$emailExists = true;
 				}
@@ -43,8 +44,8 @@
 		}
 		
 		if($validRequest) {
-			include_once('class/ProtectedMember.class.php');
-			$response = "success";
+			$myInfo = include_once('class/ProtectedMember.class.php');
+			$myInfo->updateMember($_POST);
 		}		
 	}
 	else {
