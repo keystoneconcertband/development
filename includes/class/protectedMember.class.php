@@ -20,7 +20,7 @@
 		
 		public function updateMember($mbrArray) {
 			if($this->getDb()->updateMember($mbrArray)) {
-				$updateEmails()
+				$updateEmails();
 			}
 			else {
 				return false;
@@ -33,7 +33,7 @@
 			$emails = getEmailAddresses($uid);
 			
 			$currEmails = array();
-			foreach($emails as $email)
+			foreach($emails as $email) {
 				$currEmails[] = $email;
 			}
 		
