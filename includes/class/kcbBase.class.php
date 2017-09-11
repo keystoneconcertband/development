@@ -2,14 +2,24 @@
 	/*
 		This class is the base KCB class. All top level functions should be included here
 	*/	
+
+	require("log.class.php");
+
 	class KcbBase {
+	    private $log;
+
 		public function __construct() {
 			// Show errors if dev environment
 			$this->defaultSettings($this->isDevEnv());
+			$this->log = new Log();
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
 			}
+		}
+				
+		public function LogError($message) {
+	        $this->log->write($message);			
 		}
 		
 		private function defaultSettings($showErrors) {

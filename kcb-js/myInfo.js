@@ -45,6 +45,7 @@ function submitForm() {
             }
         },
 		error: function(xhr, resp, text) {
+			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
             console.log(xhr, resp, text);
         }
     });

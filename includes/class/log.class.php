@@ -8,14 +8,14 @@
 	class Log {
 			
 		    # @string, Log directory name
-		    	private $path = '/logs/';
+		    private $path = "";
 			
-		    # @void, Default Constructor, Sets the timezone and path of the log files.
+		    # @void, Default constructor			
 			public function __construct() {
-				date_default_timezone_set('America/New_York');
-				$this->path  = dirname(__FILE__)  . $this->path;	
+			    $docRoot = $_SERVER['DOCUMENT_ROOT'];
+			    $this->path = $docRoot . '/_logs/';
 			}
-			
+						
 		   /**
 		    *   @void 
 		    *	Creates the log
@@ -32,6 +32,7 @@
 			public function write($message) {
 				$date = new DateTime();
 				$log = $this->path . $date->format('Y-m-d').".txt";
+
 				if(is_dir($this->path)) {
 					if(!file_exists($log)) {
 						$fh  = fopen($log, 'a+') or die("Fatal Error !");
@@ -44,12 +45,31 @@
 					}
 				}
 				else {
-					  if(mkdir($this->path,0777) === true) 
-					  {
- 						 $this->write($message);  
-					  }	
+					if(mkdir($this->path,0777) === true) {
+						 $this->write($message, $page);  
+					}	
 				}
-			 }
+				
+				// Send email to webmaster
+				try {
+					// To send HTML mail, the Content-type header must be set
+					$headers[] = 'MIME-Version: 1.0';
+					$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+					
+					// Additional headers
+					$headers[] = 'From: KCB Website <web@keystoneconcertband.com>';
+					$headers[] = 'Reply-To: web@keystoneconcertband.com';
+					$headers[] = 'X-Mailer: PHP/' . phpversion();
+					
+					$msg = $message . "<br>Server Variables: " . $this->getServerVars();
+
+					mail('web@keystoneconcertband.com', 'KCB Web Error', $msg, implode("\r\n", $headers));	
+				}
+				catch(Exception $e) {
+					echo $e->getMessage();
+					// Don't do anything if mail failed.
+				}
+			}
 			
 			/** 
 			 *  @void
@@ -60,10 +80,42 @@
 			 * @param DateTimeObject $date
 			 * @param string $message
 			 */
-			    private function edit($log,$date,$message) {
+		    private function edit($log,$date,$message) {
 				$logcontent = "Time : " . $date->format('H:i:s')."\r\n" . $message ."\r\n\r\n";
 				$logcontent = $logcontent . file_get_contents($log);
 				file_put_contents($log, $logcontent);
-			    }
+		    }
+		    
+		    private function getServerVars() {
+			    $output = "";
+			    
+			    $indicesServer = array('PHP_SELF','argv', 'argc', 'GATEWAY_INTERFACE', 
+				'SERVER_ADDR', 'SERVER_NAME', 'SERVER_SOFTWARE', 'SERVER_PROTOCOL', 
+				'REQUEST_METHOD', 'REQUEST_TIME', 'REQUEST_TIME_FLOAT', 'QUERY_STRING', 
+				'DOCUMENT_ROOT', 'HTTP_ACCEPT', 'HTTP_ACCEPT_CHARSET', 'HTTP_ACCEPT_ENCODING', 
+				'HTTP_ACCEPT_LANGUAGE', 'HTTP_CONNECTION', 'HTTP_HOST', 'HTTP_REFERER', 
+				'HTTP_USER_AGENT', 'HTTPS', 'REMOTE_ADDR', 'REMOTE_HOST', 'REMOTE_PORT', 
+				'REMOTE_USER', 'REDIRECT_REMOTE_USER', 'SCRIPT_FILENAME', 'SERVER_ADMIN', 
+				'SERVER_PORT', 'SERVER_SIGNATURE', 'PATH_TRANSLATED', 'SCRIPT_NAME', 
+				'REQUEST_URI', 'PHP_AUTH_DIGEST', 'PHP_AUTH_USER', 'PHP_AUTH_PW', 
+				'AUTH_TYPE', 'PATH_INFO', 'ORIG_PATH_INFO') ; 
+				
+				$output .= '<table cellpadding="10">';
+				foreach ($indicesServer as $arg) {
+				    if (isset($_SERVER[$arg])) {
+					    if(is_array($_SERVER[$arg])) {
+						    // ignore for now...
+					    }
+					    else {
+					        $output .= '<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';					    
+					    }
+				    }
+				    else {
+				        $output .= '<tr><td>'.$arg.'</td><td>-</td></tr>';
+				    }
+				}
+				$output .= '</table>';
+				return $output;
+		    }
 		}
 ?>

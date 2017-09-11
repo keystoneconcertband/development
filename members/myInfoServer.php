@@ -2,14 +2,15 @@
 	# This is the public page for myInfo which the ajax requests call.
 	//print_r($_POST);
 	
-	$validRequest = true;
 	$response = "success";
 		
 	// Only allow POST requests
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
+		$validRequest = true;
+
 		// Validate form
 		if(!isset($_POST['inputFirstName'])) {
-		$response = 'First name is required.';
+			$response = 'First name is required.';
 			$validRequest = false;
 		}
 		else if(!isset($_POST['inputLastName'])) {
@@ -44,9 +45,10 @@
 		}
 		
 		if($validRequest) {
-			$myInfo = include_once('class/ProtectedMember.class.php');
+			include_once('../includes/class/protectedMember.class.php');
+			$myInfo = new ProtectedMember();
 			$myInfo->updateMember($_POST);
-		}		
+		}
 	}
 	else {
 		$response = "invalid_request";
