@@ -66,7 +66,6 @@
 					mail('web@keystoneconcertband.com', 'KCB Web Error', $msg, implode("\r\n", $headers));	
 				}
 				catch(Exception $e) {
-					echo $e->getMessage();
 					// Don't do anything if mail failed.
 				}
 			}
@@ -104,7 +103,7 @@
 				foreach ($indicesServer as $arg) {
 				    if (isset($_SERVER[$arg])) {
 					    if(is_array($_SERVER[$arg])) {
-						    // ignore for now...
+						    // ignore subarrays for now...
 					    }
 					    else {
 					        $output .= '<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';					    
