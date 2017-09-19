@@ -9,6 +9,19 @@
 			$this->setDB(new Db());
 		}
 		
+		/* Transactions */
+		public function beginTransaction() {
+			$this->getDb()->beginTransaction();
+		}
+		
+		public function executeTransaction() {
+			$this->getDb()->executeTransaction();
+		}
+		
+		public function rollBackTransaction() {
+			$this->getDb()->rollBack();
+		}
+		
 		/* SELECT ONLY QUERIES */
 		
 		// Gets the members by instrument
@@ -122,8 +135,38 @@
 			return $retVal;
 		}
 
-		public function updateMember($mbrArray) {
-			echo $mbrArray['inputFirstName'];
+		public function updateMember($uid, $mbrArray, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind('firstName', $mbrArray['txtFirstName']);
+			$this->getDb()->bind('lastName', $mbrArray['txtLastName']);
+			$this->getDb()->bind('cellPhoneNbr', $mbrArray['txtCellPhoneNbr']);
+			$this->getDb()->bind('carrier', $mbrArray['optCarrier']);
+			$this->getDb()->bind("updateUser", $updateUser);
+
+			if(array_key_exists('chkFullName', $mbrArray)) {
+				$this->getDb()->bind('fullName', "1");			
+			}
+			else {
+				$this->getDb()->bind('fullName', "0");			
+			}
+
+			$retVal = $this->getDb()->query("UPDATE KCB_Members SET firstName = :firstName, lastName = :lastName, displayFullName = :fullName, text = :cellPhoneNbr, carrier = :carrier, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE UID = :uid");
+					
+			return $retVal;
+		}
+		
+		public function updateAddress($uid, $mbrArray, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind('homePhoneNbr', $mbrArray['txtHomePhoneNbr']);
+			$this->getDb()->bind('address', $mbrArray['txtAddress']);
+			$this->getDb()->bind('address2', $mbrArray['txtAddress2']);
+			$this->getDb()->bind('city', $mbrArray['txtCity']);
+			$this->getDb()->bind('zip', $mbrArray['txtZip']);
+			$this->getDb()->bind("updateUser", $updateUser);
+
+			$retVal = $this->getDb()->query("UPDATE KCB_Address SET address1 = :address, address2 = :address2, city = :city, zip = :zip, home_phone = :homePhoneNbr, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE member_uid = :uid");
+
+			return $retVal;
 		}
 		
 		public function addEmail($email, $uid, $updateUser) {
@@ -131,7 +174,7 @@
 			$this->getDb()->bind("uid", $uid);
 			$this->getDb()->bind("updateUser1", $updateUser);
 			$this->getDb()->bind("updateUser2", $updateUser);
-			$retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, est_dt_tm, est_by, lst_tran_dt_tm, lst_mod_by) VALUES(:uid, :email, now(), :updateUser1, now(), :updateUser2)");
+			$retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :email, now(), :updateUser1, now(), :updateUser2)");
 		
 			return $retVal;
 		}
@@ -139,11 +182,29 @@
 		public function delEmail($email, $uid) {
 			$this->getDb()->bind("email", $email);
 			$this->getDb()->bind("uid", $uid);
-			$retVal = $this->getDb()->query("DELETE FROM KCB_email_address WHERE member_uid=:uid AND email_address=:email");
+			$retVal = $this->getDb()->query("UPDATE KCB_email_address SET actv_flg = 0 WHERE member_uid=:uid AND email_address=:email");
 			
 			return $retVal;
 		}
 		
+		public function addInstrument($instrument, $uid, $updateUser) {
+			$this->getDb()->bind("instrument", $instrument);
+			$this->getDb()->bind("uid", $uid);
+			$this->getDb()->bind("updateUser1", $updateUser);
+			$this->getDb()->bind("updateUser2", $updateUser);
+			$retVal = $this->getDb()->query("INSERT INTO KCB_instrument(member_uid, instrument, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :instrument, now(), :updateUser1, now(), :updateUser2)");
+		
+			return $retVal;
+		}
+		
+		public function delInstrument($instrument, $uid) {
+			$this->getDb()->bind("instrument", $instrument);
+			$this->getDb()->bind("uid", $uid);
+			$retVal = $this->getDb()->query("DELETE FROM KCB_instrument WHERE member_uid=:uid AND instrument=:instrument");
+			
+			return $retVal;
+		}
+
 		/* PRIVATE FUNCTIONS */
 		private function getDb() {
 			return $this->db;

@@ -59,7 +59,6 @@ function GetHtml() //Get the template and update the input field names
 	$html.find('[name=lblEmail]').text("Email " + len);
 	$html.find('[name=lblEmail]').attr('for', "inputEmail" + len);
 	$html.find('[name=lblEmail]').attr('name', "lblEmail" + len);
-	$html.find('[name=inputEmail]')[0].name = "inputEmail" + len;
 	
 	return $html.html();    
 }

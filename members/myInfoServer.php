@@ -2,37 +2,37 @@
 	# This is the public page for myInfo which the ajax requests call.
 	//print_r($_POST);
 	
-	$response = "success";
+	$response = "error";
 		
 	// Only allow POST requests
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
 		$validRequest = true;
 
 		// Validate form
-		if(!isset($_POST['inputFirstName'])) {
+		if(!isset($_POST['txtFirstName'])) {
 			$response = 'First name is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['inputLastName'])) {
+		else if(!isset($_POST['txtLastName'])) {
 			$response = 'Last name is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['inputAddress'])) {
+		else if(!isset($_POST['txtAddress'])) {
 			$response = 'Address is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['inputCity'])) {
+		else if(!isset($_POST['txtCity'])) {
 			$response = 'City is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['inputZip'])) {
+		else if(!isset($_POST['txtZip'])) {
 			$response = 'Zip Code is required.';
 			$validRequest = false;
 		}
 		else {
 			$emailExists = false;
 			// array_filter will filter out any "blank" entries.
-			foreach (array_filter($_POST['inputEmail']) as $vlu) {
+			foreach (array_filter($_POST['txtEmail']) as $vlu) {
 				if($vlu !== '') {
 					$emailExists = true;
 				}
@@ -47,7 +47,8 @@
 		if($validRequest) {
 			include_once('../includes/class/protectedMember.class.php');
 			$myInfo = new ProtectedMember();
-			$myInfo->updateMember($_POST);
+			
+			$response = $myInfo->updateMember($_POST);
 		}
 	}
 	else {

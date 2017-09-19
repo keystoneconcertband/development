@@ -1,7 +1,6 @@
 <?php
 include_once '../includes/class/protectedMember.class.php';
-$mbr = new ProtectedMember();
-$member = $mbr->getMember($_SESSION['email']);
+new ProtectedMember();
 ?>
 
 <!DOCTYPE html>
