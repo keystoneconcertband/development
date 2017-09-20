@@ -33,7 +33,7 @@
 	            <div class="carousel-caption">
 	              <h1>We need you</h1>
 	              <p>As a 501(c)3 organization, we rely on donations to continue performing</p>
-	              <p><a class="btn btn-lg btn-primary" href="#" role="button">Donate today</a></p>
+	              <p><a class="btn btn-lg btn-primary" href="donate.php" role="button">Donate today</a></p>
 	            </div>
 	        </div>
 	      </div>
@@ -44,7 +44,7 @@
 	            <div class="carousel-caption">
 	              <h1>Play with us</h1>
 	              <p>Been a few years since you picked up your instrument? Play once again</p>
-	              <p><a class="btn btn-lg btn-primary" href="#" role="button">Join Us</a></p>
+	              <p><a class="btn btn-lg btn-primary" href="join.php" role="button">Join Us</a></p>
 	            </div>
 	          </div>
           </div>
@@ -55,7 +55,7 @@
 	            <div class="carousel-caption">
 	              <h1>We can play for you</h1>
 	              <p>We can play your event, big or small. Just give us a call</p>
-	              <p><a class="btn btn-lg btn-primary" href="#" role="button">Book Us</a></p>
+	              <p><a class="btn btn-lg btn-primary" href="book.php" role="button">Book Us</a></p>
 	            </div>
 	          </div>
           </div>
