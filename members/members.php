@@ -9,7 +9,7 @@ new ProtectedMember();
 	<?php require '../includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
-    <title>My Personal Information - Keystone Concert Band</title>
+    <title>KCB Members - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
@@ -44,10 +44,11 @@ new ProtectedMember();
 					<thead>
 						<th>Name</th>
 						<th>Primary Email Address</th>
+						<th>Instrument</th>
 						<th>Cell Phone</th>
 						<th>Home Phone</th>
 						<th>Address</th>
-						<th>KCB Office Held</th>
+						<th>Volunteer Position</th>
 					</thead>
 				</table>
 			</div>
@@ -71,11 +72,25 @@ new ProtectedMember();
 		            { "data": "fullName" },
 					{ data: null, render: function ( data, type, row ) {
 						if(data.email) {
-			                return '<a href="mailto:'+data.email+'">'+data.email+'</a>';						
+							var email_arr = data.email.split(',');
+							var email_out = "";
+							for(var i = 0; i < email_arr.length; i++) {
+								email_out += '<a href="mailto:'+email_arr[i]+'">'+email_arr[i]+'</a><br />'
+							}
+							return email_out;
 						}
 						else {
 							return "";
 						}
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.instrument) {
+		                	return data.instrument.replace(/,/g, '<br/>');
+		                }
+		                else {
+			                return "";
+		                }
 		              } 
 		            },
 					{ data: null, render: function ( data, type, row ) {

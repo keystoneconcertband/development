@@ -38,7 +38,7 @@
 
 		// Gets all active members
 		public function getActiveMembers() {
-			return $this->getDb()->query("SELECT CONCAT(m.lastName, ', ', m.firstName) as fullName, ( SELECT email_address FROM KCB_email_address WHERE member_uid = m.UID LIMIT 1 ) AS email, m.text, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office FROM KCB_Members m LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid WHERE m.disabled = 0 AND m.uid <> 1 ORDER BY lastName, firstName");
+			return $this->getDb()->query("SELECT CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON a.member_uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.disabled = 0 AND m.uid <> 1 GROUP BY m.UID ORDER BY lastName, firstName");
 		}
 
 		// Checks that the account shouldn't be locked out because more than 3 auth_code attempts were made in the last hour.
