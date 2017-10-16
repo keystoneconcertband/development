@@ -19,7 +19,7 @@ $("#memberLogin").click(function () {
 			type: "GET",
 			url: "/membersServer.php",
 			cache: false,
-			data: {email: $("#email").val()}
+			data: {email: $("#email").val().trim()}
 		}).done(function( msg ) {
 			if (msg == "valid") {
 				window.location = "members/index.php";
@@ -58,7 +58,7 @@ $("#memberLogin").click(function () {
 			type: "GET",
 			url: "includes/memberLogin.php",
 			cache: false,
-			data: {email: $("#email").val(), auth_cd: $("#auth_cd").val(), auth_remember: $("#auth_remember").is(':checked')}
+			data: {email: $("#email").val().trim(), auth_cd: $("#auth_cd").val(), auth_remember: $("#auth_remember").is(':checked')}
 		}).done(function( msg ) {
 			if (msg == "valid") {
 				window.location = "members/index.php";
