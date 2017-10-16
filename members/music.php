@@ -9,7 +9,7 @@ new ProtectedMember();
 	<?php require '../includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
-    <title>My Personal Information - Keystone Concert Band</title>
+    <title>Music - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
