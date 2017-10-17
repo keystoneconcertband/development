@@ -6,10 +6,11 @@
 	class Member {
 		private $kcbCookie = "KCB_Cookie";
 		private $db;
+		private $kcb;
 		
 		/* PUBLIC FUNCTIONS */
 		public function __construct($authReq) {
-			new KcbBase();
+			$this->setKcb(new KcbBase());
 			$this->setDB(new MemberDB());
 			
 			if($authReq){
@@ -148,6 +149,14 @@
         	$this->db = $db;
     	}
 		
+		private function getKcb() {
+			return $this->kcb;
+		}
+		
+		private function setKcb($kcb) {
+        	$this->kcb = $kcb;
+    	}
+		
 		// Gets whether or not the email address is valid, account is not disabled, and account locked status
 		private function isValidUser($email) {
 			$response = "valid";
@@ -237,25 +246,19 @@
 			
 			//Email
 			$subject = "Keystone Concert Band Login Code";
-			$message = "Hi " . $member['firstName'] . ",\r\n\r\n";
-			$message .= "A login code has been requested to login the members section of www.keystoneconcertband.com using your email address, ";
+			$message = "Hi <b>" . $member['firstName'] . "</b>,<br><br>";
+			$message .= "A login code has been requested to login the members section of www.keystoneconcertband.com using your email address, <b>";
 			$message .= $email;
-			$message .= ". To continue on the website, you must enter the login code provided below:\r\n";
-			$message .= $six_digit_random_number . "\r\n\r\n";
+			$message .= "</b>. To continue on the website, you must enter the login code provided below:<br><b>";
+			$message .= $six_digit_random_number . "</b><br><br>";
 			$message .= "Please note, this code is only valid for 10 minutes, and you will have only 3 tries to enter it successfully. ";
-			$message .= "If you enter an incorrect code more than 3 times within an hour, your account will be locked out for 1 hour.\r\n\r\n";
+			$message .= "If you enter an incorrect code more than 3 times within an hour, your account will be locked out for 1 hour.<br><br>";
 			$message .= "If you did not try to login the website recently, please delete this email as someone else tried to use your email address.\r\n\r\n";
-			$message .= "Thanks,\r\n";
+			$message .= "Thanks,<br>";
 			$message .= "Jonathan Gillette";
-			$headers = "From: web@keystoneconcertband.com\r\n" . 
-			    "Reply-To: web@keystoneconcertband.com\r\n" . 
-			    "X-Mailer: PHP/" . phpversion();
 			
-			try {
-				mail($email, $subject, $message, $headers);
-			}
-			catch(Exception $e) {
-				$response = 'Unable to send auth code email. Please try again later.';
+			if(!$this->getKcb()->sendEmail($email, $message, $subject)) {
+				$response = "Unable to send login code email. Please try again later.";
 			}
 
 			return $response;					
