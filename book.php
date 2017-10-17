@@ -35,7 +35,7 @@
 				Please keep in mind that it is best to contact us at least 3-6 months before your event, 
 				as we are filling dates as much as a year in advance.
 				<h3>Contact Us</h3>
-				<form class="form-horizontal">
+				<form class="form-horizontal" id="frmBook" data-toggle="validator">
 				  <fieldset>
 				    <legend></legend>
 				    <div class="form-group">
@@ -45,33 +45,37 @@
 						</div>
 				    </div>
 				    <div class="form-group">
-				      <label for="inputName" class="col-lg-2 control-label">* Name</label>
+				      <label for="txtName" class="col-lg-2 control-label">* Name</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="inputName" placeholder="Name">
+				        <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name" required="true">
+						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
-				      <label for="inputPhone" class="col-lg-2 control-label">Phone Number</label>
+				      <label for="txtPhone" class="col-lg-2 control-label">Phone Number</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="inputPhone" placeholder="Phone Number">
+				        <input type="tel" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number" maxlength="10">
+						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
-				      <label for="inputEmail" class="col-lg-2 control-label">* Email Address</label>
+				      <label for="txtEmail" class="col-lg-2 control-label">* Email Address</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="inputEmail" placeholder="Email Address">
+				        <input type="text" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email Address" required="true" maxlength="255">
+						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
 				      <label for="txtComments" class="col-lg-2 control-label">* Booking Information</label>
 				      <div class="col-lg-10">
-				        <textarea class="form-control" rows="3" id="txtComments"></textarea>
-				        <span class="help-block"></span>
+				        <textarea class="form-control" rows="3" id="txtComments" name="txtComments" required="true"></textarea>
+						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
 				      <div class="col-lg-10 col-lg-offset-2">
 				        <button type="submit" class="btn btn-primary">Submit</button>
+						<div id="msgSubmit" class="h4 hidden"></div>
 				      </div>
 				    </div>
 				  </fieldset>
@@ -82,5 +86,7 @@
 	</div> <!-- /container -->
 
 	<? require 'includes/common_js.php'; ?>
+	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
+	<script type="text/javascript" src="kcb-js/book.js"></script>
   </body>
 </html>

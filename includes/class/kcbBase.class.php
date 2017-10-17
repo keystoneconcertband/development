@@ -22,6 +22,25 @@
 	        $this->log->write($message);			
 		}
 		
+		public function sendEmail($toAddress, $message, $title) {
+			try {
+				// To send HTML mail, the Content-type header must be set
+				$headers[] = 'MIME-Version: 1.0';
+				$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+				
+				// Additional headers
+				$headers[] = 'From: KCB Website <web@keystoneconcertband.com>';
+				$headers[] = 'Reply-To: web@keystoneconcertband.com';
+				$headers[] = 'X-Mailer: PHP/' . phpversion();
+						
+				return mail($toAddress, $title, $message, implode("\r\n", $headers));	
+			}
+			catch(Exception $e) {
+				$this->LogError($e->getMessage());
+				return false;
+			}
+		}
+		
 		private function defaultSettings($showErrors) {
 			if($showErrors) {
 				ini_set('display_errors',1);
