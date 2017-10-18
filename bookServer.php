@@ -1,8 +1,4 @@
 <? 
-				ini_set('display_errors',1);
-				ini_set('display_startup_errors',1);
-				error_reporting(-1);
-
 	# This is the public page for booking
  	include_once("includes/class/kcbBase.class.php");
 	$response = "";
@@ -11,6 +7,9 @@
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
 		if(!isset($_REQUEST['txtName'])) {
 			$response = "Name is required.";
+		}
+		else if(isset($_REQUEST['txtPhone']) && $_REQUEST['txtPhone'] !== "" && strlen($_REQUEST['txtPhone']) < 10) {
+			$response = "Phone number must be 10 digits.";
 		}
 		else if(!isset($_REQUEST['txtEmail'])) {
 			$response = "Email is required.";
@@ -27,7 +26,7 @@
 			$email = isset($_REQUEST["txtEmail"]) ? $_REQUEST["txtEmail"] : "";
 			$comments = isset($_REQUEST["txtComments"]) ? $_REQUEST["txtComments"] : "";
 		
-			$message = "Booking Request Submitted:<br>";
+			$message = "Booking Request Submitted<br>";
 			$message .= "<b>Name</b> " . $name . "<br>";
 			$message .= "<b>Phone</b> " . $phone . "<br>";
 			$message .= "<b>Email</b> " . $email . "<br>";
