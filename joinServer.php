@@ -1,52 +1,12 @@
 <? 
 	# This is the public page for booking
- 	include_once("includes/class/kcbBase.class.php");
+ 	include_once("includes/class/join.class.php");
 	$response = "";
 
 	// Only allow POST requests
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
-		if(!isset($_REQUEST['txtName'])) {
-			$response = "Name is required.";
-		}
-		else if(isset($_REQUEST['txtPhone']) && $_REQUEST['txtPhone'] !== "" && strlen($_REQUEST['txtPhone']) < 10) {
-			$response = "Phone number must be 10 digits.";
-		}
-		else if(!isset($_REQUEST['txtEmail'])) {
-			$response = "Email is required.";
-		}
-		else if(!isset($_REQUEST['txtPlayLength'])) {
-			$response = "Length of time playing is required.";
-		}
-		else if(!isset($_REQUEST['chkInstrument'])) {
-			$response = "Please choose at least one instrument that you play.";
-		}
-				
-		if($response === "") {
-			# Get server variables
-			$kcb = new KcbBase();
-			$name = $_REQUEST["txtName"];
-			$phone = empty($_REQUEST["txtPhone"]) ? "Not Provided" : $_REQUEST["txtPhone"];
-			$email = $_REQUEST["txtEmail"];
-			$instruments = implode(', ', $_REQUEST['chkInstrument']);
-			$playLength = $_REQUEST["txtPlayLength"];
-			$comments = empty($_REQUEST["txtComments"]) ? "None provided" : $_REQUEST["txtComments"];
-		
-			$message = "Booking Request Submitted<br>";
-			$message .= "<b>Name</b> " . $name . "<br>";
-			$message .= "<b>Phone</b> " . $phone . "<br>";
-			$message .= "<b>Email</b> " . $email . "<br>";
-			$message .= "<b>Instrument(s)</b> " . $instruments . "<br>";
-			$message .= "<b>Length of Play</b> " . $playLength . "<br>";
-			$message .= "<b>Comments</b> " . $comments;
-			
-			# Send email
-			if($kcb->sendEmail("web@keystoneconcertband.com", $message, "KCB Join Request")) {
-				$response = "success";
-			}
-			else {
-				$response = "Unable to save request. Please try again later.";
-			}
-		}
+		$join = new Join();
+		$response = $join->JoinSubmit($_REQUEST);
 	}
 	else {
 		$response = "invalid_request";
