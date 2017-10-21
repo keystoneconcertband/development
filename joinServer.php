@@ -17,27 +17,34 @@
 		else if(!isset($_REQUEST['txtPlayLength'])) {
 			$response = "Length of time playing is required.";
 		}
-		
+		else if(!isset($_REQUEST['chkInstrument'])) {
+			$response = "Please choose at least one instrument that you play.";
+		}
+				
 		if($response === "") {
 			# Get server variables
 			$kcb = new KcbBase();
-			$name = isset($_REQUEST["txtName"]) ? $_REQUEST["txtName"] : "";
-			$phone = isset($_REQUEST["txtPhone"]) ? $_REQUEST["txtPhone"] : "Not Provided";
-			$email = isset($_REQUEST["txtEmail"]) ? $_REQUEST["txtEmail"] : "";
-			$comments = isset($_REQUEST["txtComments"]) ? $_REQUEST["txtComments"] : "";
+			$name = $_REQUEST["txtName"];
+			$phone = empty($_REQUEST["txtPhone"]) ? "Not Provided" : $_REQUEST["txtPhone"];
+			$email = $_REQUEST["txtEmail"];
+			$instruments = implode(', ', $_REQUEST['chkInstrument']);
+			$playLength = $_REQUEST["txtPlayLength"];
+			$comments = empty($_REQUEST["txtComments"]) ? "None provided" : $_REQUEST["txtComments"];
 		
 			$message = "Booking Request Submitted<br>";
 			$message .= "<b>Name</b> " . $name . "<br>";
 			$message .= "<b>Phone</b> " . $phone . "<br>";
 			$message .= "<b>Email</b> " . $email . "<br>";
+			$message .= "<b>Instrument(s)</b> " . $instruments . "<br>";
+			$message .= "<b>Length of Play</b> " . $playLength . "<br>";
 			$message .= "<b>Comments</b> " . $comments;
 			
 			# Send email
-			if($kcb->sendEmail("web@keystoneconcertband.com", $message, "KCB Booking Request")) {
+			if($kcb->sendEmail("web@keystoneconcertband.com", $message, "KCB Join Request")) {
 				$response = "success";
 			}
 			else {
-				$response = "Unable to send email. Please try again later.";
+				$response = "Unable to save request. Please try again later.";
 			}
 		}
 	}

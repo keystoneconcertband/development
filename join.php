@@ -93,21 +93,21 @@
 				    <div class="form-group">
 				      <label for="txtName" class="col-lg-2 control-label">* Name</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="txtName" placeholder="Name" required="true">
+				        <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name" required="true">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
 				      <label for="txtPhone" class="col-lg-2 control-label">Phone Number</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="txtPhone" placeholder="Phone Number">
+				        <input type="text" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
 				      <label for="txtEmail" class="col-lg-2 control-label">* Email Address</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="txtEmail" placeholder="Email Address" required="true">
+				        <input type="text" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email Address" required="true">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
@@ -115,47 +115,47 @@
 				      <label for="txtEmail" class="col-lg-2 control-label">* Instrument(s) played</label>
 				      <div class="col-lg-10">
 						<div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
-						    <input type="checkbox" id="baritone" value="baritone" name="txtInstrument[]">
+						    <input type="checkbox" id="baritone" value="baritone" name="chkInstrument[]">
 						    <label for="baritone"> Baritone</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="bassClarinet" value="bassClarinet" name="txtInstrument[]">
+						    <input type="checkbox" id="bassClarinet" value="bassClarinet" name="chkInstrument[]">
 						    <label for="bassClarinet"> Bass Clarinet</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="bassoon" value="bassoon" name="txtInstrument[]">
+						    <input type="checkbox" id="bassoon" value="bassoon" name="chkInstrument[]">
 						    <label for="bassoon"> Bassoon</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="clarinet" value="clarinet" name="txtInstrument[]">
+						    <input type="checkbox" id="clarinet" value="clarinet" name="chkInstrument[]">
 						    <label for="clarinet"> Clarinet</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="flute" value="flute" name="txtInstrument[]">
+						    <input type="checkbox" id="flute" value="flute" name="chkInstrument[]">
 						    <label for="flute"> Flute</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="frenchHorn" value="frenchHorn" name="txtInstrument[]">
+						    <input type="checkbox" id="frenchHorn" value="frenchHorn" name="chkInstrument[]">
 						    <label for="frenchHorn"> French Horn</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="saxophone" value="saxophone" name="txtInstrument[]">
+						    <input type="checkbox" id="saxophone" value="saxophone" name="chkInstrument[]">
 						    <label for="saxophone"> Saxophone</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="trombone" value="trombone" name="txtInstrument[]">
+						    <input type="checkbox" id="trombone" value="trombone" name="chkInstrument[]">
 						    <label for="trombone"> Trombone</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="trumpet" value="trumpet" name="txtInstrument[]">
+						    <input type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
 						    <label for="bassoon"> Trumpet</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="tuba" value="tuba" name="txtInstrument[]">
+						    <input type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
 						    <label for="tuba"> Tuba</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
-						    <input type="checkbox" id="percussion" value="percussion" name="txtInstrument[]">
+						    <input type="checkbox" id="percussion" value="percussion" name="chkInstrument[]">
 						    <label for="percussion"> Percussion</label>
 						</div>
 						<div class="help-block with-errors"></div>
@@ -164,14 +164,14 @@
 				    <div class="form-group">
 				      <label for="txtPlayLength" class="col-lg-2 control-label">* How long have you been playing?</label>
 				      <div class="col-lg-10">
-				        <textarea class="form-control" rows="3" id="txtPlayLength" required="true"></textarea>
+				        <textarea class="form-control" rows="3" id="txtPlayLength" name="txtPlayLength" required="true"></textarea>
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
 				    <div class="form-group">
 				      <label for="txtComments" class="col-lg-2 control-label">Additional Comments/Questions</label>
 				      <div class="col-lg-10">
-				        <textarea class="form-control" rows="3" id="txtComments"></textarea>
+				        <textarea class="form-control" rows="3" id="txtComments" name="txtComments"></textarea>
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
