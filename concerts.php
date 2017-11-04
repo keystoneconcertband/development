@@ -70,7 +70,7 @@
 							echo "  <div class='panel-heading " . $disabled . "'>\n";
 							echo "	  <div class='panel-title'>";
 							echo "      <a data-toggle='collapse' data-target='#collapse" . $rowNbr . "' href='#collapse'>\n";
-							echo 			$begin . " - " . $concert['Title'];
+							echo 			$concert['Title'];
 							echo "      </a>\n";
 							echo "    </div>\n";
 							echo "  </div>\n";
