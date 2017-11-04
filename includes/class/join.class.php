@@ -12,6 +12,8 @@
 		}
 		
 		public function JoinSubmit($joinArray) {
+			$webUser = "PENDING";
+			
 			// Verify user filled out all the correct fields
 			$response = $this->validateJoin($joinArray);
 			
@@ -21,9 +23,50 @@
 				// If we successfully sent the email, add the user to the database
 				// as a pending user
 				if($response === "success") {
+					try {
+						// Check if this pending user's email is already in the database, if so, skip adding the user
+						$email = $this->getDb()->checkDupPendingUser($joinArray['txtEmail']);
+												
+						if(!$email) {
+							$this->getDb()->beginTransaction();
+							
+							// Add user
+							$uid = $this->getDb()->addPendingUser($joinArray, $webUser);
+							
+							// Add email
+							if($uid > 0) {
+								if($this->getDb()->addEmail($joinArray['txtEmail'], $uid, $webUser)) {
+									// Loop through each instrument	and add
+									foreach($joinArray['chkInstrument'] as $instr) {
+										if(!$this->getDb()->addInstrument($instr, $uid, $webUser)) {
+											$this->getDb()->rollBackTransaction();
+											$response = "instrument_add_error";								
+										}
+									}
+								}
+								else {
+									$this->getDb()->rollBackTransaction();
+									$response = "email_add_error";
+								}
+							}
+							else {
+								$this->getDb()->rollBackTransaction();
+								$response = "add_error";
+							}
+							
+							// Everything above was successful, save the transaction								
+							if($response === "success") {
+								$this->getDb()->executeTransaction();	
+							}						
+						}
+					}
+					catch(Exception $e) {
+						$this->LogError($e->getMessage());
+						$this->getDb()->rollBackTransaction();
+						$response = "db_error";
+					}
 				}
 			}
-
 			return $response;
 		}
 		
@@ -76,5 +119,14 @@
 			
 			return $response;
 		}
+		
+		/* PRIVATE FUNCTIONS */
+		private function getDb() {
+			return $this->db;
+		}
+		
+		private function setDb($db) {
+        	$this->db = $db;
+    	}
 	}
 ?>

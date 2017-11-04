@@ -3,33 +3,48 @@
  	
 	class JoinDb {
 		private $db;
-
+		
+		/* PUBLIC FUNCTIONS */
 		public function __construct() {
 			$this->setDB(new Db());
 		}
+		
+		/* Transactions */
+		public function beginTransaction() {
+			$this->getDb()->beginTransaction();
+		}
+		
+		public function executeTransaction() {
+			$this->getDb()->executeTransaction();
+		}
+		
+		public function rollBackTransaction() {
+			$this->getDb()->rollBack();
+		}
 
-		public function addPendingUser($joinArray) {
-			$firstName = $this->getFirstName($joinArray["txtName"]);
-			$lastName = $this->getLastName($joinArray["txtName"]);
-			$phone = $joinArray["txtPhone"];
-			$email = $joinArray["txtEmail"];
-			$instruments = implode(', ', $joinArray['chkInstrument']);
-
-			$this->getDb()->bind("auth_cd_guid", $guid);
+		public function checkDupPendingUser($email) {
 			$this->getDb()->bind("email", $email);
-			$this->getDb()->bind("email2", $email);
-			$this->getDb()->bind("email3", $email);
-			$retVal = $this->getDb()->query("INSERT INTO KCB_member_auth (member_uid, auth_cd_guid, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) select m.uid, :auth_cd_guid, :email, now(), :email2, now() from KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid WHERE e.email_address = :email3");
+			return $this->getDb()->query("SELECT email_address from KCB_email_address where email_address = :email");
+		}
 
+		public function addPendingUser($joinArray, $updateUser) {
+			$this->getDb()->bind("firstName", $this->getFirstName($joinArray["txtName"]));
+			$this->getDb()->bind("lastName", $this->getLastName($joinArray["txtName"]));
+			$this->getDb()->bind("phone", $joinArray["txtPhone"]);
+			$this->getDb()->bind("updateUser1", $updateUser);
+			$this->getDb()->bind("updateUser2", $updateUser);
+			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(accountType, firstName, lastName, text, doNotDisplay, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled) VALUES(3, :firstName, :lastName, :phone, 1, :updateUser1, now(), :updateUser2, now(), 1)");
+
+			// Return key value
 			if($retVal) {
-				// addInstrument
-				// addEmail
+				return $this->getDb()->lastInsertId();
 			}
-
-			return $retVal;
+			else {
+				return -1;
+			}
 		}
 				
-		private function addInstrument($instrument, $uid, $updateUser) {
+		public function addInstrument($instrument, $uid, $updateUser) {
 			$this->getDb()->bind("instrument", $instrument);
 			$this->getDb()->bind("uid", $uid);
 			$this->getDb()->bind("updateUser1", $updateUser);
@@ -39,7 +54,7 @@
 			return $retVal;
 		}
 
-		private function addEmail($email, $uid, $updateUser) {
+		public function addEmail($email, $uid, $updateUser) {
 			$this->getDb()->bind("email", $email);
 			$this->getDb()->bind("uid", $uid);
 			$this->getDb()->bind("updateUser1", $updateUser);
@@ -49,6 +64,17 @@
 			return $retVal;
 		}
 
+		private function getFirstName($name) {
+			$name_parts = explode(' ', $name);
+			return $name_parts[0];
+		}
+		
+		private function getLastName($name) {
+			$name_parts = explode(' ', $name);
+			return $name_parts[sizeof($name_parts) - 1];
+		}
+
+		/* PRIVATE FUNCTIONS */
 		private function getDb() {
 			return $this->db;
 		}
@@ -57,12 +83,5 @@
         	$this->db = $db;
     	}
 
-		private function getFirstName($name) {
-			
-		}
-		
-		private function getLastName($name) {
-			
-		}
 	}
 ?>
