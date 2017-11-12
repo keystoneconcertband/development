@@ -42,123 +42,12 @@ new ProtectedMember();
 				</div>
 				<table id="kcbMusicTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					<thead>
-						<th></th>
 						<th>Title</th>
+						<th>Notes</th>
 						<th>Music Link</th>
 						<th>Last Played</th>
-						<th>Last Mod By</th>
-						<th>Last Mod Dt</th>
+						<th>Number of Plays</th>
 					</thead>
-					<tbody>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>From Tropic to Tropic</td>
-							<td><a href="youtube.com/abc">www.youtube.com/abc</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:30 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Music for a Carnival</td>
-							<td><a href="youtube.com/abc">www.youtube.com/567</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:31 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Galop to End all Galops</td>
-							<td><a href="youtube.com/abc">www.youtube.com/456</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:31 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>American Patrol</td>
-							<td><a href="youtube.com/abc">www.youtube.com/345</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:32 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Blue Tango</td>
-							<td><a href="youtube.com/abc">www.youtube.com/234</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:33 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Klaxon</td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Belle of the Ball </td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Colonel Bogey</td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Armed Forces Salute</td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>America, the Beautiful</td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Stars and Stripes</td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>8/12/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-						<tr>
-							<td><button name="Select" id="select0">Modify</button>
-								<button name="Select" id="play0">Play History</button></td>
-							<td>Beguine for Band</td>
-							<td><a href="youtube.com/abc">www.youtube.com/123</a></td>
-							<td>7/23/2017</td>
-							<td>Gillette</td>
-							<td>8/16/2017 7:34 PM</td>
-						</tr>
-					</tbody>
 				</table>
 			</div>
 		</div>
@@ -170,9 +59,75 @@ new ProtectedMember();
 	<script type="text/javascript">
 		$(document).ready(function() {
 		    $('#kcbMusicTable').DataTable( {
-			    responsive: true
-			});
+			    responsive: true,
+				stateSave: true,
+				"order": [[0, "asc" ]],
+			    "ajax": {
+				    "url":"musicServer.php",
+					"dataSrc": ""
+				},
+				"columns": [
+		            { "data": "title" },
+		            { "data": "notes" },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.music_link) {
+							return '<a href="'+data.music_link+'" target="_blank">'+data.music_link+'</a><br />'
+						}
+						else {
+							return "";
+						}
+		              } 
+		            },
+		            { "data": "last_played" },
+		            { "data": "number_plays" }
+		            /*
+					{ data: null, render: function ( data, type, row ) {
+						if(data.instrument) {
+		                	return data.instrument.replace(/,/g, '<br/>');
+		                }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.text) {
+		                	return data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+		                }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+						if(data.home_phone) {
+		                	return data.home_phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+		                }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
+					{ data: null, render: function ( data, type, row ) {
+					    if(data.address1) {
+						    var addr = data.address1 + '<br />';
+						    							
+							if(data.address2) {
+								addr += data.address2 + '<br />';
+							}
+							
+							addr += data.city + ', ' + data.state + ' ' + data.zip;
+							
+							return addr;
+					    }
+		                else {
+			                return "";
+		                }
+		              } 
+		            },
+		            { "data": "office" }*/
+		        ]
+	        });
 		});
-	</script>
-  </body>
+	</script>  </body>
 </html>

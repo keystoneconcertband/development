@@ -40,7 +40,7 @@ new ProtectedMember();
 				<div class="page-header">
 					<h2>Current Members</h2>
 				</div>
-				<table id="kcbMusicTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<table id="kcbMemberTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					<thead>
 						<th>Name</th>
 						<th>Primary Email Address</th>
@@ -60,7 +60,7 @@ new ProtectedMember();
 	<script type="text/javascript" src="/dataTables-1.10.15/datatables.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-		    $('#kcbMusicTable').DataTable( {
+		    $('#kcbMemberTable').DataTable( {
 			    responsive: true,
 				stateSave: true,
 				"order": [[0, "asc" ]],
