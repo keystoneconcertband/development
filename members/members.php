@@ -65,7 +65,7 @@ new ProtectedMember();
 				stateSave: true,
 				"order": [[0, "asc" ]],
 			    "ajax": {
-				    "url":"/includes/getAllActiveMembers.php",
+				    "url":"membersServer.php",
 					"dataSrc": ""
 				},
 				"columns": [

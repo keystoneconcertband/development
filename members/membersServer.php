@@ -1,6 +1,6 @@
 <? 
 	# This is the public page for member which the ajax requests call.
-	include_once('class/protectedMember.class.php');
+	include_once('../includes/class/protectedMember.class.php');
 	header('Content-Type: application/json');
 
 	$mbr = new ProtectedMember();
