@@ -1,6 +1,6 @@
 <?php
-include_once '../includes/class/protectedMember.class.php';
-new ProtectedMember();
+include_once '../includes/class/protectedMusic.class.php';
+new ProtectedMusic();
 ?>
 
 <!DOCTYPE html>
@@ -58,16 +58,14 @@ new ProtectedMember();
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modal_add_edit">
-			<div class="modal-dialog" role="document">
+		<div class="modal fade" id="modal_add_edit" role="dialog">
+			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Add Music</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Add Music</h5>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body form-horizontal">
 						<form id="form_music" data-toggle="validator">
 							<div class="form-group">
 								<div class="col-sm-12">
@@ -79,7 +77,7 @@ new ProtectedMember();
 							<div class="form-group">
 								<div class="col-sm-12">
 									<label for="title" class="control-label">Notes</label>
-									<input type="text" class="form-control" name="notes" id="notes" placeholder="Notes" value="" maxlength="2000">
+									<textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="2000" rows="3"></textarea>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
