@@ -36,6 +36,7 @@ new ProtectedMusic();
 				<div class="page-header">
 					<h2>Music</h2>
 				</div>
+				<? if(isset($_SESSION['office']) && $_SESSION['office'] !== '') { ?>
 				<div class="row form-group">
 					<div class="col-lg-12">
 						<div>
@@ -43,6 +44,7 @@ new ProtectedMusic();
 						</div>
 					</div>
 				</div>
+				<? } ?>
 				<div class="row">
 					<div class="col-lg-12">
 						<table id="kcbMusicTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
