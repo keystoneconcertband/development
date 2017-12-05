@@ -40,8 +40,7 @@ function submitForm() {
             if (text === "success"){
                 formSuccess();
             } else {
-                formError();
-                submitMSG(false,text);
+                formError(text);
             }
         },
 		error: function(xhr, resp, text) {
@@ -67,10 +66,11 @@ function formSuccess(){
     submitMSG(true, "Your information has been updated!");
 }
 
-function formError(){
-    $("#contactForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+function formError(text){
+    $("#memberInfo").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
         $(this).removeClass();
     });
+    submitMSG(false,text);
 }
 
 function submitMSG(valid, msg){
