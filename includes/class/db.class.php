@@ -74,6 +74,7 @@ class DB
             die();
         }
     }
+    
     /*
      *   You can use this little method if you want to close the PDO connection
      *
@@ -153,6 +154,7 @@ class DB
     {
         $this->parameters[sizeof($this->parameters)] = [":" . $para , $value];
     }
+    
     /**
      *	@void
      *	
@@ -168,6 +170,7 @@ class DB
             }
         }
     }
+    
     /**
      *  If the SQL query  contains a SELECT or SHOW statement it returns an array containing all of the result set row
      *	If the SQL statement is a DELETE, INSERT, or UPDATE statement it returns the number of affected rows
@@ -254,6 +257,7 @@ class DB
         return $column;
         
     }
+    
     /**
      *	Returns an array which represents a row from the result set 
      *
@@ -269,6 +273,7 @@ class DB
         $this->sQuery->closeCursor(); // Frees up the connection to the server so that other SQL statements may be issued,
         return $result;
     }
+    
     /**
      *	Returns the value of one single field/column
      *
@@ -283,6 +288,22 @@ class DB
         $this->sQuery->closeCursor(); // Frees up the connection to the server so that other SQL statements may be issued
         return $result;
     }
+    
+    /**
+     *	Returns the value of one single field/column
+     *
+     *	@param  string $query
+     *	@param  array  $params
+     *	@return string
+     */
+    public function resultCount($query, $params = null)
+    {
+        $this->Init($query, $params);
+        $result = $this->sQuery->rowCount();
+        $this->sQuery->closeCursor(); // Frees up the connection to the server so that other SQL statements may be issued
+        return $result;
+    }
+    
     /**	
      * Writes the log and returns the exception
      *

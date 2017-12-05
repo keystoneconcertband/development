@@ -59,14 +59,14 @@ new ProtectedMusic();
 			</div>
 		</div>
 		<div class="modal fade" id="modal_add_edit" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Add Music</h5>
-					</div>
-					<div class="modal-body form-horizontal">
-						<form id="form_music" data-toggle="validator">
+			<form id="form_music" data-toggle="validator">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Add Music</h5>
+						</div>
+						<div class="modal-body form-horizontal">
 							<div class="form-group">
 								<div class="col-sm-12">
 									<label for="title" class="control-label">Title*</label>
@@ -100,14 +100,16 @@ new ProtectedMusic();
 									</div>
 								</div>
 							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Save changes</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" id="type" name="type" value="add">
+							<button type="submit" class="btn btn-primary">Save changes</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<div id="msgSubmit" class="h4 hidden"></div>
+						</div>
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 		<?php require '../includes/footer.php'; ?>
 	</div> <!-- /container -->
@@ -117,41 +119,6 @@ new ProtectedMusic();
 	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="/moment-2.19.2/moment.min.js"></script>
 	<script type="text/javascript" src="/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#dpLastPlayed').datetimepicker( {
-				format: 'L',
-				maxDate: moment().add(7, 'days'),
-				showTodayButton: true,
-				showClear: true,
-				showClose: true
-			});
-			$("#kcbMusicTable").validator();
-		    $('#kcbMusicTable').DataTable( {
-			    responsive: true,
-				stateSave: true,
-				"order": [[0, "asc" ]],
-			    "ajax": {
-				    "url":"musicServer.php",
-					"dataSrc": ""
-				},
-				"columns": [
-		            { "data": "title" },
-		            { "data": "notes" },
-					{ data: null, render: function ( data, type, row ) {
-						if(data.music_link) {
-							return '<a href="'+data.music_link+'" target="_blank">'+data.music_link+'</a><br />'
-						}
-						else {
-							return "";
-						}
-		              } 
-		            },
-		            { "data": "last_played" },
-		            { "data": "number_plays" }
-		        ]
-	        });
-		});
-	</script>  
+	<script type="text/javascript" src="/kcb-js/music.js"></script>
   </body>
 </html>
