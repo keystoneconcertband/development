@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#dpLastPlayed').datetimepicker( {
+	$('#dpLastPlayed').datetimepicker({
 		format: 'L',
 		maxDate: moment().add(7, 'days'),
 		showTodayButton: true,
@@ -16,6 +16,15 @@ $(document).ready(function() {
 			"dataSrc": ""
 		},
 		"columns": [
+			{ data: null, render: function ( data, type, row ) {
+				if(data.uid) {
+					return '<a href="#nojump"><span class="glyphicon glyphicon-remove-circle" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>';
+				}
+				else {
+					return "";
+				}
+              } 
+            },
             { "data": "title" },
             { "data": "notes" },
 			{ data: null, render: function ( data, type, row ) {
@@ -64,6 +73,31 @@ function submitForm() {
     });
 }
 
+function deleteRecord(title, uid) {
+	if(confirm("Do you want to delete title " + title + "?")) {
+		$.ajax(
+		{
+	        url: "musicServer.php",
+	        type: "POST",
+			dataType : 'json', 
+	        data: JSON.parse('{"type":"delete","uid":"'+uid+'"}'),
+	        success: function(text){
+		        formError(text);
+	            if (text === "success"){					 
+				    $('#kcbMusicTable').DataTable().ajax.reload();
+				    submitMSG(true, "Item successfully deleted.");
+	            } else {
+	                formError(text);
+	            }
+	        },
+			error: function(xhr, resp, text) {
+				submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
+	            console.log(xhr, resp, text);
+	        }
+	    });
+	}
+}
+
 function formSuccess() {
 	var dt = $('#kcbMusicTable').DataTable();
 	dt.row.add({
@@ -78,15 +112,15 @@ function formSuccess() {
     $('#modal_add_edit').modal('hide');
 }
 
-function formError(text){
+function formError(text) {
     $("#form_music").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
         $(this).removeClass();
     });
     submitMSG(false,text);
 }
 
-function submitMSG(valid, msg){
-    if(valid){
+function submitMSG(valid, msg) {
+    if(valid) {
         var msgClasses = "h4 tada animated text-success";
     } else {
         var msgClasses = "h4 text-danger";

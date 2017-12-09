@@ -18,7 +18,23 @@
 			return $this->getDb()->getMusic();
 		}
 		
+		public function deleteMusic($uid) {
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				if($this->getDb()->deleteMusic($uid, $_SESSION['email'])) {
+					return "success";
+				}
+				else {
+					return "Unable to delete. Was this item already deleted?";
+				}
+			}
+			else {
+				return "Access Denied";
+			}
+			
+		}
+		
 		public function addMusic($title, $notes, $link, $last_played) {
+			// TODO: need to handle reactivating deleted titles
 			if($this->getDb()->checkDupMusic($title) > 0) {
 				return "This title already exists.";
 			}

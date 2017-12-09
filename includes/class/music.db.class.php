@@ -26,8 +26,17 @@
 		
 		// Gets the members by instrument
 		public function getMusic() {
-			return $this->getDb()->query("SELECT m.title, m.notes, m.music_link, DATE(lp.last_played) as last_played, lp.number_plays FROM KCB_music m LEFT OUTER JOIN KCB_music_last_played lp ON m.uid = lp.music_uid");
+			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, DATE(lp.last_played) as last_played, lp.number_plays FROM KCB_music m LEFT OUTER JOIN KCB_music_last_played lp ON m.uid = lp.music_uid WHERE m.actv_flg = 1");
 		}
+
+		public function deleteMusic($uid, $user_id) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind('user_id', $user_id);
+			
+			return $this->getDb()->query("UPDATE KCB_music SET actv_flg = 0, lst_tran_dt_tm=now(), lst_updtd_by=:user_id WHERE uid = :uid");
+		}
+
+		/* UPDATE QUERIES */
 
 		public function addMusic($title, $notes, $link, $last_played, $user_id) {
 			$retValue = "add_music_error";

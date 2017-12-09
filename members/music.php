@@ -38,10 +38,13 @@ new ProtectedMusic();
 				</div>
 				<? if(isset($_SESSION['office']) && $_SESSION['office'] !== '') { ?>
 				<div class="row form-group">
-					<div class="col-lg-12">
+					<div class="col-sm-2">
 						<div>
 							<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_add_edit">Add Music</button>
 						</div>
+					</div>
+					<div class="col-sm-10">
+						<div id="msgSubmit" class="h4 hidden"></div>
 					</div>
 				</div>
 				<? } ?>
@@ -49,6 +52,7 @@ new ProtectedMusic();
 					<div class="col-lg-12">
 						<table id="kcbMusicTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
+								<th></th>
 								<th>Title</th>
 								<th>Notes</th>
 								<th>Music Link</th>
