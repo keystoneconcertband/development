@@ -106,6 +106,13 @@ new ProtectedMusic();
 									</div>
 								</div>
 							</div>
+							<div class="form-group" id="nbr_plays_div" style="display:none;">
+								<div class="col-sm-12">
+									<label for="title" class="control-label">Nbr of Plays</label>
+									<input type="text" class="form-control" name="number_plays" id="number_plays" placeholder="Number of Plays" value="">
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<input type="hidden" id="type" name="type" value="add">

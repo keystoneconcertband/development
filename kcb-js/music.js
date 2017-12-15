@@ -18,7 +18,7 @@ $(document).ready(function() {
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
 				if(data.uid) {
-					return '<a href="#nojump"><span class="glyphicon glyphicon-remove-circle" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>';
+					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="editRecord('+data.uid+')"></span></a>';
 				}
 				else {
 					return "";
@@ -99,15 +99,9 @@ function deleteRecord(title, uid) {
 }
 
 function formSuccess() {
-	var dt = $('#kcbMusicTable').DataTable();
-	dt.row.add({
-		"title" : $("#title").val(),
-        "notes" : $("#notes").val(),
-        "music_link" : $("#music_link").val(),
-        "last_played" : $("#last_played").val(),
-        "number_plays": $("#last_played").val() === "" ? "0" : "1"
-    }).draw(false);
+    submitMSG(true, "Item successfully added.");
 
+	$('#kcbMusicTable').DataTable().ajax.reload();
 	$("#form_music").trigger('reset'); 
     $('#modal_add_edit').modal('hide');
 }
@@ -127,3 +121,32 @@ function submitMSG(valid, msg) {
     }
     $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
 }
+
+function editRecord(uid) {
+	$.ajax({
+        cache: false,
+        type: 'POST',
+        url: 'musicServer.php',
+        data: JSON.parse('{"type":"getMusicRecord","uid":"'+uid+'"}'),
+        success: function(data) {
+            populate('#form_music', data);
+			$("#nbr_plays_div").show();
+			$('#modal_add_edit').modal('show');
+        },
+		error: function(xhr, resp, text) {
+			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
+            console.log(xhr, resp, text);
+        }
+    });	
+}
+
+function populate(frm, data) {
+	$.each(data, function(key, value) {
+		$('[name='+key+']', frm).val(value);
+	});
+}
+
+$('#modal_add_edit').on('hidden.bs.modal', function () {
+    // re-hide number of plays each time the modal closes
+    $("#nbr_plays_div").hide();
+})

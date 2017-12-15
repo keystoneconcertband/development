@@ -18,6 +18,10 @@
 			return $this->getDb()->getMusic();
 		}
 		
+		public function getMusicRecord($uid) {
+			return $this->getDb()->getMusicRecord($uid);
+		}
+		
 		public function deleteMusic($uid) {
 			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
 				if($this->getDb()->deleteMusic($uid, $_SESSION['email'])) {
@@ -30,6 +34,9 @@
 			else {
 				return "Access Denied";
 			}
+		}
+
+		public function editMusic($title, $notes, $link, $last_played, $nbr_plays) {
 			
 		}
 		
