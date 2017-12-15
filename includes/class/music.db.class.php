@@ -26,12 +26,12 @@
 		
 		// Gets the members by instrument
 		public function getMusic() {
-			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, (SELECT last_played FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1");
+			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, (SELECT DATE(last_played) FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1");
 		}
 
 		public function getMusicRecord($uid) {
 			$this->getDb()->bind('uid', $uid);
-			return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, (SELECT last_played FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1 AND m.uid = :uid");
+			return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, (SELECT DATE(last_played) FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1 AND m.uid = :uid");
 		}
 
 		public function deleteMusic($uid, $user_id) {
