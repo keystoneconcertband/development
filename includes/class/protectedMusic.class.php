@@ -54,6 +54,9 @@
 					if($retValue == "db_error") {
 						return "Database error. Please try again later.";
 					}
+					elseif($retValue == "add_music_error") {
+						return "Error adding music. Please try again later";
+					}
 					elseif($retValue == "insert_music_error") {
 						return "Error inserting values into the music table. Please try again later.";
 					}

@@ -26,12 +26,12 @@
 		
 		// Gets the members by instrument
 		public function getMusic() {
-			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, DATE(lp.last_played) as last_played, lp.number_plays FROM KCB_music m LEFT OUTER JOIN KCB_music_last_played lp ON m.uid = lp.music_uid WHERE m.actv_flg = 1");
+			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, (SELECT last_played FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1");
 		}
 
 		public function getMusicRecord($uid) {
 			$this->getDb()->bind('uid', $uid);
-			return $this->getDb()->row("SELECT m.title, m.notes, m.music_link, DATE(lp.last_played) as last_played, lp.number_plays FROM KCB_music m LEFT OUTER JOIN KCB_music_last_played lp ON m.uid = lp.music_uid WHERE m.uid = :uid");
+			return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, (SELECT last_played FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1 AND m.uid = :uid");
 		}
 
 		public function deleteMusic($uid, $user_id) {
@@ -61,26 +61,25 @@
 				
 				if($uid > 0) {
 					if($last_played !== "") {
-						$this->getDb()->bind('last_played', date("Y-m-d H:i:s", strtotime($last_played)));					
-						$this->getDb()->bind('number_plays', '1');					
+						$this->getDb()->bind('uid', $uid);
+						$this->getDb()->bind('last_played', date("Y-m-d H:i:s", strtotime($last_played)));										
+						$this->getDb()->bind('user_id3', $user_id);
+						$this->getDb()->bind('user_id4', $user_id);
+	
+						$retValue = $this->getDb()->query("INSERT INTO KCB_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :user_id3, now(), :user_id4, now())");
+						
+						if($retValue) {
+							$this->executeTransaction();
+						}
+						else {
+							$this->rollBackTransaction();
+							$retValue = "insert_music_last_played_error";
+						}
 					}
 					else {
-						$this->getDb()->bind('last_played', NULL);					
-						$this->getDb()->bind('number_plays', '0');					
-					}
-					
-					$this->getDb()->bind('uid', $uid);
-					$this->getDb()->bind('user_id3', $user_id);
-					$this->getDb()->bind('user_id4', $user_id);
-
-					$retValue = $this->getDb()->query("INSERT INTO KCB_music_last_played (music_uid, last_played, number_plays, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :number_plays, :user_id3, now(), :user_id4, now())");
-					
-					if($retValue) {
+						// No last played entered, skip adding to table
+						$retValue = 1;
 						$this->executeTransaction();
-					}
-					else {
-						$this->rollBackTransaction();
-						$retValue = "insert_music_last_played_error";
 					}
 				}
 				else {

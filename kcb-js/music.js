@@ -18,7 +18,7 @@ $(document).ready(function() {
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
 				if(data.uid) {
-					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="editRecord('+data.uid+')"></span></a>';
+					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
 					return "";
@@ -52,13 +52,31 @@ $("#form_music").validator().on("submit", function (event) {
     }
 });
 
+$('#modal_add_edit').on('hidden.bs.modal', function () {
+    // re-hide number of plays each time the modal closes
+    $("#nbr_plays_div").hide();
+    
+    // Clear form each time
+   	$("#form_music").trigger('reset');
+});
+
 function submitForm() {
+	// Determine whether we are adding or editing record
+	if($("#uid").val() !== "") {
+		editRecord($("#uid").val());
+	}
+	else {
+		addRecord();
+	}
+}
+
+function addRecord() {
 	$.ajax(
 	{
         url: "musicServer.php",
         type: "POST",
 		dataType : 'json', 
-        data: $("#form_music").serialize(),
+        data: $("#form_music").serialize() + '&type=add',
         success: function(text){
             if (text === "success"){
                 formSuccess();
@@ -71,6 +89,45 @@ function submitForm() {
             console.log(xhr, resp, text);
         }
     });
+}
+
+function showEditRecord(uid) {
+	$.ajax({
+        cache: false,
+        type: 'POST',
+        url: 'musicServer.php',
+        data: JSON.parse('{"type":"getMusicRecord","uid":"'+uid+'"}'),
+        success: function(data) {
+            populate('#form_music', data);
+            $("#uid").val(uid);
+			$("#nbr_plays_div").show();
+			$('#modal_add_edit').modal('show');
+        },
+		error: function(xhr, resp, text) {
+			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
+            console.log(xhr, resp, text);
+        }
+    });	
+}
+
+function editRecord() {
+	$.ajax({
+        cache: false,
+        type: 'POST',
+        url: 'musicServer.php',
+        data: $("#form_music").serialize() + '&type=edit',
+        success: function(text) {
+            if (text === "success"){
+                formSuccess();
+            } else {
+                formError(text);
+            }
+        },
+		error: function(xhr, resp, text) {
+			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
+            console.log(xhr, resp, text);
+        }
+    });	
 }
 
 function deleteRecord(title, uid) {
@@ -122,31 +179,8 @@ function submitMSG(valid, msg) {
     $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
 }
 
-function editRecord(uid) {
-	$.ajax({
-        cache: false,
-        type: 'POST',
-        url: 'musicServer.php',
-        data: JSON.parse('{"type":"getMusicRecord","uid":"'+uid+'"}'),
-        success: function(data) {
-            populate('#form_music', data);
-			$("#nbr_plays_div").show();
-			$('#modal_add_edit').modal('show');
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
-            console.log(xhr, resp, text);
-        }
-    });	
-}
-
 function populate(frm, data) {
 	$.each(data, function(key, value) {
 		$('[name='+key+']', frm).val(value);
 	});
 }
-
-$('#modal_add_edit').on('hidden.bs.modal', function () {
-    // re-hide number of plays each time the modal closes
-    $("#nbr_plays_div").hide();
-})
