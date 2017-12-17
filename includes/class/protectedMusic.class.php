@@ -22,6 +22,10 @@
 			return $this->getDb()->getMusicRecord($uid);
 		}
 		
+		public function getGenres() {
+			return $this->getDb()->getGenres();
+		}
+		
 		public function deleteMusic($uid) {
 			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
 				if($this->getDb()->deleteMusic($uid, $_SESSION['email'])) {
@@ -36,14 +40,14 @@
 			}
 		}
 
-		public function addMusic($title, $notes, $link, $last_played) {
+		public function addMusic($title, $notes, $link, $genre, $last_played) {
 			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {			
 				// TODO: need to handle reactivating deleted titles
 				if($this->getDb()->checkDupMusic($title) > 0) {
 					return "This title already exists.";
 				}
 				else {
-					$retValue = $this->getDb()->addMusic($title, $notes, $link, $last_played, $_SESSION['email']);
+					$retValue = $this->getDb()->addMusic($title, $notes, $link, $genre, $last_played, $_SESSION['email']);
 					if($retValue === 1) {
 						return "success";
 					}
@@ -71,9 +75,9 @@
 			}
 		}
 
-		public function editMusic($uid, $title, $notes, $link, $last_played) {
+		public function editMusic($uid, $title, $notes, $link, $genre, $last_played) {
 			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {			
-				$retValue = $this->getDb()->editMusic($uid, $title, $notes, $link, $last_played, $_SESSION['email']);
+				$retValue = $this->getDb()->editMusic($uid, $title, $notes, $link, $genre, $last_played, $_SESSION['email']);
 				if($retValue === 1) {
 					return "success";
 				}

@@ -36,6 +36,7 @@ $(document).ready(function() {
 				}
               } 
             },
+            { "data": "genre" },
             { "data": "last_played" },
 			{ data: null, render: function ( data, type, row ) {
 				if(data.number_plays) {
@@ -62,6 +63,7 @@ $("#form_music").validator().on("submit", function (event) {
     }
 });
 
+// On close
 $('#modal_add_edit').on('hidden.bs.modal', function () {
     // re-hide number of plays each time the modal closes
     $("#nbr_plays_div").hide();
@@ -69,6 +71,11 @@ $('#modal_add_edit').on('hidden.bs.modal', function () {
     // Clear form each time
    	$("#form_music").trigger('reset');
 });
+
+// On load
+$('#modal_add_edit').on('show.bs.modal', function () {
+  	populateGenreDropdown();
+})
 
 function submitForm() {
 	// Determine whether we are adding or editing record
@@ -102,13 +109,16 @@ function addRecord() {
 }
 
 function showEditRecord(uid) {
+    // Populate genre dropdown if it hasn't been loaded yet (otherwise the genre isn't selected next)
+    populateGenreDropdown();
+
 	$.ajax({
         cache: false,
         type: 'POST',
         url: 'musicServer.php',
         data: JSON.parse('{"type":"getMusicRecord","uid":"'+uid+'"}'),
-        success: function(data) {
-            populate('#form_music', data);
+        success: function(data) {	        
+            populateForm('#form_music', data);
             $("#uid").val(uid);
 			$("#nbr_plays_div").show();
 			$('#modal_add_edit').modal('show');
@@ -188,8 +198,29 @@ function submitMSG(valid, msg) {
     $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
 }
 
-function populate(frm, data) {
+function populateForm(frm, data) {
 	$.each(data, function(key, value) {
 		$('[name='+key+']', frm).val(value);
 	});
+}
+
+function populateGenreDropdown() {
+	// Only needs to populate the first time the user opens the form
+	if($("#genre option").length === 1) {
+		$.ajax({
+	        cache: false,
+	        type: 'POST',
+	        url: 'musicServer.php',
+	        data: JSON.parse('{"type":"getMusicGenres"}'),
+	        success: function(data) {
+		        $.each(data, function(key, value) {
+		            $("#genre").append("<option>" + value.genre + "</option>");
+		        });
+	        },
+			error: function(xhr, resp, text) {
+				submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
+	            console.log(xhr, resp, text);
+	        }
+	    });	
+	}
 }
