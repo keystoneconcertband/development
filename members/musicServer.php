@@ -17,9 +17,11 @@
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
 		}
+		elseif(!isset($_POST['title'])) {
+			echo json_encode('Title is required.');
+		}
 		else {			
-			echo "edit Music";
-			//echo json_encode($music->editMusic($_POST['uid']));
+			echo json_encode($music->editMusic($_POST['uid'], $_POST['title'], $_POST['notes'], $_POST['music_link'], $_POST['last_played']));
 		}
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "delete") {

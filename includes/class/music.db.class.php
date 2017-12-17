@@ -40,6 +40,13 @@
 			
 			return $this->getDb()->query("UPDATE KCB_music SET actv_flg = 0, lst_tran_dt_tm=now(), lst_updtd_by=:user_id WHERE uid = :uid");
 		}
+		
+		public function getLastPlayedDatesByDate($uid, $date) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind('date', $date);
+			
+			return $this->getDb()->resultCount("SELECT last_played from KCB_music_last_played WHERE music_uid = :uid AND last_played = :date");
+		}
 
 		/* UPDATE QUERIES */
 
@@ -85,6 +92,61 @@
 				else {
 					$this->rollBackTransaction();
 					$retValue = "insert_music_error";
+				}
+			}
+			catch(Exception $e) {
+				$this->getDb()->ExceptionLog($e->getMessage());
+				$this->rollBackTransaction();
+				$retValue = "db_error";
+			}
+			
+			return $retValue;
+		}
+		
+		public function editMusic($uid, $title, $notes, $link, $last_played, $user_id) {
+			$retValue = "edit_music_error";
+						
+			try {
+				$this->beginTransaction();
+
+				$this->getDb()->bind('uid', $uid);
+				$this->getDb()->bind('title', $title);
+				$this->getDb()->bind('notes', $notes);
+				$this->getDb()->bind('link', $link);
+				$this->getDb()->bind('user_id', $user_id);
+	
+				$this->getDb()->query("UPDATE KCB_music SET title = :title, notes = :notes, music_link = :link, lst_updtd_by = :user_id, lst_tran_dt_tm  = now() WHERE UID = :uid");
+				
+				if($last_played !== "") {
+					$last_played_date = date("Y-m-d H:i:s", strtotime($last_played));
+					
+					// Only add the date if it isn't already there.
+					if($this->getLastPlayedDatesByDate($uid, $last_played) === 0) {
+						$this->getDb()->bind('uid', $uid);
+						$this->getDb()->bind('last_played', $last_played_date);										
+						$this->getDb()->bind('user_id3', $user_id);
+						$this->getDb()->bind('user_id4', $user_id);
+	
+						$retValue = $this->getDb()->query("INSERT INTO KCB_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :user_id3, now(), :user_id4, now())");
+						
+						if($retValue) {
+							$this->executeTransaction();
+						}
+						else {
+							$this->rollBackTransaction();
+							$retValue = "insert_music_last_played_error";
+						}
+					}
+					else {
+						// No last played changed, skip updating table
+						$retValue = 1;
+						$this->executeTransaction();
+					}
+				}
+				else {
+					// No last played entered, skip adding to table
+					$retValue = 1;
+					$this->executeTransaction();
 				}
 			}
 			catch(Exception $e) {

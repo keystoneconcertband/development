@@ -290,7 +290,7 @@ class DB
     }
     
     /**
-     *	Returns the value of one single field/column
+     *	Row count of results
      *
      *	@param  string $query
      *	@param  array  $params

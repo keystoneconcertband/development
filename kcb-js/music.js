@@ -37,7 +37,17 @@ $(document).ready(function() {
               } 
             },
             { "data": "last_played" },
-            { "data": "number_plays" }
+			{ data: null, render: function ( data, type, row ) {
+				if(data.number_plays) {
+					// TODO: Update this to display a listing of the last played dates
+					return data.number_plays;
+					//return '<a href="#'+data.number_plays+'" target="_blank">'+data.number_plays+'</a>'
+				}
+				else {
+					return "0";
+				}
+              } 
+            }
         ]
     });
 });
@@ -79,7 +89,7 @@ function addRecord() {
         data: $("#form_music").serialize() + '&type=add',
         success: function(text){
             if (text === "success"){
-                formSuccess();
+                formSuccess("Item successfully added.");
             } else {
                 formError(text);
             }
@@ -118,13 +128,13 @@ function editRecord() {
         data: $("#form_music").serialize() + '&type=edit',
         success: function(text) {
             if (text === "success"){
-                formSuccess();
+                formSuccess("Item successfully modified.");
             } else {
                 formError(text);
             }
         },
 		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
+			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
             console.log(xhr, resp, text);
         }
     });	
@@ -141,8 +151,7 @@ function deleteRecord(title, uid) {
 	        success: function(text){
 		        formError(text);
 	            if (text === "success"){					 
-				    $('#kcbMusicTable').DataTable().ajax.reload();
-				    submitMSG(true, "Item successfully deleted.");
+                	formSuccess("Item successfully deleted.");
 	            } else {
 	                formError(text);
 	            }
@@ -155,8 +164,8 @@ function deleteRecord(title, uid) {
 	}
 }
 
-function formSuccess() {
-    submitMSG(true, "Item successfully added.");
+function formSuccess(text) {
+    submitMSG(true, text);
 
 	$('#kcbMusicTable').DataTable().ajax.reload();
 	$("#form_music").trigger('reset'); 

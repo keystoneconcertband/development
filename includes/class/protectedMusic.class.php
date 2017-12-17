@@ -36,17 +36,44 @@
 			}
 		}
 
-		public function editMusic($title, $notes, $link, $last_played, $nbr_plays) {
-			
-		}
-		
 		public function addMusic($title, $notes, $link, $last_played) {
-			// TODO: need to handle reactivating deleted titles
-			if($this->getDb()->checkDupMusic($title) > 0) {
-				return "This title already exists.";
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {			
+				// TODO: need to handle reactivating deleted titles
+				if($this->getDb()->checkDupMusic($title) > 0) {
+					return "This title already exists.";
+				}
+				else {
+					$retValue = $this->getDb()->addMusic($title, $notes, $link, $last_played, $_SESSION['email']);
+					if($retValue === 1) {
+						return "success";
+					}
+					else {
+						if($retValue == "db_error") {
+							return "Database error. Please try again later.";
+						}
+						elseif($retValue == "add_music_error") {
+							return "Error adding music. Please try again later";
+						}
+						elseif($retValue == "insert_music_error") {
+							return "Error inserting values into the music table. Please try again later.";
+						}
+						elseif($retValue == "insert_music_last_played_error") {
+							return "Error inserting values into the music last played table. Please try again later.";
+						}
+						else {
+							return "Unknown error.";
+						}
+					}
+				}
 			}
 			else {
-				$retValue = $this->getDb()->addMusic($title, $notes, $link, $last_played, $_SESSION['email']);
+				return "Access Denied";
+			}
+		}
+
+		public function editMusic($uid, $title, $notes, $link, $last_played) {
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {			
+				$retValue = $this->getDb()->editMusic($uid, $title, $notes, $link, $last_played, $_SESSION['email']);
 				if($retValue === 1) {
 					return "success";
 				}
@@ -67,6 +94,9 @@
 						return "Unknown error.";
 					}
 				}
+			}
+			else {
+				return "Access Denied";
 			}
 		}
 
