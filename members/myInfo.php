@@ -83,28 +83,28 @@ $member = $mbr->getMember($_SESSION['email']);
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="txtAddress2" class="control-label">Address 2</label>
-						        <input type="text" class="form-control" name="txtAddress2" id="txtAddress2" placeholder="Address" value="<?= $member['address2']?>" maxlength="255">
+						        <input type="text" class="form-control" name="txtAddress2" id="txtAddress2" placeholder="Address 2" value="<?= $member['address2']?>" maxlength="255">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="txtCity" class="control-label">City</label>
-						        <input type="text" class="form-control" name="txtCity" id="txtCity" placeholder="Address" value="<?= $member['city']?>" required="true" maxlength="100">
+						        <input type="text" class="form-control" name="txtCity" id="txtCity" placeholder="City" value="<?= $member['city']?>" required="true" maxlength="100">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-2">
 						        <label for="txtState" class="control-label">State</label>
-						        <input type="text" class="form-control" name="txtState" id="txtState" placeholder="Address" value="<?= $member['state']?>" disabled="true" required="true" maxlength="2">
+						        <input type="text" class="form-control" name="txtState" id="txtState" placeholder="State" value="<?= $member['state']?>" disabled="true" required="true" maxlength="2">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group">
 						      <div class="col-sm-4">
 						        <label for="txtZip" class="control-label">Zip Code</label>
-						        <input type="tel" class="form-control" name="txtZip" id="txtZip" placeholder="Address" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
+						        <input type="tel" class="form-control" name="txtZip" id="txtZip" placeholder="Zip Code" value="<?= $member['zip']?>" required="true" data-minlength="5" maxlength="5">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
