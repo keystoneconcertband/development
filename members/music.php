@@ -91,7 +91,7 @@ new ProtectedMusic();
 							<div class="form-group">
 								<div class="col-sm-12">
 									<label for="title" class="control-label">Genre</label>
-									<select name="genre" id="genre">
+									<select class="form-control" name="genre" id="genre">
 							            <option value="0" selected="Selected">Select type</option>
 							        </select>
 									<div class="help-block with-errors"></div>
