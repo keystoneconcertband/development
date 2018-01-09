@@ -148,7 +148,7 @@
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
 						    <input type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
-						    <label for="bassoon"> Trumpet</label>
+						    <label for="trumpet"> Trumpet</label>
 						</div>
 						<div class="checkbox checkbox-success checkbox-inline">
 						    <input type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
