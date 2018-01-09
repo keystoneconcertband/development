@@ -18,6 +18,11 @@
 			return $this->getDb()->getMember($email);
 		}
 		
+		// Gets the current member by uid
+		public function getMemberRecord($uid) {
+			return $this->getDb()->getMemberRecord($uid);
+		}
+		
 		// Gets all the email addresses for the user
 		public function getEmailAddresses($uid) {
 			return $this->getDb()->getEmailAddresses($uid);
