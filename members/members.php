@@ -93,7 +93,7 @@ new ProtectedMember();
 							    <div class="form-group">
 							      <div class="col-lg-12">
 					                    <div class="checkbox checkbox-success checkbox-inline">
-					                        <input type="checkbox" id="displayFullName" value="1" name="displayFullName">
+					                        <input type="checkbox" name="displayFullName" id="displayFullName" value="1">
 					                        <label for="displayFullName"> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong>Firstname L.</strong></em></label>
 					                    </div>
 							      </div>
@@ -143,7 +143,7 @@ new ProtectedMember();
 							    <div class="form-group" id="emailContainer1">
 							      	<div class="col-sm-12">
 							        	<label for="Email" class="control-label">Email</label>
-										<input type="email" class="form-control" name="email1" id="email1" placeholder="Email Address" maxlength="100">
+										<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
 								    </div>
 							    </div>
 							</fieldset>

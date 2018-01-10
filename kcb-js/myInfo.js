@@ -55,8 +55,8 @@ function GetHtml() //Get the template and update the input field names
 	var len = $('.extraEmail').length + 1;
 	var $html = $('.extraEmailTemplate').clone();
 	$html.find('[name=lblEmail]')[0].id = "lblEmail" + len;
-	$html.find('[name=lblEmail]').text("Email " + len);
-	$html.find('[name=lblEmail]').attr('for', "inputEmail" + len);
+	$html.find('[name=lblEmail]').text("email " + len);
+	$html.find('[name=lblEmail]').attr('for', "email" + len);
 	$html.find('[name=lblEmail]').attr('name', "lblEmail" + len);
 	
 	return $html.html();    

@@ -7,6 +7,49 @@
 	if(isset($_POST['type']) && $_POST['type'] === "add") {
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "edit") {
+		$validRequest = true;
+
+		// Validate form
+		if(!isset($_POST['firstName'])) {
+			$response = 'First name is required.';
+			$validRequest = false;
+		}
+		else if(!isset($_POST['lastName'])) {
+			$response = 'Last name is required.';
+			$validRequest = false;
+		}
+		else if(!isset($_POST['address1'])) {
+			$response = 'Address is required.';
+			$validRequest = false;
+		}
+		else if(!isset($_POST['city'])) {
+			$response = 'City is required.';
+			$validRequest = false;
+		}
+		else if(!isset($_POST['zip'])) {
+			$response = 'Zip Code is required.';
+			$validRequest = false;
+		}
+		else {
+			$emailExists = false;
+			// array_filter will filter out any "blank" entries.
+			foreach (array_filter($_POST['email']) as $vlu) {
+				if($vlu !== '') {
+					$emailExists = true;
+				}
+			}
+			
+			if(!$emailExists) {
+				$response = "At least one email address is required.";
+				$validRequest = false;
+			}			
+		}
+		
+		if($validRequest) {
+			$response = $mbr->updateMember($_POST);
+		}
+		
+		echo json_encode($response);	
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "getMemberRecord") {
 		if(!isset($_POST['uid'])) {

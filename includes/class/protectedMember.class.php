@@ -48,8 +48,8 @@
 				
 				if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
 					if($this->getDb()->updateAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $mbrArray['txtEmail'])) {
-							if($this->updateInstruments($uid, $mbrArray['chkInstrument'])) {
+						if($this->updateEmails($uid, $mbrArray['email'])) {
+							if($this->updateInstruments($uid, $mbrArray['instrument'])) {
 								$this->getDb()->executeTransaction();							
 							}
 							else {

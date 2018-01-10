@@ -140,7 +140,7 @@ function showEditRecord(uid) {
             populateEmail(data);
             populateInstrument(data);
 
-			if(data.displayFullName) {
+			if(data.displayFullName === 1) {
 				$('#displayFullName').prop('checked', true);
 			}
             if(data.carrier) {
@@ -207,7 +207,7 @@ function deleteRecord(title, uid) {
 function formSuccess(text) {
     submitMSG(true, text);
 
-	$('#kcbMusicTable').DataTable().ajax.reload();
+	$('#kcbMemberTable').DataTable().ajax.reload();
 	$("#form_member").trigger('reset'); 
     $('#modal_edit_delete').modal('hide');
 }
@@ -239,10 +239,10 @@ function populateEmail(data) {
     for(var i = 0; i<arr.length; i++){
 	    var emailCount = i+1;
 	    if(i === 0) {
-		    $("#email1").val(arr[i]);
+		    $(".email1").val(arr[i]);
 	    }
 	    else {
-		    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email'+emailCount+'" id="email'+emailCount+'" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"></div></div>');
+		    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"></div></div>');
 	    }
     }
 }

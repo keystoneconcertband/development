@@ -9,30 +9,30 @@
 		$validRequest = true;
 
 		// Validate form
-		if(!isset($_POST['txtFirstName'])) {
+		if(!isset($_POST['firstName'])) {
 			$response = 'First name is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['txtLastName'])) {
+		else if(!isset($_POST['lastName'])) {
 			$response = 'Last name is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['txtAddress'])) {
+		else if(!isset($_POST['address1'])) {
 			$response = 'Address is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['txtCity'])) {
+		else if(!isset($_POST['city'])) {
 			$response = 'City is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['txtZip'])) {
+		else if(!isset($_POST['zip'])) {
 			$response = 'Zip Code is required.';
 			$validRequest = false;
 		}
 		else {
 			$emailExists = false;
 			// array_filter will filter out any "blank" entries.
-			foreach (array_filter($_POST['txtEmail']) as $vlu) {
+			foreach (array_filter($_POST['email']) as $vlu) {
 				if($vlu !== '') {
 					$emailExists = true;
 				}
