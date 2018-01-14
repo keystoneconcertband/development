@@ -4,9 +4,7 @@
 	header('Content-Type: application/json');
 
 	$mbr = new ProtectedMember();
-	if(isset($_POST['type']) && $_POST['type'] === "add") {
-	}
-	elseif(isset($_POST['type']) && $_POST['type'] === "edit") {
+	if(isset($_POST['type']) && ($_POST['type'] === "add" || $_POST['type'] === "edit")) {
 		$validRequest = true;
 
 		// Validate form
@@ -45,8 +43,11 @@
 			}			
 		}
 		
-		if($validRequest) {
-			$response = $mbr->updateMember($_POST);
+		if($validRequest && $_POST['type'] === "edit") {
+			$response = $mbr->updateMember($_POST['uid'], $_POST);
+		}
+		elseif($validRequest && $_POST['type'] === "add")  {
+			$response = $mbr->addMember($_POST);
 		}
 		
 		echo json_encode($response);	
@@ -60,6 +61,12 @@
 		}
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "delete") {
+		if(!isset($_POST['uid'])) {
+			echo json_encode('Unique Identifier is missing.');
+		}
+		else {			
+			echo json_encode($mbr->removeMember($_POST['uid']));
+		}
 	}
 	else {
 		$mbmrs = $mbr->getActiveMembers();

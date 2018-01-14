@@ -48,7 +48,7 @@
 			include_once('../includes/class/protectedMember.class.php');
 			$myInfo = new ProtectedMember();
 			
-			$response = $myInfo->updateMember($_POST);
+			$response = $myInfo->updateMember($_SESSION["uid"], $_POST);
 		}
 	}
 	else {

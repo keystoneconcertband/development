@@ -13,6 +13,21 @@
 			$this->setDB(new MemberDB());
 		}
 		
+		public function _TBD_in_multiarray($elem, $array)
+		{
+		    while (current($array) !== false) {
+		        if (current($array) == $elem) {
+		            return true;
+		        } elseif (is_array(current($array))) {
+		            if ($this->in_multiarray($elem, current($array))) {
+		                return true;
+		            }
+		        }
+		        next($array);
+		    }
+		    return false;
+		}
+
 		// Gets the current member by email
 		public function getMember($email) {
 			return $this->getDb()->getMember($email);
@@ -38,9 +53,53 @@
 			return $this->getDb()->getActiveMembers();
 		}
 		
-		public function updateMember($mbrArray) {
+		public function addMember($mbrArray) {
 			$retValue = "success";
-			$uid = $_SESSION["uid"];
+			$updateUser = $_SESSION["email"];
+			
+			try {
+				$this->getDb()->beginTransaction();
+				
+				$uid = $this->getDb()->insertMember($mbrArray, $updateUser);
+				
+				if($uid !== 0) {
+					if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
+						if($this->updateEmails($uid, $mbrArray['email'])) {
+							if($this->updateInstruments($uid, $mbrArray['instrument'])) {
+								$this->getDb()->executeTransaction();							
+							}
+							else {
+								$this->getDb()->rollBackTransaction();
+								$retValue = "add_instrument_error";								
+							}
+						}
+						else {
+							$this->getDb()->rollBackTransaction();
+							$retValue = "add_email_error";
+						}
+					}
+					else {
+						$this->getDb()->rollBackTransaction();
+						$retValue = "add_address_error";
+					}
+				}
+				else {
+					$this->getDb()->rollBackTransaction();
+					$retValue = "add_member_error";
+				}
+			}
+			catch(Exception $e) {
+				$this->LogError($e->getMessage());
+				$this->getDb()->rollBackTransaction();
+				$retValue = "db_error";
+			}
+			
+			return $retValue;
+		}
+		
+		// Update members
+		public function updateMember($uid, $mbrArray) {
+			$retValue = "success";
 			$updateUser = $_SESSION["email"];
 			
 			try {
@@ -54,12 +113,12 @@
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
-								$retValue = "instrument_update_error";								
+								$retValue = "update_instrument_error";								
 							}
 						}
 						else {
 							$this->getDb()->rollBackTransaction();
-							$retValue = "email_update_error";
+							$retValue = "update_email_error";
 						}
 					}
 					else {
@@ -81,6 +140,37 @@
 			return $retValue;
 		}
 		
+		public function removeMember($uid) {
+			$retValue = "success";
+			$updateUser = $_SESSION["email"];
+			
+			try {
+				$this->getDb()->beginTransaction();
+				
+				if($this->getDb()->removeMember($uid, $updateUser)) {
+					if($this->updateEmails($uid, array())) {
+						$this->getDb()->executeTransaction();							
+					}
+					else {
+						$this->getDb()->rollBackTransaction();
+						$retValue = "remove_email_error";
+					}
+				}
+				else {
+					$this->getDb()->rollBackTransaction();
+					$retValue = "remove_member_error";
+				}
+			}
+			catch(Exception $e) {
+				$this->LogError($e->getMessage());
+				$this->getDb()->rollBackTransaction();
+				$retValue = "db_error";
+			}
+			
+			return $retValue;
+		}
+		
+		/* PRIVATE FUNCTIONS */
     	private function updateEmails($uid, $emailArray) {
 			$result = true;					
 			$emails = $this->getDb()->getEmailAddresses($uid);
@@ -140,7 +230,7 @@
 			return $result;
 		}
 		
-		public function updateInstruments($uid, $instrumentArray) {
+		private function updateInstruments($uid, $instrumentArray) {
 			$result = true;					
 			$instruments = $this->getDb()->getMemberInstruments($uid);
 					
@@ -193,22 +283,6 @@
 			return $result;
 		}
 		
-		public function in_multiarray($elem, $array)
-		{
-		    while (current($array) !== false) {
-		        if (current($array) == $elem) {
-		            return true;
-		        } elseif (is_array(current($array))) {
-		            if ($this->in_multiarray($elem, current($array))) {
-		                return true;
-		            }
-		        }
-		        next($array);
-		    }
-		    return false;
-		}
-
-		/* PRIVATE FUNCTIONS */
 		private function getDb() {
 			return $this->db;
 		}

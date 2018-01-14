@@ -235,16 +235,25 @@ function populateForm(frm, data) {
 }
 
 function populateEmail(data) {
-	var arr = data.email.split(',');
-    for(var i = 0; i<arr.length; i++){
-	    var emailCount = i+1;
-	    if(i === 0) {
-		    $(".email1").val(arr[i]);
-	    }
-	    else {
-		    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"></div></div>');
-	    }
-    }
+	var email = data.email;
+
+	if(email !== null && email !== '') {
+		if(~email.indexOf(",")) {
+			var arr = email.split(',');
+		    for(var i = 0; i<arr.length; i++){
+			    var emailCount = i+1;
+			    if(i === 0) {
+				    $(".email1").val(arr[i]);
+			    }
+			    else {
+				    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"></div></div>');
+			    }
+		    }
+		}
+		else {
+			$(".email1").val(email);			
+		}
+	}
 }
 
 function populateInstrument(data) {

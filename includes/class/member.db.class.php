@@ -141,24 +141,52 @@
 		}
 
 		public function insertMember($mbrArray, $updateUser) {
+			$uid = 0;
+			$text = NULL;
+			$carrier = NULL;
+			
+			if($mbrArray['text'] !== '') {
+				$text = $mbrArray['text'];
+				$carrier = $mbrArray['carrier'];
+			}
+						
 			$this->getDb()->bind('firstName', $mbrArray['firstName']);
 			$this->getDb()->bind('lastName', $mbrArray['lastName']);
-			$this->getDb()->bind('displayFullName', $mbrArray['displayFullName']);
-			$this->getDb()->bind('cellPhoneNbr', $mbrArray['text']);
-			$this->getDb()->bind('carrier', $mbrArray['carrier']);
+			$this->getDb()->bind('text', $text);
+			$this->getDb()->bind('carrier', $carrier);
 			$this->getDb()->bind("updateUser", $updateUser);
+			$this->getDb()->bind("updateUser2", $updateUser);
 
-			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(firstName, lastName, displayFullName, text, carrier, estbd_by, estbd_dt_tm, lst_tran_dt_tm, lst_updtd_by) VALUES (:firstName, :lastName, :displayFullName, :text, :carrier, now(), :updateUser, now(), :updateUser");
-					
-			return $retVal;
+			if(array_key_exists('displayFullName', $mbrArray)) {
+				$this->getDb()->bind('displayFullName', "1");			
+			}
+			else {
+				$this->getDb()->bind('displayFullName', "0");			
+			}
+
+			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(firstName, lastName, displayFullName, text, carrier, estbd_by, estbd_dt_tm, lst_tran_dt_tm, lst_updtd_by) VALUES (:firstName, :lastName, :displayFullName, :text, :carrier, now(), :updateUser, now(), :updateUser2)");
+			
+			if($retVal) {
+				$uid = $this->getDb()->lastInsertId();
+			}
+			
+			return $uid;
 		}
 		
 		public function updateMember($uid, $mbrArray, $updateUser) {
+			$text = NULL;
+			$carrier = NULL;
+			
+			if($mbrArray['text'] !== '') {
+				$text = $mbrArray['text'];
+				$carrier = $mbrArray['carrier'];
+			}
+
 			$this->getDb()->bind('uid', $uid);
 			$this->getDb()->bind('firstName', $mbrArray['firstName']);
 			$this->getDb()->bind('lastName', $mbrArray['lastName']);
-			$this->getDb()->bind('text', $mbrArray['text']);
-			$this->getDb()->bind('carrier', $mbrArray['carrier']);
+			$this->getDb()->bind('text', $text);
+			$this->getDb()->bind('carrier', $carrier);
 			$this->getDb()->bind("updateUser", $updateUser);
 
 			if(array_key_exists('displayFullName', $mbrArray)) {
@@ -170,6 +198,30 @@
 
 			$retVal = $this->getDb()->query("UPDATE KCB_Members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, carrier = :carrier, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE UID = :uid");
 					
+			return $retVal;
+		}
+		
+		public function removeMember($uid, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind("updateUser", $updateUser);
+			
+			$retVal = $this->getDb()->query("UPDATE KCB_Members SET disabled = 1, disabled_dt_tm = now(), lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE UID = :uid");
+
+			return $retVal;
+		}
+				
+		public function insertAddress($uid, $mbrArray, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind('home_phone', $mbrArray['home_phone']);
+			$this->getDb()->bind('address1', $mbrArray['address1']);
+			$this->getDb()->bind('address2', $mbrArray['address2']);
+			$this->getDb()->bind('city', $mbrArray['city']);
+			$this->getDb()->bind('zip', $mbrArray['zip']);
+			$this->getDb()->bind("updateUser", $updateUser);
+			$this->getDb()->bind("updateUser1", $updateUser);
+
+			$retVal = $this->getDb()->query("INSERT INTO KCB_Address (member_uid, address1, address2, city, state, zip, home_phone, estbd_by, estbd_dt_tm, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :address1, :address2,:city, 'PA', :zip, :home_phone, :updateUser, now(), now(), :updateUser1)");
+
 			return $retVal;
 		}
 		
@@ -194,6 +246,13 @@
 			$this->getDb()->bind("updateUser2", $updateUser);
 			$retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :email, now(), :updateUser1, now(), :updateUser2)");
 		
+			return $retVal;
+		}
+		
+		public function delAllEmails($uid) {
+			$this->getDb()->bind("uid", $uid);
+			$retVal = $this->getDb()->query("UPDATE KCB_email_address SET actv_flg = 0 WHERE member_uid=:uid");
+			
 			return $retVal;
 		}
 		
