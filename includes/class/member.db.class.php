@@ -249,13 +249,6 @@
 			return $retVal;
 		}
 		
-		public function delAllEmails($uid) {
-			$this->getDb()->bind("uid", $uid);
-			$retVal = $this->getDb()->query("UPDATE KCB_email_address SET actv_flg = 0 WHERE member_uid=:uid");
-			
-			return $retVal;
-		}
-		
 		public function delEmail($email, $uid) {
 			$this->getDb()->bind("email", $email);
 			$this->getDb()->bind("uid", $uid);
