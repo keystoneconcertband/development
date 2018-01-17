@@ -56,7 +56,17 @@
 		public function addMember($mbrArray) {
 			$retValue = "success";
 			$updateUser = $_SESSION["email"];
+			$instrument = "";
+			$email = "";
 			
+			if(isset($_POST['instrument'])) {
+				$instrument = $mbrArray['instrument'];
+			}
+			
+			if(isset($_POST['email'])) {
+				$email = $mbrArray['email'];
+			}
+
 			try {
 				$this->getDb()->beginTransaction();
 				
@@ -64,8 +74,8 @@
 				
 				if($uid !== 0) {
 					if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $mbrArray['email'])) {
-							if($this->updateInstruments($uid, $mbrArray['instrument'])) {
+						if($this->updateEmails($uid, $email)) {
+							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();							
 							}
 							else {
@@ -101,14 +111,24 @@
 		public function updateMember($uid, $mbrArray) {
 			$retValue = "success";
 			$updateUser = $_SESSION["email"];
+			$instrument = "";
+			$email = "";
+			
+			if(isset($_POST['instrument'])) {
+				$instrument = $mbrArray['instrument'];
+			}
+			
+			if(isset($_POST['email'])) {
+				$email = $mbrArray['email'];
+			}
 			
 			try {
 				$this->getDb()->beginTransaction();
-				
+								
 				if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
 					if($this->getDb()->updateAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $mbrArray['email'])) {
-							if($this->updateInstruments($uid, $mbrArray['instrument'])) {
+						if($this->updateEmails($uid, $email)) {
+							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();							
 							}
 							else {
@@ -236,14 +256,14 @@
 					
 			// Convert array of arrays to single array this can handle	
 			$currInstruments = array();
-			foreach($instruments as $instr) {
+			foreach((array)$instruments as $instr) {
 				if($instr['instrument'] !== '') {
 					$currInstruments[] = $instr['instrument'];
 				}
 			}
 			
 			$newInstruments = array();
-			foreach($instrumentArray as $instr) {
+			foreach((array)$instrumentArray as $instr) {
 				if($instr !== '') {				
 					$newInstruments[] = $instr;
 				}

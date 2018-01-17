@@ -43,7 +43,7 @@ new ProtectedMember();
 						</div>
 					</div>
 					<div class="col-sm-10">
-						<div id="msgSubmit" class="h4 hidden"></div>
+						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
 				</div>
 				<? } ?>
@@ -225,10 +225,10 @@ new ProtectedMember();
 							</fieldset>
 						</div>
 						<div class="modal-footer">
+							<div id="msgSubmit" class="h4 hidden"></div>
 							<input type="hidden" id="uid" name="uid" value="" />
 							<button type="submit" class="btn btn-primary">Save changes</button>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<div id="msgSubmit" class="h4 hidden"></div>
 						</div>
 					</div>
 				</div>

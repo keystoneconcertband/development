@@ -44,7 +44,12 @@
 		}
 		
 		if($validRequest && $_POST['type'] === "edit") {
-			$response = $mbr->updateMember($_POST['uid'], $_POST);
+			if(!isset($_POST['uid'])) {
+				echo json_encode('Unique Identifier is missing.');
+			}
+			else {
+				$response = $mbr->updateMember($_POST['uid'], $_POST);			
+			}
 		}
 		elseif($validRequest && $_POST['type'] === "add")  {
 			$response = $mbr->addMember($_POST);

@@ -95,15 +95,20 @@ $("#form_member").validator().on("submit", function (event) {
 $('#modal_edit_delete').on('hidden.bs.modal', function () {
     // Clear form each time
    	$("#form_member").trigger('reset');
+    $("#uid").val("");
    	$("div").remove('.emailContainers');
 });
 
 function submitForm() {
 	// Determine whether we are adding or editing record
-	if($("#uid").val() !== "") {
-		editRecord($("#uid").val());
+	var uid = $("#uid").val();
+		
+	if(uid !== "") {
+		console.log("edit");
+		editRecord(uid);
 	}
 	else {
+		console.log("add");
 		addRecord();
 	}
 }
@@ -225,7 +230,7 @@ function submitMSG(valid, msg) {
     } else {
         var msgClasses = "h4 text-danger";
     }
-    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
+    $("#msgMainHeader").removeClass().addClass(msgClasses).text(msg);
 }
 
 function populateForm(frm, data) {
@@ -257,8 +262,10 @@ function populateEmail(data) {
 }
 
 function populateInstrument(data) {
-	var arr = data.instrument.split(',');
-    for(var i = 0; i<arr.length; i++){
-		$('#' + arr[i]).prop('checked', true);
-    }
+	if(data.instrument) {
+		var arr = data.instrument.split(',');
+	    for(var i = 0; i<arr.length; i++){
+			$('#' + arr[i]).prop('checked', true);
+	    }		
+	}
 }
