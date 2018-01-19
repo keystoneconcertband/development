@@ -79,6 +79,17 @@ $(document).ready(function() {
             { "data": "office" }
         ]
     });
+
+	$('#addRow').click(function () {
+		var lastId = $('.emailContainers:last').attr('id');
+		lastId = lastId.replace('emailContainer','');
+		lastIdInt = parseInt(lastId);
+		emailCount = lastIdInt + 1;		
+		
+		$('.emailContainers:last').after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""></div></div>');
+		$('.emailContainers').next("div").slideDown("slow");
+	});
+
 });
 
 $("#form_member").validator().on("submit", function (event) {

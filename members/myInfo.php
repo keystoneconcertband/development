@@ -107,7 +107,7 @@ new ProtectedMember();
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-						    <div class="form-group" id="emailContainer1">
+						    <div class="form-group emailContainers" id="emailContainer1">
 						      	<div class="col-sm-12">
 						        	<label for="Email" class="control-label">Email</label>
 									<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">

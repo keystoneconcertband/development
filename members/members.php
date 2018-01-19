@@ -140,11 +140,18 @@ new ProtectedMember();
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-							    <div class="form-group" id="emailContainer1">
+							    <div class="form-group emailContainers" id="emailContainer1">
 							      	<div class="col-sm-12">
 							        	<label for="Email" class="control-label">Email</label>
 										<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
 								    </div>
+							    </div>
+							    <div class="form-group">
+									<div class="col-sm-12">
+										<button type="button" class="btn btn-default btn-xs" id="addRow">
+										  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Email
+										</button>
+									</div>
 							    </div>
 							</fieldset>
 							<div class="form-group">
