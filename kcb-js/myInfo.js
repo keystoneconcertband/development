@@ -17,10 +17,7 @@ $(document).ready(function () {
             }
             else {
 	            $("#carrier").val("0").change();            
-            }            
-            
-            $("#uid").val(uid);
-			$('#modal_edit_delete').modal('show');
+            }
         },
 		error: function(xhr, resp, text) {
 			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
@@ -29,9 +26,13 @@ $(document).ready(function () {
     });	
 
 	$('#addRow').click(function () {
-		$('<div/>', {
-			'class' : 'col-lg-12 extraEmail', html: GetHtml()
-		}).hide().appendTo('#emailContainer').slideDown('slow'); //Get the html from template and hide and slideDown for transtion.
+		var lastId = $('.emailContainers:last').attr('id');
+		lastId = lastId.replace('emailContainer','');
+		lastIdInt = parseInt(lastId);
+		emailCount = lastIdInt + 1;		
+		
+		$('.emailContainers:last').after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""></div></div>');
+		$('.emailContainers').next("div").slideDown("slow");
 	});
 });
 
