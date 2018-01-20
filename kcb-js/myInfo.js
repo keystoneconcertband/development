@@ -101,7 +101,14 @@ function submitMSG(valid, msg){
 }
 
 function deleteEmail(emailContainer) {
-	$("#" + emailContainer).remove();
+	var numItems = $('.emailContainers').length
+	
+	if(numItems < 2) {
+		formError("You must keep at least one email address.");
+	}
+	else {
+		$("#" + emailContainer).remove();	
+	}
 }
 
 function populateForm(frm, data) {

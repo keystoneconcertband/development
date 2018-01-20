@@ -195,6 +195,7 @@ function submitMSG(valid, msg) {
     } else {
         var msgClasses = "h4 text-danger";
     }
+    $("#msgMainHeader").removeClass().addClass(msgClasses).text(msg);
     $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
 }
 

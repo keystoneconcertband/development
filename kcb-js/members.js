@@ -85,8 +85,8 @@ $(document).ready(function() {
 		lastId = lastId.replace('emailContainer','');
 		lastIdInt = parseInt(lastId);
 		emailCount = lastIdInt + 1;		
-		
-		$('.emailContainers:last').after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""></div></div>');
+				
+	    $('#emailContainer' + lastIdInt).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""><span class="input-group-addon"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
 		$('.emailContainers').next("div").slideDown("slow");
 	});
 
@@ -94,8 +94,7 @@ $(document).ready(function() {
 
 $("#form_member").validator().on("submit", function (event) {
     if (event.isDefaultPrevented()) {
-        formError();
-        submitMSG(false, "Check for errors in the form.");
+        formError("Check for errors in the form.");
     } else {
         event.preventDefault();
         submitForm();
@@ -109,6 +108,17 @@ $('#modal_edit_delete').on('hidden.bs.modal', function () {
     $("#uid").val("");
    	$("div").remove('.emailContainers');
 });
+
+function deleteEmail(emailContainer) {
+	var numItems = $('.emailContainers').length
+	
+	if(numItems < 2) {
+		formError("You must keep at least one email address.");
+	}
+	else {
+		$("#" + emailContainer).remove();	
+	}
+}
 
 function submitForm() {
 	// Determine whether we are adding or editing record
@@ -242,6 +252,7 @@ function submitMSG(valid, msg) {
         var msgClasses = "h4 text-danger";
     }
     $("#msgMainHeader").removeClass().addClass(msgClasses).text(msg);
+    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
 }
 
 function populateForm(frm, data) {
@@ -262,7 +273,7 @@ function populateEmail(data) {
 				    $(".email1").val(arr[i]);
 			    }
 			    else {
-				    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"></div></div>');
+					$('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"><span class="input-group-addon"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');				    
 			    }
 		    }
 		}
