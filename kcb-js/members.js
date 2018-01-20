@@ -1,3 +1,5 @@
+// Need to fix issue where email is missing if deleted on the previous run
+
 $(document).ready(function() {
     $('#kcbMemberTable').DataTable( {
 	    responsive: true,
@@ -86,7 +88,7 @@ $(document).ready(function() {
 		lastIdInt = parseInt(lastId);
 		emailCount = lastIdInt + 1;		
 				
-	    $('#emailContainer' + lastIdInt).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""><span class="input-group-addon"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
+	    $('#emailContainer' + lastIdInt).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""><span class="input-group-addon"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
 		$('.emailContainers').next("div").slideDown("slow");
 	});
 
