@@ -127,7 +127,7 @@
 								
 				if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
 					if($this->getDb()->updateAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email)) {
+						if($this->updateEmails($uid, $email, true)) {
 							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();							
 							}
@@ -168,7 +168,7 @@
 				$this->getDb()->beginTransaction();
 				
 				if($this->getDb()->removeMember($uid, $updateUser)) {
-					if($this->updateEmails($uid, array())) {
+					if($this->updateEmails($uid, array(), false)) {
 						$this->getDb()->executeTransaction();							
 					}
 					else {
@@ -191,7 +191,7 @@
 		}
 		
 		/* PRIVATE FUNCTIONS */
-    	private function updateEmails($uid, $emailArray) {
+    	private function updateEmails($uid, $emailArray, $delEmail) {
 			$result = true;					
 			$emails = $this->getDb()->getEmailAddresses($uid);
 					
@@ -236,8 +236,14 @@
 						$headers = 'From: ' . $value . "\r\n" .
 							'X-Mailer: PHP/' . phpversion();
 						try {
-							//mail('majordomo@keystoneconcertband.com', '', 'unsubscribe members@keystoneconcertband.com ' . $value, $headers);		
-							$result = $this->getDb()->delEmail($value, $uid);	
+							//mail('majordomo@keystoneconcertband.com', '', 'unsubscribe members@keystoneconcertband.com ' . $value, $headers);	
+							
+							if($delEmail) {
+								$result = $this->getDb()->delEmail($value, $uid);
+							}
+							else {
+								$result = $this->getDb()->deactivateEmail($value, $uid, $_SESSION["email"]);
+							}
 						}
 						catch(Exception $e) {
 							$this->LogError($e->getMessage());

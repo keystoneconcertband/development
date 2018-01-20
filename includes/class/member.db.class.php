@@ -249,10 +249,22 @@
 			return $retVal;
 		}
 		
+		// Delete emails for active users, that way if they add it back we don't have to re-activate the email
 		public function delEmail($email, $uid) {
 			$this->getDb()->bind("email", $email);
 			$this->getDb()->bind("uid", $uid);
-			$retVal = $this->getDb()->query("UPDATE KCB_email_address SET actv_flg = 0 WHERE member_uid=:uid AND email_address=:email");
+			$retVal = $this->getDb()->query("DELETE FROM KCB_email_address WHERE member_uid=:uid AND email_address=:email");
+			
+			return $retVal;
+		}
+		
+		// If the user is being "deleted", deactivate the emails from the system, but leave them in case they come back we 
+		// have a copy of their email addresses and don't need to re-enter them
+		public function deactivateEmail($email, $uid, $updateUser) {
+			$this->getDb()->bind("email", $email);
+			$this->getDb()->bind("uid", $uid);
+			$this->getDb()->bind("updateUser", $updateUser);
+			$retVal = $this->getDb()->query("UPDATE KCB_email_address SET actv_flg = 0, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE member_uid=:uid AND email_address=:email");
 			
 			return $retVal;
 		}
