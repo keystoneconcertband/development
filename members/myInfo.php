@@ -75,7 +75,7 @@ new ProtectedMember();
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="txtAddress" class="control-label">Address</label>
-						        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" value="<?= $member['address1']?>" required="true" maxlength="255" data-error="Address is required.">
+						        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" required="true" maxlength="255" data-error="Address is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
@@ -207,7 +207,6 @@ new ProtectedMember();
 						<div class="form-group">
 						  <div class="col-lg-12">
 						    <button type="submit" class="btn btn-primary">Submit</button>
-						    <button type="reset" class="btn btn-default">Cancel</button>
 							<div id="msgSubmit" class="h4 hidden"></div>
 						  </div>
 						</div>
