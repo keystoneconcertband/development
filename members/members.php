@@ -133,7 +133,7 @@ new ProtectedMember();
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" id="zipContainer">
 							      <div class="col-sm-4">
 							        <label for="Zip" class="control-label">Zip Code</label>
 							        <input type="tel" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="" required="true" data-minlength="5" maxlength="5">
