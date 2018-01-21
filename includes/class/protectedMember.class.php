@@ -13,21 +13,6 @@
 			$this->setDB(new MemberDB());
 		}
 		
-		public function _TBD_in_multiarray($elem, $array)
-		{
-		    while (current($array) !== false) {
-		        if (current($array) == $elem) {
-		            return true;
-		        } elseif (is_array(current($array))) {
-		            if ($this->in_multiarray($elem, current($array))) {
-		                return true;
-		            }
-		        }
-		        next($array);
-		    }
-		    return false;
-		}
-
 		// Gets the current member by email
 		public function getMember($email) {
 			return $this->getDb()->getMember($email);
