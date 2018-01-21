@@ -74,7 +74,7 @@
 				
 				if($uid !== 0) {
 					if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email)) {
+						if($this->updateEmails($uid, $email, true)) {
 							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();							
 							}
