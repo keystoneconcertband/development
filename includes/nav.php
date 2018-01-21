@@ -32,8 +32,8 @@
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingUsers.php") { ?>class="active"<?}?>><a href="/members/pendingUsers.php">Pending Users</a></li>
 						<li role="separator" class="divider"></li>
 						<? } ?>
+						<li><a href="logoff.php">Logoff</a></li>
 					</ul>
-					<li><?=$_SERVER['PHP_SELF']?></li>
 		      <? }
 			     else { ?>
 				 	<li <? if (basename($_SERVER['PHP_SELF']) == "members.php") { ?>class="active"<? } ?>><a href="/members.php">Members</a></li>
