@@ -20,19 +20,20 @@
 		      <li <? if (basename($_SERVER['PHP_SELF']) == "cd.php") { ?>class="active"<? } ?>><a href="/cd.php">CD</a></li>
 		      <li <? if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>class="active"<? } ?>><a href="/conductors.php">Conductors</a></li>
 		      <? if(isset($_SESSION["email"])) { ?>
-					<li class="dropdown <? if ($_SERVER['PHP_SELF'] == "/members/index.php") { ?>active<?}?>">
+					<li class="dropdown <? if ($_SERVER['PHP_SELF'] == "/members/index.php") { ?>active"<?}?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Members <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/members/index.php">Member Home</a></li>
-						<li><a href="/members/myInfo.php">My Info</a></li>
-						<li><a href="/members/members.php">Members</a></li>
-						<li><a href="/members/music.php">Music</a></li>
-						<? if (isset($_SESSION["admin_level"])) { ?>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { ?>class="active"<?}?>><a href="/members/myInfo.php">My Info</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/members.php") { ?>class="active"<?}?>><a href="/members/members.php">Members</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/music.php") { ?>class="active"<?}?>><a href="/members/music.php">Music</a></li>
+						<? if (isset($_SESSION["office"])) { ?>
 						<li role="separator" class="divider"></li>
-						<li><a href="#">Add new users</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingUsers.php") { ?>class="active"<?}?>><a href="/members/pendingUsers.php">Pending Users</a></li>
+						<li role="separator" class="divider"></li>
 						<? } ?>
-						<li><a href="logoff.php">Logoff</a></li>
 					</ul>
+					<li><?=$_SERVER['PHP_SELF']?></li>
 		      <? }
 			     else { ?>
 				 	<li <? if (basename($_SERVER['PHP_SELF']) == "members.php") { ?>class="active"<? } ?>><a href="/members.php">Members</a></li>
