@@ -39,6 +39,10 @@
 		}
 		
 		public function addMember($mbrArray) {
+			if(!isset($_SESSION['email'])) {
+				return "access denied.";
+			}
+			
 			$retValue = "success";
 			$updateUser = $_SESSION["email"];
 			$instrument = "";
@@ -94,6 +98,10 @@
 		
 		// Update members
 		public function updateMember($uid, $mbrArray) {
+			if(!isset($_SESSION['office'])) {
+				return "access denied.";
+			}
+
 			$retValue = "success";
 			$updateUser = $_SESSION["email"];
 			$instrument = "";
@@ -146,6 +154,10 @@
 		}
 		
 		public function removeMember($uid) {
+			if(!isset($_SESSION['office'])) {
+				return "access denied.";
+			}
+
 			$retValue = "success";
 			$updateUser = $_SESSION["email"];
 			

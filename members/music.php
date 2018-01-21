@@ -36,7 +36,7 @@ new ProtectedMusic();
 				<div class="page-header">
 					<h2>Music</h2>
 				</div>
-				<? if(isset($_SESSION['office']) && $_SESSION['office'] !== '') { ?>
+				<? if(isset($_SESSION['office'])) { ?>
 				<div class="row form-group">
 					<div class="col-sm-2">
 						<div>
@@ -132,6 +132,9 @@ new ProtectedMusic();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
+	<script type="text/javascript">
+		var office = "<?=$_SESSION['office']?>";
+	</script>
 	<script type="text/javascript" src="/dataTables-1.10.15/datatables.min.js"></script>
 	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="/moment-2.19.2/moment.min.js"></script>

@@ -1,7 +1,5 @@
-// Need to fix issue where email is missing if deleted on the previous run
-
 $(document).ready(function() {
-    $('#kcbMemberTable').DataTable( {
+    var table = $('#kcbMemberTable').DataTable( {
 	    responsive: true,
 		stateSave: true,
 		"order": [[0, "asc" ]],
@@ -11,8 +9,8 @@ $(document).ready(function() {
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				if(data.uid) {
-					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+				if(office !== "") {
+					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\', '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
 					return "";
@@ -82,6 +80,10 @@ $(document).ready(function() {
         ]
     });
 
+	// Hide first column if user doesn't have access
+    var column = table.column(0);
+    column.visible(office !== "");
+
 	$('#addRow').click(function () {
 		var lastId = $('.emailContainers:last').attr('id');
 		lastId = lastId.replace('emailContainer','');
@@ -91,7 +93,6 @@ $(document).ready(function() {
 	    $('#emailContainer' + lastIdInt).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""><span class="input-group-addon"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
 		$('.emailContainers').next("div").slideDown("slow");
 	});
-
 });
 
 $("#form_member").validator().on("submit", function (event) {

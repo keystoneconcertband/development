@@ -7,7 +7,7 @@ $(document).ready(function() {
 		showClose: true
 	});
 	$("#kcbMusicTable").validator();
-    $('#kcbMusicTable').DataTable( {
+    var table = $('#kcbMusicTable').DataTable( {
 	    responsive: true,
 		stateSave: true,
 		"order": [[0, "asc" ]],
@@ -17,7 +17,7 @@ $(document).ready(function() {
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				if(data.uid) {
+				if(office !== "") {
 					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
@@ -51,6 +51,10 @@ $(document).ready(function() {
             }
         ]
     });
+
+	// Hide first column if user doesn't have access
+    var column = table.column(0);
+    column.visible(office !== "");
 });
 
 $("#form_music").validator().on("submit", function (event) {
