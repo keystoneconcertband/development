@@ -10,7 +10,7 @@ $(document).ready(function() {
     var table = $('#kcbMusicTable').DataTable( {
 	    responsive: true,
 		stateSave: true,
-		"order": [[0, "asc" ]],
+		"order": [1, "asc" ],
 	    "ajax": {
 		    "url":"musicServer.php",
 			"dataSrc": ""

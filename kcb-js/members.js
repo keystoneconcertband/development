@@ -1,8 +1,7 @@
 $(document).ready(function() {
     var table = $('#kcbMemberTable').DataTable( {
 	    responsive: true,
-		stateSave: true,
-		"order": [[0, "asc" ]],
+		"order": [1, "asc" ],
 	    "ajax": {
 		    "url":"membersServer.php",
 			"dataSrc": ""
