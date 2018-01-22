@@ -100,7 +100,7 @@
 				    <div class="form-group">
 				      <label for="txtPhone" class="col-lg-2 control-label">Phone Number</label>
 				      <div class="col-lg-10">
-				        <input type="text" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number">
+				        <input type="tel" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number" data-minlength="10" maxlength="10">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
