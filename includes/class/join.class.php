@@ -20,8 +20,7 @@
 			if(empty($response)) {
 				$response = $this->processEmail($joinArray);
 				
-				// If we successfully sent the email, add the user to the database
-				// as a pending user
+				// If we successfully sent the email, add the user to the database as a pending user
 				if($response === "success") {
 					try {
 						// Check if this pending user's email is already in the database, if so, skip adding the user
