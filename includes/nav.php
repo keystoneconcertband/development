@@ -29,7 +29,7 @@
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/music.php") { ?>class="active"<?}?>><a href="/members/music.php">Music</a></li>
 						<? if (isset($_SESSION["office"])) { ?>
 						<li role="separator" class="divider"></li>
-						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingUsers.php") { ?>class="active"<?}?>><a href="/members/pendingUsers.php">Pending Users</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { ?>class="active"<?}?>><a href="/members/pendingMembers.php">Pending Users</a></li>
 						<li role="separator" class="divider"></li>
 						<? } ?>
 						<li><a href="logoff.php">Logoff</a></li>

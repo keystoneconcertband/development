@@ -29,6 +29,11 @@ $("#memberLogin").click(function () {
 				$("#email").val("");
 				$("#email").focus();
 			}
+			else if(msg == "invalid_pending") {
+				alert("Sorry that email address is not valid for login.");
+				$("#email").val("");
+				$("#email").focus();
+			}
 			else if(msg == "invalid_request") {
 				alert("Email address is required for login.");
 				$("#email").focus();

@@ -163,7 +163,11 @@
 			$member = $this->getDb()->getMember($email);
 
 			// NOTE: 0 can only mean that the user is active. If false, the user doesn't exist or is disabled.
-			if($member['disabled'] === 0) {							
+			if($member['disabled'] === 0) {
+				// Don't allow pending members to login
+				if($member['accountType'] === 3) {
+					$response = "invalid_pending";
+				}
 				// Validate account auth cd isn't locked out	
 				$accountLocked = $this->getDb()->accountLockedStatus($email);
 				

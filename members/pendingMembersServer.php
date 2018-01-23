@@ -4,7 +4,12 @@
 	header('Content-Type: application/json');
 
 	$mbr = new ProtectedMember();
-	if(isset($_POST['type']) && ($_POST['type'] === "add" || $_POST['type'] === "edit")) {
+	if(isset($_POST['type']) && $_POST['type'] === "edit") {
+		if(!isset($_POST['uid'])) {
+			echo json_encode('Unique Identifier is missing.');
+			return;
+		}
+			
 		$validRequest = true;
 
 		// Validate form
@@ -28,6 +33,10 @@
 			$response = 'Zip Code is required.';
 			$validRequest = false;
 		}
+		else if((isset($_POST['text']) && !isset($_POST['carrier'])) || (isset($_POST['text']) && isset($_POST['carrier']) && $_POST['carrier'] === "0")) {
+			$response = "If Cell Number is entered, a carrier is required.";
+			$validRequest = false;
+		}
 		else {
 			$emailExists = false;
 			// array_filter will filter out any "blank" entries.
@@ -43,19 +52,12 @@
 			}			
 		}
 		
-		if($validRequest && $_POST['type'] === "edit") {
-			if(!isset($_POST['uid'])) {
-				echo json_encode('Unique Identifier is missing.');
-			}
-			else {
-				$response = $mbr->updateMember($_POST['uid'], $_POST);			
-			}
+		if($validRequest) {
+			echo json_encode($mbr->addPendingMember($_POST['uid'], $_POST));		
 		}
-		elseif($validRequest && $_POST['type'] === "add")  {
-			$response = $mbr->addMember($_POST);
+		else {
+			echo json_encode($response);
 		}
-		
-		echo json_encode($response);	
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "getMemberRecord") {
 		if(!isset($_POST['uid'])) {
@@ -65,19 +67,16 @@
 			echo json_encode($mbr->getMemberRecord($_POST['uid']));
 		}
 	}
-	elseif(isset($_POST['type']) && $_POST['type'] === "getCurrentMemberRecord") {
-		echo json_encode($mbr->getMemberRecord($_SESSION['uid']));
-	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "delete") {
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
 		}
 		else {			
-			echo json_encode($mbr->removeMember($_POST['uid'], false));
+			echo json_encode($mbr->removeMember($_POST['uid'], true));
 		}
 	}
 	else {
-		$mbmrs = $mbr->getActiveMembers();
+		$mbmrs = $mbr->getPendingMembers();
 		echo json_encode($mbmrs);	
 	}
 ?>

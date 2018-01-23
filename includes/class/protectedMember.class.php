@@ -6,10 +6,12 @@
  	 	
 	class ProtectedMember {
 		private $db;
+		private $kcb;
 		
 		/* PUBLIC FUNCTIONS */
 		public function __construct() {			
 			new Member(true);
+			$this->setKcb(new KcbBase());
 			$this->setDB(new MemberDB());
 		}
 		
@@ -36,6 +38,11 @@
 		// Gets the current active members
 		public function getActiveMembers() {
 			return $this->getDb()->getActiveMembers();
+		}
+		
+		// Gets the current active members
+		public function getPendingMembers() {
+			return $this->getDb()->getPendingMembers();
 		}
 		
 		public function addMember($mbrArray) {
@@ -88,7 +95,7 @@
 				}
 			}
 			catch(Exception $e) {
-				$this->LogError($e->getMessage());
+				$this->getKcb()->LogError($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -145,7 +152,7 @@
 				}
 			}
 			catch(Exception $e) {
-				$this->LogError($e->getMessage());
+				$this->getKcb()->LogError($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -153,7 +160,63 @@
 			return $retValue;
 		}
 		
-		public function removeMember($uid) {
+		public function addPendingMember($uid, $mbrArray) {
+			if(!isset($_SESSION['office'])) {
+				return "access denied.";
+			}
+
+			$retValue = "success";
+			$updateUser = $_SESSION["email"];
+			$instrument = "";
+			$email = "";
+			
+			if(isset($_POST['instrument'])) {
+				$instrument = $mbrArray['instrument'];
+			}
+			
+			if(isset($_POST['email'])) {
+				$email = $mbrArray['email'];
+			}
+			
+			try {
+				$this->getDb()->beginTransaction();
+								
+				if($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
+					if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
+						if($this->updateEmails($uid, $email, true)) {
+							if($this->updateInstruments($uid, $instrument)) {
+								$this->getDb()->executeTransaction();							
+							}
+							else {
+								$this->getDb()->rollBackTransaction();
+								$retValue = "update_instrument_error";								
+							}
+						}
+						else {
+							$this->getDb()->rollBackTransaction();
+							$retValue = "update_email_error";
+						}
+					}
+					else {
+						$this->getDb()->rollBackTransaction();
+						$retValue = "update_address_error";
+					}
+				}
+				else {
+					$this->getDb()->rollBackTransaction();
+					$retValue = "update_member_error";
+				}
+			}
+			catch(Exception $e) {
+				$this->getKcb()->LogError($e->getMessage());
+				$this->getDb()->rollBackTransaction();
+				$retValue = "db_error";
+			}
+			
+			return $retValue;
+		}
+		
+		public function removeMember($uid, $deleteEmailAddress) {
 			if(!isset($_SESSION['office'])) {
 				return "access denied.";
 			}
@@ -165,7 +228,7 @@
 				$this->getDb()->beginTransaction();
 				
 				if($this->getDb()->removeMember($uid, $updateUser)) {
-					if($this->updateEmails($uid, array(), false)) {
+					if($this->updateEmails($uid, array(), $deleteEmailAddress)) {
 						$this->getDb()->executeTransaction();							
 					}
 					else {
@@ -179,7 +242,7 @@
 				}
 			}
 			catch(Exception $e) {
-				$this->LogError($e->getMessage());
+				$this->getKcb()->LogError($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -220,7 +283,7 @@
 				    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
 					catch(Exception $e) {
-						$this->LogError($e->getMessage());
+						$this->getKcb()->LogError($e->getMessage());
 						$result = false;
 					}
 			    }
@@ -243,7 +306,7 @@
 							}
 						}
 						catch(Exception $e) {
-							$this->LogError($e->getMessage());
+							$this->getKcb()->LogError($e->getMessage());
 							$result = false;
 						}
 				    }
@@ -282,7 +345,7 @@
 				    	$result = $this->getDb()->addInstrument($value, $uid, $_SESSION["email"]);						
 					}
 					catch(Exception $e) {
-						$this->LogError($e->getMessage());
+						$this->getKcb()->LogError($e->getMessage());
 						$result = false;
 					}
 			    }
@@ -296,7 +359,7 @@
 							$result = $this->getDb()->delInstrument($value, $uid);	
 						}
 						catch(Exception $e) {
-							$this->LogError($e->getMessage());
+							$this->getKcb()->LogError($e->getMessage());
 							$result = false;
 						}
 				    }
@@ -312,6 +375,13 @@
 		
 		private function setDb($db) {
         	$this->db = $db;
+    	}
+		private function getKcb() {
+			return $this->kcb;
+		}
+		
+		private function setKcb($kcb) {
+        	$this->kcb = $kcb;
     	}
 	}
 ?>

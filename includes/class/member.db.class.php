@@ -38,12 +38,17 @@
 
 		public function getMemberRecord($uid) {
 			$this->getDb()->bind("uid", $uid);
-			return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, m.displayFullName, m.doNotDisplay, GROUP_CONCAT(DISTINCT li.instrument) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON a.member_uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.UID = :uid");
+			return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, m.displayFullName, m.doNotDisplay, GROUP_CONCAT(DISTINCT li.instrument) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.UID = :uid");
 		}
 
 		// Gets all active members
 		public function getActiveMembers() {
-			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON a.member_uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.disabled = 0 AND m.uid <> 1 GROUP BY m.UID ORDER BY lastName, firstName");
+			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.disabled = 0 AND m.uid <> 1 GROUP BY m.UID ORDER BY lastName, firstName");
+		}
+
+		// Gets all pending members
+		public function getPendingMembers() {
+			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.estbd_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.accountType = 3 and disabled = 0 GROUP BY m.UID ORDER BY lastName, firstName");
 		}
 
 		// Checks that the account shouldn't be locked out because more than 3 auth_code attempts were made in the last hour.
@@ -171,6 +176,21 @@
 			}
 			
 			return $uid;
+		}
+		
+		// Error crashing here
+		// Error in logging
+		public function updatePendingMember($uid, $mbrArray, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind("updateUser", $updateUser);
+			
+			$retVal = $this->getDb()->query("UPDATE KCB_Members SET accountType = 0, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE UID = :uid");
+			
+			if($retVal) {
+				$retVal = $this->updateMember($uid, $mbrArray, $updateUser);
+			}
+			
+			return $retVal;
 		}
 		
 		public function updateMember($uid, $mbrArray, $updateUser) {

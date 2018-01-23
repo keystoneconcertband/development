@@ -33,7 +33,7 @@
 			$this->getDb()->bind("phone", $joinArray["txtPhone"]);
 			$this->getDb()->bind("updateUser1", $updateUser);
 			$this->getDb()->bind("updateUser2", $updateUser);
-			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(accountType, firstName, lastName, text, doNotDisplay, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled) VALUES(3, :firstName, :lastName, :phone, 1, :updateUser1, now(), :updateUser2, now(), 1)");
+			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(accountType, firstName, lastName, text, doNotDisplay, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled) VALUES(3, :firstName, :lastName, :phone, 1, :updateUser1, now(), :updateUser2, now(), 0)");
 
 			// Return key value
 			if($retVal) {
