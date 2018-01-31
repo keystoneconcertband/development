@@ -18,7 +18,7 @@ $(document).ready(function() {
             },
 			{ data: null, render: function ( data, type, row ) {
 				if(data.name) {
-					return '<a href="'+data.url+'">'+data.name+'</a><br />'
+					return '<a href="'+data.url+'" target="_blank">'+data.name+'</a><br />'
 				}
 				else {
 					return "";

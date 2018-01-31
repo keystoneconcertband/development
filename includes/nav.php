@@ -26,6 +26,7 @@
 						<li><a href="/members/index.php">Member Home</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { ?>class="active"<?}?>><a href="/members/myInfo.php">My Info</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/members.php") { ?>class="active"<?}?>><a href="/members/members.php">Members</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/documents.php") { ?>class="active"<?}?>><a href="/members/documents.php">Documents</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/music.php") { ?>class="active"<?}?>><a href="/members/music.php">Music</a></li>
 						<? if (isset($_SESSION["office"])) { ?>
 						<li role="separator" class="divider"></li>

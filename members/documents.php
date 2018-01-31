@@ -37,11 +37,19 @@ new ProtectedMember();
 				<div class="page-header">
 					<h2>Documents</h2>
 				</div>
+				<div class="row form-group">
+					<div class="alert alert-warning">
+					<span class="glyphicon glyphicon-info-sign"></span> <strong>Please be sure to review both the
+					  <a href="documents_perm/byLaws.pdf" target="_blank">KCB By Laws</a>, and the 
+					  <a href="documents_perm/uniform.pdf" target="_blank">uniform dress code for concerts</a>.
+						</strong>
+					</div>
+				</div>
 				<? if(isset($_SESSION['office'])) { ?>
 				<div class="row form-group">
 					<div class="col-sm-2">
 						<div>
-							<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_upload">Add Document</button>
+							<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_upload">Add Documents</button>
 						</div>
 					</div>
 					<div class="col-sm-10">
@@ -69,7 +77,7 @@ new ProtectedMember();
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Add Document</h5>
+							<h4 class="modal-title">Add Documents</h5>
 						</div>
 						<div class="modal-body form-horizontal">
 							<fieldset>
