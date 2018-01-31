@@ -80,7 +80,20 @@ new Member(true);
 						<h3>Music</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-success"></i> View and post links to the music the band plays</li>
+							<li class="list-group-item"><i class="icon-ok text-success"></i> View links and history of the music the band plays</li>
+						</ul>
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="documents.php" class="kcb-a">
+					<div class="panel price panel-grey">
+						<div class="panel-heading arrow_box text-center">
+						<h3>Documents</h3>
+						</div>
+						<ul class="list-group list-group-flush text-center">
+							<li class="list-group-item"><i class="icon-ok text-muted"></i> View all the documents related to the operations of the band</li>
 						</ul>
 					</div>
 				</a>
