@@ -53,21 +53,11 @@ new ProtectedMember();
 					<div class="col-lg-12">
 						<table id="kcbDocumentTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
+								<th></th>
 								<th>File</th>
 								<th>Date Uploaded</th>
+								<th>Size</th>
 							</thead>
-						<?
-							$dir = getcwd() . '/documents';
-							$files = array_diff(scandir($dir), array('..', '.'));
-							
-							foreach($files as $file) {
-								echo "<tr>";
-								$stat = stat($dir . '/' . $file);
-								echo "<td>" . $file . "</td>";
-								echo "<td>" . @date('M d Y H:i',$stat['mtime']) . "</td>";
-								echo "</tr>";
-							}
-						?>
 						</table>						
 					</div>
 				</div>
@@ -207,6 +197,13 @@ new ProtectedMember();
 	        </td>
 	    </tr>
 	{% } %}
+	</script>
+	<script type="text/javascript">
+		var office = "<?=$_SESSION['office']?>";
+		var sort = 1;
+		if(office) {
+			sort = 2;
+		}
 	</script>
 	<script type="text/javascript" src="/dataTables-1.10.15/datatables.min.js"></script>
 	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>

@@ -9,10 +9,12 @@
  * Licensed under the MIT license:
  * https://opensource.org/licenses/MIT
  */
+ 
+include_once('../includes/class/kcbBase.class.php');
 
 class UploadHandler
 {
-
+	private $kcb;
     protected $options;
 
     // PHP File Upload error message codes:
@@ -40,7 +42,12 @@ class UploadHandler
 
     protected $image_objects = array();
 
+	private function setKcb($kcb) {
+    	$this->kcb = $kcb;
+	}
+
     public function __construct($options = null, $initialize = true, $error_messages = null) {
+		$this->setKcb(new KcbBase());
         $this->response = array();
         $this->options = array(
             'script_url' => $this->get_full_url().'/'.$this->basename($this->get_server_var('SCRIPT_NAME')),
@@ -282,6 +289,12 @@ class UploadHandler
             $file->deleteWithCredentials = true;
         }
     }
+	
+	// Added by Jonathan Gillette 1/30/18 to get the date the file was added to the server
+	protected function set_file_date($file, $file_name) {
+		$stat = stat($this->get_upload_path($file_name));
+		$file->file_date = @date('M d Y H:i',$stat['mtime']);
+	}
 
     // Fix for overflowing signed 32 bit integers,
     // works for sizes up to 2^32-1 bytes (4 GiB - 1):
@@ -329,6 +342,7 @@ class UploadHandler
                     }
                 }
             }
+            $this->set_file_date($file, $file_name); // Added JG 1/30/18
             $this->set_additional_file_properties($file);
             return $file;
         }
