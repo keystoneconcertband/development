@@ -127,6 +127,7 @@
 				}
 			}
 
+			$this->getDb()->logLogin($email, $response);
 			return $response;
 		}
 		
@@ -309,9 +310,12 @@
 			$response = "valid";
 			$invCount = $this->getDb()->getInvalidCount($email) + 1;
 			$ipAddress = $this->getIpAddress(); 
-											
+				
 			// Update login cd invalid_count
 			if(!$this->getDb()->setLoginCdInvalidCount($email, $ipAddress, strval($invCount))) {
+				// Update login count and last login date.
+				$this->getDb()->updateLastLogin($email);
+
 				$response =  "db_error";
 			}
 			
