@@ -30,6 +30,7 @@
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/music.php") { ?>class="active"<?}?>><a href="/members/music.php">Music</a></li>
 						<? if (isset($_SESSION["office"])) { ?>
 						<li role="separator" class="divider"></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { ?>class="active"<?}?>><a href="/members/messageMembers.php">Text Message Mbrs</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { ?>class="active"<?}?>><a href="/members/pendingMembers.php">Pending Members</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { ?>class="active"<?}?>><a href="/members/loginStats.php">Login Stats</a></li>
 						<li role="separator" class="divider"></li>

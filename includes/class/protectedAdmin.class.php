@@ -24,9 +24,40 @@
 			return $this->getDb()->getMemberRecord($uid);
 		}
 		
-		// Gets the current member by uid
+		// Gets the login stats for the website
 		public function getLoginStats() {
 			return $this->getDb()->getLoginStats();
+		}
+		
+		// Send text message to the band
+		public function sendTextMessages($message) {
+			// Get list of members
+			$activeMembers = $this->getDb()->getActiveMembers();
+			$emailList = "";
+			
+			// Take the array of members and set the text list so it can email the phone as a text message.
+			foreach($activeMembers as $activeMember) {
+				if(isset($activeMember['text']) && $activeMember['text'] !== "") {
+					if($emailList === "") {
+						$emailList .= $activeMember['text'] . "@" . $activeMember['carrier'];
+					}
+					else {
+						$emailList .= ", " . $activeMember['text'] . "@" . $activeMember['carrier'];			
+					}
+				}
+			}
+			
+			// Send email to the phone as a text message.
+			try {
+				$title = "KCB Msg";
+				$headers[] = 'From: KCB<web@keystoneconcertband.com>';
+						
+				return mail($emailList, $title, $message, implode("\r\n", $headers));	
+			}
+			catch(Exception $e) {
+				$this->getKcb()->LogError($e->getMessage());
+				return false;
+			}
 		}
 		
 		// Gets the current active members
