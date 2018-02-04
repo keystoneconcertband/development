@@ -54,7 +54,7 @@ new Member(true);
 						<h3>My Info</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-danger"></i> Update your information stored with the KCB</li>
+							<li class="list-group-item"><i class="icon-ok text-danger"></i> Update your information we have for you</li>
 						</ul>
 					</div>
 				</a>

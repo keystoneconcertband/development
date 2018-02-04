@@ -1,6 +1,6 @@
 <?php
-include_once '../includes/class/protectedMember.class.php';
-new ProtectedMember();
+include_once '../includes/class/protectedAdmin.class.php';
+new ProtectedAdmin();
 ?>
 
 <!DOCTYPE html>

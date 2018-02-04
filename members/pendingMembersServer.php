@@ -1,9 +1,9 @@
 <? 
 	# This is the public page for member which the ajax requests call.
-	include_once('../includes/class/protectedMember.class.php');
+	include_once('../includes/class/protectedAdmin.class.php');
 	header('Content-Type: application/json');
 
-	$mbr = new ProtectedMember();
+	$mbr = new ProtectedAdmin();
 	if(isset($_POST['type']) && $_POST['type'] === "edit") {
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
@@ -33,7 +33,7 @@
 			$response = 'Zip Code is required.';
 			$validRequest = false;
 		}
-		else if((isset($_POST['text']) && !isset($_POST['carrier'])) || (isset($_POST['text']) && isset($_POST['carrier']) && $_POST['carrier'] === "0")) {
+		else if((isset($_POST['text']) && $_POST['text'] !== "" && !isset($_POST['carrier'])) || (isset($_POST['text']) && $_POST['text'] !== "" && isset($_POST['carrier']) && $_POST['carrier'] === "0")) {
 			$response = "If Cell Number is entered, a carrier is required.";
 			$validRequest = false;
 		}
