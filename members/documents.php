@@ -38,10 +38,10 @@ new ProtectedMember();
 					<h2>Documents</h2>
 				</div>
 				<div class="row form-group">
-					<div class="alert alert-warning">
+					<div class="alert alert-info">
 					<span class="glyphicon glyphicon-info-sign"></span> <strong>Please be sure to review both the
-					  <a href="documents_perm/byLaws.pdf" target="_blank">KCB By Laws</a>, and the 
-					  <a href="documents_perm/uniform.pdf" target="_blank">uniform dress code for concerts</a>.
+					  <a href="documents_perm/byLaws.pdf" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws</a>, and the 
+					  <a href="documents_perm/uniform.pdf" target="_blank" style="text-decoration: underline; color: yellow">uniform dress code for concerts</a>.
 						</strong>
 					</div>
 				</div>
