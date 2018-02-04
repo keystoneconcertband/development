@@ -24,6 +24,11 @@
 			return $this->getDb()->getMemberRecord($uid);
 		}
 		
+		// Gets the current member by uid
+		public function getLoginStats() {
+			return $this->getDb()->getLoginStats();
+		}
+		
 		// Gets the current active members
 		public function getPendingMembers() {
 			return $this->getDb()->getPendingMembers();

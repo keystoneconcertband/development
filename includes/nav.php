@@ -31,6 +31,7 @@
 						<? if (isset($_SESSION["office"])) { ?>
 						<li role="separator" class="divider"></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { ?>class="active"<?}?>><a href="/members/pendingMembers.php">Pending Members</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { ?>class="active"<?}?>><a href="/members/loginStats.php">Login Stats</a></li>
 						<li role="separator" class="divider"></li>
 						<? } ?>
 						<li><a href="logoff.php">Logoff</a></li>

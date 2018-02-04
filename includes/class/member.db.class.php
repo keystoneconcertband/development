@@ -90,6 +90,11 @@
 			return $this->getDb()->query("SELECT instrument FROM KCB_instrument WHERE member_uid = :uid");
 		}
 		
+		// Get all instruments for the user
+		public function getLoginStats() {
+			return $this->getDb()->query("SELECT logonValue, valid, estbd_dt_tm FROM KCB_logon_audit ORDER by UID desc");
+		}
+		
 		/* UPDATE FUNCTIONS */
 		public function setAuthCd($email, $guid) {
 			$this->getDb()->bind("auth_cd_guid", $guid);
