@@ -40,7 +40,7 @@ new ProtectedMusic();
 				<div class="row form-group">
 					<div class="col-sm-2">
 						<div>
-							<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_add_edit">Add Music</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_edit">Add Music</button>
 						</div>
 					</div>
 					<div class="col-sm-10">
