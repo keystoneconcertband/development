@@ -297,3 +297,7 @@ function populateInstrument(data) {
 	    }		
 	}
 }
+
+function printMembers() {
+	var win = window.open('membersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
+}

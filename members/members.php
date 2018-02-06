@@ -37,13 +37,22 @@ new ProtectedMember();
 				</div>
 				<? if(isset($_SESSION['office'])) { ?>
 				<div class="row form-group">
-					<div class="col-sm-2">
-						<div>
-							<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_edit_delete">Add Member</button>
+					<div class="col-sm-3">
+						<div class="bs-component">
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_delete">Add Member</button>
+							<button type="button" class="btn btn-info" onclick="printMembers()">Print</button>
 						</div>
 					</div>
-					<div class="col-sm-10">
+					<div class="col-sm-9">
 						<div id="msgMainHeader" class="h4 hidden"></div>
+					</div>
+				</div>
+				<? } else { ?>
+				<div class="row form-group">
+					<div class="col-sm-12">
+						<div class="bs-component">
+							<button type="button" class="btn btn-info" onclick="printMembers()">Print</button>
+						</div>
 					</div>
 				</div>
 				<? } ?>
