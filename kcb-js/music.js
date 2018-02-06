@@ -18,7 +18,8 @@ $(document).ready(function() {
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
 				if(office !== "") {
-					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+					var title = data.title.replace(/'/g, '&#96;')
+					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
 					return "";
