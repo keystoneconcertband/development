@@ -103,6 +103,13 @@ $("#form_member").validator().on("submit", function (event) {
     }
 });
 
+// On load
+$('#modal_edit_delete').on('show.bs.modal', function () {
+    // Clear messages
+    $("#msgMainHeader").removeClass().text("");
+    $("#msgSubmit").removeClass().text("");
+});
+
 // On close
 $('#modal_edit_delete').on('hidden.bs.modal', function () {
     // Clear form each time
@@ -112,7 +119,6 @@ $('#modal_edit_delete').on('hidden.bs.modal', function () {
    	
    	// Readd the email container
    	$('#zipContainer').after('<div class="form-group emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="control-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-addon"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
-
 });
 
 function deleteEmail(emailContainer) {
@@ -131,11 +137,9 @@ function submitForm() {
 	var uid = $("#uid").val();
 		
 	if(uid !== "") {
-		console.log("edit");
 		editRecord(uid);
 	}
 	else {
-		console.log("add");
 		addRecord();
 	}
 }

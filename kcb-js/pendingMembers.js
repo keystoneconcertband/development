@@ -68,6 +68,13 @@ $("#form_member").validator().on("submit", function (event) {
     }
 });
 
+// On load
+$('#modal_edit_delete').on('show.bs.modal', function () {
+    // Clear messages
+    $("#msgMainHeader").removeClass().text("");
+    $("#msgSubmit").removeClass().text("");
+});
+
 // On close
 $('#modal_edit_delete').on('hidden.bs.modal', function () {
     // Clear form each time

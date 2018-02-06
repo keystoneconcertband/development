@@ -75,12 +75,19 @@ $('#modal_add_edit').on('hidden.bs.modal', function () {
     
     // Clear form each time
    	$("#form_music").trigger('reset');
+
+   	// Reset UID
+    $("#uid").val("");    
 });
 
 // On load
 $('#modal_add_edit').on('show.bs.modal', function () {
+    // Clear messages
+    $("#msgMainHeader").removeClass().text("");
+    $("#msgSubmit").removeClass().text("");
+
   	populateGenreDropdown();
-})
+});
 
 function submitForm() {
 	// Determine whether we are adding or editing record
