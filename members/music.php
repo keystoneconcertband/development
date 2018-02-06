@@ -35,7 +35,9 @@ new ProtectedMusic();
 			<div class="col-lg-12">
 				<div class="page-header">
 					<h2>Music</h2>
+							The number of plays starts with the July 23, 2017 concert.
 				</div>
+
 				<? if(isset($_SESSION['office'])) { ?>
 				<div class="row form-group">
 					<div class="col-sm-2">
