@@ -54,7 +54,7 @@ new Member(true);
 						<h3>My Info</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-danger"></i> Update your information we have for you</li>
+							<li class="list-group-item"><i class="icon-ok text-danger"></i> Update your personal information</li>
 						</ul>
 					</div>
 				</a>
@@ -67,7 +67,7 @@ new Member(true);
 						<h3>Members</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-info"></i> View the other band member's information</li>
+							<li class="list-group-item"><i class="icon-ok text-info"></i> View all the band member's information</li>
 						</ul>
 					</div>
 				</a>
@@ -80,7 +80,7 @@ new Member(true);
 						<h3>Music</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-success"></i> View links and history of the music the band plays</li>
+							<li class="list-group-item"><i class="icon-ok text-success"></i> View the music of the band</li>
 						</ul>
 					</div>
 				</a>
