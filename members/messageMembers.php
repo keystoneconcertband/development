@@ -39,7 +39,7 @@ new protectedAdmin();
 					<form class="form-horizontal" id="frmMessage" data-toggle="validator">
 						<fieldset>
 						    <legend>Text Message the band</legend>
-						    The maximum length of text message that you can send is 800 characters. 
+						    The maximum length of a text message that you can send is 800 characters. 
 						    However, if you send more than 112 characters then your message will be split
 						    into multiple messages due to the FROM and SUBJECT lines.
 						    <div class="form-group">
