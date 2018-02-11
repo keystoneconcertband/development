@@ -16,6 +16,15 @@ new ProtectedMusic();
     <link rel="stylesheet" href="/css/checkboxes.min.css" />
 	<link rel="stylesheet" href="/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.css" />
 	<link rel="stylesheet" href="/dataTables-1.10.15/datatables.min.css"/>
+	<link rel="stylesheet" href="/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+	<style>
+		.ui-autocomplete-loading {
+			background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
+		}
+		.ui-autocomplete {
+		    z-index: 5000;
+		}
+	</style>
   </head>
 
   <body>
@@ -40,12 +49,13 @@ new ProtectedMusic();
 
 				<? if(isset($_SESSION['office'])) { ?>
 				<div class="row form-group">
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<div>
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_edit">Add Music</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_concert">Concert</button>
 						</div>
 					</div>
-					<div class="col-sm-10">
+					<div class="col-sm-9">
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
 				</div>
@@ -66,6 +76,54 @@ new ProtectedMusic();
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="modal fade" id="modal_concert" role="dialog">
+			<form id="form_concert" data-toggle="validator">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Concert</h5>
+						</div>
+						<div class="modal-body form-horizontal">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<label for="dpLastPlayed" class="control-label">Date of concert*</label>
+									<div class="input-group date" id="dpLastPlayed">
+										<input type="text" class="form-control" name="concert_date" id="concert_date" placeholder="Date of Concert" required="true" data-error="Date is required.">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<label for="concert_title" class="control-label">Title</label>
+									<input type="text" class="form-control" name="concert_title" id="concert_title" placeholder="Title" value="" maxlength="255">
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h4>Concert Program:</h4>
+									<ul id="concert_program_list">
+										<li id="concert_program_empty">Empty</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="hidden" id="concert_uids" name="concert_uids" value="" />
+							<div id="msgSubmit" class="h4 hidden"></div>
+							<button type="submit" class="btn btn-primary">Save changes</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<div id="msgSubmit" class="h4 hidden"></div>
+						</div>
+					</div>
+				</div>
+			</form>
 		</div>
 		<div class="modal fade" id="modal_add_edit" role="dialog">
 			<form id="form_music" data-toggle="validator">
@@ -137,6 +195,7 @@ new ProtectedMusic();
 	<script type="text/javascript">
 		var office = "<?=$_SESSION['office']?>";
 	</script>
+	<script  type="text/javascript" src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 	<script type="text/javascript" src="/dataTables-1.10.15/datatables.min.js"></script>
 	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="/moment-2.19.2/moment.min.js"></script>

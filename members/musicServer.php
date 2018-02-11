@@ -46,6 +46,14 @@
 			echo json_encode($music->getMusicRecord($_POST['uid']));
 		}
 	}
+	elseif(isset($_POST['type']) && $_POST['type'] === "addConcert") {
+		if(!isset($_POST['concert_date'])) {
+			echo json_encode('Concert date is missing.');
+		}
+		else {			
+			echo json_encode($music->addConcert($_POST));
+		}
+	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "getMusicGenres") {
 		echo json_encode($music->getGenres());
 	}

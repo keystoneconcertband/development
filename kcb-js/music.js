@@ -1,4 +1,27 @@
 $(document).ready(function() {
+	$( "#concert_title" ).autocomplete({
+      source: "musicTitleSearch.php",
+      minLength: 2,
+      select: function( event, ui ) {
+	      $("#concert_program_list #concert_program_empty").remove();
+
+		  // Only allow new things to be added to the list
+	      if ($("#concert_uids").val().indexOf(ui.item.value) < 0) {
+		      $("#concert_program_list").append('<li>' + ui.item.label + '</li>');
+		      
+		      if($("#concert_uids").val() === "") {
+			      $('#concert_uids').val($('#concert_uids').val() + ui.item.value);	      
+		      }
+		      else {
+			      $("#concert_uids").val($("#concert_uids").val() + "," + ui.item.value);	      
+		      }
+	      }
+	      
+	      $("#concert_title").val("");
+	      return false;
+      }
+    });
+
 	$('#dpLastPlayed').datetimepicker({
 		format: 'L',
 		maxDate: moment().add(7, 'days'),
@@ -6,6 +29,7 @@ $(document).ready(function() {
 		showClear: true,
 		showClose: true
 	});
+	
 	$("#kcbMusicTable").validator();
     var table = $('#kcbMusicTable').DataTable( {
 	    responsive: true,
@@ -58,6 +82,16 @@ $(document).ready(function() {
     column.visible(office !== "");
 });
 
+$("#form_concert").validator().on("submit", function (event) {
+    if (event.isDefaultPrevented()) {
+        formError();
+        submitMSG(false, "Check for errors in the form.");
+    } else {
+        event.preventDefault();
+        submitConcert();
+    }
+});
+
 $("#form_music").validator().on("submit", function (event) {
     if (event.isDefaultPrevented()) {
         formError();
@@ -66,6 +100,30 @@ $("#form_music").validator().on("submit", function (event) {
         event.preventDefault();
         submitForm();
     }
+});
+
+// On load
+$('#modal_concert').on('show.bs.modal', function () {
+    // Clear messages
+    $("#msgMainHeader").removeClass().text("");
+    $("#msgSubmit").removeClass().text("");
+});
+
+// On close
+$('#modal_concert').on('hidden.bs.modal', function () {    
+    // Clear form each time
+   	$("#form_concert").trigger('reset');
+   	$("#concert_program_list").empty();
+   	$("#concert_program_list").append('<li id="concert_program_empty">Empty</li>');
+});
+
+// On load
+$('#modal_add_edit').on('show.bs.modal', function () {
+    // Clear messages
+    $("#msgMainHeader").removeClass().text("");
+    $("#msgSubmit").removeClass().text("");
+
+  	populateGenreDropdown();
 });
 
 // On close
@@ -80,15 +138,6 @@ $('#modal_add_edit').on('hidden.bs.modal', function () {
     $("#uid").val("");    
 });
 
-// On load
-$('#modal_add_edit').on('show.bs.modal', function () {
-    // Clear messages
-    $("#msgMainHeader").removeClass().text("");
-    $("#msgSubmit").removeClass().text("");
-
-  	populateGenreDropdown();
-});
-
 function submitForm() {
 	// Determine whether we are adding or editing record
 	if($("#uid").val() !== "") {
@@ -97,6 +146,27 @@ function submitForm() {
 	else {
 		addRecord();
 	}
+}
+
+function submitConcert() {
+	$.ajax(
+	{
+        url: "musicServer.php",
+        type: "POST",
+		dataType : 'json', 
+        data: $("#form_concert").serialize() + '&type=addConcert',
+        success: function(text){
+            if (text === true){
+                formSuccess("Concert dates were successfully updated.");
+            } else {
+                formError(text);
+            }
+        },
+		error: function(xhr, resp, text) {
+			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
+            console.log(xhr, resp, text);
+        }
+    });
 }
 
 function addRecord() {
@@ -190,8 +260,8 @@ function formSuccess(text) {
     submitMSG(true, text);
 
 	$('#kcbMusicTable').DataTable().ajax.reload();
-	$("#form_music").trigger('reset'); 
     $('#modal_add_edit').modal('hide');
+    $('#modal_concert').modal('hide');
 }
 
 function formError(text) {

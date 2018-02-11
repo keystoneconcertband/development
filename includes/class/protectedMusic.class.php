@@ -15,15 +15,61 @@
 		
 		// Gets the current member by email
 		public function getMusic() {
-			return $this->getDb()->getMusic();
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				return $this->getDb()->getMusic();
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		public function getMusicRecord($uid) {
-			return $this->getDb()->getMusicRecord($uid);
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				return $this->getDb()->getMusicRecord($uid);
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		public function getGenres() {
-			return $this->getDb()->getGenres();
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				return $this->getDb()->getGenres();
+			}
+			else {
+				return "Access Denied";
+			}
+		}
+		
+		public function searchTitles($title) {
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				return $this->getDb()->searchTitles($title);
+			}
+			else {
+				return "Access Denied";
+			}
+		}
+		
+		public function addConcert($concert) {
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				$concert_uids = (explode(",", $concert['concert_uids']));
+				$concert_date = $concert['concert_date'];
+				
+				foreach($concert_uids as $uid) {
+					// Verify that this concert value isn't already in the database
+					if($this->getDb()->getLastPlayedDatesByDate($uid, $concert_date) === 0) {
+						// Add concert to database
+						if(!$this->getDb()->addConcert($uid, $concert_date, $_SESSION['email'])) {
+							return false;
+						}						
+					}
+				}
+				
+				return true;
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		public function deleteMusic($uid) {
