@@ -12,7 +12,7 @@
 		}
 		
 		public function JoinSubmit($joinArray) {
-			$webUser = "PENDING";
+			$webUser = "JOIN_REQUEST";
 			
 			// Verify user filled out all the correct fields
 			$response = $this->validateJoin($joinArray);

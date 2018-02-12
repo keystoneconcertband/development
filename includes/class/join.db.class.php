@@ -59,7 +59,7 @@
 			$this->getDb()->bind("uid", $uid);
 			$this->getDb()->bind("updateUser1", $updateUser);
 			$this->getDb()->bind("updateUser2", $updateUser);
-			$retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :email, now(), :updateUser1, now(), :updateUser2)");
+			$retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, actv_flg, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :email, 0, now(), :updateUser1, now(), :updateUser2)");
 		
 			return $retVal;
 		}
@@ -82,6 +82,5 @@
 		private function setDb($db) {
         	$this->db = $db;
     	}
-
 	}
 ?>
