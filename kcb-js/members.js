@@ -133,11 +133,9 @@ function deleteEmail(emailContainer) {
 }
 
 function submitForm() {
-	// Determine whether we are adding or editing record
-	var uid = $("#uid").val();
-		
-	if(uid !== "") {
-		editRecord(uid);
+	// Determine whether we are adding or editing record		
+	if($("#uid").val() !== "") {
+		editRecord();
 	}
 	else {
 		addRecord();
