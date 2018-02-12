@@ -65,9 +65,9 @@
 			echo json_encode($mbr->getMemberRecord($_POST['uid']));
 		}
 	}
-	elseif(isset($_POST['type']) && $_POST['type'] === "getCurrentMemberRecord") {
+	/*elseif(isset($_POST['type']) && $_POST['type'] === "getCurrentMemberRecord") {
 		echo json_encode($mbr->getMemberRecord($_SESSION['uid']));
-	}
+	}*/
 	elseif(isset($_POST['type']) && $_POST['type'] === "delete") {
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
