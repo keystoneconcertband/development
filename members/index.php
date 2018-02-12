@@ -43,7 +43,7 @@ new Member(true);
 					<h2>Welcome <?php echo $_SESSION["office"] . ' ' ?: "" ?><?php echo $_SESSION["firstName"] ?: 'Firstname'?> <?php echo $_SESSION["lastName"] ?: 'Lastname' ?>!</h2>
 				</div>
 				Welcome to the KCB Member section! With this site you can update your information, view the other band member's
-				information, and listen to music the band has played.<br>
+				information, and find all the music the band has to play.<br>
 			</div>
 		</div>
 		<div class="row">
