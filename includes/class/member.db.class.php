@@ -30,25 +30,30 @@
 			return $this->getDb()->query("SELECT firstName, lastName, displayFullName FROM KCB_Members m JOIN KCB_instrument i on m.UID = i.member_uid WHERE i.instrument = :instrument AND disabled = 0 ORDER BY lastName, firstName");
 		}
 		
-		// Gets the member information
+		// Gets the member information by email address
 		public function getMember($email) {
 			$this->getDb()->bind("email", $email);
 			return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName, m.text, m.carrier, m.displayFullName, m.doNotDisplay, m.lastLogon, m.logonCount, m.disabled_dt_tm, m.disabled, a.address1, a.address2, a.city, a.state, a.zip, a.home_phone FROM KCB_Members m INNER JOIN KCB_email_address e ON e.member_uid=m.uid LEFT OUTER JOIN KCB_Address a ON a.member_uid=m.uid WHERE e.email_address = :email");
 		}
 
+		// Gets member record by Member UID
 		public function getMemberRecord($uid) {
 			$this->getDb()->bind("uid", $uid);
-			return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, m.displayFullName, m.doNotDisplay, GROUP_CONCAT(DISTINCT li.instrument) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.UID = :uid");
+			return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, 'PA' as state, a.zip, m.office, m.displayFullName, m.doNotDisplay, GROUP_CONCAT(DISTINCT li.instrument) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.UID = :uid");
 		}
 
 		// Gets all active members
 		public function getActiveMembers() {
-			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.disabled = 0 AND m.uid <> 1 GROUP BY m.UID ORDER BY lastName, firstName");
+			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.disabled = 0 AND m.uid <> 1 GROUP BY m.UID ORDER BY lastName, firstName");
+		}
+
+		public function getInactiveMembers() {
+			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier, a.home_phone, a.address1, a.address2, a.city, 'PA' as state, a.zip, m.disabled_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID LEFT OUTER JOIN KCB_Address a ON a.member_uid = m.uid LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.disabled = 1 GROUP BY m.UID ORDER BY lastName, firstName");
 		}
 
 		// Gets all pending members
 		public function getPendingMembers() {
-			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.estbd_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID AND e.actv_flg = 1 LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.accountType = 3 and disabled = 0 GROUP BY m.UID ORDER BY lastName, firstName");
+			return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName, GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.estbd_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument` FROM KCB_Members m LEFT OUTER JOIN KCB_email_address e ON e.member_uid = m.UID LEFT OUTER JOIN KCB_instrument i ON m.uid = i.member_uid LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument WHERE m.accountType = 3 and disabled = 0 GROUP BY m.UID ORDER BY lastName, firstName");
 		}
 
 		// Checks that the account shouldn't be locked out because more than 3 auth_code attempts were made in the last hour.
@@ -90,7 +95,7 @@
 			return $this->getDb()->query("SELECT instrument FROM KCB_instrument WHERE member_uid = :uid");
 		}
 		
-		// Get all instruments for the user
+		// Get Login Stats
 		public function getLoginStats() {
 			return $this->getDb()->query("SELECT logonValue, valid, estbd_dt_tm FROM KCB_logon_audit ORDER by UID desc");
 		}
@@ -183,8 +188,6 @@
 			return $uid;
 		}
 		
-		// Error crashing here
-		// Error in logging
 		public function updatePendingMember($uid, $mbrArray, $updateUser) {
 			$this->getDb()->bind('uid', $uid);
 			$this->getDb()->bind("updateUser", $updateUser);
@@ -193,6 +196,16 @@
 			
 			if($retVal) {
 				$retVal = $this->updateMember($uid, $mbrArray, $updateUser);
+			}
+			
+			// Update email address, activate email and update who approved the user
+			if($retVal) {
+				$retVale = $this->reactivateEmail($uid, $updateUser);
+			}
+			
+			// Update instruments with who approved the user
+			if($retVal) {
+				$retVal = $this->updateLastUpdateOnInstrument($uid, $updateUser);	
 			}
 			
 			return $retVal;
@@ -221,7 +234,7 @@
 				$this->getDb()->bind('displayFullName', "0");			
 			}
 
-			$retVal = $this->getDb()->query("UPDATE KCB_Members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, carrier = :carrier, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE UID = :uid");
+			$retVal = $this->getDb()->query("UPDATE KCB_Members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, carrier = :carrier, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser, disabled= 0, disabled_dt_tm = NULL WHERE UID = :uid");
 					
 			return $retVal;
 		}
@@ -310,6 +323,18 @@
 			$retVal = $this->getDb()->query("DELETE FROM KCB_instrument WHERE member_uid=:uid AND instrument=:instrument");
 			
 			return $retVal;
+		}
+
+		public function reactivateEmail($uid, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind("updateUser", $updateUser);
+			return $this->getDb()->query("UPDATE KCB_email_address SET actv_flg = 1, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE member_uid = :uid");
+		}
+		
+		public function updateLastUpdateOnInstrument($uid, $updateUser) {
+			$this->getDb()->bind('uid', $uid);
+			$this->getDb()->bind("updateUser", $updateUser);
+			return $this->getDb()->query("UPDATE KCB_instrument SET lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE member_uid = :uid");
 		}
 
 		/* PRIVATE FUNCTIONS */

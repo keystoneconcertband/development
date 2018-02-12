@@ -17,237 +17,302 @@
 		
 		// Gets the current member by email
 		public function getMember($email) {
-			return $this->getDb()->getMember($email);
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				return $this->getDb()->getMember($email);
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		// Gets the current member by uid
 		public function getMemberRecord($uid) {
-			return $this->getDb()->getMemberRecord($uid);
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				return $this->getDb()->getMemberRecord($uid);
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		// Gets all the email addresses for the user
 		public function getEmailAddresses($uid) {
-			return $this->getDb()->getEmailAddresses($uid);
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				return $this->getDb()->getEmailAddresses($uid);
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		// Gets all the instruments for the user
 		public function getMemberInstruments($uid) {
-			return $this->getDb()->getMemberInstruments($uid);
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				return $this->getDb()->getMemberInstruments($uid);
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		// Gets the current active members
 		public function getActiveMembers() {
-			return $this->getDb()->getActiveMembers();
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				return $this->getDb()->getActiveMembers();
+			}
+			else {
+				return "Access Denied";
+			}
+		}
+		
+		// Gets the current active members
+		public function getInactiveMembers() {
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				return $this->getDb()->getInactiveMembers();
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		// Gets the current active members
 		public function getPendingMembers() {
-			return $this->getDb()->getPendingMembers();
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				return $this->getDb()->getPendingMembers();
+			}
+			else {
+				return "Access Denied";
+			}
 		}
 		
 		public function addMember($mbrArray) {
-			if(!isset($_SESSION['email'])) {
-				return "access denied.";
-			}
-			
-			$retValue = "success";
-			$updateUser = $_SESSION["email"];
-			$instrument = "";
-			$email = "";
-			
-			if(isset($_POST['instrument'])) {
-				$instrument = $mbrArray['instrument'];
-			}
-			
-			if(isset($_POST['email'])) {
-				$email = $mbrArray['email'];
-			}
-
-			try {
-				$this->getDb()->beginTransaction();
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				$retValue = "success";
+				$updateUser = $_SESSION["email"];
+				$instrument = "";
+				$email = "";
 				
-				$uid = $this->getDb()->insertMember($mbrArray, $updateUser);
+				if(isset($_POST['instrument'])) {
+					$instrument = $mbrArray['instrument'];
+				}
 				
-				if($uid !== 0) {
-					if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email, true)) {
-							if($this->updateInstruments($uid, $instrument)) {
-								$this->getDb()->executeTransaction();							
+				if(isset($_POST['email'])) {
+					$email = $mbrArray['email'];
+				}
+	
+				try {
+					$this->getDb()->beginTransaction();
+					
+					$uid = $this->getDb()->insertMember($mbrArray, $updateUser);
+					
+					if($uid !== 0) {
+						if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
+							if($this->updateEmails($uid, $email, true)) {
+								if($this->updateInstruments($uid, $instrument)) {
+									$this->getDb()->executeTransaction();							
+								}
+								else {
+									$this->getDb()->rollBackTransaction();
+									$retValue = "add_instrument_error";								
+								}
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
-								$retValue = "add_instrument_error";								
+								$retValue = "add_email_error";
 							}
 						}
 						else {
 							$this->getDb()->rollBackTransaction();
-							$retValue = "add_email_error";
+							$retValue = "add_address_error";
 						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
-						$retValue = "add_address_error";
+						$retValue = "add_member_error";
 					}
 				}
-				else {
+				catch(Exception $e) {
+					$this->getKcb()->LogError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
-					$retValue = "add_member_error";
+					$retValue = "db_error";
 				}
+				
+				return $retValue;
 			}
-			catch(Exception $e) {
-				$this->getKcb()->LogError($e->getMessage());
-				$this->getDb()->rollBackTransaction();
-				$retValue = "db_error";
+			else {
+				return "Access Denied";
 			}
-			
-			return $retValue;
 		}
 		
 		// Update members
 		public function updateMember($uid, $mbrArray) {
-			if(!isset($_SESSION['office'])) {
-				return "access denied.";
-			}
-
-			$retValue = "success";
-			$updateUser = $_SESSION["email"];
-			$instrument = "";
-			$email = "";
-			
-			if(isset($_POST['instrument'])) {
-				$instrument = $mbrArray['instrument'];
-			}
-			
-			if(isset($_POST['email'])) {
-				$email = $mbrArray['email'];
-			}
-			
-			try {
-				$this->getDb()->beginTransaction();
-								
-				if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
-					if($this->getDb()->updateAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email, true)) {
-							if($this->updateInstruments($uid, $instrument)) {
-								$this->getDb()->executeTransaction();							
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+				$retValue = "success";
+				$updateUser = $_SESSION["email"];
+				$instrument = "";
+				$email = "";
+				
+				if(isset($_POST['instrument'])) {
+					$instrument = $mbrArray['instrument'];
+				}
+				
+				if(isset($_POST['email'])) {
+					$email = $mbrArray['email'];
+				}
+				
+				try {
+					$this->getDb()->beginTransaction();
+									
+					if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
+						if($this->getDb()->updateAddress($uid, $mbrArray, $updateUser)) {
+							if($this->updateEmails($uid, $email, true)) {
+								if($this->updateInstruments($uid, $instrument)) {
+									$this->getDb()->executeTransaction();							
+								}
+								else {
+									$this->getDb()->rollBackTransaction();
+									$retValue = "update_instrument_error";								
+								}
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
-								$retValue = "update_instrument_error";								
+								$retValue = "update_email_error";
 							}
 						}
 						else {
 							$this->getDb()->rollBackTransaction();
-							$retValue = "update_email_error";
+							$retValue = "update_address_error";
 						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
-						$retValue = "update_address_error";
+						$retValue = "update_member_error";
 					}
 				}
-				else {
+				catch(Exception $e) {
+					$this->getKcb()->LogError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
-					$retValue = "update_member_error";
+					$retValue = "db_error";
 				}
+				
+				return $retValue;
 			}
-			catch(Exception $e) {
-				$this->getKcb()->LogError($e->getMessage());
-				$this->getDb()->rollBackTransaction();
-				$retValue = "db_error";
+			else {
+				return "Access Denied";
 			}
-			
-			return $retValue;
 		}
 		
 		public function addPendingMember($uid, $mbrArray) {
-			if(!isset($_SESSION['office'])) {
-				return "access denied.";
-			}
-
-			$retValue = "success";
-			$updateUser = $_SESSION["email"];
-			$instrument = "";
-			$email = "";
-			
-			if(isset($_POST['instrument'])) {
-				$instrument = $mbrArray['instrument'];
-			}
-			
-			if(isset($_POST['email'])) {
-				$email = $mbrArray['email'];
-			}
-			
-			try {
-				$this->getDb()->beginTransaction();
-								
-				if($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
-					if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email, true)) {
-							if($this->updateInstruments($uid, $instrument)) {
-								$this->getDb()->executeTransaction();							
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				$retValue = "success";
+				$updateUser = $_SESSION["email"];
+				$instrument = "";
+				$email = "";
+				
+				if(isset($_POST['instrument'])) {
+					$instrument = $mbrArray['instrument'];
+				}
+				
+				if(isset($_POST['email'])) {
+					$email = $mbrArray['email'];
+				}
+				
+				try {
+					$this->getDb()->beginTransaction();
+									
+					if($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
+						if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
+							if($this->updateEmails($uid, $email, true)) {
+								if($this->updateInstruments($uid, $instrument)) {
+									$this->getDb()->executeTransaction();							
+								}
+								else {
+									$this->getDb()->rollBackTransaction();
+									$retValue = "update_instrument_error";								
+								}
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
-								$retValue = "update_instrument_error";								
+								$retValue = "update_email_error";
 							}
 						}
 						else {
 							$this->getDb()->rollBackTransaction();
-							$retValue = "update_email_error";
+							$retValue = "update_address_error";
 						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
-						$retValue = "update_address_error";
+						$retValue = "update_member_error";
 					}
 				}
-				else {
+				catch(Exception $e) {
+					$this->getKcb()->LogError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
-					$retValue = "update_member_error";
+					$retValue = "db_error";
 				}
+				
+				return $retValue;
 			}
-			catch(Exception $e) {
-				$this->getKcb()->LogError($e->getMessage());
-				$this->getDb()->rollBackTransaction();
-				$retValue = "db_error";
+			else {
+				return "Access Denied";
 			}
-			
-			return $retValue;
 		}
 		
 		public function removeMember($uid, $deleteEmailAddress) {
-			if(!isset($_SESSION['office'])) {
-				return "access denied.";
-			}
-
-			$retValue = "success";
-			$updateUser = $_SESSION["email"];
-			
-			try {
-				$this->getDb()->beginTransaction();
+			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+				$retValue = "success";
+				$updateUser = $_SESSION["email"];
 				
-				if($this->getDb()->removeMember($uid, $updateUser)) {
-					if($this->updateEmails($uid, array(), $deleteEmailAddress)) {
-						$this->getDb()->executeTransaction();							
+				try {
+					$this->getDb()->beginTransaction();
+					
+					if($this->getDb()->removeMember($uid, $updateUser)) {
+						if($this->updateEmails($uid, array(), $deleteEmailAddress)) {
+							$this->getDb()->executeTransaction();							
+						}
+						else {
+							$this->getDb()->rollBackTransaction();
+							$retValue = "remove_email_error";
+						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
-						$retValue = "remove_email_error";
+						$retValue = "remove_member_error";
+					}
+				}
+				catch(Exception $e) {
+					$this->getKcb()->LogError($e->getMessage());
+					$this->getDb()->rollBackTransaction();
+					$retValue = "db_error";
+				}
+				
+				return $retValue;
+			}
+			else {
+				return "Access Denied";
+			}
+		}
+		
+		public function reactivateMember($uid, $mbrArray) {
+			$updateUser = $_SESSION["email"];
+			$retVal = $this->updateMember($uid, $mbrArray);
+			
+			if($retVal == "success") {
+				if($this->getDb()->reactivateEmail($uid, $updateUser)) {
+					if($this->getDb()->updateLastUpdateOnInstrument($uid, $updateUser)) {
+						$retVal = "success";
+					}
+					else {
+						$retVal = "reactivate_update_instrument_error";
 					}
 				}
 				else {
-					$this->getDb()->rollBackTransaction();
-					$retValue = "remove_member_error";
+					$retVal = "reactive_update_email_error";
 				}
 			}
-			catch(Exception $e) {
-				$this->getKcb()->LogError($e->getMessage());
-				$this->getDb()->rollBackTransaction();
-				$retValue = "db_error";
-			}
 			
-			return $retValue;
+			return $retVal;			
 		}
 		
 		/* PRIVATE FUNCTIONS */

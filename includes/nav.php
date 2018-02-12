@@ -32,10 +32,11 @@
 						<li role="separator" class="divider"></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { ?>class="active"<?}?>><a href="/members/messageMembers.php">Text Message Mbrs</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { ?>class="active"<?}?>><a href="/members/pendingMembers.php">Pending Members</a></li>
+						<li <? if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { ?>class="active"<?}?>><a href="/members/inactiveMembers.php">Inactive Members</a></li>
 						<li <? if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { ?>class="active"<?}?>><a href="/members/loginStats.php">Login Stats</a></li>
 						<li role="separator" class="divider"></li>
 						<? } ?>
-						<li><a href="logoff.php">Logoff</a></li>
+						<li><a href="/members/logoff.php">Logoff</a></li>
 					</ul>
 		      <? }
 			     else { ?>
