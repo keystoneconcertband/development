@@ -41,7 +41,7 @@ new ProtectedMember();
 					<div class="col-sm-3">
 						<div class="bs-component">
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_delete">Add Member</button>
-							<button type="button" class="btn btn-info" onclick="printMembers()">Print</button>
+							<button type="button" class="btn btn-info glyphicon glyphicon-print" onclick="printMembers()"></button>
 						</div>
 					</div>
 					<div class="col-sm-9">
@@ -52,7 +52,7 @@ new ProtectedMember();
 				<div class="row form-group">
 					<div class="col-sm-12">
 						<div class="bs-component">
-							<button type="button" class="btn btn-info" onclick="printMembers()">Print</button>
+							<button type="button" class="btn btn-info glyphicon glyphicon-print" onclick="printMembers()"></button>
 						</div>
 					</div>
 				</div>
