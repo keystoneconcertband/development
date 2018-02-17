@@ -12,6 +12,7 @@ new ProtectedMusic();
     <title>Music - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
+	<link rel="stylesheet" href="/css/member.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/checkboxes.min.css" />
 	<link rel="stylesheet" href="/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.css" />
