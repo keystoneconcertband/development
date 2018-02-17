@@ -24,8 +24,8 @@
 		  </div><!--/.nav-collapse -->
 		</div><!--/.container-fluid -->
 	</nav>
-  <? if(isset($_SESSION["email"])) { ?>
-	<nav class="navbar navbar-default navbar-static-top" style="z-index:999;">
+  <? if(isset($_SESSION["email"]) && strpos($_SERVER['PHP_SELF'], '/members/') !== false) { ?>
+	<nav class="navbar navbar-default navbar-static-top" style="z-index:999;margin-bottom: 0;">
 	  <div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#memberNavbar" aria-expanded="false" aria-controls="memberNavbar">
