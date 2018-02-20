@@ -13,9 +13,8 @@
 			$this->setDB(new MusicDB());
 		}
 		
-		// Gets the current member by email
 		public function getMusic() {
-			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+			if(isset($_SESSION['email']) && $_SESSION['email'] !== '') {
 				return $this->getDb()->getMusic();
 			}
 			else {
