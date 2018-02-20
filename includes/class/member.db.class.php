@@ -74,6 +74,12 @@
 			return $this->getDb()->single("SELECT lc.invalid_count FROM KCB_login_cd lc INNER JOIN KCB_email_address e ON e.member_uid=lc.KCB_Members_UID WHERE e.email_address = :email");
 		}
 		
+		// Gets whether or not user accout has an address record
+		public function getMemberAddressCount($uid) {
+			$this->getDb()->bind("uid", $uid);
+			return $this->getDb()->resultCount("SELECT member_uid FROM KCB_Address where member_uid = :uid");
+		}
+		
 		// Get Auth Cd GUID
 		public function getAuthCdGuid($email, $cookieAuthCd) {
 			$this->getDb()->bind("email", $email);

@@ -106,7 +106,7 @@
 					$uid = $this->getDb()->insertMember($mbrArray, $updateUser);
 					
 					if($uid !== 0) {
-						if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
+						if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
 							if($this->updateEmails($uid, $email, true)) {
 								if($this->updateInstruments($uid, $instrument)) {
 									$this->getDb()->executeTransaction();							
@@ -164,7 +164,7 @@
 					$this->getDb()->beginTransaction();
 									
 					if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
-						if($this->getDb()->updateAddress($uid, $mbrArray, $updateUser)) {
+						if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
 							if($this->updateEmails($uid, $email, true)) {
 								if($this->updateInstruments($uid, $instrument)) {
 									$this->getDb()->executeTransaction();							
@@ -221,7 +221,7 @@
 					$this->getDb()->beginTransaction();
 									
 					if($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
-						if($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
+						if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
 							if($this->updateEmails($uid, $email, true)) {
 								if($this->updateInstruments($uid, $instrument)) {
 									$this->getDb()->executeTransaction();							
@@ -299,23 +299,41 @@
 			$retVal = $this->updateMember($uid, $mbrArray);
 			
 			if($retVal == "success") {
-				if($this->getDb()->reactivateEmail($uid, $updateUser)) {
-					if($this->getDb()->updateLastUpdateOnInstrument($uid, $updateUser)) {
-						$retVal = "success";
-					}
-					else {
-						$retVal = "reactivate_update_instrument_error";
-					}
+				$emailCount = $this->getDb()->getEmailAddresses($uid);
+
+				if($emailCount > 0) {
+					// Reactivate any emails the user might have
+					$this->getDb()->reactivateEmail($uid, $updateUser);
 				}
-				else {
-					$retVal = "reactive_update_email_error";
-				}
+
+				// Add/remove any emails the user might have changed since last time.
+				$this->updateEmails($uid, $mbrArray['email'], false);
+
+
+				// If user had any instruments, update their timestamps
+				$this->getDb()->updateLastUpdateOnInstrument($uid, $updateUser);
 			}
 			
 			return $retVal;			
 		}
 		
 		/* PRIVATE FUNCTIONS */
+		// Determines whether to add or update an email address
+		private function upsertAddress($uid, $mbrArray, $updateUser) {
+			// check whether address exists
+			$mbrAddressCount = $this->getDb()->getMemberAddressCount($uid);
+			$upsertValue = false;
+			
+			if($mbrAddressCount > 0) {
+				$upsertValue = $this->getDb()->updateAddress($uid, $mbrArray, $updateUser);
+			}
+			else {
+				$upsertValue = $this->getDb()->insertAddress($uid, $mbrArray, $updateUser);
+			}
+			
+			return $upsertValue;
+		}
+		
     	private function updateEmails($uid, $emailArray, $delEmail) {
 			$result = true;					
 			$emails = $this->getDb()->getEmailAddresses($uid);
