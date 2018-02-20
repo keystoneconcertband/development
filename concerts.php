@@ -1,7 +1,7 @@
 <? 	
-	include_once('includes/class/concerts.class.php');
+	include_once('includes/class/kcbPublic.class.php');
 	global $cncrts;
-	$cncrts = new Concert();
+	$cncrts = new KCBPublic();
 ?>
 <!DOCTYPE html>
 <html lang="en">

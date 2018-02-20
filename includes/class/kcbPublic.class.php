@@ -1,16 +1,28 @@
 <?
  	include_once("kcbBase.class.php");
- 	include_once("join.db.class.php");
+ 	include_once("kcbPublic.db.class.php");
  	
-	class Join {
+	class KCBPublic {
 		private $db;
 		private $kcb;
 
 		public function __construct() {
 			$this->kcb = new KcbBase();
-			$this->db = new JoinDb();
+			$this->setDB(new KCBPublicDb());
 		}
 		
+		public function getCurrentConcert() {
+			return $this->getDb()->getCurrentConcert();
+		}
+		
+		public function getConcertSchedule() {
+			return $this->getDb()->getConcertSchedule();
+		}
+		
+		public function getHomepageMessages() {
+			return $this->getDb()->getHomepageMessages();
+		}
+
 		public function JoinSubmit($joinArray) {
 			$webUser = "JOIN_REQUEST";
 			
@@ -69,6 +81,15 @@
 			return $response;
 		}
 		
+		/* PRIVATE FUNCTIONS */
+		private function getDb() {
+			return $this->db;
+		}
+		
+		private function setDb($db) {
+        	$this->db = $db;
+    	}
+
 		private function validateJoin($joinArray) {
 			$response = "";
 			
@@ -118,14 +139,5 @@
 			
 			return $response;
 		}
-		
-		/* PRIVATE FUNCTIONS */
-		private function getDb() {
-			return $this->db;
-		}
-		
-		private function setDb($db) {
-        	$this->db = $db;
-    	}
 	}
 ?>

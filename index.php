@@ -1,7 +1,7 @@
 <?
-	include_once('includes/class/concerts.class.php');
-	global $cncrts;
-	$cncrts = new Concert();
+	include_once('includes/class/kcbPublic.class.php');
+	global $homepage;
+	$homepage = new KCBPublic();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,20 +71,20 @@
       </a>
     </div><!-- /.carousel -->
     <?
-			if (strtotime('3/17/2016') > time()) {
-			    // older
+	    $messages = $homepage->getHomepageMessages();
+	    
+	    foreach($messages as $msg) {
+		    if($msg['message_type'] == "Regular") {
 			    echo('<div class="alert alert-dismissible alert-warning"><button type="button" class="close" data-dismiss="alert">&times;</button>
-					  <h4>Band Members</h4>
-					  <p>Practice until March 16 will be held at <a href="https://goo.gl/maps/xRdPC">Steelton-Highspire High School</a>. Please check the calendar for all appropriate dates.</p></div>');
-			}
-	?>
-    <?
-			if (strtotime('1/1/2016') > time()) {
-			    // older
+					  <h4>'. $msg['title'] .'</h4>
+					  <p>' . $msg['message'] . '</p></div>');
+		    }
+		    else {
 			    echo('<div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button>
-					  <h4>Please take note</h4>
-					  <p>Due to weather, today\'s concert has been cancelled.</p></div>');
-			}
+					  <h4>'. $msg['title'] .'</h4>
+					  <p>' . $msg['message'] . '</p></div>');
+		    }
+	    }
 	?>
     <div class="container marketing">
 
@@ -95,7 +95,7 @@
           <h2>Upcoming Concert</h2>
           <p>
 	          <?
-				$concert = $cncrts->getCurrentConcert();
+				$concert = $homepage->getCurrentConcert();
 								
 				if(!$concert) {
 					echo "<h4>There are no upcoming concerts.</h4>Our concert series is done for the season. Please check back again in early Spring to see our new concert schedule!";
