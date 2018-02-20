@@ -30,7 +30,7 @@ new ProtectedMember();
 			<div class="col-lg-12">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>KCB Members</h1>
+						<h1>Members</h1>
 					</div>
 				</div>
 			</div>
