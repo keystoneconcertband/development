@@ -7,7 +7,7 @@
 		private $kcb;
 
 		public function __construct() {
-			$this->kcb = new KcbBase();
+			$this->setKcb(new KcbBase());
 			$this->setDB(new KCBPublicDb());
 		}
 		
@@ -72,7 +72,7 @@
 						}
 					}
 					catch(Exception $e) {
-						$this->LogError($e->getMessage());
+						$this->getKcb()->LogError($e->getMessage());
 						$this->getDb()->rollBackTransaction();
 						$response = "db_error";
 					}
@@ -88,6 +88,14 @@
 		
 		private function setDb($db) {
         	$this->db = $db;
+    	}
+    	
+		private function getKcb() {
+			return $this->kcb;
+		}
+		
+		private function setKcb($kcb) {
+        	$this->kcb = $kcb;
     	}
 
 		private function validateJoin($joinArray) {

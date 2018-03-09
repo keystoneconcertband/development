@@ -54,8 +54,9 @@
 				      </div>
 				      <div class="modal-body">
 				        <p>Keystone Concert Band<br>
-					        123 Main St.<br>
-					        Mechanicsburg, PA 17055
+							145 E Main Street<br>
+							1st Floor<br>
+							Mechanicsburg, PA 17055
 				        </p>
 				      </div>
 				    </div>

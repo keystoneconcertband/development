@@ -210,44 +210,6 @@
 					return "db_error";
 				}
 			}
-
-			/*
-			// Original logic. Changed on 5/6 since I ran into problems where user could accidently lock themselves out without ever entering an invalid code
-			// by waiting 10 mins between each attempt. 
-			// If not the first time:
-			// 1. If its been less than 10 mins since the last check, don't send a new auth_cd. NOTE: This does not up any invalid count, 
-			//    as the user might have accidently closed the window to enter the auth code.
-			// 2. If greater than 10 mins, update the auth_cd with the new value and send the email.
-
-			if($authCdDb) {
-				$authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60*10;
-				
-				if(date(time()) <= $authCdDtTm) {
-					return "auth_cd_ten_min";					
-				}
-					
-				// Get invalid count before we continue
-				$invCount = $this->getDb()->getInvalidCount($email);
-										
-				// When setting the login code always set it to 0 so user has 3 tries with the code.	
-				if(date(time()) <= strtotime($authCdDb['lst_tran_dt_tm']) + 60*60) {
-					if(!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, strval($invCount + 1), $ipAddress)) {
-						return "db_error";
-					}
-				}
-				else {
-					if(!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
-						return "db_error";
-					}
-				}
-			}
-			else {
-				// Users first time logging in, just insert a new record
-				if(!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
-					return "db_error";
-				}
-			}
-			*/
 			
 			//Email
 			$subject = "Keystone Concert Band Login Code";
