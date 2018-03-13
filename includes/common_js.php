@@ -5,8 +5,3 @@
     <script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/ie10-viewport-bug/workaround.js"></script>
-<script>
-	$('.navbar-lower').affix({
-  offset: {top: 56}
-});
-</script>
