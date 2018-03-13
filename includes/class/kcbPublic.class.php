@@ -129,7 +129,7 @@
 			$playLength = $joinArray["txtPlayLength"];
 			$comments = empty($joinArray["txtComments"]) ? "None provided" : $joinArray["txtComments"];
 		
-			$message = "Booking Request Submitted<br>";
+			$message = "KCB Join Request Submitted<br>";
 			$message .= "<b>Name</b> " . $name . "<br>";
 			$message .= "<b>Phone</b> " . $phone . "<br>";
 			$message .= "<b>Email</b> " . $email . "<br>";
