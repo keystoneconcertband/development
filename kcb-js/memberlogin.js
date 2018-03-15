@@ -61,7 +61,7 @@ $("#memberLogin").click(function () {
 	else if ($("#email").val() && $("#auth_cd").val()) {		
 		$.ajax({
 			type: "GET",
-			url: "includes/memberLogin.php",
+			url: "/membersServer.php",
 			cache: false,
 			data: {email: $("#email").val().trim(), auth_cd: $("#auth_cd").val(), auth_remember: $("#auth_remember").is(':checked')}
 		}).done(function( msg ) {
