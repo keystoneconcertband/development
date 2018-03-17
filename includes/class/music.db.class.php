@@ -26,7 +26,7 @@
 		
 		// Gets the members by instrument
 		public function getMusic() {
-			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, (SELECT DATE(last_played) FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1");
+			return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, (SELECT DATE(last_played) FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1 ORDER BY m.title");
 		}
 
 		public function getMusicRecord($uid) {
