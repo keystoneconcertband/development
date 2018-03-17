@@ -43,11 +43,16 @@
 					<br />
 					You can pick one up for a $15 donation at any of our concerts, or by 
 					making a $20 online donation through our secure link to Pay Pal using the
-					<b>Get a CD today</b> button below. <br />
+					<b>Pay Now</b> button below. <br />
 					<br />
 				</div>
 				<div style="margin-top: 20px;">
-					<a href="#" class="btn btn-primary btn-lg">Get a CD today!</a>
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+						<input type="hidden" name="cmd" value="_s-xclick">
+						<input type="hidden" name="hosted_button_id" value="BAQJH9KMJAAWS">
+						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+					</form>
 				</div>
 			</div>
 		</div>
