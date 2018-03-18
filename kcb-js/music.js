@@ -53,11 +53,11 @@ $(document).ready(function() {
             { "data": "title" },
             { "data": "notes" },
 			{ data: null, render: function ( data, type, row ) {
-				if(data.music_link) {
+				if(data.music_link && data.music_link !== "") {
 					return '<a href="'+data.music_link+'" target="_blank">'+data.music_link+'</a><br />'
 				}
 				else {
-					return "";
+					return '<a href="http://www.youtube.com/results?search_query='+data.title+'" target="_blank">http://www.youtube.com/results?search_query='+data.title+'</a><br />'
 				}
               } 
             },
