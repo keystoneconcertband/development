@@ -9,7 +9,7 @@
 	<? require('includes/common_meta.php');	?>
     <meta name="description" content="Keystone Concert Band is an organization to foster, promote, and increase the musical knowledge and appreciation of the general public by operating and maintaining a concert band and by presenting performances of music.">
 
-    <title>KCB Refresh</title>
+    <title>Keystone Concert Band</title>
 
 	<? require('includes/common_css.php'); ?>
 	
