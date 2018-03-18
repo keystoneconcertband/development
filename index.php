@@ -101,7 +101,7 @@
 					echo "<h4>There are no upcoming concerts.</h4>Our concert series is done for the season. Please check back again in early Spring to see our new concert schedule!";
 				}
 				else {
-					$location = "http://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=14&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
+					$location = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=14&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
 					$today = date("Y-m-d");
 					$begin = date('Y-m-d', strtotime($concert['concertBegin']));
 				
@@ -113,9 +113,9 @@
 					}
 	
 					echo "<h4>" . $begin . " | " . date('g:iA', strtotime($concert['concertBegin'])) . " to " . date('g:iA', strtotime($concert['concertEnd'])) . "</h4>";			
-					echo "<h4><a href='http://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
+					echo "<h4><a href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
 					echo "<img src='" .$location . "' alt='Google Maps location of the concert.' usemap='#map' id='map'>";
-					echo "<map name='map'><area shape='circle' coords='250,80,15' href='http://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank'></map>";
+					echo "<map name='map'><area shape='circle' coords='250,80,15' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank'></map>";
 				}
 			?>
           </p>

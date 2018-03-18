@@ -48,9 +48,9 @@
 					else {
 						foreach ($concerts as $concert) {		
 							$disabled = '';
-							$locationSmall = "http://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=11&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
-							$locationMed = "http://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=13&size=500x300&sensor=false&markers=color:red|" . urlencode($concert['address']);
-							$locationLarge = "http://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=14&size=600x400&sensor=false&markers=color:red|" . urlencode($concert['address']);
+							$locationSmall = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=11&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
+							$locationMed = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=13&size=500x300&sensor=false&markers=color:red|" . urlencode($concert['address']);
+							$locationLarge = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=14&size=600x400&sensor=false&markers=color:red|" . urlencode($concert['address']);
 							$today = date("Y-m-d");
 							$begin = date('Y-m-d', strtotime($concert['concertBegin']));
 							
@@ -85,11 +85,11 @@
 							echo "		<p class='" . $disabled . "'>\n";
 							echo "      <img class='bigMap " . $disabled . "' src='" .$locationLarge . "' alt='Google Maps location of the concert.' usemap='#map' id='map' />\n";
 							echo "      <h3 style='margin-top:0px;'>" . $concert['Title'] . "</h3><h4> " . $begin . " from " . date('g:iA', strtotime($concert['concertBegin'])) . " to " . date('g:iA', strtotime($concert['concertEnd'])) . "</h4>\n";
-							echo "        <a class='" . $disabled . "' href='http://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['address'] . "</a>\n";
+							echo "        <a class='" . $disabled . "' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['address'] . "</a>\n";
 							echo "      </p>\n";								
 							echo "      <img class='medMap " . $disabled . "' src='" .$locationMed . "' alt='Google Maps location of the concert.' usemap='#map' id='map' />\n";
 							echo "      <img class='smallMap " . $disabled . "' src='" .$locationSmall . "' alt='Google Maps location of the concert.' usemap='#map' id='map' />\n";
-							echo "      <map class='" . $disabled . "' name='map'><area shape='circle' coords='250,80,15' href='http://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank'></map>\n";
+							echo "      <map class='" . $disabled . "' name='map'><area shape='circle' coords='250,80,15' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank'></map>\n";
 							echo "      <div class='band-member-notice well well-sm' style='max-width:340px;'>";
 							echo "		  <h4>Band Members: </h4>";
 							echo "			<ul class='list-group'>";
