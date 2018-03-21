@@ -21,16 +21,28 @@
 		
 		// Gets the current member by uid
 		public function getMemberRecord($uid) {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+
 			return $this->getDb()->getMemberRecord($uid);
 		}
 		
 		// Gets the login stats for the website
 		public function getLoginStats() {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+
 			return $this->getDb()->getLoginStats();
 		}
 		
 		// Send text message to the band
 		public function sendTextMessages($message) {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+
 			// Get list of members
 			$activeMembers = $this->getDb()->getActiveMembers();
 			$emailList = "";
@@ -59,14 +71,62 @@
 				return false;
 			}
 		}
+
+		public function addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt) {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+			
+			if($this->getDb()->addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt, $_SESSION["email"])) {
+				return "success";
+			}
+		}
+		
+		public function editHomepageMessage($uid, $title, $message, $message_type, $start_dt, $end_dt) {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+			
+			if($this->getDb()->editHomepageMessage($uid, $title, $message, $message_type, $start_dt, $end_dt, $_SESSION["email"])) {
+				return "success";
+			}
+		}
+				
+		public function getHomepageMessages() {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+			
+			return $this->getDb()->getHomepageMessages();
+		}
+		
+		public function getHomepageMessageRecord($uid) {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+			
+			return $this->getDb()->getHomepageMessageRecord($uid);
+		}
+		
+		public function homepageMessageDateConflictCheck($date) {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+			
+			return $this->getDb()->homepageMessageDateConflictCheck($date);
+		}
 		
 		// Gets the current active members
 		public function getPendingMembers() {
+			if(!$this->validAdmin()) {
+				return "access denied.";
+			}
+
 			return $this->getDb()->getPendingMembers();
 		}
 		
 		public function addPendingMember($uid, $mbrArray) {
-			if(!isset($_SESSION['office'])) {
+			if(!$this->validAdmin()) {
 				return "access denied.";
 			}
 
@@ -122,7 +182,7 @@
 		}
 		
 		public function removeMember($uid, $deleteEmailAddress) {
-			if(!isset($_SESSION['office'])) {
+			if(!$this->validAdmin()) {
 				return "access denied.";
 			}
 

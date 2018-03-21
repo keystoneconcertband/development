@@ -57,7 +57,7 @@
 			<li class="dropdown <? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php" || $_SERVER['PHP_SELF'] == "/members/loginStats.php") { ?>active"<?} else { ?> " <? } ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<!--<li <? if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { ?>class="active"<?}?>><a href="/members/homepageMessage.php">Homepage Message</a></li>-->
+					<li <? if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { ?>class="active"<?}?>><a href="/members/homepageMessage.php">Homepage Message</a></li>
 					<li <? if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { ?>class="active"<?}?>><a href="/members/loginStats.php">Login Stats</a></li>
 					<!--<li <? if ($_SERVER['PHP_SELF'] == "/members/manageConcerts.php") { ?>class="active"<?}?>><a href="/members/manageConcerts.php">Manage Concerts</a></li>-->
 					<li <? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { ?>class="active"<?}?>><a href="/members/messageMembers.php">Message Members</a></li>

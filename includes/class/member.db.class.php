@@ -343,6 +343,50 @@
 			return $this->getDb()->query("UPDATE KCB_instrument SET lst_tran_dt_tm=now(), lst_updtd_by = :updateUser WHERE member_uid = :uid");
 		}
 
+
+		/* Homepage Messages */
+		public function addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt, $updateUser) {
+			$this->getDb()->bind("title", $title);
+			$this->getDb()->bind("message", $message);
+			$this->getDb()->bind("message_type", $message_type);
+			$this->getDb()->bind("start_dt", date("Y-m-d H:i:s", strtotime($start_dt)));
+			$this->getDb()->bind("end_dt", date("Y-m-d H:i:s", strtotime($end_dt)));
+			$this->getDb()->bind("updateUser1", $updateUser);
+			$this->getDb()->bind("updateUser2", $updateUser);
+			
+			return $this->getDb()->query("INSERT INTO KCB_homepage_messages(title, message, message_type, start_dt, end_dt, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:title, :message, :message_type, :start_dt, :end_dt, now(), :updateUser1, now(), :updateUser2)");
+		}
+		
+		public function editHomepageMessage($uid, $title, $message, $message_type, $start_dt, $end_dt, $updateUser) {
+			$this->getDb()->bind("uid", $uid);
+			$this->getDb()->bind("title", $title);
+			$this->getDb()->bind("message", $message);
+			$this->getDb()->bind("message_type", $message_type);
+			$this->getDb()->bind("start_dt", date("Y-m-d H:i:s", strtotime($start_dt)));
+			$this->getDb()->bind("end_dt", date("Y-m-d H:i:s", strtotime($end_dt)));
+			$this->getDb()->bind("updateUser", $updateUser);
+			
+			return $this->getDb()->query("UPDATE KCB_homepage_messages SET title=:title, message=:message, message_type=:message_type, start_dt=:start_dt, end_dt=:end_dt, lst_tran_dt_tm=now(), lst_updtd_by=:updateUser WHERE uid=:uid");
+		}
+				
+		public function getHomepageMessageRecord($uid) {
+			$this->getDb()->bind("uid", $uid);
+			return $this->getDb()->row("SELECT title, message, message_type, DATE(start_dt) as start_dt, DATE(end_dt) as end_dt FROM KCB_homepage_messages WHERE uid=:uid");
+		}		
+
+		public function getHomepageMessages() {			
+			return $this->getDb()->query("SELECT uid, title, message, message_type, DATE(start_dt) as start_dt, DATE(end_dt) as end_dt FROM KCB_homepage_messages");
+		}		
+
+		/* This could be better. This will only get the values that conflict with a current date range, but will miss
+			anything outside it (e.g. if 1/10-1/12 exitst, and the user now chooses 1/9-1/13, this won't find anything wrong with that */
+		public function homepageMessageDateConflictCheck($date) {
+			$this->getDb()->bind("date1", date("Y-m-d H:i:s", strtotime($date)));
+			$this->getDb()->bind("date2", date("Y-m-d H:i:s", strtotime($date)));
+
+			return $this->getDb()->resultCount("SELECT uid FROM KCB_homepage_messages WHERE :date1 > start_dt AND :date2 < end_dt");
+		}		
+
 		/* PRIVATE FUNCTIONS */
 		private function getDb() {
 			return $this->db;
