@@ -27,7 +27,7 @@
 		// Gets the members by instrument
 		public function getMembers($instrument) {
 			$this->getDb()->bind("instrument", $instrument);
-			return $this->getDb()->query("SELECT firstName, lastName, displayFullName FROM KCB_Members m JOIN KCB_instrument i on m.UID = i.member_uid WHERE i.instrument = :instrument AND disabled = 0 ORDER BY lastName, firstName");
+			return $this->getDb()->query("SELECT firstName, lastName, displayFullName FROM KCB_Members m JOIN KCB_instrument i on m.UID = i.member_uid WHERE i.instrument = :instrument AND disabled = 0 AND accountType <> 3 ORDER BY lastName, firstName");
 		}
 		
 		// Gets the member information by email address
