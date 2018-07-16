@@ -253,7 +253,8 @@
 					$header = 'From: '. $value . "\r\n" .
 						'X-Mailer: PHP/' . phpversion();
 					try {
-						mail('majordomo@keystoneconcertband.com', '', 'subscribe members@keystoneconcertband.com ' . $value, $header);
+						mail('member-request@keystoneconcertband.com', '', 'subscribe nodigest address=' . $value, $header);
+
 				    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
 					catch(Exception $e) {
@@ -270,7 +271,7 @@
 						$headers = 'From: ' . $value . "\r\n" .
 							'X-Mailer: PHP/' . phpversion();
 						try {
-							mail('majordomo@keystoneconcertband.com', '', 'unsubscribe members@keystoneconcertband.com ' . $value, $headers);	
+							mail('member-request@keystoneconcertband.com', '', 'unsubscribe address=' . $value, $header);
 							
 							if($delEmail) {
 								$result = $this->getDb()->delEmail($value, $uid);
