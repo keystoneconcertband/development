@@ -7,6 +7,7 @@
 <html lang="en">
   <head>
 	<? require('includes/common_meta.php');	?>
+	<meta name="temp" content="This is a temporary tag">
     <meta name="description" content="Keystone Concert Band is an organization to foster, promote, and increase the musical knowledge and appreciation of the general public by operating and maintaining a concert band and by presenting performances of music.">
 
     <title>Keystone Concert Band</title>
