@@ -131,7 +131,7 @@
 						</p>
 						<form class="form-horizontal" id="frmLogin" name="frmLogin">
 						    <div class="form-group">
-						      <label for="inputName" class="col-lg-3 control-label">Email Address</label>
+						      <label for="email" class="col-lg-3 control-label">Email Address</label>
 						      <div class="col-lg-9">
 						        <input type="text" class="form-control" id="email" placeholder="Email Address">
 						      </div>
@@ -143,7 +143,8 @@
 									<input type="checkbox" id="auth_remember" checked="checked"> Remember me (do not use on public computers)
 									<p class="help-block">This is the first time this account is being accessed from this computer (or your
 									    cookies have been deleted since the last time you logged in.) You have received 
-									    an email with a 6-digit code. <b>Please enter this code in the text box above</b>.
+									    a text (or email if you don't have texting enabled) with a 6-digit code. 
+									    <b>Please enter this code in the text box above</b>.
 									</p>
 								</div>
 							</div>

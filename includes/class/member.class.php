@@ -4,6 +4,7 @@
  	include_once("member.db.class.php");
  	 	
 	class Member {
+		private $MAX_EXPIRE = 30;
 		private $kcbCookie = "KCB_Cookie";
 		private $db;
 		private $kcb;
@@ -41,14 +42,15 @@
 			if($response == "valid") {
 				// See if auth cookie exists for the user.
 				if (!isset($_COOKIE[$this->kcbCookie])) {
-					// Check whether they are logging in with the auth cd or not
-					$response = $this->sendAuthEmail($email);
+
+					// If sendText is true (default), then send a text based upon their email account.
+					$response = $this->sendAuthRequest($email);
 				}
 				else {
 					// Validate that the cookie auth code matches what is in the database
 					if(!$this->isValidAuthCookie($email)) {
 						// Send auth email, user's cookie is bad
-						if($this->sendAuthEmail($email) <> 'db_error') {						
+						if($this->sendAuthRequest($email) <> 'db_error') {						
 							$response = "auth_failed_invalid_cookie";
 						}
 						else {
@@ -80,11 +82,11 @@
 
 				// See if auth_cd matches
 				if($auth_cd == $authCdDb['auth_cd']) {
-					// See if code is from within the last 10 mins
-					$authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60*10;
+					// See if code is from within the last $MAX_EXPIRE mins
+					$authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * $this->MAX_EXPIRE;
 					
 					if(date(time()) > $authCdDtTm) {
-						if($this->sendAuthEmail($email) <> 'db_error') {
+						if($this->sendAuthRequest($email) <> 'db_error') {
 							$response = "auth_old";
 						}
 						else {
@@ -182,55 +184,98 @@
 			
 			return $response;
 		}
-						
+
+		// If user has a text/carrier entered, send as text. If not, send as email.
+		private function sendAuthRequest($email) {
+			$member = $this->getDb()->getMember($email);
+			
+			if(isset($member['text']) && $member['text'] !== "") {
+				// User has texting enabled, send auth code as text				
+				$six_digit_random_number = mt_rand(100000, 999999);
+				$response = $this->authCodeLogic($email, $six_digit_random_number);
+				
+				// If valid
+				if($response == "auth_required_no_cookie") {
+					$message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . $this->MAX_EXPIRE . " minutes.";
+					$textAddress = $member['text'] . "@" . $member['carrier'];			
+	
+					if(!$this->getKcb()->sendEmail($textAddress, $message, "")) {
+						$response = "Unable to send login code email. Please try again later.";
+					}
+				}
+			}
+			else {
+				// User doesn't have a text address. Send them an email.
+				$response = $this->sendAuthEmail($email, $member);
+			}
+
+			return $response;					
+		}
+				
 		// Send Auth Emails
-		private function sendAuthEmail($email) {
-			$response = "auth_required_no_cookie";					
+		private function sendAuthEmail($email, $member) {
 			$six_digit_random_number = mt_rand(100000, 999999);
+			$response = $this->authCodeLogic($email, $six_digit_random_number);
+			
+			// If valid
+			if($response == "auth_required_no_cookie") {
+				// Add $MAX_EXPIRE time to the current time to show in the email when the code is valid until.
+				$date = new DateTime(date('Y-m-d h:i:sa'));
+				$dateInterval = "PT" . $this->MAX_EXPIRE . "M";
+				$date->add(new DateInterval($dateInterval));
+
+				$subject = "Keystone Concert Band Login Code";
+				$message = "Hi <b>" . $member['firstName'] . "</b>,<br><br>";
+				$message .= "A login code has been requested to login the members section of www.keystoneconcertband.com using your email address, <b>";
+				$message .= $email;
+				$message .= "</b>. To continue on the website, you must enter the login code provided below:<br><b>";
+				$message .= $six_digit_random_number . "</b><br><br>";
+				$message .= "Please note, this code is only valid until " . $date->format('Y-m-d h:ia') . ", and you will have only 3 tries to enter it successfully. ";
+				$message .= "If you enter an incorrect code more than 3 times within an hour, your account will be locked out for 1 hour.<br><br>";
+				$message .= "If you did not try to login the website recently, please delete this email as someone else tried to use your email address.\r\n\r\n";
+				$message .= "Thanks,<br>";
+				$message .= "Jonathan Gillette";
+				
+				if(!$this->getKcb()->sendEmail($email, $message, $subject)) {
+					$response = "Unable to send login code email. Please try again later.";
+				}
+			}
+			else {
+				return "response is " . $response;
+			}
+			
+			return $response;					
+		}
+		
+		private function authCodeLogic($email, $six_digit_random_number) {
+			$response = "auth_required_no_cookie";					
 			$ipAddress = $this->getIpAddress(); 
 			$member = $this->getDb()->getMember($email);
 			$authCdDb = $this->getDb()->getAuthCd($email);
 			
 			if($authCdDb) {
-				$authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60*10;
+				$authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * $this->MAX_EXPIRE;
 				
-				// Don't send another email if its been less than 10 mins
+				// Don't send another email if its been less than $MAX_EXPIRE mins
 				if(date(time()) <= $authCdDtTm) {
-					return "auth_cd_ten_min";					
+					$response = "auth_cd_not_expired";					
 				}
 				else {
 					if(!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
-						return "db_error";
+						$response = "db_error";
 					}
 				}
 			}
 			else {
 				// Users first time logging in, just insert a new record
 				if(!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
-					return "db_error";
+					$response = "db_error";
 				}
 			}
 			
-			//Email
-			$subject = "Keystone Concert Band Login Code";
-			$message = "Hi <b>" . $member['firstName'] . "</b>,<br><br>";
-			$message .= "A login code has been requested to login the members section of www.keystoneconcertband.com using your email address, <b>";
-			$message .= $email;
-			$message .= "</b>. To continue on the website, you must enter the login code provided below:<br><b>";
-			$message .= $six_digit_random_number . "</b><br><br>";
-			$message .= "Please note, this code is only valid for 10 minutes, and you will have only 3 tries to enter it successfully. ";
-			$message .= "If you enter an incorrect code more than 3 times within an hour, your account will be locked out for 1 hour.<br><br>";
-			$message .= "If you did not try to login the website recently, please delete this email as someone else tried to use your email address.\r\n\r\n";
-			$message .= "Thanks,<br>";
-			$message .= "Jonathan Gillette";
-			
-			if(!$this->getKcb()->sendEmail($email, $message, $subject)) {
-				$response = "Unable to send login code email. Please try again later.";
-			}
-
-			return $response;					
+			return $response;
 		}
-		
+
 		/* Save cookie to the users system */
 		private function saveCookie($email, $auth_cd) {
 			// Set cookie with information and expiration of one year

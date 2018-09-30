@@ -38,7 +38,10 @@ $("#memberLogin").click(function () {
 				alert("Email address is required for login.");
 				$("#email").focus();
 			}
-			else if(msg == "auth_required_no_cookie" || msg == "auth_cd_ten_min") {
+			else if(msg == "auth_required_no_cookie") {
+				$("#div_auth").show();
+			}
+			else if(msg == "auth_cd_not_expired") {
 				$("#div_auth").show();
 			}
 			else if(msg == "auth_failed_invalid_cookie") {
@@ -79,7 +82,7 @@ $("#memberLogin").click(function () {
 				$("#email").focus();
 			}
 			else if(msg == "auth_old") {
-				alert("That Auth Code has expired. A new auth code has been emailed.");
+				alert("That Auth Code has expired. A new auth code has been sent.");
 				$("#auth_cd").val("");
 				$("#auth_cd").focus();
 			}
