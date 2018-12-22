@@ -1,1 +1,2 @@
-Development for Keystone Concert Band Website
+# Keystone Concert Band
+Development Repo for KCB Website

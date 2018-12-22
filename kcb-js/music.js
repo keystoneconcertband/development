@@ -157,6 +157,8 @@ function submitConcert() {
         data: $("#form_concert").serialize() + '&type=addConcert',
         success: function(text){
             if (text === true){
+	            // Reset concert data so if entering multiple concerts, there aren't duplicates
+				$("#concert_uids").val("");
                 formSuccess("Concert dates were successfully updated.");
             } else {
                 formError(text);
