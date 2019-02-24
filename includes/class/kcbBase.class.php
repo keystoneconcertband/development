@@ -22,11 +22,13 @@
 	        $this->log->write($message);			
 		}
 		
-		public function sendEmail($toAddress, $message, $title) {
+		public function sendEmail($toAddress, $message, $title, $html = true) {
 			try {
-				// To send HTML mail, the Content-type header must be set
-				$headers[] = 'MIME-Version: 1.0';
-				$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+				if($html) {
+					// To send HTML mail, the Content-type header must be set
+					$headers[] = 'MIME-Version: 1.0';
+					$headers[] = 'Content-type: text/html; charset=iso-8859-1';					
+				}
 				
 				// Additional headers
 				$headers[] = 'From: KCB Website <web@keystoneconcertband.com>';
