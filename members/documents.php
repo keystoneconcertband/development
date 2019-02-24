@@ -209,9 +209,9 @@ new ProtectedMember();
 	</script>
 	<script type="text/javascript">
 		var office = "<?=$_SESSION['office']?>";
-		var sort = 1;
+		var sort = 0;
 		if(office) {
-			sort = 2;
+			sort = 1;
 		}
 	</script>
 	<script type="text/javascript" src="/dataTables-1.10.15/datatables.min.js"></script>
