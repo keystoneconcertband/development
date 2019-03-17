@@ -48,9 +48,9 @@
 					else {
 						foreach ($concerts as $concert) {		
 							$disabled = '';
-							$locationSmall = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=11&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
-							$locationMed = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=13&size=500x300&sensor=false&markers=color:red|" . urlencode($concert['address']);
-							$locationLarge = "https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($concert['address']) ."&zoom=14&size=600x400&sensor=false&markers=color:red|" . urlencode($concert['address']);
+							$locationSmall = "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDIg8S7UeGSot2PtUc7Ufd7pRitbNnl4w4&center=" . urlencode($concert['address']) ."&zoom=11&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
+							$locationMed = "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDIg8S7UeGSot2PtUc7Ufd7pRitbNnl4w4&center=" . urlencode($concert['address']) ."&zoom=13&size=500x300&sensor=false&markers=color:red|" . urlencode($concert['address']);
+							$locationLarge = "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDIg8S7UeGSot2PtUc7Ufd7pRitbNnl4w4&center=" . urlencode($concert['address']) ."&zoom=14&size=600x400&sensor=false&markers=color:red|" . urlencode($concert['address']);
 							$today = date("Y-m-d");
 							$begin = date('Y-m-d', strtotime($concert['concertBegin']));
 							
