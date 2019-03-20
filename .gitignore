@@ -2,3 +2,5 @@
 *.txt
 includes/class/settings.ini.php
 .DS_Store
+*.docx
+*.pdf

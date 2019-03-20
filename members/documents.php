@@ -1,6 +1,7 @@
 <?php
 include_once '../includes/class/protectedMember.class.php';
 new ProtectedMember();
+$membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 ?>
 
 <!DOCTYPE html>
@@ -40,9 +41,12 @@ new ProtectedMember();
 				</div>
 				<div class="row form-group">
 					<div class="alert alert-info">
-					<span class="glyphicon glyphicon-info-sign"></span> <strong>Please be sure to review both the
-					  <a href="documents_perm/byLaws as of 2003_Amended March 2019.pdf" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws</a>, and the 
-					  <a href="documents_perm/uniform.pdf" target="_blank" style="text-decoration: underline; color: yellow">uniform dress code for concerts</a>.
+					<span class="glyphicon glyphicon-info-sign"></span> <strong>Please review both the
+					  <a href="https://docs.google.com/viewer?url=<? echo $membersPathURL ?>/documents_perm/byLaws as of 2003_Amended March 2019.pdf" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws</a>, and the 
+					  <a href="https://docs.google.com/viewer?url=<? echo $membersPathURL ?>/documents_perm/uniform.pdf" target="_blank" style="text-decoration: underline; color: yellow">uniform dress code for concerts</a>.
+					  <? if(isset($_SESSION['office'])) { ?>
+ | <a href="https://docs.google.com/viewer?url=<? echo $membersPathURL ?>/documents_perm/byLaws as of 2003_Amended March 2019.docx" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws - Word Document</a>.
+					  <? } ?>
 						</strong>
 					</div>
 				</div>
