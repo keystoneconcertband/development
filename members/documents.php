@@ -226,7 +226,7 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 	<script type="text/javascript" src="/jquery.fileupload-9.20.0/js/jquery.fileupload-process.js"></script>
 	<script type="text/javascript" src="/jquery.fileupload-9.20.0/js/jquery.fileupload-validate.js"></script>
 	<script type="text/javascript" src="/jquery.fileupload-9.20.0/js/jquery.fileupload-ui.js"></script>
-	<script type="text/javascript" src="/kcb-js/documents.js"></script>
+	<script type="text/javascript" src="/kcb-js/documents.js?v=1"></script>
 	</script>
   </body>
 </html>
