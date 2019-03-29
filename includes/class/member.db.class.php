@@ -186,7 +186,7 @@
 				$this->getDb()->bind('displayFullName', "0");			
 			}
 
-			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(firstName, lastName, displayFullName, text, carrier, estbd_by, estbd_dt_tm, lst_tran_dt_tm, lst_updtd_by) VALUES (:firstName, :lastName, :displayFullName, :text, :carrier, now(), :updateUser, now(), :updateUser2)");
+			$retVal = $this->getDb()->query("INSERT INTO KCB_Members(firstName, lastName, displayFullName, text, carrier, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES (:firstName, :lastName, :displayFullName, :text, :carrier, now(), :updateUser, now(), :updateUser2)");
 			
 			if($retVal) {
 				$uid = $this->getDb()->lastInsertId();
