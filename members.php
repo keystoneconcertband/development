@@ -14,7 +14,26 @@
   </head>
 
   <body>
-
+	<script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '129894350764',
+	      cookie     : true,
+	      xfbml      : true,
+	      version    : 'v3.3'
+	    });
+	      
+	    FB.AppEvents.logPageView();   
+	  };
+	
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "https://connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	</script>
 	<? require 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
@@ -126,8 +145,13 @@
 						<h4 class="modal-title">KCB Member Site Login</h4>
 					</div>
 					<div class="modal-body">
-						<p>Access to the member site requires a valid KCB member email address and will
-							require additional authentication if not yet authenticated on this computer.
+						<p>Access to the member site requires that you be an active member with an email address. 
+							You can login to the site with the email address you have on file with us or use
+							the Facebook Login button. <a href="privacy.php">Review the privacy page for what 
+							information we require from Facebook for authentication.</a>
+							<br><br>
+							If you login with the email address and it's your first time, you'll be prompted to provide 
+							additional authentication to access the site.
 						</p>
 						<form class="form-horizontal" id="frmLogin" name="frmLogin">
 						    <div class="form-group">
@@ -147,6 +171,18 @@
 									    <b>Please enter this code in the text box above</b>.
 									</p>
 								</div>
+							</div>
+							<div class="form-group">
+								<label for="fb" class="col-lg-3 control-label"></label>
+						      <div class="col-lg-9">
+							  	<strong> -- OR -- </strong>
+						      </div>
+							</div>
+							<div class="form-group">
+								<label for="fb" class="col-lg-3 control-label"></label>
+						      <div class="col-lg-9">
+								<div id="fb" class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false" data-onlogin="checkLoginState()" data-scope="public_profile,email"></div>
+						      </div>
 							</div>
 						</form>
 					</div>

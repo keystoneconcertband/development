@@ -6,6 +6,7 @@
 	class Member {
 		private $MAX_EXPIRE = 30;
 		private $kcbCookie = "KCB_Cookie";
+		private $fbAuthCookie = "fbsr_129894350764";
 		private $db;
 		private $kcb;
 		
@@ -64,6 +65,28 @@
 						// Save email address since user's session is now valid to continue.
 						$this->saveSession($email, $this->getDb()->getAuthCdGuid($email, $this->getAuthCdFromCookie()));
 					}
+				}
+			}
+			
+			$this->getDb()->logLogin($email, $response);
+			return $response;
+		}
+		
+		// Facebook login process.
+		public function facebookLogin($email, $fbId) {
+			$response = $this->validateFbAuth();
+			
+			if($response == "success") {
+				$response = $this->isValidUser($email);
+				
+				if($response == "valid") {
+					$response = "fb_valid";
+					
+					// Update login count and last login date.
+					$this->getDb()->updateLastLogin($email);
+	
+					// Save email address since user's session is now valid to continue.
+					$this->saveSession($email, $fbId);
 				}
 			}
 			
@@ -351,6 +374,46 @@
 			$_SESSION['office'] = $member['office'];
 			$_SESSION['firstName'] = $member['firstName'];
 			$_SESSION['lastName'] = $member['lastName'];
+		}
+		
+		private function validateFbAuth() {
+			if(isset($_COOKIE[$this->fbAuthCookie])) {
+				$fbCookie = $_COOKIE[$this->fbAuthCookie];
+				list($encoded_sig, $payload) = explode('.', $fbCookie, 2); 
+
+				$this->settings = parse_ini_file("settings.ini.php");
+				$secret = $this->settings["fbSecret"];
+								
+				// decode the data
+				$sig = $this->base64_url_decode($encoded_sig);
+
+				// Data: https://developers.facebook.com/docs/reference/login/signed-request
+				$data = json_decode($this->base64_url_decode($payload), true);
+				
+				// confirm the signature
+				$expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
+				if ($sig !== $expected_sig) {
+					return "sig_not_match";
+				}
+				else {
+					// Verify that the issued_at + 10 mins is > now					
+					$inTenMinutes = $data['issued_at'] + 10 * 60;
+					
+					if($inTenMinutes > time()) {
+						return "success";
+					}
+					else {
+						return "fb_session_hijack";
+					}
+				}
+			}
+			else {
+				return "no_fb_cookie";
+			}
+		}
+		
+		public function base64_url_decode($input) {
+			return base64_decode(strtr($input, '-_', '+/'));
 		}
 	}
 ?>

@@ -105,11 +105,59 @@ $("#memberLogin").click(function () {
 	}
 });
 
-/* Fix enter key not properly submitting form */
 $(function(){
-  $('.modal-content').keypress(function(e) {
-    if(e.which == 13) {
-      $("#memberLogin").click();
-    }
-  })
+	/* Fix enter key not properly submitting form */
+	$('.modal-content').keypress(function(e) {
+		if(e.which == 13) {
+		  $("#memberLogin").click();
+		}
+	})
 });
+
+function statusChangeCallback(response) {
+	if(response.status == "connected") {
+		console.log("Connected!");
+		FB.api('/me', {fields: 'name, email'}, function(response) {
+		    console.log(JSON.stringify(response));			
+			$.ajax({
+				type: "GET",
+				url: "/membersServer.php",
+				cache: false,
+				data: {email: response.email, fb_id: response.id}
+			}).done(function( msg ) {
+				if (msg == "fb_valid") {
+					window.location = "members/index.php";
+				}
+				else if (msg == "valid") {
+					alert("Something terribly went wrong. This status is not valid. Please contact web@keystoneconcertband.com for help!");
+				}
+				else if (msg == "sig_not_match") {
+					alert("Please retry. Validation of the facebook authentication failed.");
+				}
+				else if (msg == "fb_session_hijack") {
+					alert("Please retry. Your facebook session cookie has expired.");
+				}
+				else if (msg == "no_fb_cookie") {
+					alert("Please retry. You are missing the facebook cookie. Re-authenticating usually fixes it.");
+				}
+				else if(msg == "invalid") {
+					alert("Sorry that email address is not in our system. You must be an active member to login.");
+					$("#email").val("");
+					$("#email").focus();
+				}
+				else if(msg == "db_error") {
+					alert("Oops! We had a problem communicating with the database. Please try again later.");
+				}
+				else {
+					alert("Unable to validate facebook login. Msg: " + msg);
+				}
+			});
+		});
+	}
+}
+
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
