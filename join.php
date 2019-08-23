@@ -69,7 +69,7 @@
 					<li><strong>Does it cost anything to join?</strong><br>
 					No. We are a non-profit organization and rely fully on donations and fundraisers. 
 					We require no dues or fees. You will be required to buy a KCB shirt to play at our concerts 
-					at a discounted rate ($10.00). We also have one or two fundraisers each year, but no one is required to participate.
+					at a rate of $17.00. We also have one or two fundraisers each year, but no one is required to participate.
 					</li>
 					<li><strong>Do I have to audition to join?</strong><br>
 					No, but we 	do like for you to contact us via the form below. Let us know what your past experience has been.
