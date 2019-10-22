@@ -107,7 +107,7 @@
 					
 					if($uid !== 0) {
 						if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
-							if($this->updateEmails($uid, $email, true)) {
+							if($this->updateEmails($uid, $email, true, false)) {
 								if($this->updateInstruments($uid, $instrument)) {
 									$this->getDb()->executeTransaction();							
 								}
@@ -165,7 +165,7 @@
 									
 					if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
 						if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
-							if($this->updateEmails($uid, $email, true)) {
+							if($this->updateEmails($uid, $email, true, false)) {
 								if($this->updateInstruments($uid, $instrument)) {
 									$this->getDb()->executeTransaction();							
 								}
@@ -222,7 +222,7 @@
 									
 					if($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
 						if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
-							if($this->updateEmails($uid, $email, true)) {
+							if($this->updateEmails($uid, $email, false, true)) {
 								if($this->updateInstruments($uid, $instrument)) {
 									$this->getDb()->executeTransaction();							
 								}
@@ -268,7 +268,7 @@
 					$this->getDb()->beginTransaction();
 					
 					if($this->getDb()->removeMember($uid, $updateUser)) {
-						if($this->updateEmails($uid, array(), $deleteEmailAddress)) {
+						if($this->updateEmails($uid, array(), $deleteEmailAddress, false)) {
 							$this->getDb()->executeTransaction();							
 						}
 						else {
@@ -307,7 +307,7 @@
 				}
 
 				// Add/remove any emails the user might have changed since last time.
-				$this->updateEmails($uid, $mbrArray['email'], false);
+				$this->updateEmails($uid, $mbrArray['email'], false, false);
 
 
 				// If user had any instruments, update their timestamps
@@ -334,10 +334,19 @@
 			return $upsertValue;
 		}
 		
-    	private function updateEmails($uid, $emailArray, $delEmail) {
+		// TEST PENDING MEMBERS
+    	private function updateEmails($uid, $emailArray, $delEmail, $pendingUser) {
+	    	// 
+	    	// URL for help with commands to mailmain: https://wiki.list.org/DOC/Email%20commands%20quick%20reference
+	    	//
 			$result = true;					
 			$emails = $this->getDb()->getEmailAddresses($uid);
-					
+
+            // Email headers
+            $notificationHeader[] = 'From: KCB Website <web@keystoneconcertband.com>';
+            $notificationHeader[] = 'Reply-To: web@keystoneconcertband.com';
+            $notificationHeader[] = 'X-Mailer: PHP/' . phpversion();
+
 			// Convert array of arrays to single array this can handle	
 			$currEmails = array();
 			foreach($emails as $email) {
@@ -347,39 +356,76 @@
 			}
 			
 			$newEmails = array();
-			foreach($emailArray as $eml) {
-				if($eml !== '') {				
-					$newEmails[] = $eml;
+			foreach($emailArray as $value) {
+				if($value !== '') {
+					// Store email address in array		
+					$newEmails[] = $value;
+
+					// Whatever is passed in for pending users needs to be added to the listserv.
+					// Otherwise if the user changed nothing, it wouldn't be added since it was already in the 
+					// database from their initial inquiry.					
+					if($pendingUser) {
+						try {
+				            // Email headers
+							unset($headerPend);
+				            $headerPend[] = 'From: ' . $value;
+				            $headerPend[] = 'X-Mailer: PHP/' . phpversion();
+							$subscribeBody = "subscribe KCBPassword nodigest";
+
+							mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerPend));
+							mail('web@keystoneconcerband.com','KCB Email Update','(pend) Add email: ' . $value, implode("\r\n", $notificationHeader));
+						}
+						catch(Exception $e) {
+							$this->getKcb()->LogError($e->getMessage());
+							return false;
+						}
+					}
 				}
 			}
-						
-			// Populate arrays with differences
-			$emailsToAdd = array_diff($newEmails, $currEmails);
-			$emailsToDel = array_diff($currEmails, $newEmails);
-				
-			foreach ($emailsToAdd as $value) {
-				if($value !== "") {
-					$header = 'From: '. $value . "\r\n" .
-						'X-Mailer: PHP/' . phpversion();
-					try {
-						mail('majordomo@keystoneconcertband.com', '', 'subscribe members@keystoneconcertband.com ' . $value, $header);
-				    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
-					}
-					catch(Exception $e) {
-						$this->getKcb()->LogError($e->getMessage());
-						$result = false;
-					}
-			    }
+
+			// No need to run if we had a failure above...
+			if($result) {
+				// Populate arrays with differences
+				$emailsToAdd = array_diff($newEmails, $currEmails);
+				$emailsToDel = array_diff($currEmails, $newEmails);
+					
+				foreach ($emailsToAdd as $value) {
+					if($value !== "") {
+			            // Email headers
+						unset($headerAdd);
+			            $headerAdd[] = 'From: ' . $value;
+			            $headerAdd[] = 'X-Mailer: PHP/' . phpversion();
+			            $subscribeBody = "subscribe KCBPassword nodigest";
+			            
+						try {
+							// Pending users were added above, so no need to re-add again.
+							if(!$pendingUser) {
+								mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerAdd));
+								mail('web@keystoneconcerband.com','KCB Email Update','Add email: ' . $value, implode("\r\n", $notificationHeader));
+							}
+					    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
+						}
+						catch(Exception $e) {
+							$this->getKcb()->LogError($e->getMessage());
+							return false;
+						}
+				    }
+				}
 			}
-			
+
 			// No need to run if we had a failure above...
 			if($result) {
 				foreach ($emailsToDel as $value) {
 					if($value !== "") {
-						$headers = 'From: ' . $value . "\r\n" .
-							'X-Mailer: PHP/' . phpversion();
+			            // Email headers
+						unset($headerDel);
+			            $headerDel[] = 'From: ' . $value;
+			            $headerDel[] = 'X-Mailer: PHP/' . phpversion();
+						$unsubscribeBody = "unsubscribe KCBPassword";
+			            
 						try {
-							mail('majordomo@keystoneconcertband.com', '', 'unsubscribe members@keystoneconcertband.com ' . $value, $headers);	
+							mail('members-request@keystoneconcertband.com', '', $unsubscribeBody, implode("\r\n", $headerDel));
+							mail('web@keystoneconcerband.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
 							
 							if($delEmail) {
 								$result = $this->getDb()->delEmail($value, $uid);
@@ -390,7 +436,7 @@
 						}
 						catch(Exception $e) {
 							$this->getKcb()->LogError($e->getMessage());
-							$result = false;
+							return false;
 						}
 				    }
 				}
