@@ -1,0 +1,5 @@
+User-Agent: *
+Disallow: /awstats/
+#Begin Attracta SEO Tools Sitemap. Do not remove
+sitemap: http://cdn.attracta.com/sitemap/5582075.xml.gz
+#End Attracta SEO Tools Sitemap. Do not remove
