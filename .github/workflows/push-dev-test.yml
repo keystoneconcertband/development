@@ -12,5 +12,6 @@ jobs:
         FTP_SERVER: ftp.jonathangillette.net
         FTP_USERNAME: ftp_jonathan@jonathangillette.net
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD_PROD }}
+        REMOTE_DIR: keystoneconcertband.com
         ARGS: --delete --dry-run --no-empty-dirs --exclude-glob=.git/* --exclude-glob=.github/*
         # --delete arg will delete files on the server if you've deleted them in git
