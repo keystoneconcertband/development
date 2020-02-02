@@ -11,6 +11,6 @@ jobs:
       env:
         FTP_SERVER: ftp.jonathangillette.net
         FTP_USERNAME: kcbdev@dev.keystoneconcertband.com
-        FTP_PASSWORD_DEV: ${{ secrets.FTP_PASSWORD_DEV }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD_DEV }}
         ARGS: --delete --dry-run
         # --delete arg will delete files on the server if you've deleted them in git
