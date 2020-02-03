@@ -198,7 +198,7 @@
 	</div> <!-- /container -->
 
 	<? require 'includes/common_js.php'; ?>
-	<script src="kcb-js/memberlogin.js"></script>
+	<script src="kcb-js/memberlogin-20190707.js"></script>
   </body>
 </html>
 <?
