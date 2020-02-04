@@ -38,8 +38,9 @@
 				<div class="page-header">
 					<h2>Concert Schedule</h2>
 				</div>
-
+<!--
 				<div class='alert alert-info'><strong>More concerts still yet to come!</strong><br />Continue to check back again throughout the season to see any additional concerts added to the lineup!</div>
+-->
 				<?
 					$rowNbr = 1;
 					$concerts = $cncrts->getConcertSchedule();
