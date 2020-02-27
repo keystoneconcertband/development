@@ -27,8 +27,8 @@ $use_auth = true;
 // Generate secure password hash - https://tinyfilemanager.github.io/docs/pwd.html
 // ==> NOTE: These user's passwords are not used within this modified program. <==
 $auth_users = array(
-    'admin' => '$2y$10$/K.hjNr84lLNDt8fTXjoI.DBp6PpeyoJ.mGwrrLuCZfAwfSAGqhOW',
-    'user' => '$2y$10$Fg6Dz8oH9fPoZ2jJan5tZuv6Z4Kp7avtQ9bDfrdRntXtPeiMAZyGO'
+    'admin' => '',
+    'user' => ''
 );
 
 // Readonly users 
@@ -60,7 +60,7 @@ $root_path = $_SERVER['DOCUMENT_ROOT'] .'/members/documents';
 
 // Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
 // Will not working if $root_path will be outside of server document root
-$root_url = '';
+$root_url = '/members/documents';
 
 // Server hostname. Can set manually if wrong
 $http_host = $_SERVER['HTTP_HOST'];
@@ -256,7 +256,6 @@ if($ip_ruleset != 'OFF'){
 
 // Auth
 if ($use_auth) {
-	
     if (isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_ID]['logged']])) {
     	// Logged in
     }
@@ -265,7 +264,8 @@ if ($use_auth) {
 		if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
 			// Admin level user (add/update/delete)
 			$_SESSION[FM_SESSION_ID]['logged'] = "admin";
-	        fm_redirect(FM_SELF_URL . '?p=');	}
+	        fm_redirect(FM_SELF_URL . '?p=');	
+	    }
 		elseif(isset($_SESSION['email']) && $_SESSION['email'] !== '') { 
 			$_SESSION[FM_SESSION_ID]['logged'] = "user";
 	        fm_redirect(FM_SELF_URL . '?p=');
@@ -1425,11 +1425,9 @@ if (isset($_GET['view'])) {
     <div class="row">
         <div class="col-12">
             <?php if(!$quickView) { ?>
-                <p class="break-word"><b><?php echo $view_title ?> "<?php echo fm_enc(fm_convert_win($file)) ?>"</b></p>
+				<h4><?php echo fm_enc(fm_convert_win($file)) ?></h4>
                 <p class="break-word">
-                    Full path: <?php echo fm_enc(fm_convert_win($file_path)) ?><br>
-                    File
-                    size: <?php echo fm_get_filesize($filesize) ?><?php if ($filesize >= 1000): ?> (<?php echo sprintf('%s bytes', $filesize) ?>)<?php endif; ?>
+                    File size: <?php echo $filesize ?>
                     <br>
                     MIME-type: <?php echo $mime_type ?><br>
                     <?php
@@ -2325,7 +2323,7 @@ function fm_get_size($file)
 function fm_get_filesize($size)
 {
     if ($size < 1000) {
-        return sprintf('%s B', $size);
+        return sprintf('%s Bytes', $size);
     } elseif (($size / 1024) < 1000) {
         return sprintf('%s KB', round(($size / 1024), 2));
     } elseif (($size / 1024 / 1024) < 1000) {
