@@ -1,0 +1,10 @@
+.git*/*
+.ht*
+.well-known/*
+*log*/*
+github/*
+includes/class/settings.ini.php
+members/documents*/*
+phplist/*
+uploadimages/*
+video/*
