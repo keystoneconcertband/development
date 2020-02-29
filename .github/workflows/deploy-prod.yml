@@ -9,11 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+      with:
+        fetch-depth: 2
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      uses: SamKirkland/FTP-Deploy-Action@3.0.0
       env:
-        FTP_SERVER: ftp.jonathangillette.net
-        FTP_USERNAME: ftp_jonathan@jonathangillette.net
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD_PROD }}
-        REMOTE_DIR: keystoneconcertband.com
-        ARGS: --delete --no-empty-dirs --exclude-glob=.git*/* --exclude-glob=github/* --exclude-glob=.well-known/* --exclude-glob=*log*/* --exclude-glob=phplist/* --exclude-glob=uploadimages/* --exclude-glob=video/* --exclude-glob=includes/class/settings.ini.php --exclude-glob=members/documents*/*  --exclude-glob=.ht*
+        ftp-server: ftp://ftp.jonathangillette.net/keystoneconcertband.com/
+        ftp-username: ftp_jonathan@jonathangillette.net
+        ftp-password: ${{ secrets.FTP_PASSWORD_PROD }}
+        git-ftp-args: --dry-run
