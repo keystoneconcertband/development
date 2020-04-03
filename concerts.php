@@ -41,6 +41,7 @@
 <!--
 				<div class='alert alert-info'><strong>More concerts still yet to come!</strong><br />Continue to check back again throughout the season to see any additional concerts added to the lineup!</div>
 -->
+				<div class='alert alert-info'><strong>2020 Schedule</strong><br />Due to the uncertainty due to the pandemic, the concert schedule this year is very tentative, and a much shorter season than other years. We may add or remove concerts as is necessary. We are excited to get back to playing for our loyal audiences later this year!</div>
 				<?
 					$rowNbr = 1;
 					$concerts = $cncrts->getConcertSchedule();
