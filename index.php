@@ -94,7 +94,6 @@
         <div class="col-lg-4">
           <img class="img-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
           <h2>Upcoming Concert</h2>
-          <p>
 	          <?
 				$concert = $homepage->getCurrentConcert();
 								
@@ -119,7 +118,6 @@
 					echo "<map name='map'><area shape='circle' coords='250,80,15' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank'></map>";
 				}
 			?>
-          </p>
           <p><a class="btn btn-default" href="concerts.php" role="button">View more &raquo;</a></p>
           <? if($concert) { ?>
           <p><a href="#show" style="font-size: 8px;" onclick="showAlerts()">Band Member?</a>
@@ -142,8 +140,8 @@
         <div class="col-lg-4">
           <img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
           <h2>Facebook</h2>
-          <p>Join our Facebook page for the latest information and upcoming concerts.
-			  <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband/" data-tabs="events" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/keystoneconcertband/"><a href="https://www.facebook.com/keystoneconcertband/">Keystone Concert Band</a></blockquote></div></div></p>
+          Join our Facebook page for the latest information and upcoming concerts.
+			  <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband/" data-tabs="events" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/keystoneconcertband/"><a href="https://www.facebook.com/keystoneconcertband/">Keystone Concert Band</a></blockquote></div></div>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
@@ -158,7 +156,7 @@
     </div><!-- /.container -->
 
 	<? require('includes/common_js.php'); ?>
-    <script type="text/javascript">
+    <script>
 		(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
 	    function showAlerts()
 	    {
