@@ -35,6 +35,8 @@
 				<div class="page-header">
 					<h2>Join us</h2>
 				</div>
+				<div class='alert alert-info'><strong>2020 Practices</strong><br />Due to the pandemic all practices for 2020 have been cancelled. If you are interested in joining us, please continue to fill out the form below so we can contact you when we start practicing together again!</div>
+
 				The Keystone Concert Band is always looking for solid, dependable musicians to become part of our organization. 
 				Band members range in age from 16 to 80, and have varying levels of experience. 
 				If you would be interested in playing, please contact us below!
