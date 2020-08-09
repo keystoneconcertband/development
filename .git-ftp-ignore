@@ -1,0 +1,7 @@
+.github/*
+.git*
+includes/class/settings.ini.php
+members/documents*/*
+phplist/*
+uploadimages/*
+video/*
