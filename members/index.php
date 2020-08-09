@@ -42,6 +42,8 @@ new Member(true);
 				<div class="page-header">
 					<h2>Welcome <?php echo $_SESSION["office"] . ' ' ?: "" ?><?php echo $_SESSION["firstName"] ?: 'Firstname'?> <?php echo $_SESSION["lastName"] ?: 'Lastname' ?>!</h2>
 				</div>
+				<div class='alert alert-info'><strong>Discord</strong><br />Please join us on Discord (a group chat platform) at <a href="https://discord.gg/Szux9TQ" target="_blank">https://discord.gg/Szux9TQ</a></div>
+
 				Welcome to the KCB Member section! With this site you can update your information, view the other band member's
 				information, and find all the music the band has to play.<br>
 			</div>
