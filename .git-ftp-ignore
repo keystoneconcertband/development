@@ -1,6 +1,11 @@
-.github/*
-.git*
+.gitignore
+README.md
+Readme.md
+_config.yml
 includes/class/settings.ini.php
+.github/*
+.vscode/*
+cgi-bin/*
 members/documents*/*
 phplist/*
 uploadimages/*
