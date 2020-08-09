@@ -1,4 +1,5 @@
 .gitignore
+.git-ftp-ignore
 README.md
 Readme.md
 _config.yml

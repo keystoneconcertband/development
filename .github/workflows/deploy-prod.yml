@@ -17,4 +17,3 @@ jobs:
         ftp-server: ftp://ftp.jonathangillette.net/keystoneconcertband.com/
         ftp-username: ftp_jonathan@jonathangillette.net
         ftp-password: ${{ secrets.FTP_PASSWORD_PROD }}
-        git-ftp-args: --dry-run 
