@@ -12,9 +12,9 @@ jobs:
       with:
         fetch-depth: 2
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@3.0.0
-      env:
+      uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      with:
         ftp-server: ftp://ftp.jonathangillette.net/keystoneconcertband.com/
         ftp-username: ftp_jonathan@jonathangillette.net
         ftp-password: ${{ secrets.FTP_PASSWORD_PROD }}
-        git-ftp-args: --dry-run
+        git-ftp-args: --dry-run 

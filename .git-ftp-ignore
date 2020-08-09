@@ -1,8 +1,5 @@
-.git*/*
-.ht*
-.well-known/*
-*log*/*
-github/*
+.github/*
+.git*
 includes/class/settings.ini.php
 members/documents*/*
 phplist/*
