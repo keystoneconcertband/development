@@ -16,7 +16,11 @@
     "ignore": [
         "\\.vscode",
         "\\.git",
-        "\\.DS_Store"
+        "\\.DS_Store",
+        "\\.README.md",
+        "\\.gitignore",
+        "\\.git-ftp-ignore",
+        "\\_config.yml"
     ],
     "generatedFiles": {
         "extensionsToInclude": [

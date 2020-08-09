@@ -7,7 +7,7 @@
     <title>CD - Keystone Concert Band</title>
 
 	<? require 'includes/common_css.php'; ?>
-    <link rel="stylesheet" type="text/css" href="jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.css?_v=1.8.3" title="style" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="/3rd-party/jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.css?_v=1.8.3" title="style" media="screen"/>
   </head>
 
   <body>
@@ -328,7 +328,7 @@
 	</div> <!-- /container -->
 
 	<? require 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.js?_v=1.8.3"></script>
+    <script type="text/javascript" src="/3rd-party/jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.js?_v=1.8.3"></script>
 	<script type="text/javascript">
 		$(function(){
 			$(".audio").mb_miniPlayer({

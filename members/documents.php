@@ -14,11 +14,10 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="/css/member.css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" href="/dataTables-1.10.15/datatables.min.css"/>
-	<link rel="stylesheet" href="/jquery.fileupload-9.20.0/css/jquery.fileupload.css">
-	<link rel="stylesheet" href="/jquery.fileupload-9.20.0/css/jquery.fileupload-ui.css">
+	<link rel="stylesheet" href="/3rd-party/dataTables-1.10.15/datatables.min.css"/>
+	<link rel="stylesheet" href="/3rd-party/jquery.fileupload-9.20.0/css/jquery.fileupload.css">
+	<link rel="stylesheet" href="/3rd-party/jquery.fileupload-9.20.0/css/jquery.fileupload-ui.css">
   </head>
 
   <body>
