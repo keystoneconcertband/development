@@ -7,7 +7,6 @@
     <title>Privacy Policy - Keystone Concert Band</title>
 
 	<? require 'includes/common_css.php'; ?>
-    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/css/checkboxes.min.css"/>
 	
 	<style type="text/css">
@@ -76,7 +75,7 @@
 	</div> <!-- /container -->
 
 	<? require 'includes/common_js.php'; ?>
-	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
+	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="kcb-js/join.js"></script>
   </body>
 </html>

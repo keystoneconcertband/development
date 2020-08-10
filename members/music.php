@@ -13,11 +13,10 @@ new ProtectedMusic();
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="/css/member.css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/checkboxes.min.css" />
-	<link rel="stylesheet" href="/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.css" />
-	<link rel="stylesheet" href="/dataTables-1.10.15/datatables.min.css"/>
-	<link rel="stylesheet" href="/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+	<link rel="stylesheet" href="/3rd-party/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.css" />
+	<link rel="stylesheet" href="/3rd-party/dataTables-1.10.15/datatables.min.css"/>
+	<link rel="stylesheet" href="/3rd-party/jquery-ui-1.12.1.custom/jquery-ui.min.css">
 	<style>
 		.ui-autocomplete-loading {
 			background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
@@ -196,11 +195,11 @@ new ProtectedMusic();
 	<script type="text/javascript">
 		var office = "<?=$_SESSION['office']?>";
 	</script>
-	<script  type="text/javascript" src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-	<script type="text/javascript" src="/dataTables-1.10.15/datatables.min.js"></script>
-	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
-	<script type="text/javascript" src="/moment-2.19.2/moment.min.js"></script>
-	<script type="text/javascript" src="/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.js"></script>
+	<script  type="text/javascript" src="/3rd-party/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+	<script type="text/javascript" src="/3rd-party/dataTables-1.10.15/datatables.min.js"></script>
+	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
+	<script type="text/javascript" src="/3rd-party/moment-2.19.2/moment.min.js"></script>
+	<script type="text/javascript" src="/3rd-party/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript" src="/kcb-js/music.js"></script>
   </body>
 </html>

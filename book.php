@@ -88,7 +88,7 @@
 	</div> <!-- /container -->
 
 	<? require 'includes/common_js.php'; ?>
-	<script type="text/javascript" src="/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
+	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="kcb-js/book.js"></script>
   </body>
 </html>
