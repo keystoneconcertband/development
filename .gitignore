@@ -1,6 +1,7 @@
 
 *.txt
 includes/class/settings.ini.php
+.vscode
 .DS_Store
 *.docx
 *.pdf
