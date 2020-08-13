@@ -115,12 +115,12 @@
 					echo "<h4>" . $begin . " | " . date('g:iA', strtotime($concert['concertBegin'])) . " to " . date('g:iA', strtotime($concert['concertEnd'])) . "</h4>";			
 					echo "<h4><a href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
 					echo "<img src='" . $location . "' alt='Google Maps location of the concert.' usemap='#map' id='map'>";
-					echo "<map name='map'><area shape='circle' coords='250,80,15' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank'></map>";
+					echo "<map name='map'><area shape='circle' coords='250,80,15' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' alt='Location of concert on the map'></map>";
 				}
 			?>
           <p><a class="btn btn-default" href="concerts.php" role="button">View more &raquo;</a></p>
           <? if($concert) { ?>
-          <p><a href="#show" style="font-size: 8px;" onclick="showAlerts()">Band Member?</a>
+          <a href="#show" style="font-size: 8px;" onclick="showAlerts()">Band Member?</a>
 	          <div id="bandAlerts" style="display:none">
 		          <?
 					if ($concert['pants'] == 0) {
@@ -134,7 +134,6 @@
 					}
 				?>
 	          </div>
-          </p>
           <? } //End if concert ?>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
