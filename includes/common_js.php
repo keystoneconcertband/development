@@ -2,7 +2,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/3rd-party/jquery/jquery-3.2.1.min.js"></script>
-    <script src="/3rd-party/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/3rd-party/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70031-3"></script>
 	<script>
