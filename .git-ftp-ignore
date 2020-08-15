@@ -1,13 +1,12 @@
 .gitignore
 .git-ftp-ignore
-README.md
-Readme.md
-_config.yml
-includes/class/settings.ini.php
 .github/*
 .vscode/*
+_config.yml
 cgi-bin/*
+includes/class/settings.ini.php
 members/documents*/*
 phplist/*
+README.md
 uploadimages/*
 video/*
