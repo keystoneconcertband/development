@@ -10,7 +10,7 @@
     <meta name="description" content="The Keystone Concert Band continues to operate by donations made by you!">
     <title>Page can't be found - Keystone Concert Band</title>
     <!-- YETI version of bootstrap core CSS -->
-    <link href="/3rd-party/bootswatch/yeti/bootstrap.min.css" rel="stylesheet">
+    <link href="/3rd-party/bootswatch-3.4.1/yeti/bootstrap.min.css" rel="stylesheet">
     <!-- Carousel CSS -->
     <link href="/css/carousel.css" rel="stylesheet">
 	<link href="/css/site.css" rel="stylesheet">	
@@ -70,7 +70,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/3rd-party/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/3rd-party/jquery/jquery-3.5.1.min.js"></script>
     <script src="/3rd-party/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
   </body>
 </html>
