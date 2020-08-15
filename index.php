@@ -139,8 +139,8 @@
         <div class="col-lg-4">
           <img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
           <h2>Facebook</h2>
-          Join our Facebook page for the latest information and upcoming concerts.
-			  <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband/" data-tabs="events" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/keystoneconcertband/"><a href="https://www.facebook.com/keystoneconcertband/">Keystone Concert Band</a></blockquote></div></div>
+          <p>Join our Facebook page for the latest information and upcoming concerts.</p>
+		  <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband/" data-tabs="events" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/keystoneconcertband/"><a href="https://www.facebook.com/keystoneconcertband/">Keystone Concert Band</a></blockquote></div></div>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
