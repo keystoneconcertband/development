@@ -88,8 +88,8 @@ new ProtectedMusic();
 						<div class="modal-body form-horizontal">
 							<div class="form-group">
 								<div class="col-sm-12">
-									<label for="dpLastPlayed" class="control-label">Date of concert*</label>
-									<div class="input-group date" id="dpLastPlayed">
+									<label for="dpConcert" class="control-label">Date of concert*</label>
+									<div class="input-group date" id="dpConcert">
 										<input type="text" class="form-control" name="concert_date" id="concert_date" placeholder="Date of Concert" required="true" data-error="Date is required.">
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar"></span>
@@ -143,14 +143,14 @@ new ProtectedMusic();
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-									<label for="title" class="control-label">Notes</label>
+									<label for="notes" class="control-label">Notes</label>
 									<textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="2000" rows="3"></textarea>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-									<label for="title" class="control-label">Genre*</label>
+									<label for="genre" class="control-label">Genre*</label>
 									<select class="form-control" name="genre" id="genre" required="true">
 							            <option value="0" selected="Selected">Select type</option>
 							        </select>
@@ -159,14 +159,14 @@ new ProtectedMusic();
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-									<label for="title" class="control-label">Link to music</label>
+									<label for="music_link" class="control-label">Link to music</label>
 									<input type="text" class="form-control" name="music_link" id="music_link" placeholder="Music Link" value="" maxlength="2000">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-									<label for="title" class="control-label">Last Played</label>
+									<label for="dpLastPlayed" class="control-label">Last Played</label>
 									<div class="input-group date" id="dpLastPlayed">
 										<input type="text" class="form-control" name="last_played" id="last_played" placeholder="Last Played" value="">
 										<span class="input-group-addon">
@@ -200,6 +200,6 @@ new ProtectedMusic();
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/moment-2.19.2/moment.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.js"></script>
-	<script type="text/javascript" src="/kcb-js/music.js"></script>
+	<script type="text/javascript" src="/kcb-js/music-20200823.js"></script>
   </body>
 </html>
