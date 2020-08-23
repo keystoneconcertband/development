@@ -24,6 +24,14 @@ $(document).ready(function() {
 
 	$('#dpLastPlayed').datetimepicker({
 		format: 'L',
+		maxDate: moment().add(1, 'days'),
+		showTodayButton: true,
+		showClear: true,
+		showClose: true
+	});
+	
+	$('#dpConcert').datetimepicker({
+		format: 'L',
 		maxDate: moment().add(7, 'days'),
 		showTodayButton: true,
 		showClear: true,
