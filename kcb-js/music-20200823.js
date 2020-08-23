@@ -24,6 +24,7 @@ $(document).ready(function() {
 
 	$('#dpLastPlayed').datetimepicker({
 		format: 'L',
+		minDate: '1/1/2000',
 		maxDate: moment().add(1, 'days'),
 		showTodayButton: true,
 		showClear: true,
@@ -32,6 +33,7 @@ $(document).ready(function() {
 	
 	$('#dpConcert').datetimepicker({
 		format: 'L',
+		minDate: '1/1/2000',
 		maxDate: moment().add(7, 'days'),
 		showTodayButton: true,
 		showClear: true,
