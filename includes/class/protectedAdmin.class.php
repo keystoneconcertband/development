@@ -271,7 +271,7 @@ class ProtectedAdmin
         if ($result) {
             foreach ($emailsToDel as $value) {
                 if ($value !== "") {
-                    $headers = 'From: ' . $value . "\r\n" .
+                    $header = 'From: ' . $value . "\r\n" .
                         'X-Mailer: PHP/' . phpversion();
                     try {
                         mail('member-request@keystoneconcertband.com', '', 'unsubscribe address=' . $value, $header);

@@ -1,5 +1,5 @@
     <!-- YETI version of bootstrap core CSS -->
-    <link href="/3rd-party/bootswatch/yeti/bootstrap.min.css" rel="stylesheet">
+    <link href="/3rd-party/bootswatch-3.4.1/yeti/bootstrap.min.css" rel="stylesheet">
     <!-- Carousel CSS -->
     <link href="/css/carousel.css" rel="stylesheet">
     <link href="/css/site.css" rel="stylesheet">
