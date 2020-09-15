@@ -195,7 +195,7 @@ new ProtectedMusic();
 	<script type="text/javascript">
 		var office = "<?=$_SESSION['office']?>";
 	</script>
-	<script  type="text/javascript" src="/3rd-party/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+	<script  type="text/javascript" src="/3rd-party/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/moment-2.27.0/moment.min.js"></script>
