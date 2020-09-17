@@ -266,8 +266,6 @@ class Member
             if (!$this->getKcb()->sendEmail($email, $message, $subject)) {
                 $response = "Unable to send login code email. Please try again later.";
             }
-        } else {
-            return "response is " . $response;
         }
 
         return $response;
