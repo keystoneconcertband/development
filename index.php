@@ -86,6 +86,22 @@
 			<!-- Three columns of text below the carousel -->
 			<div class="row">
 				<div class="col-lg-4">
+				<img class="img-circle" src="images/donate.png" alt="Donate Image" width="140" height="140">
+				<h2>Donate Today!</h2>
+				<p>Due to the COVID-19 Pandemic, the Keystone Concert Band has not been able to perform any concerts. 
+					Any amount you can give will help keep the band paying for expenses like rehearsal space, insurance and storage.
+				 </p>
+				 <p><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+						<input type="hidden" name="cmd" value="_s-xclick">
+						<input type="hidden" name="hosted_button_id" value="MQXJRRA53VYHA">
+						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+					</form>
+				</p>
+
+				</div>
+				<!--
+				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
 					<h2>Upcoming Concert</h2>
 						<?
@@ -129,7 +145,7 @@
 							?>
 						</div>
 					<? } //End if concert ?>
-				</div><!-- /.col-lg-4 -->
+				</div> --><!-- /.col-lg-4 -->
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
 					<h2>Facebook</h2>
@@ -145,7 +161,9 @@
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
 					<h2>Amazon Smile</h2>
-					<p>Use amazon.com. Buy products. Amazon donates. It's just that simple.</p>
+					<p>Use amazon.com, buy products, and your purchases contribue to Amazon donations to the band! 
+					<br>
+					As of March 2021, KCB has received over $375 from all your purchases!</p>
 					<p><a class="btn btn-default" href="amazon.php" role="button">View details &raquo;</a></p>
 				</div><!-- /.col-lg-4 -->
 			</div><!-- /.row -->
