@@ -88,7 +88,7 @@
 				    <div class="form-group">
 						<div class="col-lg-12">
 							If you are interested in joining the band, please fill out the form below with your contact information so we can get back to you.<br>
-							<i>Fields marked with an * are required.</i>
+							<em>Fields marked with an * are required.</em>
 						</div>
 				    </div>
 				    <div class="form-group">
