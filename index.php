@@ -161,7 +161,7 @@
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
 					<h2>Amazon Smile</h2>
-					<p>Use amazon.com, buy products, and your purchases contribue to Amazon donations to the band! 
+					<p>Use amazon.com, buy products, and your purchases contribute to Amazon donations to the band! 
 					<br>
 					As of March 2021, KCB has received over $375 from all your purchases!</p>
 					<p><a class="btn btn-default" href="amazon.php" role="button">View details &raquo;</a></p>
