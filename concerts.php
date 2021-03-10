@@ -33,7 +33,7 @@
 				<div class="page-header">
 					<h2>Calendar</h2>
 				</div>
-				<iframe frameborder="0" height="600" scrolling="no" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=keystoneconcertband%40gmail.com&amp;color=%23A32929&amp;ctz=America%2FNew_York" style="border-width: 0" width="100%">
+				<iframe title="Calendar" height="600" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=keystoneconcertband%40gmail.com&amp;color=%23A32929&amp;ctz=America%2FNew_York" style="border-width: 0" width="100%">
 				</iframe>
 				<div class="page-header">
 					<h2>Concert Schedule</h2>
