@@ -33,7 +33,7 @@
 				<div class="page-header">
 					<h2>Calendar</h2>
 				</div>
-				<iframe frameborder="0" height="600" scrolling="no" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=keystoneconcertband%40gmail.com&amp;color=%23A32929&amp;ctz=America%2FNew_York" style="border-width: 0" width="100%">
+				<iframe title="Calendar" height="600" src="https://www.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=keystoneconcertband%40gmail.com&amp;color=%23A32929&amp;ctz=America%2FNew_York" style="border-width: 0" width="100%">
 				</iframe>
 				<div class="page-header">
 					<h2>Concert Schedule</h2>
@@ -41,7 +41,7 @@
 <!--
 				<div class='alert alert-info'><strong>More concerts still yet to come!</strong><br />Continue to check back again throughout the season to see any additional concerts added to the lineup!</div>
 -->
-				<div class='alert alert-info'><strong>2020 Schedule</strong><br />Due to the pandemic all 2020 concerts have been cancelled.</div>
+				<div class='alert alert-info'><strong>2021 Schedule</strong><br />Please check back later in the year to see if we have any scheduled concerts!</div>
 				<?
 					$rowNbr = 1;
 					$concerts = $cncrts->getConcertSchedule();

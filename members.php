@@ -168,7 +168,7 @@
 									<p class="help-block">This is the first time this account is being accessed from this computer (or your
 									    cookies have been deleted since the last time you logged in.) You have received 
 									    a text (or email if you don't have texting enabled) with a 6-digit code. 
-									    <b>Please enter this code in the text box above</b>.
+									    <strong>Please enter this code in the text box above</strong>.
 									</p>
 								</div>
 							</div>

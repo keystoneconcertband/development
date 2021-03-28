@@ -43,7 +43,7 @@
 					<br />
 					You can pick one up for a $15 donation at any of our concerts, or by 
 					making a $20 online donation through our secure link to Pay Pal using the
-					<b>Pay Now</b> button below. <br />
+					<strong>Pay Now</strong> button below. <br />
 					<br />
 				</div>
 				<div style="margin-top: 20px;">
