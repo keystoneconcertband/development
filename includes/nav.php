@@ -27,29 +27,29 @@
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item<? if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { echo " active";}?>"><a class="nav-link" href="/members/myInfo.php">My Info</a></li>
 				<? if(isset($_SESSION['office'])) { ?>
-				<li class="nav-item dropdown<? if ($_SERVER['PHP_SELF'] == "/members/members.php" || $_SERVER['PHP_SELF'] == "/members/inactiveMembers.php" || $_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo " active"; } ?>">
-					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Members</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo " active";}?>" href="/members/members.php">Current</a>
-						<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo " active";}?>" href="/members/inactiveMembers.php">Inactive</a>
-						<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo " active";}?>" href="/members/pendingMembers.php">Pending</a>
-					</div>
-				</li>
+					<li class="nav-item dropdown<? if ($_SERVER['PHP_SELF'] == "/members/members.php" || $_SERVER['PHP_SELF'] == "/members/inactiveMembers.php" || $_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo " active"; } ?>">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Members</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo " active";}?>" href="/members/members.php">Current</a>
+							<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo " active";}?>" href="/members/inactiveMembers.php">Inactive</a>
+							<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo " active";}?>" href="/members/pendingMembers.php">Pending</a>
+						</div>
+					</li>
 				<? } else { ?>
-				<li class="nav-item<? if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo " active";}?>"><a class="nav-link" href="/members/members.php">Members</a></li>
+					<li class="nav-item<? if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo " active";}?>"><a class="nav-link" href="/members/members.php">Members</a></li>
 				<? } ?>
 				<li class="nav-item<? if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo " active";}?>"><a class="nav-link" href="/members/documents.php">Documents</a></li>
 				<li class="nav-item<? if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo " active";}?>"><a class="nav-link" href="/members/music.php">Music</a></li>
 				<? if (isset($_SESSION["office"])) { ?>				
-				<li class="nav-item dropdown<? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php" || $_SERVER['PHP_SELF'] == "/members/homepageMessage.php" || $_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo " active"; } ?>">
-					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo " active";}?>" href="/members/homepageMessage.php">Homepage Message</a>
-						<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo " active";}?>" href="/members/loginStats.php">Login Stats</a>
-						<!--<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/manageConcerts.php") { echo " active";}?>" href="/members/manageConcerts.php">Manage Concerts</a>-->
-						<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo " active";}?>" href="/members/messageMembers.php">Message Members</a>
-					</div>
-				</li>
+					<li class="nav-item dropdown<? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php" || $_SERVER['PHP_SELF'] == "/members/homepageMessage.php" || $_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo " active"; } ?>">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo " active";}?>" href="/members/homepageMessage.php">Homepage Message</a>
+							<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo " active";}?>" href="/members/loginStats.php">Login Stats</a>
+							<!--<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/manageConcerts.php") { echo " active";}?>" href="/members/manageConcerts.php">Manage Concerts</a>-->
+							<a class="dropdown-item<? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo " active";}?>" href="/members/messageMembers.php">Message Members</a>
+						</div>
+					</li>
 				<? } ?>
 				<li class="nav-item"><a class="nav-link" href="/members/logoff.php">Logoff</a></li>
 			</ul>
