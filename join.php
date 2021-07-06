@@ -34,7 +34,7 @@
 				<div class="page-header">
 					<h2>Join us</h2>
 				</div>
-				<div class='alert alert-info'><strong>2021 Practices</strong><br />Due to the pandemic practices for 2021 are on hold indefinitely. If you are interested in joining us, please fill out the form below so we can contact you when we start practicing together again!</div>
+				<div class='alert alert-info'><strong>2021 Practices</strong><br />In person rehearsals are starting in mid-July. Please see our <a href="covid.php">COVID page</a> for more details about the return.</div>
 
 				The Keystone Concert Band is always looking for solid, dependable musicians to become part of our organization. 
 				Band members range in age from 16 to 80, and have varying levels of experience. 

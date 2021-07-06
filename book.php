@@ -28,7 +28,7 @@
 				<div class="page-header">
 					<h2>Book a concert</h2>
 				</div>
-				<div class='alert alert-info'><strong>2021 Concerts</strong><br />Due to the pandemic, the concert season for 2021 is on hold. If you are interested in booking us for later in the year, please fill out the form below so we can contact you.</div>
+				<div class='alert alert-info'><strong>2021 Concerts</strong><br />With In Person rehearsals starting back up in mid-July, if you are interested in booking us for later in the year or for 2022, please fill out the form below so we can contact you.</div>
 
 				The Keystone Concert Band plays a wide variety of music, and has performed in many different locations. 
 				We've played at the State Capitol, nursing homes, church picnics, community events, ice cream festivals, 
