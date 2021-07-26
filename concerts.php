@@ -40,8 +40,9 @@
 				</div>
 <!--
 				<div class='alert alert-info'><strong>More concerts still yet to come!</strong><br />Continue to check back again throughout the season to see any additional concerts added to the lineup!</div>
--->
+
 				<div class='alert alert-info'><strong>2021 Schedule</strong><br />Please check back later in the year to see if we have any scheduled concerts!</div>
+-->
 				<?
 					$rowNbr = 1;
 					$concerts = $cncrts->getConcertSchedule();
