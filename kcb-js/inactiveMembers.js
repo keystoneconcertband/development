@@ -235,3 +235,7 @@ function populateInstrument(data) {
 	    }		
 	}
 }
+
+function printMembers() {
+	var win = window.open('inactiveMembersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
+}
