@@ -36,6 +36,16 @@ new ProtectedMember();
 					<h2>Inactive Members</h2>
 				</div>
 				<div class="row form-group">
+					<div class="col-sm-3">
+						<div class="bs-component">
+							<button type="button" class="btn btn-info glyphicon glyphicon-print" onclick="printMembers()"></button>
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div id="msgMainHeader" class="h4 hidden"></div>
+					</div>
+				</div>
+				<div class="row form-group">
 					<div class="col-sm-12">
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
