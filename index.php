@@ -85,6 +85,7 @@
 		<div class="container marketing">
 			<!-- Three columns of text below the carousel -->
 			<div class="row">
+				<!--
 				<div class="col-lg-4">
 				<img class="img-circle" src="images/donate.png" alt="Donate Image" width="140" height="140">
 				<h2>Donate Today!</h2>
@@ -98,9 +99,8 @@
 						<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 					</form>
 				</p>
-
 				</div>
-				<!--
+				 -->
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
 					<h2>Upcoming Concert</h2>
@@ -145,7 +145,7 @@
 							?>
 						</div>
 					<? } //End if concert ?>
-				</div> --><!-- /.col-lg-4 -->
+				</div><!-- /.col-lg-4 -->
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
 					<h2>Facebook</h2>
