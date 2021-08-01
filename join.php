@@ -35,8 +35,9 @@
                 <div class="page-header">
                     <h2>Join us</h2>
                 </div>
-                <div class='alert alert-info'><strong>2021 Practices</strong><br />In person rehearsals are starting in
-                    mid-July. Please see our <a href="covid.php">COVID page</a> for more details about the return.</div>
+                <div class='alert alert-info'><strong>2021 Rehearsals</strong><br />In person rehearsals have returned. 
+				Please see our <a href="covid.php">COVID-19 page</a> for more details about the safety of the band
+				during the COVID-19 Pandemic.</div>
 
                 The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
                 organization. We are rebuilding after 16 months without in-person rehearsal. We welcome all wind band
