@@ -20,17 +20,23 @@ function submitForm() {
         type: "POST",
 		dataType : 'json', 
         data: $("#frmMessage").serialize(),
-        success: function(text){
-            if (text){
+        success: function(failures){
+            if (failures === "false"){
                 formSuccess();
             } else {
                 formError();
-                submitMSG(false,text);
+
+                if(failures.includes(":")) {
+                    submitMSG(false, "Issues with the following " + failures);
+                }
+                else {
+                    submitMSG(false, failures);
+                }
             }
         },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
+		error: function(xhr, resp, failures) {
+			submitMSG(false, "Issues with the following " + failures);
+            console.log(xhr, resp, failures);
         }
     });
 }

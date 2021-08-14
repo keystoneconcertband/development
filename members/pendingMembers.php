@@ -162,6 +162,7 @@ new ProtectedAdmin();
 										<select class="form-control" name="carrier" id="carrier" data-carrier>
 											<option value="0">Select an option</option>
 											<option value="txt.att.net">AT&amp;T</option>
+											<option value="msg.fi.google.com">Google Fi</option>
 											<option value="messaging.sprintpcs.com">Sprint</option>
 											<option value="tmomail.net">TMobile</option>
 											<option value="mmst5.tracfone.com">TracFone</option>
