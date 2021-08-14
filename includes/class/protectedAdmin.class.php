@@ -50,26 +50,36 @@ class ProtectedAdmin
 
         // Get list of members
         $activeMembers = $this->getDb()->getActiveMembers();
-        $emailList = "";
-
-        // Take the array of members and set the text list so it can email the phone as a text message.
-        foreach ($activeMembers as $activeMember) {
-            if (isset($activeMember['text']) && $activeMember['text'] !== "") {
-                if ($emailList === "") {
-                    $emailList .= $activeMember['text'] . "@" . $activeMember['carrier'];
-                } else {
-                    $emailList .= ", " . $activeMember['text'] . "@" . $activeMember['carrier'];
-                }
-            }
-        }
 
         // Send email to the phone as a text message.
         try {
+            $failures = "phone nbrs: ";
             $title = "KCB Msg";
             $headers[] = 'From: KCB<web@keystoneconcertband.com>';
 
-            return mail($emailList, $title, $message, implode("\r\n", $headers));
-        } catch (Exception $e) {
+            foreach ($activeMembers as $activeMember) {
+                if (isset($activeMember['text']) && $activeMember['text'] !== "") {
+                    $textAddr = $activeMember['text'] . "@" . $activeMember['carrier'];                    
+                    $sendMail = mail($textAddr, $title, $message, implode("\r\n", $headers));
+
+                    if (!$sendMail) {
+                        $this->getKcb()->LogError("Unable to text " . $textAddr);
+
+                        $failures .= $textAddr . ", ";
+                    }
+                }
+            }
+
+            if($failures !== "phone nbrs: ") {
+                $failures = substr($failures, 0, -2);
+            }
+            else {
+                $failures = "false";
+            }
+
+            return $failures;
+        } 
+        catch (Exception $e) {
             $this->getKcb()->LogError($e->getMessage());
             return false;
         }
