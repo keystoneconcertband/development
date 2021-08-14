@@ -22,26 +22,26 @@
 				<li data-target="#myCarousel" data-slide-to="2"></li>
 			</ol>
 			<div class="carousel-inner">
-				<div class="carousel-item active">
+				<div class="carousel-item active" style="height:500px;">
 					<img class="d-block w-100" src="images/slide1.png" alt="Keystone Concert Band">
 					<div class="carousel-caption d-none d-md-block">
-						<h5>We need you</h5>
+						<h1>We need you</h1>
 						<p>As a 501(c)3 organization, we rely on donations to continue performing</p>
 						<p><a class="btn btn-lg btn-primary" href="donate.php" role="button">Donate today</a></p>
 					</div>
 				</div>
-				<div class="carousel-item">
+				<div class="carousel-item" style="height:500px;">
 					<img class="d-block w-100" src="images/slide2.png" alt="Flute Players">
 					<div class="carousel-caption d-none d-md-block">
-						<h5>Play with us</h5>
+						<h1>Play with us</h1>
 						<p>Been a few years since you picked up your instrument? Play once again</p>
 						<p><a class="btn btn-lg btn-primary" href="join.php" role="button">Join Us</a></p>
 					</div>
 				</div>
-				<div class="carousel-item">
+				<div class="carousel-item" style="height:500px;">
 					<img class="d-block w-100" src="images/slide3.png" alt="Tuba Player">
 					<div class="carousel-caption d-none d-md-block">
-						<h5>We can play for you</h5>
+						<h1>We can play for you</h1>
 						<p>We can play your event, big or small. Just give us a call</p>
 						<p><a class="btn btn-lg btn-primary" href="book.php" role="button">Book Us</a></p>
 					</div>
@@ -75,8 +75,9 @@
 		<div class="container marketing">
 			<!-- Three columns of text below the carousel -->
 			<div class="row">
-				<div class="col-lg-4">
-				<img class="img-circle" src="images/donate.png" alt="Donate Image" width="140" height="140">
+				<!--
+				<div class="col">
+				<img class="rounded-circle " src="images/donate.png" alt="Donate Image" width="140" height="140">
 				<h2>Donate Today!</h2>
 				<p>Due to the COVID-19 Pandemic, the Keystone Concert Band has not been able to perform any concerts. 
 					Any amount you can give will help keep the band paying for expenses like rehearsal space, insurance and storage.
@@ -90,9 +91,9 @@
 				</p>
 
 				</div>
-				<!--
-				<div class="col-lg-4">
-					<img class="img-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
+				 -->
+				<div class="col">
+					<img class="rounded-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
 					<h2>Upcoming Concert</h2>
 						<?
 							$concert = $homepage->getCurrentConcert();
@@ -135,9 +136,9 @@
 							?>
 						</div>
 					<? } //End if concert ?>
-				</div> --><!-- /.col-lg-4 -->
-				<div class="col-lg-4">
-					<img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
+				</div><!-- /.col-lg-4 -->
+				<div class="col">
+					<img class="rounded-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
 					<h2>Facebook</h2>
 					<p>Join our Facebook page for the latest information and upcoming concerts.</p>
 					<div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband/" data-tabs="events" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
@@ -148,8 +149,8 @@
 						</div>
 					</div>
 				</div><!-- /.col-lg-4 -->
-				<div class="col-lg-4">
-					<img class="img-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
+				<div class="col">
+					<img class="rounded-circle" src="images/logo_amazonSmile.png" alt="Amazon Smile Image" width="140" height="140">
 					<h2>Amazon Smile</h2>
 					<p>Use amazon.com, buy products, and your purchases contribute to Amazon donations to the band! 
 					<br>
