@@ -62,7 +62,7 @@
                         setup your stand and instrument. Rehearsal is in the community room (downstairs) of the <a
                             href="http://maps.google.com/maps?f=q&amp;hl=en&amp;geocode=&amp;q=3700+Rutherford+St,+Harrisburg,+PA+17111+(Band+Practice+Facility)&amp;sll=40.260657,-76.827071&amp;sspn=0.005731,0.007821&amp;ie=UTF8&amp;t=h&amp;z=16&amp;iwloc=addr"
                             target="_blank">Good
-                            Shepherd Lutheran Church</a> at 4700 Rutherford Street in the Paxtang area of Harrisburg.
+                            Shepherd Lutheran Church</a> at 3700 Rutherford Street in the Paxtang area of Harrisburg.
                     </li>
 					<li><strong>Where do I park for rehearsal?</strong><br />
 						You may park behind the church in the parking log off of Montour St. There is also 
