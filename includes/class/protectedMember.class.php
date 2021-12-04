@@ -425,7 +425,7 @@
 			            
 						try {
 							mail('members-request@keystoneconcertband.com', '', $unsubscribeBody, implode("\r\n", $headerDel));
-							mail('web@keystoneconcerband.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
+							mail('web@keystoneconcertband.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
 							
 							if($delEmail) {
 								$result = $this->getDb()->delEmail($value, $uid);
