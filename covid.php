@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h2>Rehearsals have restarted!</h2>
+                    <h2>COVID-19 Protocols</h2>
                 </div>
                 <div>
                     We are at a point where the rate of transmission of COVID is locally quite low and a return to
@@ -38,6 +38,7 @@
                     quarantine and follow public health guidelines. Regardless of your vaccination status, if you are
                     feeling ill, please do not show up to rehearsal. Also, out of respect for your fellow band members,
                     please get tested for COVID if you are ill.<br />
+
                     <h3>Safety Measures in Place</h3>
                     The Board will continue to monitor case numbers in the state, specifically Cumberland, Dauphin,
                     York, and Lancaster counties. If another surge occurs locally, especially in Dauphin County, we are
@@ -50,13 +51,7 @@
                         <li>The PA mask mandate was dropped as of June 28th. Masks are not required but are optional.
                         </li>
                     </ul>
-                    <h3>Concerts Currently Booked:</h3>
-                    <ul>
-                        <li>Church of the Good Shepherd Yard Sale (outdoors) - Sept 11 at 10:00am</li>
-                        <li>Lingelstown Life - Oct 9 at 7:00pm</li>
-                        <li>St. Andrews Christmas Concert - Dec 4 at 11:00am</li>
-                        <li>All Saints Christmas Concert - Dec 11 at 11:00am</li>
-                    </ul>
+                    
                     <h3>New Members</h3>
                     Now that we are practicing together again, we need new players to join us. If interested, please
                     fill out our form on the <a href="https://www.keystoneconcertband.com/join.php">Join Us page</a>,

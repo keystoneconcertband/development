@@ -35,16 +35,15 @@
                 <div class="page-header">
                     <h2>Join us</h2>
                 </div>
-                <div class='alert alert-info'><strong>2021 Rehearsals</strong><br />In person rehearsals have returned. 
-				Please see our <a href="covid.php">COVID-19 page</a> for more details about the safety of the band
-				during the COVID-19 Pandemic.</div>
+                <div class='alert alert-info'><strong>2022 Rehearsals</strong><br />Please see our <a
+                        href="covid.php">COVID-19 page</a> for more details about the safety of the band
+                    during the COVID-19 Pandemic.</div>
 
                 The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
-                organization. We are rebuilding after 16 months without in-person rehearsal. We welcome all wind band
-                musicians, but have greater need for clarinet, bass clarinet, euphonium, tuba, trombone, alto sax,
-                baritone sax, trumpet, and percussion to fill out our sections. Band members range from teens to folks
-                in their 80s, with varying levels of experience. If you would be interested in playing, please contact
-                us below!<br />
+                organization. We welcome all wind band musicians, but have greater need for clarinet, bass clarinet,
+                euphonium, tuba, trombone, alto sax, baritone sax, trumpet, and percussion to fill out our sections. 
+                Band members range from teens to folks in their 80s, with varying levels of experience. 
+                If you would be interested in playing, please contact us below!<br />
                 <br />
                 The Band rehearses each Wednesday at <a
                     href='https://www.google.com/maps?f=q&hl=en&geocode&q=3700+Rutherford+St,+Harrisburg,+PA+17111+(Band+Practice+Facility)&sll=40.260657,-76.827071&sspn=0.005731,0.007821&ie=UTF8&t=h&z=16&iwloc=addr'
@@ -64,18 +63,18 @@
                             target="_blank">Good
                             Shepherd Lutheran Church</a> at 3700 Rutherford Street in the Paxtang area of Harrisburg.
                     </li>
-					<li><strong>Where do I park for rehearsal?</strong><br />
-						You may park behind the church in the parking log off of Montour St. There is also 
-						plenty of on street parking along Montour, Wilhelm and Rutherford Streets.<br />
-						<img src="images/parking-good-shepherd.png" width="579" class="img-responsive" />
-					</li>
+                    <li><strong>Where do I park for rehearsal?</strong><br />
+                        You may park behind the church in the parking log off of Montour St. There is also
+                        plenty of on street parking along Montour, Wilhelm and Rutherford Streets.<br />
+                        <img src="images/parking-good-shepherd.png" width="579" class="img-responsive" />
+                    </li>
                     <li><strong>What do I need to bring?</strong><br />
                         Your instrument, a music stand, and any other pieces of equipment that may be required, such as
                         mutes, reeds, or drumsticks. Chairs and percussion instruments are provided. Members are asked
                         to keep the area around their chairs clean and wipe up any water from the floor after rehearsal.
                     </li>
                     <li><strong>During practice, is there a break?</strong><br />
-                        Yes. We take a 10-minute break at 8:30.
+                        Yes. We take a 10-minute break at 8:30PM.
                     </li>
                     <li><strong>Where do most of the concerts take place?</strong><br />
                         Almost all concerts take place in the greater Harrisburg region including Hummelstown, Hershey,
