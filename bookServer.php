@@ -33,7 +33,7 @@
 			$message .= "<b>Comments</b> " . $comments;
 			
 			# Send email
-			if($kcb->sendEmail("web@keystoneconcertband.com", $message, "KCB Booking Request")) {
+			if($kcb->sendEmail("JonathanG@keystoneconcertband.com", $message, "KCB Booking Request")) {
 				$response = "success";
 			}
 			else {

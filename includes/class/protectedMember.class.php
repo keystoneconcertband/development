@@ -373,7 +373,7 @@
 							$subscribeBody = "subscribe KCBPassword nodigest";
 
 							mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerPend));
-							mail('web@keystoneconcerband.com','KCB Email Update','(pend) Add email: ' . $value, implode("\r\n", $notificationHeader));
+							mail('JonathanG@keystoneconcerband.com','KCB Email Update','(pend) Add email: ' . $value, implode("\r\n", $notificationHeader));
 						}
 						catch(Exception $e) {
 							$this->getKcb()->LogError($e->getMessage());
@@ -401,7 +401,7 @@
 							// Pending users were added above, so no need to re-add again.
 							if(!$pendingUser) {
 								mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerAdd));
-								mail('web@keystoneconcerband.com','KCB Email Update','Add email: ' . $value, implode("\r\n", $notificationHeader));
+								mail('JonathanG@keystoneconcerband.com','KCB Email Update','Add email: ' . $value, implode("\r\n", $notificationHeader));
 							}
 					    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 						}
@@ -425,7 +425,7 @@
 			            
 						try {
 							mail('members-request@keystoneconcertband.com', '', $unsubscribeBody, implode("\r\n", $headerDel));
-							mail('web@keystoneconcertband.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
+							mail('JonathanG@keystoneconcertband.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
 							
 							if($delEmail) {
 								$result = $this->getDb()->delEmail($value, $uid);

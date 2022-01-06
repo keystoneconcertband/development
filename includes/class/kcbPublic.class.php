@@ -143,7 +143,7 @@ class KCBPublic
         $message .= "<b>Comments</b> " . $comments;
 
         # Send email
-        if ($this->kcb->sendEmail("web@keystoneconcertband.com", $message, "KCB Join Request")) {
+        if ($this->kcb->sendEmail("JonathanG@keystoneconcertband.com", $message, "KCB Join Request")) {
             $response = "success";
         } else {
             $response = "Unable to save request. Please try again later.";
