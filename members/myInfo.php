@@ -143,12 +143,20 @@ new ProtectedMember();
 									<select class="form-control" name="carrier" id="carrier" data-carrier>
 										<option value="0">Select an option</option>
 										<option value="txt.att.net">AT&amp;T</option>
-										<option value="msg.fi.google.com">Google Fi</option>
-										<option value="messaging.sprintpcs.com">Sprint</option>
-										<option value="tmomail.net">TMobile</option>
-										<option value="mmst5.tracfone.com">TracFone</option>
-										<option value="vtext.com">Verizon</option>
-										<option value="vmobl.com">Virgin</option>
+											<option value="sms.myboostmobile.com">Boost Mobile"</option>
+											<option value="cspire1.com">C-Spire</option>
+											<option value="sms.cricketwireless.net">Cricket Wireless</option>
+											<option value="mailmymobile.net">Consumer Cellular</option>
+											<option value="msg.fi.google.com">Google Project Fi</option>
+											<option value="mymetropcs.com">Metro PCS</option>
+											<option value="mailmymobile.net">Mint Mobile</option>
+											<option value="messaging.sprintpcs.com">Sprint</option>
+											<option value="vtext.com">Straight Talk</option>
+											<option value="tmomail.net">TMobile</option>
+											<option value="mmst5.tracfone.com">TracFone</option>
+											<option value="vtext.com">Verizon</option>
+											<option value="vmobl.com">Virgin Mobile</option>
+											<option value="vtext.com">Xfinity Mobile</option>
 							        </select>
 									<div class="help-block with-errors"></div>
 							    </div>
