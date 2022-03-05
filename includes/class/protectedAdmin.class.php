@@ -41,50 +41,6 @@ class ProtectedAdmin
         return $this->getDb()->getLoginStats();
     }
 
-    // Send text message to the band
-    public function sendTextMessages($message)
-    {
-        if (!$this->validAdmin()) {
-            return "access denied.";
-        }
-
-        // Get list of members
-        $activeMembers = $this->getDb()->getActiveMembers();
-
-        // Send email to the phone as a text message.
-        try {
-            $failures = "phone nbrs: ";
-            $title = "KCB Msg";
-            $headers[] = 'From: KCB<web@keystoneconcertband.com>';
-
-            foreach ($activeMembers as $activeMember) {
-                if (isset($activeMember['text']) && $activeMember['text'] !== "") {
-                    $textAddr = $activeMember['text'] . "@" . $activeMember['carrier'];                    
-                    $sendMail = mail($textAddr, $title, $message, implode("\r\n", $headers));
-
-                    if (!$sendMail) {
-                        $this->getKcb()->LogError("Unable to text " . $textAddr);
-
-                        $failures .= $textAddr . ", ";
-                    }
-                }
-            }
-
-            if($failures !== "phone nbrs: ") {
-                $failures = substr($failures, 0, -2);
-            }
-            else {
-                $failures = "false";
-            }
-
-            return $failures;
-        } 
-        catch (Exception $e) {
-            $this->getKcb()->LogError($e->getMessage());
-            return false;
-        }
-    }
-
     public function addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt)
     {
         if (!$this->validAdmin()) {

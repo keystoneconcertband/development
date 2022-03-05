@@ -36,28 +36,9 @@ new protectedAdmin();
 					<h2>Text Message Members</h2>
 				</div>
 				<div class="well bs-component">
-					<form class="form-horizontal" id="frmMessage" data-toggle="validator">
-						<fieldset>
-						    <legend>Text Message the band</legend>
-						    The maximum length of a text message that you can send is 800 characters. 
-						    However, if you send more than 112 characters then your message will be split
-						    into multiple messages due to the FROM and SUBJECT lines.
-						    <div class="form-group">
-						      <label for="message" class="col-lg-2 control-label">Message</label>
-						      <div class="col-lg-10">
-						        <textarea class="form-control" rows="3" id="message" name="message" maxlength="800"></textarea>
-						        <div id="messageCount"></div>
-								<div class="help-block with-errors"></div>
-						      </div>
-						    </div>
-						</fieldset>
-						<div class="form-group">
-						  <div class="col-lg-12">
-						    <button type="submit" class="btn btn-primary">Send</button>
-							<div id="msgSubmit" class="h4 hidden"></div>
-						  </div>
-						</div>
-					</form>
+					Send an email to <a href="mailto:text@keystoneconcertband.com">text@keystoneconcertband.com</a>.
+					<br /><br />
+					<strong>Limited to Jonathan, Donna, Vicki and Chris</strong>
 				</div>
 			</div>
 		</div>
@@ -70,6 +51,5 @@ new protectedAdmin();
 	</script>
 	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
-	<script type="text/javascript" src="/kcb-js/messageMembers.js"></script>
   </body>
 </html>
