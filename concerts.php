@@ -89,7 +89,7 @@
 							echo "    <div class='panel-body'>\n";
 							echo "		<p class='" . $disabled . "'>\n";
 							echo "      <img class='bigMap " . $disabled . "' src='" .$locationLarge . "' alt='Google Maps location of the concert.' usemap='#map' id='map' />\n";
-							echo "      <h3 style='margin-top:0px;'>" . $concert['Title'] . "</h3><h4> " . $begin . " from " . date('g:iA', strtotime($concert['concertBegin'])) . " to " . date('g:iA', strtotime($concert['concertEnd'])) . "</h4>\n";
+							echo "      <h3 style='margin-top:0px;'>" . $concert['Title'] . "</h3><h4> " . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . ".</h4>\n";
 							echo "        <a class='" . $disabled . "' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['address'] . "</a>\n";
 							echo "      </p>\n";								
 							echo "      <img class='medMap " . $disabled . "' src='" .$locationMed . "' alt='Google Maps location of the concert.' usemap='#map' id='map' />\n";
