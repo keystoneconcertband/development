@@ -47,7 +47,7 @@
                 <br />
                 The Band rehearses each Wednesday at <a
                     href='https://www.google.com/maps?f=q&hl=en&geocode&q=3700+Rutherford+St,+Harrisburg,+PA+17111+(Band+Practice+Facility)&sll=40.260657,-76.827071&sspn=0.005731,0.007821&ie=UTF8&t=h&z=16&iwloc=addr'
-                    target="_blank">Good Shepherd Lutheran Church in Paxtang</a>, from 7:30 until 9:30PM, and we play
+                    target="_blank">Good Shepherd Lutheran Church in Paxtang</a>, from 7:00PM until 9:00PM, and we play
                 around 8-15 concerts per year. Musical selections vary widely, and include original wind
                 band compositions, marches, movie music, Broadway, and popular music medleys.</p>
                 <h3>Frequently Asked Questions:</h3>
@@ -57,8 +57,8 @@
                         December and all of January.
                     </li>
                     <li><strong>What time is practice and where is the location?</strong><br />
-                        We rehearse Wednesdays from 7:30PM to 9:30PM. Please arrive 15 minutes early to warm up and
-                        setup your stand and instrument. Rehearsal is in the community room (downstairs) of the <a
+                        We rehearse Wednesdays from 7:00PM to 9:00PM. Please arrive 15 minutes early to warm up and
+                        prepare for practice. Rehearsal is in the community room (downstairs) of the <a
                             href="http://maps.google.com/maps?f=q&amp;hl=en&amp;geocode=&amp;q=3700+Rutherford+St,+Harrisburg,+PA+17111+(Band+Practice+Facility)&amp;sll=40.260657,-76.827071&amp;sspn=0.005731,0.007821&amp;ie=UTF8&amp;t=h&amp;z=16&amp;iwloc=addr"
                             target="_blank">Good
                             Shepherd Lutheran Church</a> at 3700 Rutherford Street in the Paxtang area of Harrisburg.
@@ -74,7 +74,7 @@
                         to keep the area around their chairs clean and wipe up any water from the floor after rehearsal.
                     </li>
                     <li><strong>During practice, is there a break?</strong><br />
-                        Yes. We take a 10-minute break at 8:30PM.
+                        Yes. We take a 10-minute break at 8:00PM.
                     </li>
                     <li><strong>Where do most of the concerts take place?</strong><br />
                         Almost all concerts take place in the greater Harrisburg region including Hummelstown, Hershey,
