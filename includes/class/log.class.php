@@ -64,7 +64,7 @@ class Log
 
             $msg = $message . "<br>Server Variables: " . $this->getServerVars();
 
-            mail('web@keystoneconcertband.com, jonathan.gillette@gmail.com', 'KCB Web Error', $msg, implode("\r\n", $headers));
+            mail('web@keystoneconcertband.com, j.gillette@icloud.com', 'KCB Web Error', $msg, implode("\r\n", $headers));
         } catch (Exception $e) {
             // Don't do anything if mail failed.
         }
