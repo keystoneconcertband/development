@@ -12,7 +12,7 @@ jobs:
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server: ftp://ftp.jonathangillette.net/
+        server: ftp.jonathangillette.net
         server-dir: keystoneconcertband.com/
         username: ftp_jonathan@jonathangillette.net
         password: ${{ secrets.FTP_PASSWORD_PROD }}
