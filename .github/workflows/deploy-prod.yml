@@ -9,11 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-      with:
-        fetch-depth: 2
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@3.1.2
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        ftp-server: ftp://ftp.jonathangillette.net/keystoneconcertband.com/
-        ftp-username: ftp_jonathan@jonathangillette.net
-        ftp-password: ${{ secrets.FTP_PASSWORD_PROD }}
+        server: ftp://ftp.jonathangillette.net/keystoneconcertband.com/
+        username: ftp_jonathan@jonathangillette.net
+        password: ${{ secrets.FTP_PASSWORD_PROD }}
+        exclude: |
+          .vscode/*
+          _config.yml
+          cgi-bin/*
+          includes/class/settings.ini.php
+          members/documents*/*
+          phplist/*
+          README.md
+          uploadimages/*
+          video/*
