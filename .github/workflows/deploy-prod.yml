@@ -12,7 +12,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      uses: SamKirkland/FTP-Deploy-Action@3.1.2
       with:
         ftp-server: ftp://ftp.jonathangillette.net/keystoneconcertband.com/
         ftp-username: ftp_jonathan@jonathangillette.net
