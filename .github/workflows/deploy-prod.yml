@@ -17,6 +17,7 @@ jobs:
         username: ftp_jonathan@jonathangillette.net
         password: ${{ secrets.FTP_PASSWORD_PROD }}
         exclude: |
+          .git*
           .vscode/*
           _config.yml
           cgi-bin/*
