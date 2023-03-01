@@ -18,6 +18,8 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD_PROD }}
         exclude: |
           .git*
+          **/.git*
+          **/.git*/**
           .vscode/*
           _config.yml
           cgi-bin/*
