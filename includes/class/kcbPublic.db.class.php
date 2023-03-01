@@ -52,12 +52,12 @@ class KCBPublicDb
     /* Select Queries */
     public function getCurrentConcert()
     {
-        return $this->getDb()->row("SELECT concertBegin, concertEnd, Title, pants, chair, address FROM KCB_Schedule WHERE concertBegin >= CURRENT_TIMESTAMP ORDER BY concertBegin");
+        return $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address FROM KCB_Schedule WHERE concertBegin >= CURRENT_TIMESTAMP ORDER BY concertBegin");
     }
 
     public function getConcertSchedule()
     {
-        return $this->getDb()->query("SELECT concertBegin, concertEnd, Title, pants, chair, address FROM KCB_Schedule WHERE year(concertBegin) = year(CURRENT_TIMESTAMP) ORDER BY concertBegin");
+        return $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address FROM KCB_Schedule WHERE year(concertBegin) = year(CURRENT_TIMESTAMP) ORDER BY concertBegin");
     }
 
     public function getHomepageMessages()
