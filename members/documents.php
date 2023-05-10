@@ -40,7 +40,7 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 					<div class="alert alert-info">
 					<span class="glyphicon glyphicon-info-sign"></span> <strong>Please review both the
 					  <a href="documents_perm/KCB_Bylaws_2021.pdf" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws</a>, and the 
-					  <a href="documents_perm/KCB_Policy_June_2022.pdf" target="_blank" style="text-decoration: underline; color: yellow">Band Policies</a>.
+					  <a href="documents_perm/KCB_Policy_March_2023.pdf" target="_blank" style="text-decoration: underline; color: yellow">Band Policies</a>.
 						</strong>
 					</div>
 				</div>
