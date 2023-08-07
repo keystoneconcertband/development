@@ -24,7 +24,7 @@
 			</ol>
 			<div class="carousel-inner" role="listbox">
 				<div class="active item">
-					<div class="fill" style="background-image:url('images/slide1.png');">
+					<div class="fill" style="background-image:url('images/slide6.png');">
 						<div class="container">
 							<div class="carousel-caption">
 								<h1>We need you</h1>
@@ -35,7 +35,7 @@
 					</div>
 				</div>
 				<div class="item">
-					<div class="fill" style="background-image:url('images/slide2.png');">
+					<div class="fill" style="background-image:url('images/slide9.png');">
 						<div class="container">
 							<div class="carousel-caption">
 								<h1>Play with us</h1>
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 				<div class="item">
-					<div class="fill" style="background-image:url('images/slide5.png');">
+					<div class="fill" style="background-image:url('images/slide8.png');">
 						<div class="container">
 							<div class="carousel-caption">
 								<h1>We can play for you</h1>
