@@ -58,7 +58,7 @@ $(document).ready(function() {
 				else {
 					return "";
 				}
-              }
+			  }
             },
             { "data": "title" },
             { "data": "notes" },
@@ -151,7 +151,7 @@ $('#modal_add_edit').on('hidden.bs.modal', function () {
 function submitForm() {
 	// Determine whether we are adding or editing record
 	if($("#uid").val() !== "") {
-		editRecord($("#uid").val());
+		editRecord();
 	}
 	else {
 		addRecord();
