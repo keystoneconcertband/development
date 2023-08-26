@@ -8,7 +8,7 @@ $(document).ready(function() {
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				if(office !== "") {
+				if(accountType === "1" || accountType === "2") {
 					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\', '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
@@ -81,7 +81,7 @@ $(document).ready(function() {
 
 	// Hide first column if user doesn't have access
     var column = table.column(0);
-    column.visible(office !== "");
+    column.visible(accountType === "1" || accountType === "2");
 
 	$('#addRow').click(function () {
 		var lastId = $('.emailContainers:last').attr('id');

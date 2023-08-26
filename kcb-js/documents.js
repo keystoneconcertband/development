@@ -8,7 +8,7 @@ $(document).ready(function() {
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				if(office !== "") {
+				if(accountType === "1" || accountType === "2") {
 					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteFile(\''+data.name+'\', \''+data.deleteUrl+'\')"></span></a>';
 				}
 				else {
@@ -39,7 +39,7 @@ $(document).ready(function() {
     });
 
     var column = table.column(0);
-    column.visible(office !== "");
+    column.visible(accountType === "1" || accountType === "2");
 	
     $('#fileupload').fileupload();
 });

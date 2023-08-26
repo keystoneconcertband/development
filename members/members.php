@@ -35,7 +35,7 @@ new ProtectedMember();
 				<div class="page-header">
 					<h2>Current Members</h2>
 				</div>
-				<? if(isset($_SESSION['office'])) { ?>
+				<? if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
 				<div class="row form-group">
 					<div class="col-sm-3">
 						<div class="bs-component">
@@ -269,7 +269,7 @@ new ProtectedMember();
 
 	<?php require '../includes/common_js.php'; ?>
 	<script type="text/javascript">
-		var office = "<?=$_SESSION['office']?>";
+		var accountType = "<?=$_SESSION['accountType']?>";
 	</script>
 	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>

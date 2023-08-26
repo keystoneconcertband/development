@@ -39,7 +39,7 @@
 	    <div class="collapse navbar-collapse" id="memberNavbar">
 	      <ul class="nav navbar-nav">
 			<li <? if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { ?>class="active"<?}?>><a href="/members/myInfo.php">My Info</a></li>
-			<? if(isset($_SESSION['office'])) { ?>
+			<? if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
 			<li class="dropdown <? if ($_SERVER['PHP_SELF'] == "/members/members.php" || $_SERVER['PHP_SELF'] == "/members/inactiveMembers.php" || $_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { ?>active"<?} else { ?> " <? } ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Members <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -53,7 +53,7 @@
 			<? } ?>
 			<li <? if ($_SERVER['PHP_SELF'] == "/members/documents.php") { ?>class="active"<?}?>><a href="/members/documents.php">Documents</a></li>
 			<li <? if ($_SERVER['PHP_SELF'] == "/members/music.php") { ?>class="active"<?}?>><a href="/members/music.php">Music</a></li>
-			<? if (isset($_SESSION["office"])) { ?>
+			<? if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
 			<li class="dropdown <? if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php" || $_SERVER['PHP_SELF'] == "/members/loginStats.php") { ?>active"<?} else { ?> " <? } ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
 				<ul class="dropdown-menu">

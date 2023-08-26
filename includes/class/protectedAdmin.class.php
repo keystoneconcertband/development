@@ -188,8 +188,10 @@ class ProtectedAdmin
     private function validAdmin()
     {
         $validSession = false;
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== "") {
-            $validSession = true;
+        if (isset($_SESSION['accountType']) && $_SESSION['accountType'] !== "") {
+            if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) {
+                $validSession = true;
+            }
         }
 
         return $validSession;

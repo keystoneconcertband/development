@@ -51,14 +51,14 @@ $(document).ready(function() {
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				if(office !== "") {
+				if(accountType === "1" || accountType === "2") {
 					var title = data.title.replace(/'/g, '&#96;')
 					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
 					return "";
 				}
-              } 
+			  }
             },
             { "data": "title" },
             { "data": "notes" },
@@ -89,7 +89,7 @@ $(document).ready(function() {
 
 	// Hide first column if user doesn't have access
     var column = table.column(0);
-    column.visible(office !== "");
+    column.visible(accountType === "1" || accountType === "2");
 });
 
 $("#form_concert").validator().on("submit", function (event) {
@@ -151,7 +151,7 @@ $('#modal_add_edit').on('hidden.bs.modal', function () {
 function submitForm() {
 	// Determine whether we are adding or editing record
 	if($("#uid").val() !== "") {
-		editRecord($("#uid").val());
+		editRecord();
 	}
 	else {
 		addRecord();
