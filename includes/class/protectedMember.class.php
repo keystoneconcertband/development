@@ -67,7 +67,7 @@
 		
 		// Gets the current active members
 		public function getInactiveMembers() {
-			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+			if ($this->validAdmin()) {
 				return $this->getDb()->getInactiveMembers();
 			}
 			else {
@@ -86,7 +86,7 @@
 		}
 		
 		public function addMember($mbrArray) {
-			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+			if ($this->validAdmin()) {
 				$retValue = "success";
 				$updateUser = $_SESSION["email"];
 				$instrument = "";
@@ -203,7 +203,7 @@
 		}
 		
 		public function addPendingMember($uid, $mbrArray) {
-			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+			if ($this->validAdmin()) {
 				$retValue = "success";
 				$updateUser = $_SESSION["email"];
 				$instrument = "";
@@ -260,7 +260,7 @@
 		}
 		
 		public function removeMember($uid, $deleteEmailAddress) {
-			if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+			if ($this->validAdmin()) {
 				$retValue = "success";
 				$updateUser = $_SESSION["email"];
 				
@@ -318,6 +318,18 @@
 		}
 		
 		/* PRIVATE FUNCTIONS */
+		private function validAdmin()
+		{
+			$validSession = false;
+			if (isset($_SESSION['accountType']) && $_SESSION['accountType'] !== "") {
+				if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) {
+					$validSession = true;
+				}
+			}
+	
+			return $validSession;
+		}
+		
 		// Determines whether to add or update an email address
 		private function upsertAddress($uid, $mbrArray, $updateUser) {
 			// check whether address exists

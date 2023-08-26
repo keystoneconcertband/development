@@ -46,9 +46,6 @@ new protectedAdmin();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
-	<script type="text/javascript">
-		var office = "<?=$_SESSION['office']?>";
-	</script>
 	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
   </body>

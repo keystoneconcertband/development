@@ -261,15 +261,17 @@ if ($use_auth) {
     }
     else {
 		// Using KCB login data to authenticate
-		if(isset($_SESSION['office']) && $_SESSION['office'] !== '') {
-			// Admin level user (add/update/delete)
-			$_SESSION[FM_SESSION_ID]['logged'] = "admin";
-	        fm_redirect(FM_SELF_URL . '?p=');	
-	    }
-		elseif(isset($_SESSION['email']) && $_SESSION['email'] !== '') { 
-			$_SESSION[FM_SESSION_ID]['logged'] = "user";
-	        fm_redirect(FM_SELF_URL . '?p=');
-		}
+        if (isset($_SESSION['accountType']) && $_SESSION['accountType'] !== "") {
+            if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) {
+                // Admin level user (add/update/delete)
+                $_SESSION[FM_SESSION_ID]['logged'] = "admin";
+                fm_redirect(FM_SELF_URL . '?p=');	
+            }
+            if($_SESSION['accountType'] === 0) {
+                $_SESSION[FM_SESSION_ID]['logged'] = "user";
+                fm_redirect(FM_SELF_URL . '?p=');
+            }
+        }
 		else {
 	        unset($_SESSION[FM_SESSION_ID]['logged']);
 	        fm_redirect(FM_ROOT_URL . '/members/reauth.php');

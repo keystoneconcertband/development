@@ -26,7 +26,7 @@ class ProtectedMusic
 
     public function getMusicRecord($uid)
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             return $this->getDb()->getMusicRecord($uid);
         } else {
             return "Access Denied";
@@ -35,7 +35,7 @@ class ProtectedMusic
 
     public function getGenres()
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             return $this->getDb()->getGenres();
         } else {
             return "Access Denied";
@@ -44,7 +44,7 @@ class ProtectedMusic
 
     public function searchTitles($title)
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             return $this->getDb()->searchTitles($title);
         } else {
             return "Access Denied";
@@ -53,7 +53,7 @@ class ProtectedMusic
 
     public function addConcert($concert)
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             $concert_uids = (explode(",", $concert['concert_uids']));
             $concert_date = $concert['concert_date'];
 
@@ -75,7 +75,7 @@ class ProtectedMusic
 
     public function deleteMusic($uid)
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             if ($this->getDb()->deleteMusic($uid, $_SESSION['email'])) {
                 return "success";
             } else {
@@ -88,7 +88,7 @@ class ProtectedMusic
 
     public function addMusic($title, $notes, $link, $genre, $last_played)
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             // TODO: need to handle reactivating deleted titles
             if ($this->getDb()->checkDupMusic($title) > 0) {
                 return "This title already exists.";
@@ -117,7 +117,7 @@ class ProtectedMusic
 
     public function editMusic($uid, $title, $notes, $link, $genre, $last_played)
     {
-        if (isset($_SESSION['office']) && $_SESSION['office'] !== '') {
+        if ($this->validAdmin()) {
             $retValue = $this->getDb()->editMusic($uid, $title, $notes, $link, $genre, $last_played, $_SESSION['email']);
             if ($retValue === 1) {
                 return "success";
@@ -140,6 +140,18 @@ class ProtectedMusic
     }
 
     /* PRIVATE FUNCTIONS */
+    private function validAdmin()
+    {
+        $validSession = false;
+        if (isset($_SESSION['accountType']) && $_SESSION['accountType'] !== "") {
+            if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) {
+                $validSession = true;
+            }
+        }
+
+        return $validSession;
+    }
+
     private function getDb()
     {
         return $this->db;
