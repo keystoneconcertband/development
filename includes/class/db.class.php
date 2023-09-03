@@ -56,7 +56,9 @@ class DB
         try {
             # Read settings from INI file, set UTF8
             $this->pdo = new PDO($dsn, $this->settings["user"], $this->settings["password"], array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+                PDO::MYSQL_ATTR_SSL_CA => '/home/site/wwwroot/certs/DigiCertGlobalRootCA.crt.pem',
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
             ));
             
             # We can now log any exceptions on Fatal error. 
