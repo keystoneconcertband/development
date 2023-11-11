@@ -3,7 +3,7 @@
 require("3rd-party/sendgrid-8.0.1/sendgrid-php.php");
 
 $email = new \SendGrid\Mail\Mail(); 
-$email->setFrom("web@keystoneconcertband.com", "KCB Website");
+$email->setFrom("webmaster@keystoneconcertband.com", "KCB Website");
 $email->setSubject("Sending with SendGrid is Fun");
 $email->addTo("jonathan.gillette@gmail.com", "Jonathan Gillette");
 $email->addContent("text/plain", "and easy to do anywhere, even with PHP");

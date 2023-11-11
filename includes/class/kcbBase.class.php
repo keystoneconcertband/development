@@ -3,8 +3,8 @@
 		This class is the base KCB class. All top level functions should be included here
 	*/
 
-    require("log.class.php");
-    require("../../3rd-party/sendgrid-8.0.1/sendgrid-php.php");
+    require "log.class.php";
+    require __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
 
 class KcbBase
 {
@@ -29,7 +29,7 @@ class KcbBase
     public function sendEmail($toAddress, $message, $title, $html = true)
     {
         $email = new \SendGrid\Mail\Mail(); 
-        $email->setFrom("web@keystoneconcertband.com", "KCB Website");
+        $email->setFrom("webmaster@keystoneconcertband.com", "KCB Website");
         $email->setSubject($title);
         $email->addTo($toAddress);
 
