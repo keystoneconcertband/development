@@ -41,7 +41,7 @@ class KcbBase
         else {
             $email->addContent("text/plain", $message);
         }
-        $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
+        $sendgrid = new \SendGrid(getenv('APPSETTING_SENDGRID_API_KEY'));
         try {
             $response = $sendgrid->send($email);
 
