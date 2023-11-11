@@ -52,7 +52,7 @@ class KcbBase
                 return false;
             }
         } catch (Exception $e) {
-            echo 'Caught exception: '. $e->getMessage() ."\n";
+            LogError 'Caught exception: '. $e->getMessage() ."\n";
             return false;
         }
     }

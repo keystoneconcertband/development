@@ -226,9 +226,9 @@ class Member
                 $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . $this->MAX_EXPIRE . " minutes.";
                 $textAddress = $member['text'] . "@" . $member['carrier'];
 
-                if (!$this->getKcb()->sendEmail($textAddress, $message, "", false)) {
-                    $response = "Unable to send login code email. Please try again later.";
-                }
+                // Send both an email and a text message
+                $this->sendAuthEmail($email, $member);
+                $response = $this->getKcb()->sendEmail($textAddress, $message, "", false)
             }
         } else {
             // User doesn't have a text address. Send them an email.
