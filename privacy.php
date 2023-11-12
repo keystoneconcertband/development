@@ -67,7 +67,7 @@
 				is provided to us from Facebook. We cannot see your account, anything you post, messages you send or any
 				other information from your Facebook account. 
 				<br><br>
-				If you feel that we are not abiding by this privacy policy, you should contact us immediately via email at <a href="mailto:web@keystoneconcertband.com">web@keystoneconcertband.com</a>.
+				If you feel that we are not abiding by this privacy policy, you should contact us immediately via email at <a href="mailto:webmaster@keystoneconcertband.com">webmaster@keystoneconcertband.com</a>.
 				
 			</div>
 		</div>
