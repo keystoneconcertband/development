@@ -113,7 +113,7 @@ class Member
                 $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * $this->MAX_EXPIRE;
 
                 if (date(time()) > $authCdDtTm) {
-                    if ($this->sendAuthRequest($email) <> 'db_error') {
+                    if ($this->sendAuthRequest($email)) {
                         $response = "auth_old";
                     } else {
                         $response = "db_error";
@@ -214,20 +214,20 @@ class Member
     // If user has a text/carrier entered, send as text. If not, send as email.
     private function sendAuthRequest($email)
     {
+        $response = false;
         $member = $this->getDb()->getMember($email);
 
         if (isset($member['text']) && $member['text'] !== "") {
             // User has texting enabled, send auth code as text
             $six_digit_random_number = mt_rand(100000, 999999);
-            $response = $this->authCodeLogic($email, $six_digit_random_number);
+            $AuthResponse = $this->authCodeLogic($email, $six_digit_random_number);
 
             // If valid
-            if ($response == "auth_required_no_cookie") {
+            if ($AuthResponse == "auth_required_no_cookie") {
                 $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . $this->MAX_EXPIRE . " minutes.";
                 $textAddress = $member['text'] . "@" . $member['carrier'];
 
-                // Send both an email and a text message
-                $this->sendAuthEmail($email, $member);
+                // Send text
                 $response = $this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false);
             }
         } else {
