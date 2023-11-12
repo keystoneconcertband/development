@@ -384,8 +384,7 @@
 				            $headerPend[] = 'X-Mailer: PHP/' . phpversion();
 							$subscribeBody = "subscribe KCBPassword nodigest";
 
-							mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerPend));
-							mail('webmaster@keystoneconcerband.com, j.gillette@icloud.com','KCB Email Update','(pend) Add email: ' . $value, implode("\r\n", $notificationHeader));
+							if ($this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email" . $value, "KCB Email Update")) {
 						}
 						catch(Exception $e) {
 							$this->getKcb()->LogError($e->getMessage());
@@ -436,8 +435,7 @@
 						$unsubscribeBody = "unsubscribe KCBPassword";
 			            
 						try {
-							mail('members-request@keystoneconcertband.com', '', $unsubscribeBody, implode("\r\n", $headerDel));
-							mail('webmaster@keystoneconcertband.com, j.gillette@icloud.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
+							if ($this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email" . $value, "KCB Email Update")) {
 							
 							if($delEmail) {
 								$result = $this->getDb()->delEmail($value, $uid);
