@@ -228,7 +228,7 @@ class Member
 
                 // Send both an email and a text message
                 $this->sendAuthEmail($email, $member);
-                $response = $this->getKcb()->sendEmail($textAddress, $message, "", false);
+                $this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false);
             }
         } else {
             // User doesn't have a text address. Send them an email.
