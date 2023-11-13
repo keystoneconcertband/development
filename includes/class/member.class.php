@@ -55,7 +55,7 @@ class Member
                 // Validate that the cookie auth code matches what is in the database
                 if (!$this->isValidAuthCookie($email)) {
                     // Send auth email, user's cookie is bad
-                    if ($this->sendAuthRequest($email) <> 'db_error') {
+                    if ($this->sendAuthRequest($email)) {
                         $response = "auth_failed_invalid_cookie";
                     } else {
                         $response = "db_error";
