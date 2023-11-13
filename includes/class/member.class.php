@@ -227,7 +227,7 @@ class Member
                 $textAddress = $member['text'] . "@" . $member['carrier'];
 
                 // Send text
-                if (!$this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false))
+                if (!$this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false)) {
                     $response = "Unable to send login code email. Please try again later.";
                 }
             }
