@@ -55,7 +55,7 @@ class Member
                 // Validate that the cookie auth code matches what is in the database
                 if (!$this->isValidAuthCookie($email)) {
                     // Send auth email, user's cookie is bad
-                    if ($this->sendAuthRequest($email)) {
+                    if ($this->sendAuthRequest($email) === 1) {
                         $response = "auth_failed_invalid_cookie";
                     } else {
                         $response = "db_error";
@@ -214,21 +214,22 @@ class Member
     // If user has a text/carrier entered, send as text. If not, send as email.
     private function sendAuthRequest($email)
     {
-        $response = false;
         $member = $this->getDb()->getMember($email);
 
         if (isset($member['text']) && $member['text'] !== "") {
             // User has texting enabled, send auth code as text
             $six_digit_random_number = mt_rand(100000, 999999);
-            $AuthResponse = $this->authCodeLogic($email, $six_digit_random_number);
+            $response = $this->authCodeLogic($email, $six_digit_random_number);
 
             // If valid
-            if ($AuthResponse == "auth_required_no_cookie") {
+            if ($response == "auth_required_no_cookie") {
                 $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . $this->MAX_EXPIRE . " minutes.";
                 $textAddress = $member['text'] . "@" . $member['carrier'];
 
                 // Send text
-                $response = $this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false);
+                if (!$this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false))
+                    $response = "Unable to send login code email. Please try again later.";
+                }
             }
         } else {
             // User doesn't have a text address. Send them an email.
