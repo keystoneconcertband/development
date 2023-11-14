@@ -355,8 +355,8 @@
 			$emails = $this->getDb()->getEmailAddresses($uid);
 
             // Email headers
-            $notificationHeader[] = 'From: KCB Website <web@keystoneconcertband.com>';
-            $notificationHeader[] = 'Reply-To: web@keystoneconcertband.com';
+            $notificationHeader[] = 'From: KCB Website <webmaster@keystoneconcertband.com>';
+            $notificationHeader[] = 'Reply-To: webmaster@keystoneconcertband.com';
             $notificationHeader[] = 'X-Mailer: PHP/' . phpversion();
 
 			// Convert array of arrays to single array this can handle	
@@ -378,14 +378,7 @@
 					// database from their initial inquiry.					
 					if($pendingUser) {
 						try {
-				            // Email headers
-							unset($headerPend);
-				            $headerPend[] = 'From: ' . $value;
-				            $headerPend[] = 'X-Mailer: PHP/' . phpversion();
-							$subscribeBody = "subscribe KCBPassword nodigest";
-
-							mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerPend));
-							mail('web@keystoneconcerband.com, j.gillette@icloud.com','KCB Email Update','(pend) Add email: ' . $value, implode("\r\n", $notificationHeader));
+							$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email" . $value, "KCB Email Update");
 						}
 						catch(Exception $e) {
 							$this->getKcb()->LogError($e->getMessage());
@@ -413,7 +406,7 @@
 							// Pending users were added above, so no need to re-add again.
 							if(!$pendingUser) {
 								mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerAdd));
-								mail('web@keystoneconcerband.com, j.gillette@icloud.com','KCB Email Update','Add email: ' . $value, implode("\r\n", $notificationHeader));
+								mail('webmaster@keystoneconcerband.com, j.gillette@icloud.com','KCB Email Update','Add email: ' . $value, implode("\r\n", $notificationHeader));
 							}
 					    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 						}
@@ -428,23 +421,16 @@
 			// No need to run if we had a failure above...
 			if($result) {
 				foreach ($emailsToDel as $value) {
-					if($value !== "") {
-			            // Email headers
-						unset($headerDel);
-			            $headerDel[] = 'From: ' . $value;
-			            $headerDel[] = 'X-Mailer: PHP/' . phpversion();
-						$unsubscribeBody = "unsubscribe KCBPassword";
-			            
-						try {
-							mail('members-request@keystoneconcertband.com', '', $unsubscribeBody, implode("\r\n", $headerDel));
-							mail('web@keystoneconcertband.com, j.gillette@icloud.com','KCB Email Update','Remove email: ' . $value, implode("\r\n", $notificationHeader));
-							
+					if($value !== "") {			            
+						try {							
 							if($delEmail) {
 								$result = $this->getDb()->delEmail($value, $uid);
 							}
 							else {
 								$result = $this->getDb()->deactivateEmail($value, $uid, $_SESSION["email"]);
 							}
+
+							$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email" . $value, "KCB Email Update");
 						}
 						catch(Exception $e) {
 							$this->getKcb()->LogError($e->getMessage());

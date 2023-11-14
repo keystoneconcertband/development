@@ -55,7 +55,7 @@ class Member
                 // Validate that the cookie auth code matches what is in the database
                 if (!$this->isValidAuthCookie($email)) {
                     // Send auth email, user's cookie is bad
-                    if ($this->sendAuthRequest($email) <> 'db_error') {
+                    if ($this->sendAuthRequest($email) === 1) {
                         $response = "auth_failed_invalid_cookie";
                     } else {
                         $response = "db_error";
@@ -113,7 +113,7 @@ class Member
                 $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * $this->MAX_EXPIRE;
 
                 if (date(time()) > $authCdDtTm) {
-                    if ($this->sendAuthRequest($email) <> 'db_error') {
+                    if ($this->sendAuthRequest($email)) {
                         $response = "auth_old";
                     } else {
                         $response = "db_error";
@@ -226,7 +226,8 @@ class Member
                 $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . $this->MAX_EXPIRE . " minutes.";
                 $textAddress = $member['text'] . "@" . $member['carrier'];
 
-                if (!$this->getKcb()->sendEmail($textAddress, $message, "", false)) {
+                // Send text
+                if (!$this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false)) {
                     $response = "Unable to send login code email. Please try again later.";
                 }
             }

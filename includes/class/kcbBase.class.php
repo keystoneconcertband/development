@@ -3,7 +3,8 @@
 		This class is the base KCB class. All top level functions should be included here
 	*/
 
-    require("log.class.php");
+    require "log.class.php";
+    require __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
 
 class KcbBase
 {
@@ -27,21 +28,31 @@ class KcbBase
 
     public function sendEmail($toAddress, $message, $title, $html = true)
     {
+        $email = new \SendGrid\Mail\Mail(); 
+        $email->setFrom("webmaster@keystoneconcertband.com", "KCB Website");
+        $email->setSubject($title);
+        $email->addTo($toAddress);
+
+        if($html) {
+            $email->addContent(
+                "text/html", $message
+            );
+        }
+        else {
+            $email->addContent("text/plain", $message);
+        }
+        $sendgrid = new \SendGrid(getenv('APPSETTING_SENDGRID_API_KEY'));
         try {
-            if ($html) {
-                // To send HTML mail, the Content-type header must be set
-                $headers[] = 'MIME-Version: 1.0';
-                $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+            $response = $sendgrid->send($email);
+
+            if($response->statusCode() < 400) {
+                return true;
             }
-
-            // Additional headers
-            $headers[] = 'From: KCB Website <web@keystoneconcertband.com>';
-            $headers[] = 'Reply-To: web@keystoneconcertband.com';
-            $headers[] = 'X-Mailer: PHP/' . phpversion();
-
-            return mail($toAddress, $title, $message, implode("\r\n", $headers));
+            else {
+                return false;
+            }
         } catch (Exception $e) {
-            $this->LogError($e->getMessage());
+            LogError('Caught exception: '. $e->getMessage() ."\n");
             return false;
         }
     }
