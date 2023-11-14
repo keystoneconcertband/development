@@ -35,10 +35,6 @@
                 <div class="page-header">
                     <h2>Join us</h2>
                 </div>
-                <div class='alert alert-info'><strong>2022 Rehearsals</strong><br />Please see our <a
-                        href="covid.php">COVID-19 page</a> for more details about the safety of the band
-                    during the COVID-19 Pandemic.</div>
-
                 The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
                 organization. We welcome all wind band musicians, but have greater need for clarinet, bass clarinet,
                 euphonium, tuba, trombone, alto sax, baritone sax, trumpet, and percussion to fill out our sections. 
