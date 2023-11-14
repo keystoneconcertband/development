@@ -50,24 +50,6 @@ class Log
                  $this->write($message, $page);
             }
         }
-
-        // Send email to webmaster
-        try {
-            // To send HTML mail, the Content-type header must be set
-            $headers[] = 'MIME-Version: 1.0';
-            $headers[] = 'Content-type: text/html; charset=iso-8859-1';
-
-            // Additional headers
-            $headers[] = 'From: KCB Website <webmaster@keystoneconcertband.com>';
-            $headers[] = 'Reply-To: webmaster@keystoneconcertband.com';
-            $headers[] = 'X-Mailer: PHP/' . phpversion();
-
-            $msg = $message . "<br>Server Variables: " . $this->getServerVars();
-
-            $kcb->sendEmail("webmaster@keystoneconcertband.com", $msg, "KCB Web Error");
-        } catch (Exception $e) {
-            // Don't do anything if mail failed.
-        }
     }
 
     /**
