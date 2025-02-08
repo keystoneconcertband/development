@@ -83,18 +83,26 @@ class KCBPublicDb
                                       WHERE email_address = :email");
     }
 
+    public function checkRecentUser()
+    {
+        return $this->getDb()->query("SELECT ip_address
+                                      FROM kcb_members
+                                      WHERE estbd_dt_tm >= NOW() - INTERVAL 5 MINUTE;");
+    }
+
     /* Update Queries */
-    public function addPendingUser($joinArray, $updateUser)
+    public function addPendingUser($joinArray, $updateUser, $ipAddress)
     {
         $this->getDb()->bind("firstName", $this->getFirstName($joinArray["txtName"]));
         $this->getDb()->bind("lastName", $this->getLastName($joinArray["txtName"]));
         $this->getDb()->bind("phone", $joinArray["txtPhone"]);
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
+        $this->getDb()->bind("ipAddress", $ipAddress);
         $retVal = $this->getDb()->query("INSERT INTO kcb_members(accountType, firstName, lastName, text, 
-                                            estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled) 
+                                            estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled, ip_address) 
                                          VALUES(3, :firstName, :lastName, :phone, 
-                                            :updateUser1, now(), :updateUser2, now(), 0)");
+                                            :updateUser1, now(), :updateUser2, now(), 0, :ipAddress)");
 
         // Return key value
         if ($retVal) {

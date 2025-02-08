@@ -36,43 +36,44 @@ class KCBPublic
         $response = $this->validateJoin($joinArray);
 
         if (empty($response)) {
-            $response = $this->processEmail($joinArray);
+            // Check for spam
+            $response = $this->processSpam($joinArray);
 
             // If we successfully sent the email, add the user to the database as a pending user
-            if ($response === "success") {
+            if (empty($response)) {
                 try {
-                    // Check if this pending user's email is already in the database, if so, skip adding the user
-                    $email = $this->getDb()->checkDupPendingUser($joinArray['txtEmail']);
+                    $this->getDb()->beginTransaction();
 
-                    if (!$email) {
-                        $this->getDb()->beginTransaction();
+                    // Add user
+                    $ipAddress = $this->getUserIpAddr();
+                    $uid = $this->getDb()->addPendingUser($joinArray, $webUser, $ipAddress);
 
-                        // Add user
-                        $uid = $this->getDb()->addPendingUser($joinArray, $webUser);
-
-                        // Add email
-                        if ($uid > 0) {
-                            if ($this->getDb()->addEmail($joinArray['txtEmail'], $uid, $webUser)) {
-                                // Loop through each instrument	and add
-                                foreach ($joinArray['chkInstrument'] as $instr) {
-                                    if (!$this->getDb()->addInstrument($instr, $uid, $webUser)) {
-                                        $this->getDb()->rollBackTransaction();
-                                        $response = "instrument_add_error";
-                                    }
+                    // Add email
+                    if ($uid > 0) {
+                        if ($this->getDb()->addEmail($joinArray['txtEmail'], $uid, $webUser)) {
+                            // Loop through each instrument	and add
+                            foreach ($joinArray['chkInstrument'] as $instr) {
+                                if (!$this->getDb()->addInstrument($instr, $uid, $webUser)) {
+                                    $this->getDb()->rollBackTransaction();
+                                    $response = "instrument_add_error";
                                 }
-                            } else {
-                                $this->getDb()->rollBackTransaction();
-                                $response = "email_add_error";
                             }
                         } else {
                             $this->getDb()->rollBackTransaction();
-                            $response = "add_error";
+                            $response = "email_add_error";
                         }
+                    } else {
+                        $this->getDb()->rollBackTransaction();
+                        $response = "add_error";
+                    }
 
-                        // Everything above was successful, save the transaction
-                        if ($response === "success") {
-                            $this->getDb()->executeTransaction();
-                        }
+                    // Everything above was successful, save the transaction
+                    if (empty($response)) {
+                        $response = "success";
+                        $this->getDb()->executeTransaction();
+
+                        // Send the email with the users request
+                        $this->processEmail($joinArray);
                     }
                 } catch (Exception $e) {
                     $this->getKcb()->LogError($e->getMessage());
@@ -151,4 +152,41 @@ class KCBPublic
 
         return $response;
     }
+
+    private function processSpam($joinArray)
+    {
+        // We've not gotten a lot of SPAM sent, but the times we've gotten it, 
+        // it's filled up the database with a lot of junk and hit the sendgrid limit.
+        // 1. Prevent dups of the user who just tried to submit
+        // 2. Check if request is from the same IP Address as was just entered
+        // Return nothing if no spam submission is detected
+
+        $email = $this->getDb()->checkDupPendingUser($joinArray['txtEmail']);
+
+        if($email) {
+            return "Looks like you already submitted a request to join.";
+        }
+
+        // Recent request was submitted
+        $ipAddress = $this->getUserIpAddr();
+        $recentRequests = $this->getDb()->checkRecentUser();
+
+        foreach ($recentRequests as $record) {
+            $result = "b";
+            if($record["ip_address"] === $ipAddress) {
+                return "A recent request from this IP Address has already been submitted.";
+            }
+        }
+    }
+
+    private function getUserIpAddr() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            return $_SERVER['REMOTE_ADDR'];
+        }
+    }
+    
 }
