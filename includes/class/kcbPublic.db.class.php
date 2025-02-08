@@ -94,7 +94,7 @@ class KCBPublicDb
         $retVal = $this->getDb()->query("INSERT INTO kcb_members(accountType, firstName, lastName, text, 
                                             estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled) 
                                          VALUES(3, :firstName, :lastName, :phone, 
-                                            1, :updateUser1, now(), :updateUser2, now(), 0)");
+                                            :updateUser1, now(), :updateUser2, now(), 0)");
 
         // Return key value
         if ($retVal) {
