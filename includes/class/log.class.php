@@ -47,7 +47,7 @@ class Log
             }
         } else {
             if (mkdir($this->path, 0777) === true) {
-                 $this->write($message, $page);
+                 $this->write($message);
             }
         }
     }
