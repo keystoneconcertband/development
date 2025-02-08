@@ -28,6 +28,11 @@ class KcbBase
 
     public function sendEmail($toAddress, $message, $title, $html = true)
     {
+        // Can't email from localhost, so pretend we did
+        if ($_SERVER['SERVER_NAME'] == 'localhost') {
+            return true;
+        }
+
         $email = new \SendGrid\Mail\Mail(); 
         $email->setFrom("webmaster@keystoneconcertband.com", "KCB Website");
         $email->setSubject($title);
