@@ -1,4 +1,4 @@
-<? 	
+<?php 	
 	include_once('includes/class/kcbPublic.class.php');
 	global $cncrts;
 	$cncrts = new KCBPublic();
@@ -6,18 +6,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<? require 'includes/common_meta.php'; ?>
+	<?php require 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band concert schedule.">
 
     <title>Concerts - Keystone Concert Band</title>
 
-	<? require 'includes/common_css.php'; ?>
+	<?php require 'includes/common_css.php'; ?>
 
   </head>
 
   <body>
 
-	<? require 'includes/nav.php'; ?>
+	<?php require 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -40,10 +40,8 @@
 				</div>
 <!--
 				<div class='alert alert-info'><strong>More concerts still yet to come!</strong><br />Continue to check back again throughout the season to see any additional concerts added to the lineup!</div>
-
-				<div class='alert alert-info'><strong>2021 Schedule</strong><br />Please check back later in the year to see if we have any scheduled concerts!</div>
 -->
-				<?
+				<?php
 					$rowNbr = 1;
 					$concerts = $cncrts->getConcertSchedule();
 						
@@ -118,9 +116,9 @@
 				?>
 			</div>
 		</div>
-		<? require 'includes/footer.php'; ?>
+		<?php require 'includes/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<? require 'includes/common_js.php'; ?>
+	<?php require 'includes/common_js.php'; ?>
   </body>
 </html>

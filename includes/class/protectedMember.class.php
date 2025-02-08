@@ -1,4 +1,4 @@
-<?
+<?php
 	// This class is for methods which must be protected, so use must have a valid session to run these queries
 	// member is its parent
  	include_once("member.class.php");

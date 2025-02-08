@@ -1,4 +1,4 @@
-<?
+<?php
 	include_once('includes/class/kcbPublic.class.php');
 	global $homepage;
 	$homepage = new KCBPublic();
@@ -6,15 +6,15 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<? require('includes/common_meta.php');	?>
+		<?php require('includes/common_meta.php');	?>
 		<meta name="description" content="Keystone Concert Band is an organization to foster, promote, and increase the musical knowledge and appreciation of the general public by operating and maintaining a concert band and by presenting performances of music.">
 		<title>Keystone Concert Band</title>
-		<? require('includes/common_css.php'); ?>
+		<?php require('includes/common_css.php'); ?>
 	</head>
 	<body>
 		<div id="fb-root"></div>
 		<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=183258391082442&autoLogAppEvents=1" nonce="XBkyxwt4"></script>
-		<? require('includes/nav.php'); ?>
+		<?php require('includes/nav.php'); ?>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
@@ -66,7 +66,7 @@
 				<span class="sr-only">Next</span>
 			</a>
 		</div><!-- /.carousel -->
-		<?
+		<?php
 			$messages = $homepage->getHomepageMessages();
 			
 			foreach($messages as $msg) {
@@ -88,7 +88,7 @@
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
 					<h2>Upcoming Concert</h2>
-						<?
+						<?php
 							$concert = $homepage->getCurrentConcert();
 											
 							if(!$concert) {
@@ -113,10 +113,10 @@
 							}
 						?>
 					<p><a class="btn btn-default" href="concerts.php" role="button">View more &raquo;</a></p>
-					<? if($concert) { ?>
+					<?php if($concert) { ?>
 					<a href="#show" style="font-size: 8px;" onclick="showAlerts()">Band Member?</a>
 						<div id="bandAlerts" style="display:none">
-							<?
+							<?php
 								if ($concert['pants'] == 0) {
 										echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a black pants concert</div>";
 								}
@@ -128,7 +128,7 @@
 								}
 							?>
 						</div>
-					<? } //End if concert ?>
+					<?php } //End if concert ?>
 				</div><!-- /.col-lg- -->
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
@@ -148,10 +148,10 @@
 					<p><a class="btn btn-default" href="donate.php" role="button">View details &raquo;</a></p>
 				</div><!-- /.col-lg-4 -->
 			</div><!-- /.row -->
-			<? require('includes/footer.php'); ?>
+			<?php require('includes/footer.php'); ?>
 		</div><!-- /.container -->
 
-		<? require('includes/common_js.php'); ?>
+		<?php require('includes/common_js.php'); ?>
 		<script>
 			function showAlerts()
 			{

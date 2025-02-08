@@ -2,18 +2,18 @@
 <html lang="en">
 
 <head>
-    <? require 'includes/common_meta.php'; ?>
+    <?php require 'includes/common_meta.php'; ?>
     <meta name="description" content="Use your purchases on amazon to help the band!">
 
     <title>Rehearsals during COVID-19 - Keystone Concert Band</title>
 
-    <? require 'includes/common_css.php'; ?>
+    <?php require 'includes/common_css.php'; ?>
 
 </head>
 
 <body>
 
-    <? require 'includes/nav.php'; ?>
+    <?php require 'includes/nav.php'; ?>
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -59,10 +59,10 @@
                 </div>
             </div>
         </div>
-        <? require 'includes/footer.php'; ?>
+        <?php require 'includes/footer.php'; ?>
     </div> <!-- /container -->
 
-    <? require 'includes/common_js.php'; ?>
+    <?php require 'includes/common_js.php'; ?>
 </body>
 
 </html>

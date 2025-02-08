@@ -1,4 +1,4 @@
-<? 
+<?php 
 	# This is the public page for member which the ajax requests call.
 	include_once('../includes/class/protectedAdmin.class.php');
 	header('Content-Type: application/json');
