@@ -1,4 +1,4 @@
-<? 
+<?php 
 	# This is the public page for memberLogin which the ajax requests call.
 	include_once('includes/class/member.class.php');
 

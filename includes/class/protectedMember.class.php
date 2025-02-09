@@ -1,4 +1,4 @@
-<?
+<?php
 	// This class is for methods which must be protected, so use must have a valid session to run these queries
 	// member is its parent
  	include_once("member.class.php");
@@ -132,7 +132,7 @@
 					}
 				}
 				catch(Exception $e) {
-					$this->getKcb()->LogError($e->getMessage());
+					$this->getKcb()->logError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
 					$retValue = "db_error";
 				}
@@ -190,7 +190,7 @@
 					}
 				}
 				catch(Exception $e) {
-					$this->getKcb()->LogError($e->getMessage());
+					$this->getKcb()->logError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
 					$retValue = "db_error";
 				}
@@ -247,7 +247,7 @@
 					}
 				}
 				catch(Exception $e) {
-					$this->getKcb()->LogError($e->getMessage());
+					$this->getKcb()->logError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
 					$retValue = "db_error";
 				}
@@ -282,7 +282,7 @@
 					}
 				}
 				catch(Exception $e) {
-					$this->getKcb()->LogError($e->getMessage());
+					$this->getKcb()->logError($e->getMessage());
 					$this->getDb()->rollBackTransaction();
 					$retValue = "db_error";
 				}
@@ -381,7 +381,7 @@
 							$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email" . $value, "KCB Email Update");
 						}
 						catch(Exception $e) {
-							$this->getKcb()->LogError($e->getMessage());
+							$this->getKcb()->logError($e->getMessage());
 							return false;
 						}
 					}
@@ -411,7 +411,7 @@
 					    	$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 						}
 						catch(Exception $e) {
-							$this->getKcb()->LogError($e->getMessage());
+							$this->getKcb()->logError($e->getMessage());
 							return false;
 						}
 				    }
@@ -433,7 +433,7 @@
 							$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email" . $value, "KCB Email Update");
 						}
 						catch(Exception $e) {
-							$this->getKcb()->LogError($e->getMessage());
+							$this->getKcb()->logError($e->getMessage());
 							return false;
 						}
 				    }
@@ -472,7 +472,7 @@
 				    	$result = $this->getDb()->addInstrument($value, $uid, $_SESSION["email"]);						
 					}
 					catch(Exception $e) {
-						$this->getKcb()->LogError($e->getMessage());
+						$this->getKcb()->logError($e->getMessage());
 						$result = false;
 					}
 			    }
@@ -486,7 +486,7 @@
 							$result = $this->getDb()->delInstrument($value, $uid);	
 						}
 						catch(Exception $e) {
-							$this->getKcb()->LogError($e->getMessage());
+							$this->getKcb()->logError($e->getMessage());
 							$result = false;
 						}
 				    }

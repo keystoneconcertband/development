@@ -1,4 +1,4 @@
-<? 
+<?php 
 	# This is the public page for booking
  	include_once("includes/class/kcbBase.class.php");
 	$response = "";

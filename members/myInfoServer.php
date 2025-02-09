@@ -1,4 +1,4 @@
-<? 
+<?php 
 	# This is the public page for myInfo which the ajax requests call.
 	//print_r($_POST);
 	

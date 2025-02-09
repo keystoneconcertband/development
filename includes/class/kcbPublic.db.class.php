@@ -1,5 +1,5 @@
 <?php
-    include_once("db.class.php");
+include_once("db.class.php");
 
 class KCBPublicDb
 {
@@ -30,7 +30,7 @@ class KCBPublicDb
     private function getLastName($name)
     {
         $name_parts = explode(' ', $name);
-        return $name_parts[sizeof($name_parts) - 1];
+        return $name_parts[count($name_parts) - 1];
     }
 
     /* Transactions */
@@ -52,34 +52,57 @@ class KCBPublicDb
     /* Select Queries */
     public function getCurrentConcert()
     {
-        return $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address FROM KCB_Schedule WHERE concertBegin >= CURRENT_TIMESTAMP ORDER BY concertBegin");
+        return $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address
+                                    FROM kcb_schedule 
+                                    WHERE concertBegin >= CURRENT_TIMESTAMP 
+                                    ORDER BY concertBegin");
     }
 
     public function getConcertSchedule()
     {
-        return $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address FROM KCB_Schedule WHERE year(concertBegin) = year(CURRENT_TIMESTAMP) ORDER BY concertBegin");
+        return $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address 
+                                      FROM kcb_schedule 
+                                      WHERE year(concertBegin) = year(CURRENT_TIMESTAMP) 
+                                      ORDER BY concertBegin");
     }
 
     public function getHomepageMessages()
     {
-        return $this->getDb()->query("SELECT title, message, message_type FROM KCB_homepage_messages WHERE start_dt <= CURRENT_TIMESTAMP AND end_dt >= CURRENT_TIMESTAMP ORDER BY start_dt");
+        return $this->getDb()->query("SELECT title, message, message_type 
+                                      FROM kcb_homepage_messages 
+                                      WHERE start_dt <= CURRENT_TIMESTAMP 
+                                        AND end_dt >= CURRENT_TIMESTAMP 
+                                      ORDER BY start_dt");
     }
 
     public function checkDupPendingUser($email)
     {
         $this->getDb()->bind("email", $email);
-        return $this->getDb()->query("SELECT email_address from KCB_email_address where email_address = :email");
+        return $this->getDb()->query("SELECT email_address 
+                                      FROM kcb_email_address 
+                                      WHERE email_address = :email");
+    }
+
+    public function checkRecentUser()
+    {
+        return $this->getDb()->query("SELECT ip_address
+                                      FROM kcb_members
+                                      WHERE estbd_dt_tm >= NOW() - INTERVAL 5 MINUTE");
     }
 
     /* Update Queries */
-    public function addPendingUser($joinArray, $updateUser)
+    public function addPendingUser($joinArray, $updateUser, $ipAddress)
     {
         $this->getDb()->bind("firstName", $this->getFirstName($joinArray["txtName"]));
         $this->getDb()->bind("lastName", $this->getLastName($joinArray["txtName"]));
         $this->getDb()->bind("phone", $joinArray["txtPhone"]);
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
-        $retVal = $this->getDb()->query("INSERT INTO KCB_Members(accountType, firstName, lastName, text, doNotDisplay, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled) VALUES(3, :firstName, :lastName, :phone, 1, :updateUser1, now(), :updateUser2, now(), 0)");
+        $this->getDb()->bind("ipAddress", $ipAddress);
+        $retVal = $this->getDb()->query("INSERT INTO kcb_members(accountType, firstName, lastName, text, 
+                                            estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled, ip_address) 
+                                         VALUES(3, :firstName, :lastName, :phone, 
+                                            :updateUser1, now(), :updateUser2, now(), 0, :ipAddress)");
 
         // Return key value
         if ($retVal) {
@@ -95,7 +118,9 @@ class KCBPublicDb
         $this->getDb()->bind("uid", $uid);
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
-        $retVal = $this->getDb()->query("INSERT INTO KCB_instrument(member_uid, instrument, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :instrument, now(), :updateUser1, now(), :updateUser2)");
+        $retVal = $this->getDb()->query("INSERT INTO kcb_instrument(member_uid, instrument, estbd_dt_tm, 
+                                            estbd_by, lst_tran_dt_tm, lst_updtd_by) 
+                                         VALUES(:uid, :instrument, now(), :updateUser1, now(), :updateUser2)");
 
         return $retVal;
     }
@@ -106,7 +131,9 @@ class KCBPublicDb
         $this->getDb()->bind("uid", $uid);
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
-        $retVal = $this->getDb()->query("INSERT INTO KCB_email_address(member_uid, email_address, actv_flg, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :email, 0, now(), :updateUser1, now(), :updateUser2)");
+        $retVal = $this->getDb()->query("INSERT INTO kcb_email_address(member_uid, email_address, actv_flg, 
+                                            estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) 
+                                         VALUES(:uid, :email, 0, now(), :updateUser1, now(), :updateUser2)");
 
         return $retVal;
     }

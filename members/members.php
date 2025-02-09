@@ -35,7 +35,7 @@ new ProtectedMember();
 				<div class="page-header">
 					<h2>Current Members</h2>
 				</div>
-				<? if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
+				<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
 				<div class="row form-group">
 					<div class="col-sm-3">
 						<div class="bs-component">
@@ -47,7 +47,7 @@ new ProtectedMember();
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
 				</div>
-				<? } else { ?>
+				<?php } else { ?>
 				<div class="row form-group">
 					<div class="col-sm-12">
 						<div class="bs-component">
@@ -55,7 +55,7 @@ new ProtectedMember();
 						</div>
 					</div>
 				</div>
-				<? } ?>
+				<?php } ?>
 				<div class="row">
 					<div class="col-lg-12">
 						<table id="kcbMemberTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
