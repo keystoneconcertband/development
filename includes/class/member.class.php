@@ -215,7 +215,7 @@ class Member
     private function sendAuthRequest($email)
     {
         $member = $this->getDb()->getMember($email);
-
+        /* Apr 6 2024 Disabling as emailing texts has become difficult...
         if (isset($member['text']) && $member['text'] !== "") {
             // User has texting enabled, send auth code as text
             $six_digit_random_number = mt_rand(100000, 999999);
@@ -235,7 +235,8 @@ class Member
             // User doesn't have a text address. Send them an email.
             $response = $this->sendAuthEmail($email, $member);
         }
-
+        */
+        $response = $this->sendAuthEmail($email, $member);
         return $response;
     }
 
