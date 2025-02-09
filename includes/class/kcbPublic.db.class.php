@@ -1,5 +1,5 @@
 <?php
-    include_once("db.class.php");
+include_once("db.class.php");
 
 class KCBPublicDb
 {
@@ -30,7 +30,7 @@ class KCBPublicDb
     private function getLastName($name)
     {
         $name_parts = explode(' ', $name);
-        return $name_parts[sizeof($name_parts) - 1];
+        return $name_parts[count($name_parts) - 1];
     }
 
     /* Transactions */
@@ -87,7 +87,7 @@ class KCBPublicDb
     {
         return $this->getDb()->query("SELECT ip_address
                                       FROM kcb_members
-                                      WHERE estbd_dt_tm >= NOW() - INTERVAL 5 MINUTE;");
+                                      WHERE estbd_dt_tm >= NOW() - INTERVAL 5 MINUTE");
     }
 
     /* Update Queries */

@@ -6,7 +6,7 @@
 	// Only allow POST requests
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
 		$join = new KCBPublic();
-		$response = $join->JoinSubmit($_REQUEST);
+		$response = $join->joinSubmit($_REQUEST);
 	}
 	else {
 		$response = "invalid_request";

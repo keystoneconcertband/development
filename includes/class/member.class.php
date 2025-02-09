@@ -1,11 +1,11 @@
 <?php
-    // kcbBase is its parent
-    include_once("kcbBase.class.php");
-    include_once("member.db.class.php");
+// kcbBase is its parent
+include_once("kcbBase.class.php");
+include_once("member.db.class.php");
 
 class Member
 {
-    private $MAX_EXPIRE = 30;
+    const MAX_EXPIRE = 30;
     private $kcbCookie = "KCB_Cookie";
     private $fbAuthCookie = "fbsr_129894350764";
     private $db;
@@ -109,8 +109,8 @@ class Member
 
             // See if auth_cd matches
             if ($auth_cd == $authCdDb['auth_cd']) {
-                // See if code is from within the last $MAX_EXPIRE mins
-                $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * $this->MAX_EXPIRE;
+                // See if code is from within the last MAX_EXPIRE mins
+                $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * self::MAX_EXPIRE;
 
                 if (date(time()) > $authCdDtTm) {
                     if ($this->sendAuthRequest($email)) {
@@ -211,7 +211,7 @@ class Member
         return $response;
     }
 
-    // If user has a text/carrier entered, send as text. If not, send as email.
+    // Sends email request. Disabled texting in 2024 due to issues with sending texts.
     private function sendAuthRequest($email)
     {
         $member = $this->getDb()->getMember($email);
@@ -223,7 +223,7 @@ class Member
 
             // If valid
             if ($response == "auth_required_no_cookie") {
-                $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . $this->MAX_EXPIRE . " minutes.";
+                $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . self::MAX_EXPIRE . " minutes.";
                 $textAddress = $member['text'] . "@" . $member['carrier'];
 
                 // Send text
@@ -248,9 +248,9 @@ class Member
 
         // If valid
         if ($response == "auth_required_no_cookie") {
-            // Add $MAX_EXPIRE time to the current time to show in the email when the code is valid until.
+            // Add MAX_EXPIRE time to the current time to show in the email when the code is valid until.
             $date = new DateTime(date('Y-m-d h:i:sa'));
-            $dateInterval = "PT" . $this->MAX_EXPIRE . "M";
+            $dateInterval = "PT" . self::MAX_EXPIRE . "M";
             $date->add(new DateInterval($dateInterval));
 
             $subject = "Keystone Concert Band Login Code";
@@ -281,9 +281,9 @@ class Member
         $authCdDb = $this->getDb()->getAuthCd($email);
 
         if ($authCdDb) {
-            $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * $this->MAX_EXPIRE;
+            $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * self::MAX_EXPIRE;
 
-            // Don't send another email if its been less than $MAX_EXPIRE mins
+            // Don't send another email if its been less than MAX_EXPIRE mins
             if (date(time()) <= $authCdDtTm) {
                 $response = "auth_cd_not_expired";
             } else {

@@ -11,13 +11,13 @@ class ProtectedMusic
     /* PUBLIC FUNCTIONS */
     public function __construct()
     {
-        new Member(true);
+        $member = new Member(true);
         $this->setDB(new MusicDB());
     }
 
     public function getMusic()
     {
-        if (isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+        if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['email']) && $_SESSION['email'] !== '') {
             return $this->getDb()->getMusic();
         } else {
             return "Access Denied";
@@ -54,7 +54,10 @@ class ProtectedMusic
     public function addConcert($concert)
     {
         if ($this->validAdmin()) {
-            $concert_uids = (explode(",", $concert['concert_uids']));
+            $concert_uids = explode(",", $concert['concert_uids']);
+            if (!is_array($concert_uids)) {
+                return "Invalid concert UIDs format.";
+            }
             $concert_date = $concert['concert_date'];
 
             foreach ($concert_uids as $uid) {

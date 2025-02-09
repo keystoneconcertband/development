@@ -1,6 +1,6 @@
 <?php
-    include_once("kcbBase.class.php");
-    include_once("kcbPublic.db.class.php");
+include_once("kcbBase.class.php");
+include_once("kcbPublic.db.class.php");
 
 class KCBPublic
 {
@@ -28,7 +28,7 @@ class KCBPublic
         return $this->getDb()->getHomepageMessages();
     }
 
-    public function JoinSubmit($joinArray)
+    public function joinSubmit($joinArray)
     {
         $webUser = "JOIN_REQUEST";
 
@@ -76,7 +76,7 @@ class KCBPublic
                         $this->processEmail($joinArray);
                     }
                 } catch (Exception $e) {
-                    $this->getKcb()->LogError($e->getMessage());
+                    $this->getKcb()->logError($e->getMessage());
                     $this->getDb()->rollBackTransaction();
                     $response = "db_error";
                 }
@@ -172,21 +172,22 @@ class KCBPublic
         $recentRequests = $this->getDb()->checkRecentUser();
 
         foreach ($recentRequests as $record) {
-            $result = "b";
             if($record["ip_address"] === $ipAddress) {
                 return "A recent request from this IP Address has already been submitted.";
             }
         }
+
+        return null;
     }
 
     private function getUserIpAddr() {
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             return $_SERVER['HTTP_CLIENT_IP'];
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $ipAddresses = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return trim($ipAddresses[0]);
         } else {
             return $_SERVER['REMOTE_ADDR'];
         }
     }
-    
 }

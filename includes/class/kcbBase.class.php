@@ -1,10 +1,10 @@
 <?php
-    /*
-		This class is the base KCB class. All top level functions should be included here
-	*/
+/*
+    This class is the base KCB class. All top level functions should be included here
+*/
 
-    require "log.class.php";
-    require __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
+require "log.class.php";
+require __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
 
 class KcbBase
 {
@@ -21,7 +21,7 @@ class KcbBase
         }
     }
 
-    public function LogError($message)
+    public function logError($message)
     {
         $this->log->write($message);
     }
@@ -57,7 +57,7 @@ class KcbBase
                 return false;
             }
         } catch (Exception $e) {
-            LogError('Caught exception: '. $e->getMessage() ."\n");
+            $this->logError('Caught exception: '. $e->getMessage() ."\n");
             return false;
         }
     }
@@ -72,17 +72,10 @@ class KcbBase
 
         // Set timezone so that times are displayed correctly
         date_default_timezone_set('America/New_York');
-
-        // Set admin email address errors should go to
-        $admin_email = 'webmaster@keystoneconcertband.com';
     }
 
     private function isDevEnv()
     {
-        if (strpos($_SERVER['SERVER_NAME'], 'dev') !== false || strpos($_SERVER['SERVER_NAME'], 'refresh') !== false) {
-            return true;
-        } else {
-            return false;
-        }
+        return strpos($_SERVER['SERVER_NAME'], 'dev') !== false || strpos($_SERVER['SERVER_NAME'], 'localhost') !== false;
     }
 }
