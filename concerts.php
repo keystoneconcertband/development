@@ -46,7 +46,7 @@
 					$concerts = $cncrts->getConcertSchedule();
 						
 					if(!$concerts) {
-						echo "<!--<div class='alert alert-info'><strong>Looks like we don't have any concerts posted yet.</strong><br />Check back again later this Spring!</div>-->";
+						echo "<div class='alert alert-info'><strong>Looks like we don't have any concerts posted yet.</strong><br />Check back again later in the Spring!</div>";
 					}
 					else {
 						foreach ($concerts as $concert) {		
