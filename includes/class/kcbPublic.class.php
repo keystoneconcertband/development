@@ -1,6 +1,6 @@
 <?php
-require_once("kcbBase.class.php");
-require_once("kcbPublic.db.class.php");
+require_once "kcbBase.class.php";
+require_once "kcbPublic.db.class.php";
 
 class KCBPublic
 {

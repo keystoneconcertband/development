@@ -49,22 +49,22 @@
 							<div id="conductorsTabContent" class="tab-content">
 							  <div class="tab-pane fade active in" id="donna">
 							    <h3>Donna Deaven, Principal Conductor</h3>
-								Donna J. Deaven has more than 30 years of experience in conducting bands, 
+								Donna J. Deaven has more than 30 years of experience in conducting bands,
 								orchestras, small ensembles, and as a private teacher and professional musician.
 								<br><br>
-								Ms. Deaven graduated with a Bachelor of Science degree in Music Education 
-								and a Master of Music degree in saxophone performance from West Chester University, 
+								Ms. Deaven graduated with a Bachelor of Science degree in Music Education
+								and a Master of Music degree in saxophone performance from West Chester University,
 								where she studied with Ted Hegvik.
 								<br><br>
-								Ms. Deaven's previous affiliations include the New 
-								Singer Band of Mechanicsburg, the West Shore Symphony Orchestra, the 
-								Hershey Symphony Orchestra, Harrisburg Area Community College, the Harrisburg 
+								Ms. Deaven's previous affiliations include the New
+								Singer Band of Mechanicsburg, the West Shore Symphony Orchestra, the
+								Hershey Symphony Orchestra, Harrisburg Area Community College, the Harrisburg
 								Community Theater, York Little Theater, the Assistant Conductor of the New Cumberland Town Band,
-								Keystone Saxophone Quartet, Flutes of Fancy Flute Ensemble, Wednesday 
+								Keystone Saxophone Quartet, Flutes of Fancy Flute Ensemble, Wednesday
 								Club, Harrisburg Chamber Ensemble, and "Donna and the Daytimers.".
 								<br><br>
-								In addition to conducting, Ms. Deaven's education and experience include studying and 
-								performing on the saxophone, flute, clarinet and percussion. She also maintains 
+								In addition to conducting, Ms. Deaven's education and experience include studying and
+								performing on the saxophone, flute, clarinet and percussion. She also maintains
 								a private woodwind teaching studio in Mechanicsburg.
 							  </div>
 							</div>

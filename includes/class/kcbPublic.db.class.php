@@ -1,5 +1,5 @@
 <?php
-require_once("db.class.php");
+require_once "db.class.php";
 
 class KCBPublicDb
 {
@@ -118,11 +118,9 @@ class KCBPublicDb
         $this->getDb()->bind("uid", $uid);
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
-        $retVal = $this->getDb()->query("INSERT INTO kcb_instrument(member_uid, instrument, estbd_dt_tm,
+        return $this->getDb()->query("INSERT INTO kcb_instrument(member_uid, instrument, estbd_dt_tm,
                                             estbd_by, lst_tran_dt_tm, lst_updtd_by)
                                          VALUES(:uid, :instrument, now(), :updateUser1, now(), :updateUser2)");
-
-        return $retVal;
     }
 
     public function addEmail($email, $uid, $updateUser)
@@ -131,10 +129,8 @@ class KCBPublicDb
         $this->getDb()->bind("uid", $uid);
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
-        $retVal = $this->getDb()->query("INSERT INTO kcb_email_address(member_uid, email_address, actv_flg,
+        return $this->getDb()->query("INSERT INTO kcb_email_address(member_uid, email_address, actv_flg,
                                             estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by)
                                          VALUES(:uid, :email, 0, now(), :updateUser1, now(), :updateUser2)");
-
-        return $retVal;
     }
 }
