@@ -520,7 +520,7 @@ class MemberDB
     }
 
     /* This could be better. This will only get the values that conflict with a current date range, but will miss
-    anything outside it (e.g. if 1/10-1/12 exitst, and the user now chooses 1/9-1/13, this won't find anything wrong with that */
+    anything outside it (e.g. if 1/10-1/12 exist, and the user now chooses 1/9-1/13, this won't find anything wrong with that */
     public function homepageMessageDateConflictCheck($date)
     {
         $this->getDb()->bind("date1", date("Y-m-d H:i:s", strtotime($date)));
