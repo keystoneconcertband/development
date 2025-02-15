@@ -1,7 +1,7 @@
 <?php
 // kcbBase is its parent
-include_once("kcbBase.class.php");
-include_once("member.db.class.php");
+require_once("kcbBase.class.php");
+require_once("member.db.class.php");
 
 class Member
 {

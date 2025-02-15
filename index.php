@@ -6,15 +6,15 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php require('includes/common_meta.php');	?>
+		<?php require_once 'includes/common_meta.php';	?>
 		<meta name="description" content="Keystone Concert Band is an organization to foster, promote, and increase the musical knowledge and appreciation of the general public by operating and maintaining a concert band and by presenting performances of music.">
 		<title>Keystone Concert Band</title>
-		<?php require('includes/common_css.php'); ?>
+		<?php require_once 'includes/common_css.php'; ?>
 	</head>
 	<body>
 		<div id="fb-root"></div>
 		<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=183258391082442&autoLogAppEvents=1" nonce="XBkyxwt4"></script>
-		<?php require('includes/nav.php'); ?>
+		<?php require_once 'includes/nav.php'; ?>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
@@ -148,10 +148,10 @@
 					<p><a class="btn btn-default" href="donate.php" role="button">View details &raquo;</a></p>
 				</div><!-- /.col-lg-4 -->
 			</div><!-- /.row -->
-			<?php require('includes/footer.php'); ?>
+			<?php require_once 'includes/footer.php'; ?>
 		</div><!-- /.container -->
 
-		<?php require('includes/common_js.php'); ?>
+		<?php require_once 'includes/common_js.php'; ?>
 		<script>
 			function showAlerts()
 			{

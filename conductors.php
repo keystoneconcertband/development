@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require 'includes/common_meta.php'; ?>
+	<?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The leaders of the Keystone Concert Band. Our Conductors, Donna Deaven and John Hope.">
 
     <title>Conductors - Keystone Concert Band</title>
 
-	<?php require 'includes/common_css.php'; ?>
+	<?php require_once 'includes/common_css.php'; ?>
 	
 	<style type="text/css">
 		.row .col-lg-12 ul li {
@@ -18,7 +18,7 @@
 
   <body>
 
-	<?php require 'includes/nav.php'; ?>
+	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -73,9 +73,9 @@
 				</div>
 			</div>
 		</div>
-		<?php require 'includes/footer.php'; ?>
+		<?php require_once 'includes/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require 'includes/common_js.php'; ?>
+	<?php require_once 'includes/common_js.php'; ?>
   </body>
 </html>

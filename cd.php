@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require 'includes/common_meta.php'; ?>
+	<?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="Listen to the Keystone Concert Band anywhere you go!">
 
     <title>CD - Keystone Concert Band</title>
 
-	<?php require 'includes/common_css.php'; ?>
+	<?php require_once 'includes/common_css.php'; ?>
     <link rel="stylesheet" type="text/css" href="/3rd-party/jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.css?_v=1.8.3" title="style" media="screen"/>
   </head>
 
   <body>
 
-	<?php require 'includes/nav.php'; ?>
+	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -324,10 +324,10 @@
 				</blockquote>
 			</div>
 		</div>
-		<?php require 'includes/footer.php'; ?>
+		<?php require_once 'includes/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require 'includes/common_js.php'; ?>
+	<?php require_once 'includes/common_js.php'; ?>
     <script type="text/javascript" src="/3rd-party/jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.js?_v=1.8.3"></script>
 	<script type="text/javascript">
 		$(function(){
