@@ -181,9 +181,7 @@ class KCBPublic
     }
 
     private function getUserIpAddr() {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ipAddresses = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             return trim($ipAddresses[0]);
         } else {
