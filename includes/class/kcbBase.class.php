@@ -3,8 +3,8 @@
     This class is the base KCB class. All top level functions should be included here
 */
 
-require "log.class.php";
-require __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
+require_once "log.class.php";
+require_once __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
 
 class KcbBase
 {

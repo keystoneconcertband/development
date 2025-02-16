@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require 'includes/common_meta.php'; ?>
+	<?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new venues to play at. Can we play at your event?">
 
     <title>Book a concert - Keystone Concert Band</title>
 
-	<?php require 'includes/common_css.php'; ?>
+	<?php require_once 'includes/common_css.php'; ?>
 	
   </head>
 
   <body>
 
-	<?php require 'includes/nav.php'; ?>
+	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -82,10 +82,10 @@
 				</form>
 			</div>
 		</div>
-		<?php require 'includes/footer.php'; ?>
+		<?php require_once 'includes/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require 'includes/common_js.php'; ?>
+	<?php require_once 'includes/common_js.php'; ?>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="kcb-js/book.js"></script>
   </body>

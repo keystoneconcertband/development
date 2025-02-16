@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require 'includes/common_meta.php'; ?>
+	<?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The members of the Keystone Concert Band.">
     <title>Members - Keystone Concert Band</title>
 
-	<?php require 'includes/common_css.php'; ?>
+	<?php require_once 'includes/common_css.php'; ?>
 
   </head>
 
@@ -34,7 +34,7 @@
 	     fjs.parentNode.insertBefore(js, fjs);
 	   }(document, 'script', 'facebook-jssdk'));
 	</script>
-	<?php require 'includes/nav.php'; ?>
+	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -194,10 +194,10 @@
 			</div>
 		</div>
 
-		<?php require 'includes/footer.php'; ?>
+		<?php require_once 'includes/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require 'includes/common_js.php'; ?>
+	<?php require_once 'includes/common_js.php'; ?>
 	<script src="kcb-js/memberlogin-20190707.js"></script>
   </body>
 </html>

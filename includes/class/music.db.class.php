@@ -1,5 +1,5 @@
 <?php
-    include_once("db.class.php");
+require_once "db.class.php";
 
 class MusicDB
 {
