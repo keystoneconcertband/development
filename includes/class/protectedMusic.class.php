@@ -1,8 +1,8 @@
 <?php
-    // This class is for methods which must be protected, so use must have a valid session to run these queries
-    // member is its parent
-    include_once("member.class.php");
-    include_once("music.db.class.php");
+// This class is for methods which must be protected, so use must have a valid session to run these queries
+// member is its parent
+require_once "member.class.php";
+require_once "music.db.class.php";
 
 class ProtectedMusic
 {
@@ -17,7 +17,7 @@ class ProtectedMusic
 
     public function getMusic()
     {
-        if (isset($_SESSION['email']) && $_SESSION['email'] !== '') {
+        if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['email']) && $_SESSION['email'] !== '') {
             return $this->getDb()->getMusic();
         } else {
             return "Access Denied";
@@ -54,7 +54,10 @@ class ProtectedMusic
     public function addConcert($concert)
     {
         if ($this->validAdmin()) {
-            $concert_uids = (explode(",", $concert['concert_uids']));
+            $concert_uids = explode(",", $concert['concert_uids']);
+            if (!is_array($concert_uids)) {
+                return "Invalid concert UIDs format.";
+            }
             $concert_date = $concert['concert_date'];
 
             foreach ($concert_uids as $uid) {

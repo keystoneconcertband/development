@@ -1,5 +1,5 @@
 <?php
-    include_once("db.class.php");
+require_once "db.class.php";
 
 class MusicDB
 {
@@ -32,13 +32,13 @@ class MusicDB
     // Gets the members by instrument
     public function getMusic()
     {
-        return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, (SELECT DATE(last_played) FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1 ORDER BY m.title");
+        return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, (SELECT DATE(last_played) FROM kcb_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM kcb_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM kcb_music m WHERE m.actv_flg = 1 ORDER BY m.title");
     }
 
     public function getMusicRecord($uid)
     {
         $this->getDb()->bind('uid', $uid);
-        return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, (SELECT DATE(last_played) FROM KCB_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM KCB_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM KCB_music m WHERE m.actv_flg = 1 AND m.uid = :uid");
+        return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, (SELECT DATE(last_played) FROM kcb_music_last_played where music_uid = m.UID ORDER BY last_played DESC LIMIT 1) as last_played, ( SELECT COUNT(*) FROM kcb_music_last_played WHERE music_uid = m.UID ) AS number_plays FROM kcb_music m WHERE m.actv_flg = 1 AND m.uid = :uid");
     }
 
     public function getLastPlayedDatesByDate($uid, $date)
@@ -46,7 +46,7 @@ class MusicDB
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('date', date("Y-m-d H:i:s", strtotime($date)));
 
-        return $this->getDb()->resultCount("SELECT last_played from KCB_music_last_played WHERE music_uid = :uid AND last_played = :date");
+        return $this->getDb()->resultCount("SELECT last_played from kcb_music_last_played WHERE music_uid = :uid AND last_played = :date");
     }
 
     public function getGenres()
@@ -58,13 +58,13 @@ class MusicDB
     {
         $this->getDb()->bind("title", $title);
 
-        return $this->getDb()->resultCount("SELECT title FROM KCB_music where title=:title");
+        return $this->getDb()->resultCount("SELECT title FROM kcb_music where title=:title");
     }
 
     public function searchTitles($title)
     {
         $this->getDb()->bind("title", '%'. $title . '%');
-        return $this->getDb()->query("SELECT uid as value, title as label FROM KCB_music where title LIKE :title AND actv_flg = 1 ORDER by title");
+        return $this->getDb()->query("SELECT uid as value, title as label FROM kcb_music where title LIKE :title AND actv_flg = 1 ORDER by title");
     }
 
     /* UPDATE QUERIES */
@@ -75,7 +75,7 @@ class MusicDB
         $this->getDb()->bind('user_id', $user_id);
         $this->getDb()->bind('user_id2', $user_id);
 
-        return $this->getDb()->query("INSERT INTO KCB_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:music_uid, :last_played, :user_id, now(), :user_id2, now())");
+        return $this->getDb()->query("INSERT INTO kcb_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:music_uid, :last_played, :user_id, now(), :user_id2, now())");
     }
 
     public function addMusic($title, $notes, $link, $genre, $last_played, $user_id)
@@ -92,7 +92,7 @@ class MusicDB
             $this->getDb()->bind('user_id', $user_id);
             $this->getDb()->bind('user_id2', $user_id);
 
-            $this->getDb()->query("INSERT INTO KCB_music (title, notes, music_link, genre, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:title, :notes, :link, :genre, :user_id, now(), :user_id2, now())");
+            $this->getDb()->query("INSERT INTO kcb_music (title, notes, music_link, genre, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:title, :notes, :link, :genre, :user_id, now(), :user_id2, now())");
 
             $uid = $this->getDb()->lastInsertId();
 
@@ -103,7 +103,7 @@ class MusicDB
                     $this->getDb()->bind('user_id3', $user_id);
                     $this->getDb()->bind('user_id4', $user_id);
 
-                    $retValue = $this->getDb()->query("INSERT INTO KCB_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :user_id3, now(), :user_id4, now())");
+                    $retValue = $this->getDb()->query("INSERT INTO kcb_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :user_id3, now(), :user_id4, now())");
 
                     if ($retValue) {
                         $this->executeTransaction();
@@ -143,7 +143,7 @@ class MusicDB
             $this->getDb()->bind('genre', $genre);
             $this->getDb()->bind('user_id', $user_id);
 
-            $this->getDb()->query("UPDATE KCB_music SET title = :title, notes = :notes, music_link = :link, genre = :genre, lst_updtd_by = :user_id, lst_tran_dt_tm  = now() WHERE UID = :uid");
+            $this->getDb()->query("UPDATE kcb_music SET title = :title, notes = :notes, music_link = :link, genre = :genre, lst_updtd_by = :user_id, lst_tran_dt_tm  = now() WHERE UID = :uid");
 
             if ($last_played !== "") {
                 $last_played_date = date("Y-m-d H:i:s", strtotime($last_played));
@@ -155,7 +155,7 @@ class MusicDB
                     $this->getDb()->bind('user_id3', $user_id);
                     $this->getDb()->bind('user_id4', $user_id);
 
-                    $retValue = $this->getDb()->query("INSERT INTO KCB_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :user_id3, now(), :user_id4, now())");
+                    $retValue = $this->getDb()->query("INSERT INTO kcb_music_last_played (music_uid, last_played, estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm) VALUES(:uid, :last_played, :user_id3, now(), :user_id4, now())");
 
                     if ($retValue) {
                         $this->executeTransaction();
@@ -187,7 +187,7 @@ class MusicDB
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('user_id', $user_id);
 
-        return $this->getDb()->query("UPDATE KCB_music SET actv_flg = 0, lst_tran_dt_tm=now(), lst_updtd_by=:user_id WHERE uid = :uid");
+        return $this->getDb()->query("UPDATE kcb_music SET actv_flg = 0, lst_tran_dt_tm=now(), lst_updtd_by=:user_id WHERE uid = :uid");
     }
 
     /* PRIVATE FUNCTIONS */

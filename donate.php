@@ -2,18 +2,18 @@
 <html lang="en">
 
 <head>
-    <? require 'includes/common_meta.php'; ?>
+    <?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band continues to operate by donations made by you!">
 
     <title>Donate - Keystone Concert Band</title>
 
-    <? require 'includes/common_css.php'; ?>
+    <?php require_once 'includes/common_css.php'; ?>
 
 </head>
 
 <body>
 
-    <? require 'includes/nav.php'; ?>
+    <?php require_once 'includes/nav.php'; ?>
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -25,17 +25,10 @@
             </div>
         </div>
         <div class="row">
-            <!--
-			<div class="col-md-4">
-				<h2>Advertise with us</h2>
-				<p>Each year we produce a program booklet which includes ads from local businesses. If you would like to include your business with our adbook, please contact
-					us at <a href="mailto:adbook@keystoneconcertband.com">adbook@keystoneconcertband.com</a>.</p>
-			</div>
-			--->
             <div class="col-md-6">
                 <h2>Paypal donation</h2>
                 <p>We accept donations online via PayPal. You do not need an account to donate and your donation is
-                    always tax-deductable.</p>
+                    always tax-deductible.</p>
                 <p>
                 <form action="https://www.paypal.com/donate" method="post" target="_top">
                     <input type="hidden" name="hosted_button_id" value="ZEXNBASLQRSNS" />
@@ -73,10 +66,10 @@
                 </div>
             </div>
         </div>
-        <? require 'includes/footer.php'; ?>
+        <?php require_once 'includes/footer.php'; ?>
     </div> <!-- /container -->
 
-    <? require 'includes/common_js.php'; ?>
+    <?php require_once 'includes/common_js.php'; ?>
 </body>
 
 </html>

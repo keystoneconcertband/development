@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("../includes/class/protectedMember.class.php");
 include_once("../includes/class/member.db.class.php");
 
@@ -62,7 +62,7 @@ function formatPhone($number) {
 				<th>Volunteer Position</th>
 			</thead>
 			<tbody>
-			<?
+			<?php
 				foreach($members as $mbr) {
 					echo "<tr>";
 					echo "<td>" . $mbr['fullName'] . "</td>";
