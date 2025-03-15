@@ -172,6 +172,7 @@
 									</p>
 								</div>
 							</div>
+							<!--
 							<div class="form-group">
 								<label for="fb" class="col-lg-3 control-label"></label>
 						      <div class="col-lg-9">
@@ -184,6 +185,7 @@
 								<div id="fb" class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false" data-onlogin="checkLoginState()" data-scope="public_profile,email"></div>
 						      </div>
 							</div>
+							-->
 						</form>
 					</div>
 					<div class="modal-footer">
