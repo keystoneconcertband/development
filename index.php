@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div id="fb-root"></div>
-		<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=183258391082442&autoLogAppEvents=1" nonce="XBkyxwt4"></script>
+		<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0&appId=183258391082442"></script>
 		<?php require_once 'includes/nav.php'; ?>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
@@ -133,10 +133,10 @@
 				<div class="col-lg-4">
 					<img class="img-circle" src="images/logo_facebook.png" alt="Facebook Image" width="140" height="140">
 					<h2>Facebook</h2>
-					<p>Join our Facebook page for the latest information and upcoming concerts.</p>
-					<div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband/" data-tabs="timeline" data-width="" data-height="" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true">
-						<blockquote cite="https://www.facebook.com/keystoneconcertband/" class="fb-xfbml-parse-ignore">
-							<a href="https://www.facebook.com/keystoneconcertband/">Keystone Concert Band</a>
+					<p>Join our <a href="https://www.facebook.com/keystoneconcertband">Facebook page</a> for the latest information and upcoming concerts.</p>
+					<div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband" data-tabs="timeline" data-width="" data-height="" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true">
+						<blockquote cite="https://www.facebook.com/keystoneconcertband" class="fb-xfbml-parse-ignore">
+							<a href="https://www.facebook.com/keystoneconcertband">Keystone Concert Band</a>
 						</blockquote>
 					</div>
 				</div><!-- /.col-lg-4 -->
