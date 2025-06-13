@@ -390,7 +390,7 @@ class ProtectedMember {
 					try {
 						// Pending users were added above, so no need to re-add again.
 						if(!$pendingUser) {
-							$this->kcb->sendEmail('webmaster@keystoneconcerband.com','Add email: ' . $value, 'KCB Email Update [Add]');
+							$this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
 						}
 						$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
