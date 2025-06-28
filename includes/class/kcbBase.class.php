@@ -17,6 +17,10 @@ class KcbBase
         $this->log = new Log();
 
         if (session_status() == PHP_SESSION_NONE) {
+            ini_set('session.use_cookies', 'true');
+            ini_set('session.cookie_httponly', '1');
+            ini_set('session.cookie_secure', 1);
+
             session_start();
         }
     }
