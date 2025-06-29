@@ -95,7 +95,6 @@
 								echo "<h4>There are no upcoming concerts.</h4>Our concert series is done for the season. Please check back again in early Spring to see our new concert schedule!";
 							}
 							else {
-								$location = "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDIg8S7UeGSot2PtUc7Ufd7pRitbNnl4w4&center=" . urlencode($concert['address']) . "&zoom=14&size=340x200&sensor=false&markers=color:red|" . urlencode($concert['address']);
 								$today = date("Y-m-d");
 								$begin = date('Y-m-d', strtotime($concert['concertBegin']));
 							
@@ -108,8 +107,7 @@
 				
 								echo "<h4>" . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . "</h4>";			
 								echo "<h4><a href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
-								echo "<img src='" . $location . "' alt='Google Maps location of the concert.' usemap='#map' id='map'>";
-								echo "<map name='map'><area shape='circle' coords='250,80,15' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' alt='Location of concert on the map'></map>";
+								echo "<div style='width: 100%'><iframe width='100%' height='340' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://maps.google.com/maps?width=100%25&amp;height=340&amp;hl=en&amp;q=" . urlencode($concert['address']) ."&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'></iframe></div>";
 							}
 						?>
 					<p><a class="btn btn-default" href="concerts.php" role="button">View more &raquo;</a></p>

@@ -309,7 +309,6 @@ class ProtectedMember {
 			// Add/remove any emails the user might have changed since last time.
 			$this->updateEmails($uid, $mbrArray['email'], false, false);
 
-
 			// If user had any instruments, update their timestamps
 			$this->getDb()->updateLastUpdateOnInstrument($uid, $updateUser);
 		}
@@ -348,16 +347,8 @@ class ProtectedMember {
 	
 	// TEST PENDING MEMBERS
 	private function updateEmails($uid, $emailArray, $delEmail, $pendingUser) {
-		// 
-		// URL for help with commands to mailmain: https://wiki.list.org/DOC/Email%20commands%20quick%20reference
-		//
 		$result = true;					
 		$emails = $this->getDb()->getEmailAddresses($uid);
-
-		// Email headers
-		$notificationHeader[] = 'From: KCB Website <webmaster@keystoneconcertband.com>';
-		$notificationHeader[] = 'Reply-To: webmaster@keystoneconcertband.com';
-		$notificationHeader[] = 'X-Mailer: PHP/' . phpversion();
 
 		// Convert array of arrays to single array this can handle	
 		$currEmails = array();
@@ -373,12 +364,12 @@ class ProtectedMember {
 				// Store email address in array		
 				$newEmails[] = $value;
 
-				// Whatever is passed in for pending users needs to be added to the listserv.
+				// Whatever is passed in for pending users needs to be added to the email list.
 				// Otherwise if the user changed nothing, it wouldn't be added since it was already in the 
 				// database from their initial inquiry.					
 				if($pendingUser) {
 					try {
-						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email" . $value, "KCB Email Update");
+						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email: " . $value, "KCB Email Update [Pending]");
 					}
 					catch(Exception $e) {
 						$this->getKcb()->logError($e->getMessage());
@@ -395,18 +386,11 @@ class ProtectedMember {
 			$emailsToDel = array_diff($currEmails, $newEmails);
 				
 			foreach ($emailsToAdd as $value) {
-				if($value !== "") {
-					// Email headers
-					unset($headerAdd);
-					$headerAdd[] = 'From: ' . $value;
-					$headerAdd[] = 'X-Mailer: PHP/' . phpversion();
-					$subscribeBody = "subscribe KCBPassword nodigest";
-					
+				if($value !== "") {					
 					try {
 						// Pending users were added above, so no need to re-add again.
 						if(!$pendingUser) {
-							mail('members-request@keystoneconcertband.com', '', $subscribeBody, implode("\r\n", $headerAdd));
-							mail('webmaster@keystoneconcerband.com, j.gillette@icloud.com','KCB Email Update','Add email: ' . $value, implode("\r\n", $notificationHeader));
+							$this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
 						}
 						$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
@@ -430,7 +414,7 @@ class ProtectedMember {
 							$result = $this->getDb()->deactivateEmail($value, $uid, $_SESSION["email"]);
 						}
 
-						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email" . $value, "KCB Email Update");
+						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email: " . $value, "KCB Email Update [Remove]");
 					}
 					catch(Exception $e) {
 						$this->getKcb()->logError($e->getMessage());
