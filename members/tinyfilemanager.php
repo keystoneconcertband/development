@@ -1,6 +1,9 @@
 <?php
+// JG: Added this to start the session, otherwise the KCB session stuff is missing
+session_start();
+
 //Default Configuration
-$CONFIG = '{"lang":"en","error_reporting":false,"show_hidden":false,"hide_Cols":false,"theme":"light"}';
+$CONFIG = '{"lang":"en","error_reporting":false,"show_hidden":false,"hide_Cols":true,"theme":"light"}';
 
 /**
  * H3K - Tiny File Manager V2.6
@@ -326,7 +329,7 @@ if ($ip_ruleset != 'OFF') {
 // Checking if the user is logged in or not.
 if ($use_auth) {
     if (isset($_SESSION[FM_SESSION_ID]['logged'], $auth_users[$_SESSION[FM_SESSION_ID]['logged']])) {
-        // Logged
+        // Logged in
     } else {
 		// Using KCB login data to authenticate
         if (isset($_SESSION['accountType']) && $_SESSION['accountType'] !== "") {
@@ -343,8 +346,11 @@ if ($use_auth) {
             }
         }
 		else {
-	        unset($_SESSION[FM_SESSION_ID]['logged']);
-	        fm_redirect(FM_ROOT_URL . '/members/reauth.php');
+            echo "Sorry you are not logged in. Please login to access this page.";
+            exit();
+            // Just exit instead of showing a weird reauth page
+	        //unset($_SESSION[FM_SESSION_ID]['logged']);
+	        //fm_redirect(FM_ROOT_URL . '/../reauth.php');
 		}
     }
 }

@@ -174,7 +174,7 @@ class MemberDB
     {
         $this->getDb()->bind("email", $email);
         $this->getDb()->bind("cookieAuthCd", $cookieAuthCd);
-        $retVal = $this->getDb()->single("SELECT 1
+        $retVal = $this->getDb()->single("SELECT a.auth_cd_guid
                                           FROM kcb_member_auth a
                                           INNER JOIN kcb_members m ON a.member_uid=m.uid
                                           INNER JOIN kcb_email_address e ON e.member_uid=m.uid
