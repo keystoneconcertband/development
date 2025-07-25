@@ -6,6 +6,13 @@
 require_once "log.class.php";
 require_once __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once '/../../3rd-party/PHPMailer-6.10/Exception.php';
+require_once '/../../3rd-party/PHPMailer-6.10/PHPMailer.php';
+require_once '/../../3rd-party/PHPMailer-6.10/SMTP.php';
+
 class KcbBase
 {
     private $log;
@@ -33,31 +40,32 @@ class KcbBase
             return true;
         }
 
-        $email = new \SendGrid\Mail\Mail(); 
-        $email->setFrom("webmaster@keystoneconcertband.com", "KCB Website");
-        $email->setSubject($title);
-        $email->addTo($toAddress);
+        $mail = new PHPMailer(true);
 
-        if($html) {
-            $email->addContent(
-                "text/html", $message
-            );
-        }
-        else {
-            $email->addContent("text/plain", $message);
-        }
-        $sendgrid = new \SendGrid(getenv('APPSETTING_SENDGRID_API_KEY'));
         try {
-            $response = $sendgrid->send($email);
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp-relay.brevo.com';                 //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = getenv('APPSETTING_BREVO_USERNAME');    //SMTP username
+            $mail->Password   = getenv('APPSETTING_BREVO_PASSWORD');    //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-            if($response->statusCode() < 400) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            //Recipients
+            $mail->setFrom('jonathang@keystoneconcertband.com', 'Mailer');
+            $mail->addAddress($toAddress);
+
+            //Content
+            $mail->isHTML($html);
+            $mail->Subject = $title;
+            $mail->Body    = $message;
+
+            $mail->send();
+            return true;
         } catch (Exception $e) {
-            $this->logError('Caught exception: '. $e->getMessage() ."\n");
+            $this->logError("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
             return false;
         }
     }
