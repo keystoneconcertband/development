@@ -4,14 +4,13 @@
 */
 
 require_once "log.class.php";
-require_once __DIR__ . "/../../3rd-party/sendgrid-8.0.1/sendgrid-php.php" ;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once '/../../3rd-party/PHPMailer-6.10/Exception.php';
-require_once '/../../3rd-party/PHPMailer-6.10/PHPMailer.php';
-require_once '/../../3rd-party/PHPMailer-6.10/SMTP.php';
+require_once __DIR__ . '/../../3rd-party/PHPMailer-6.10/Exception.php';
+require_once __DIR__ . '/../../3rd-party/PHPMailer-6.10/PHPMailer.php';
+require_once __DIR__ . '/../../3rd-party/PHPMailer-6.10/SMTP.php';
 
 class KcbBase
 {
