@@ -156,7 +156,7 @@ class KCBPublic
     private function processSpam($joinArray)
     {
         // We've not gotten a lot of SPAM sent, but the times we've gotten it,
-        // it's filled up the database with a lot of junk and hit the sendgrid limit.
+        // it's filled up the database with a lot of junk and hit the email limit.
         // 1. Prevent dups of the user who just tried to submit
         // 2. Check if request is from the same IP Address as was just entered
         // Return nothing if no spam submission is detected
