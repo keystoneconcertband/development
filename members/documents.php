@@ -36,7 +36,7 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 				<div class="page-header">
 					<h2>Documents</h2>
 				</div>
-				<div class="row form-group">
+				<div class="row form-group row">
 					<div class="alert alert-info">
 					<span class="glyphicon glyphicon-info-sign"></span> <strong>Please review both the
 					  <a href="documents_perm/KCB_Bylaws_2021.pdf" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws</a>, and the 
