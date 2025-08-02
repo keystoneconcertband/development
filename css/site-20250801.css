@@ -1,19 +1,30 @@
-/* NOTES
-	- bootstrap.css : updated all references from 768 to 808 because the menu would wrap around to a new line at 807. To prevent this, just switch to the mobile view at 808 instead.	
-*/
+.jumbotron {
+	padding: 4rem 2rem;
+	margin-bottom: 2rem;
+	background-color: var(--bs-light);
+	border-radius: .3rem;
+	background-image:url('/images/headerPublic.png'); 
+	color:white; 
+	min-height: 295px;
+}
 
-/* http://stackoverflow.com/questions/609273/convert-an-image-to-grayscale-in-html-css */
+/* NOTES
+    - Commented out while debugging v5 upgrade.
+	- bootstrap.css : updated all references from 768 to 808 because the menu would wrap around to a new line at 807. To prevent this, just switch to the mobile view at 808 instead.	
+
+
+// http://stackoverflow.com/questions/609273/convert-an-image-to-grayscale-in-html-css 
 img.text-muted{
-    filter: grayscale(100%); /* Current draft standard */
-    -webkit-filter: grayscale(100%); /* New WebKit */
+    filter: grayscale(100%); // Current draft standard
+    -webkit-filter: grayscale(100%); // New WebKit
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%); 
-    -o-filter: grayscale(100%); /* Not yet supported in Gecko, Opera or IE */ 
-    filter: url(resources.svg#desaturate); /* Gecko */
-    filter: gray; /* IE */
-    -webkit-filter: grayscale(1); /* Old WebKit */
+    -o-filter: grayscale(100%); // Not yet supported in Gecko, Opera or IE 
+    filter: url(resources.svg#desaturate); // Gecko 
+    filter: gray; // IE
+    -webkit-filter: grayscale(1); // Old WebKit 
 }
-/* http://jsfiddle.net/KyleMit/Wc4xt/ */
+// http://jsfiddle.net/KyleMit/Wc4xt/ 
 .panel-heading a:after {
     font-family: 'Glyphicons Halflings';
     content: "\e114";    
@@ -86,3 +97,4 @@ img.text-muted{
 		margin-top:25px;
 	}
 }
+*/

@@ -21,10 +21,10 @@
 	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>Conductors</h1>
+						<h1 class="display-5">Conductor(s)</h1>
 					</div>
 				</div>
 			</div>
@@ -42,8 +42,8 @@
 						</div>
 						<div class="col-md-8">
 							<ul class="nav nav-pills">
-							  <li class="active">
-							    <a data-toggle="tab" href="#donna">Donna Deaven</a>
+							  <li class="nav-link active">
+							    <a data-bs-toggle="tab" href="#donna">Donna Deaven</a>
 							  </li>
 							</ul>
 							<div id="conductorsTabContent" class="tab-content">

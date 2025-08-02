@@ -15,10 +15,10 @@
 	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>Book</h1>
+						<h1 class="display-5">Book</h1>
 					</div>
 				</div>
 			</div>
@@ -35,44 +35,44 @@
 				Please keep in mind that it is best to contact us at least 3-6 months before your event, 
 				as we are filling dates as much as a year in advance.
 				<h3>Contact Us</h3>
-				<form class="form-horizontal" id="frmBook" data-toggle="validator">
+				<form class="form-horizontal" id="frmBook" data-bs-toggle="validator">
 				  <fieldset>
 				    <legend></legend>
-				    <div class="form-group">
+				    <div class="form-group row">
 						<div class="col-lg-12">
 							If you are interested in booking the band, please fill out the form below with your contact information so we can get back to you.<br>
 							<i>Fields marked with an * are required.</i>
 						</div>
 				    </div>
-				    <div class="form-group">
+				    <div class="form-group row">
 				      <label for="txtName" class="col-lg-2 control-label">* Name</label>
 				      <div class="col-lg-10">
 				        <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name" required="true">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
-				    <div class="form-group">
+				    <div class="form-group row">
 				      <label for="txtPhone" class="col-lg-2 control-label">Phone Number</label>
 				      <div class="col-lg-10">
 				        <input type="tel" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number" maxlength="10">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
-				    <div class="form-group">
+				    <div class="form-group row">
 				      <label for="txtEmail" class="col-lg-2 control-label">* Email Address</label>
 				      <div class="col-lg-10">
 				        <input type="text" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email Address" required="true" maxlength="255">
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
-				    <div class="form-group">
+				    <div class="form-group row">
 				      <label for="txtComments" class="col-lg-2 control-label">* Booking Information</label>
 				      <div class="col-lg-10">
 				        <textarea class="form-control" rows="3" id="txtComments" name="txtComments" required="true"></textarea>
 						<div class="help-block with-errors"></div>
 				      </div>
 				    </div>
-				    <div class="form-group">
+				    <div class="form-group row">
 				      <div class="col-lg-10 col-lg-offset-2">
 				        <button type="submit" class="btn btn-primary">Submit</button>
 						<div id="msgSubmit" class="h4 hidden"></div>

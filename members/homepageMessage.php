@@ -37,10 +37,10 @@ new ProtectedMusic();
 					<h2>Homepage Messages</h2>
 				</div>
 
-				<div class="row form-group">
+				<div class="row form-group row">
 					<div class="col-sm-3">
 						<div>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_edit">Add New</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_edit">Add New</button>
 						</div>
 					</div>
 					<div class="col-sm-9">
@@ -64,29 +64,29 @@ new ProtectedMusic();
 			</div>
 		</div>
 		<div class="modal fade" id="modal_add_edit" role="dialog">
-			<form id="form_message" data-toggle="validator">
+			<form id="form_message" data-bs-toggle="validator">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Homepage Message</h5>
 						</div>
 						<div class="modal-body form-horizontal">
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="title" class="control-label">Title</label>
 									<input type="text" class="form-control" name="title" id="title" placeholder="Title of message" value="" required="true" maxlength="100">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="message" class="control-label">Message</label>
 									<textarea class="form-control" id="message" name="message" placeholder="Message to display" maxlength="2000" rows="3" required="true"></textarea>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="message_type" class="control-label">Message Type</label>
 									<select class="form-control" name="message_type" id="message_type">
@@ -96,24 +96,24 @@ new ProtectedMusic();
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="start_dt" class="control-label">Start Date</label>
 									<div class="input-group date" id="dpStartDt">
 										<input type="text" class="form-control" name="start_dt" id="start_dt" placeholder="First day to show message" required="true" data-error="Date is required." onblur="checkDates(this.value)">
-										<span class="input-group-addon">
+										<span class="input-group-text">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
 									</div>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="end_dt" class="control-label">End Date</label>
 									<div class="input-group date" id="dpEndDt">
 										<input type="text" class="form-control" name="end_dt" id="end_dt" placeholder="Last day to show message" required="true" data-error="Date is required." onblur="checkDates(this.value)">
-										<span class="input-group-addon">
+										<span class="input-group-text">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
 									</div>
@@ -124,7 +124,7 @@ new ProtectedMusic();
 						<div class="modal-footer">
 							<input type="hidden" id="uid" name="uid" value="" />
 							<button type="submit" class="btn btn-primary">Save</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 							<div id="msgSubmit" class="h4 hidden"></div>
 						</div>
 					</div>
