@@ -48,11 +48,11 @@ new ProtectedMusic();
 				</div>
 
 				<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
-				<div class="row form-group">
+				<div class="row form-group row">
 					<div class="col-sm-3">
 						<div>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_edit">Add Music</button>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_concert">Concert</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_edit">Add Music</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_concert">Concert</button>
 						</div>
 					</div>
 					<div class="col-sm-9">
@@ -78,34 +78,34 @@ new ProtectedMusic();
 			</div>
 		</div>
 		<div class="modal fade" id="modal_concert" role="dialog">
-			<form id="form_concert" data-toggle="validator">
+			<form id="form_concert" data-bs-toggle="validator">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Concert</h5>
 						</div>
 						<div class="modal-body form-horizontal">
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="dpConcert" class="control-label">Date of concert*</label>
 									<div class="input-group date" id="dpConcert">
 										<input type="text" class="form-control" name="concert_date" id="concert_date" placeholder="Date of Concert" required="true" data-error="Date is required.">
-										<span class="input-group-addon">
+										<span class="input-group-text">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
 									</div>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="concert_title" class="control-label">Title</label>
 									<input type="text" class="form-control" name="concert_title" id="concert_title" placeholder="Title" value="" maxlength="255">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<h4>Concert Program:</h4>
 									<ul id="concert_program_list">
@@ -118,7 +118,7 @@ new ProtectedMusic();
 							<input type="hidden" id="concert_uids" name="concert_uids" value="" />
 							<div id="msgSubmit" class="h4 hidden"></div>
 							<button type="submit" class="btn btn-primary">Save changes</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 							<div id="msgSubmit" class="h4 hidden"></div>
 						</div>
 					</div>
@@ -126,29 +126,29 @@ new ProtectedMusic();
 			</form>
 		</div>
 		<div class="modal fade" id="modal_add_edit" role="dialog">
-			<form id="form_music" data-toggle="validator">
+			<form id="form_music" data-bs-toggle="validator">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Add Music</h5>
 						</div>
 						<div class="modal-body form-horizontal">
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="title" class="control-label">Title*</label>
 									<input type="text" class="form-control" name="title" id="title" placeholder="Title" value="" required="true" maxlength="255" data-error="Title is required.">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="notes" class="control-label">Notes</label>
 									<textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="2000" rows="3"></textarea>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="genre" class="control-label">Genre*</label>
 									<select class="form-control" name="genre" id="genre" required="true">
@@ -157,19 +157,19 @@ new ProtectedMusic();
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="music_link" class="control-label">Link to music</label>
 									<input type="text" class="form-control" name="music_link" id="music_link" placeholder="Music Link" value="" maxlength="2000">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="dpLastPlayed" class="control-label">Last Played</label>
 									<div class="input-group date" id="dpLastPlayed">
 										<input type="text" class="form-control" name="last_played" id="last_played" placeholder="Last Played" value="">
-										<span class="input-group-addon">
+										<span class="input-group-text">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
 									</div>
@@ -181,7 +181,7 @@ new ProtectedMusic();
 							<input type="hidden" id="uid" name="uid" value="" />
 							<div id="msgSubmit" class="h4 hidden"></div>
 							<button type="submit" class="btn btn-primary">Save changes</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 							<div id="msgSubmit" class="h4 hidden"></div>
 						</div>
 					</div>

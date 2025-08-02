@@ -22,13 +22,13 @@
     <?php require_once 'includes/nav.php'; ?>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="bs-component">
-                    <div class="jumbotron">
-                        <h1>Join</h1>
-                    </div>
-                </div>
-            </div>
+			<div class="col">
+				<div class="bs-component">
+					<div class="jumbotron">
+						<h1 class="display-5">Join</h1>
+					</div>
+				</div>
+			</div>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -94,17 +94,17 @@
                         instructor to provide us with a recommendation.</li>
                 </ul>
                 <h3>Contact Us</h3>
-                <form class="form-horizontal" id="frmJoin" data-toggle="validator">
+                <form class="form-horizontal" id="frmJoin" data-bs-toggle="validator">
                     <fieldset>
                         <legend></legend>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-lg-12">
                                 If you are interested in joining the band, please fill out the form below with your
                                 contact information so we can get back to you.<br />
                                 <em>Fields marked with an * are required.</em>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <label for="txtName" class="col-lg-2 control-label">* Name</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name"
@@ -112,7 +112,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <label for="txtPhone" class="col-lg-2 control-label">Phone Number</label>
                             <div class="col-lg-10">
                                 <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
@@ -120,7 +120,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <label for="txtEmail" class="col-lg-2 control-label">* Email Address</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control" id="txtEmail" name="txtEmail"
@@ -128,7 +128,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <label for="txtEmail" class="col-lg-2 control-label">* Instrument(s) played</label>
                             <div class="col-lg-10">
                                 <div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
@@ -179,7 +179,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <label for="txtPlayLength" class="col-lg-2 control-label">* How long have you been
                                 playing?</label>
                             <div class="col-lg-10">
@@ -188,7 +188,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <label for="txtComments" class="col-lg-2 control-label">Additional
                                 Comments/Questions</label>
                             <div class="col-lg-10">
@@ -196,7 +196,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-lg-10 col-lg-offset-2">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <div id="msgSubmit" class="h4 hidden"></div>

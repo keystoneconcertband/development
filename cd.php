@@ -15,10 +15,10 @@
 	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>CD</h1>
+						<h1 class="display-5">CD</h1>
 					</div>
 				</div>
 			</div>

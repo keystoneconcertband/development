@@ -35,7 +35,7 @@ new ProtectedMember();
 				<div class="page-header">
 					<h2>Inactive Members</h2>
 				</div>
-				<div class="row form-group">
+				<div class="row form-group row">
 					<div class="col-sm-3">
 						<div class="bs-component">
 							<button type="button" class="btn btn-info glyphicon glyphicon-print" onclick="printMembers()"></button>
@@ -45,7 +45,7 @@ new ProtectedMember();
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
 				</div>
-				<div class="row form-group">
+				<div class="row form-group row">
 					<div class="col-sm-12">
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
@@ -69,31 +69,31 @@ new ProtectedMember();
 			</div>
 		</div>
 		<div class="modal fade" id="modal_edit_delete" role="dialog">
-			<form id="form_member" data-toggle="validator">
+			<form id="form_member" data-bs-toggle="validator">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Reinstate Member</h5>
 						</div>
 						<div class="modal-body form-horizontal">
 							<fieldset>
 							    <legend>Personal Information</legend>
-							    <div class="form-group">
+							    <div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="FirstName" class="control-label">First Name</label>
 							        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" value="" required="true" maxlength="50" data-error="First name is required.">
 									<div class="help-block with-errors"></div>
 							      </div>
 							    </div>
-							    <div class="form-group">
+							    <div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="LastName" class="control-label">Last Name</label>
 							        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" value="" required="true" maxlength="50" data-error="Last name is required.">
 									<div class="help-block with-errors"></div>
 							      </div>
 							    </div>
-							    <div class="form-group">
+							    <div class="form-group row">
 							      <div class="col-lg-12">
 					                    <div class="checkbox checkbox-success checkbox-inline">
 					                        <input type="checkbox" name="displayFullName" id="displayFullName" value="1">
@@ -101,79 +101,79 @@ new ProtectedMember();
 					                    </div>
 							      </div>
 							    </div>
-								<div class="form-group">
+								<div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="HomePhoneNbr" class="control-label">Home Phone Nbr</label>
 							        <input type="tel" class="form-control" name="home_phone" id="home_phone" placeholder="Home Phone Number - NOT your cell phone number." value="" data-minlength="10" maxlength="10">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="Address" class="control-label">Address</label>
 							        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" value="" required="true" maxlength="255" data-error="Address is required.">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="Address2" class="control-label">Address 2</label>
 							        <input type="text" class="form-control" name="address2" id="address2" placeholder="Address 2" value="" maxlength="255">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="City" class="control-label">City</label>
 							        <input type="text" class="form-control" name="city" id="city" placeholder="City" value="" required="true" maxlength="100">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group row">
 							      <div class="col-sm-2">
 							        <label for="State" class="control-label">State</label>
 							        <input type="text" class="form-control" name="state" id="state" placeholder="State" value="PA" disabled="true" required="true" maxlength="2">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group" id="zipContainer">
+								<div class="form-group row" id="zipContainer">
 							      <div class="col-sm-4">
 							        <label for="Zip" class="control-label">Zip Code</label>
 							        <input type="tel" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="" required="true" data-minlength="5" maxlength="5">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-							    <div class="form-group emailContainers" id="emailContainer1">
+							    <div class="form-group row emailContainers" id="emailContainer1">
 							      	<div class="col-sm-12">
 							        	<label for="Email" class="control-label">Email</label>
 							        	<div class="input-group">
 											<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
-											<span class="input-group-addon">
+											<span class="input-group-text">
 												<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="glyphicon glyphicon-remove"></span></a>
 											</span>
 							        	</div>
 								    </div>
 							    </div>
-							    <div class="form-group">
+							    <div class="form-group row">
 									<div class="col-sm-12">
-										<button type="button" class="btn btn-default btn-xs" id="addRow">
+										<button type="button" class="btn btn-light btn-xs" id="addRow">
 										  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Email
 										</button>
 									</div>
 							    </div>
 							</fieldset>
-							<div class="form-group">
+							<div class="form-group row">
 							</div>
 							<fieldset>
 							  <legend>Band Information</legend>
-								<div class="form-group">
+								<div class="form-group row">
 							      <div class="col-sm-12">
 							        <label for="CellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
 							        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" value="" data-minlength="10" maxlength="10">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group row">
 									<div class="col-sm-12">
 							        	<label for="optCarrier" class="control-label">Cell Phone Carrier</label>
 										<select class="form-control" name="carrier" id="carrier" data-carrier>
@@ -197,7 +197,7 @@ new ProtectedMember();
 										<div class="help-block with-errors"></div>
 								    </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group row">
 									<div class="col-sm-12">
 										<label for="Instrument" class="control-label">Instrument(s)</label><br>
 										<div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
@@ -252,7 +252,7 @@ new ProtectedMember();
 							<div id="msgSubmit" class="h4 hidden"></div>
 							<input type="hidden" id="uid" name="uid" value="" />
 							<button type="submit" class="btn btn-primary">Save changes</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</div>

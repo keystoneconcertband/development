@@ -16,13 +16,13 @@
     <?php require_once 'includes/nav.php'; ?>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="bs-component">
-                    <div class="jumbotron">
-                        <h1>Donate</h1>
-                    </div>
-                </div>
-            </div>
+			<div class="col">
+				<div class="bs-component">
+					<div class="jumbotron">
+						<h1 class="display-5">Donate</h1>
+					</div>
+				</div>
+			</div>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -43,14 +43,14 @@
                 <h2>Mail a check</h2>
                 <p>If you would rather mail us a check, please click the button below to view the mailing address. If
                     you would like a receipt for your check, please include your address with your donation.</p>
-                <p><button class="btn btn-info" type="button" data-toggle="modal" data-target="#addressModal">View
+                <p><button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#addressModal">View
                         address &raquo;</button></p>
 
                 <div id="addressModal" class="modal" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
+                                <button type="button" class="close" data-bs-dismiss="modal"
                                     aria-hidden="true">&times;</button>
                                 <h4 class="modal-title">Mailing Address</h4>
                             </div>

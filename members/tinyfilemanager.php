@@ -1330,10 +1330,10 @@ if (isset($_GET['upload']) && !FM_READONLY) {
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#fileUploader" data-target="#fileUploader"><i class="fa fa-arrow-circle-o-up"></i> <?php echo lng('UploadingFiles') ?></a>
+                        <a class="nav-link active" href="#fileUploader" data-bs-target="#fileUploader"><i class="fa fa-arrow-circle-o-up"></i> <?php echo lng('UploadingFiles') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#urlUploader" class="js-url-upload" data-target="#urlUploader"><i class="fa fa-link"></i> <?php echo lng('Upload from URL') ?></a>
+                        <a class="nav-link" href="#urlUploader" class="js-url-upload" data-bs-target="#urlUploader"><i class="fa fa-link"></i> <?php echo lng('Upload from URL') ?></a>
                     </li>
                 </ul>
             </div>
@@ -1520,7 +1520,7 @@ if (isset($_GET['settings']) && !FM_READONLY) {
             <div class="card-body">
                 <form id="js-settings-form" action="" method="post" data-type="ajax" onsubmit="return save_settings(this)">
                     <input type="hidden" name="type" value="settings" aria-label="hidden" aria-hidden="true">
-                    <div class="form-group row">
+                    <div class="form-group row row">
                         <label for="js-language" class="col-sm-3 col-form-label"><?php echo lng('Language') ?></label>
                         <div class="col-sm-5">
                             <select class="form-select" id="js-language" name="js-language">
@@ -1635,10 +1635,10 @@ if (isset($_GET['help'])) {
                     <div class="col-12">
                         <form class="form-inline" onsubmit="return new_password_hash(this)" method="POST" action="">
                             <input type="hidden" name="type" value="pwdhash" aria-label="hidden" aria-hidden="true">
-                            <div class="form-group mb-2">
+                            <div class="form-group row mb-2">
                                 <label for="staticEmail2"><?php echo lng('Generate new password hash') ?></label>
                             </div>
-                            <div class="form-group mx-sm-3 mb-2">
+                            <div class="form-group row mx-sm-3 mb-2">
                                 <label for="inputPassword2" class="sr-only"><?php echo lng('Password') ?></label>
                                 <input type="text" class="form-control btn-sm" id="inputPassword2" name="inputPassword2" placeholder="<?php echo lng('Password') ?>" required>
                             </div>
@@ -2252,7 +2252,7 @@ $all_files_size = 0;
     <div class="row">
         <?php if (!FM_READONLY): ?>
             <div class="col-xs-12 col-sm-9">
-                <div class="btn-group flex-wrap" data-toggle="buttons" role="toolbar">
+                <div class="btn-group flex-wrap" data-bs-toggle="buttons" role="toolbar">
                     <a href="#/select-all" class="btn btn-small btn-outline-primary btn-2" onclick="select_all();return false;"><i class="fa fa-check-square"></i> <?php echo lng('SelectAll') ?> </a>
                     <a href="#/unselect-all" class="btn btn-small btn-outline-primary btn-2" onclick="unselect_all();return false;"><i class="fa fa-window-close"></i> <?php echo lng('UnSelectAll') ?> </a>
                     <a href="#/invert-all" class="btn btn-small btn-outline-primary btn-2" onclick="invert_all();return false;"><i class="fa fa-th-list"></i> <?php echo lng('InvertSelection') ?> </a>
@@ -3797,7 +3797,7 @@ function fm_show_header_login()
                 border-width: 2.3px
             }
 
-            .fm-login-page .form-group label {
+            .fm-login-page .form-group row label {
                 width: 100%
             }
 

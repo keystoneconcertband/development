@@ -14,33 +14,13 @@
   </head>
 
   <body>
-	<script>
-	  window.fbAsyncInit = function() {
-	    FB.init({
-	      appId      : '129894350764',
-	      cookie     : true,
-	      xfbml      : true,
-	      version    : 'v3.3'
-	    });
-	      
-	    FB.AppEvents.logPageView();   
-	  };
-	
-	  (function(d, s, id){
-	     var js, fjs = d.getElementsByTagName(s)[0];
-	     if (d.getElementById(id)) {return;}
-	     js = d.createElement(s); js.id = id;
-	     js.src = "https://connect.facebook.net/en_US/sdk.js";
-	     fjs.parentNode.insertBefore(js, fjs);
-	   }(document, 'script', 'facebook-jssdk'));
-	</script>
 	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>Members</h1>
+						<h1 class="display-5">Members</h1>
 					</div>
 				</div>
 			</div>
@@ -58,7 +38,7 @@
 								contact us via the <a href="join.php">Join Us</a> page and we'll be sure to get back to you!
 							</div>
 							<div class="col-sm-2" style="margin-bottom: 15px;">
-								<a href="#" class="btn btn-primary" type="button" data-toggle="modal" data-target="#loginModal">KCB Member Login</a>
+								<a href="#" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">KCB Member Login</a>
 							</div>
 						</div>
 					</div>
@@ -141,7 +121,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+						<a type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</a>
 						<h4 class="modal-title">KCB Member Site Login</h4>
 					</div>
 					<div class="modal-body">
@@ -154,13 +134,13 @@
 							additional authentication to access the site.
 						</p>
 						<form class="form-horizontal" id="frmLogin" name="frmLogin">
-						    <div class="form-group">
+						    <div class="form-group row">
 						      <label for="email" class="col-lg-3 control-label">Email Address</label>
 						      <div class="col-lg-9">
 						        <input type="text" class="form-control" id="email" placeholder="Email Address">
 						      </div>
 						    </div>
-						    <div class="form-group" id="div_auth" style="display:none;">
+						    <div class="form-group row" id="div_auth" style="display:none;">
 								<label for="auth_cd" class="col-lg-3 control-label">Additional Authentication Required</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control" id="auth_cd" placeholder="Login Code" maxlength="6">
@@ -173,13 +153,13 @@
 								</div>
 							</div>
 							<!--
-							<div class="form-group">
+							<div class="form-group row">
 								<label for="fb" class="col-lg-3 control-label"></label>
 						      <div class="col-lg-9">
 							  	<strong> -- OR -- </strong>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<label for="fb" class="col-lg-3 control-label"></label>
 						      <div class="col-lg-9">
 								<div id="fb" class="fb-login-button" data-width="" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false" data-onlogin="checkLoginState()" data-scope="public_profile,email"></div>
@@ -189,7 +169,7 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 				        <button type="button" class="btn btn-primary" id="memberLogin">Submit</button>
 					</div>
 				</div>

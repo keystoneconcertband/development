@@ -12,7 +12,6 @@
     <title>Concerts - Keystone Concert Band</title>
 
 	<?php require_once 'includes/common_css.php'; ?>
-
   </head>
 
   <body>
@@ -20,16 +19,16 @@
 	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>Concerts</h1>
+						<h1 class="display-5">Concerts</h1>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col">
 				<div class="page-header">
 					<h2>Calendar</h2>
 				</div>
@@ -69,7 +68,7 @@
 							echo "<div class='panel panel-default' id='panel" . $rowNbr . "'>\n";
 							echo "  <div class='panel-heading " . $disabled . "'>\n";
 							echo "	  <div class='panel-title'>";
-							echo "      <a data-toggle='collapse' data-target='#collapse" . $rowNbr . "' href='#collapse'>\n";
+							echo "      <a data-bs-toggle='collapse' data-bs-target='#collapse" . $rowNbr . "' href='#collapse'>\n";
 							echo 			$concert['Title'];
 							echo "      </a>\n";
 							echo "    </div>\n";

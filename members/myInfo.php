@@ -40,24 +40,24 @@ new ProtectedMember();
 					<h2>My Information</h2>
 				</div>
 				<div class="well bs-component">
-					<form class="form-horizontal" id="memberInfo" data-toggle="validator">
+					<form class="form-horizontal" id="memberInfo" data-bs-toggle="validator">
 						<fieldset>
 						    <legend>Personal Information</legend>
-						    <div class="form-group">
+						    <div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtFirstName" class="control-label">First Name</label>
 						        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required="true" maxlength="50" data-error="First name is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 						    </div>
-						    <div class="form-group">
+						    <div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtLastName" class="control-label">Last Name</label>
 						        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required="true" maxlength="50" data-error="Last name is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 						    </div>
-						    <div class="form-group">
+						    <div class="form-group row">
 						      <div class="col-lg-12">
 				                    <div class="checkbox checkbox-success checkbox-inline">
 				                        <input type="checkbox" id="displayFullName" value="1" name="displayFullName">
@@ -65,79 +65,79 @@ new ProtectedMember();
 				                    </div>
 						      </div>
 						    </div>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtHomePhoneNbr" class="control-label">Home Phone Nbr</label>
 						        <input type="tel" class="form-control" name="home_phone" id="home_phone" placeholder="Home Phone Number - NOT your cell phone number." data-minlength="10" maxlength="10">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtAddress" class="control-label">Address</label>
 						        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" required="true" maxlength="255" data-error="Address is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtAddress2" class="control-label">Address 2</label>
 						        <input type="text" class="form-control" name="address2" id="address2" placeholder="Address 2" maxlength="255">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtCity" class="control-label">City</label>
 						        <input type="text" class="form-control" name="city" id="city" placeholder="City" required="true" maxlength="100">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-2">
 						        <label for="txtState" class="control-label">State</label>
 						        <input type="text" class="form-control" name="state" id="state" placeholder="State" disabled="true" required="true" maxlength="2">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-4">
 						        <label for="txtZip" class="control-label">Zip Code</label>
 						        <input type="tel" class="form-control" name="zip" id="zip" placeholder="Zip Code" required="true" data-minlength="5" maxlength="5">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-						    <div class="form-group emailContainers" id="emailContainer1">
+						    <div class="form-group row emailContainers" id="emailContainer1">
 						      	<div class="col-sm-12">
 						        	<label for="Email" class="control-label">Email</label>
 						        	<div class="input-group">
 										<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
-										<span class="input-group-addon">
+										<span class="input-group-text">
 											<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="glyphicon glyphicon-remove"></span></a>
 										</span>
 						        	</div>
 							    </div>
 						    </div>
-						    <div class="form-group">
+						    <div class="form-group row">
 								<div class="col-sm-12">
-									<button type="button" class="btn btn-default btn-xs" id="addRow">
+									<button type="button" class="btn btn-light btn-xs" id="addRow">
 									  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Email
 									</button>
 								</div>
 						    </div>
 						</fieldset>
-						<div class="form-group">
+						<div class="form-group row">
 						</div>
 						<fieldset>
 						  <legend>Band Information</legend>
-							<div class="form-group">
+							<div class="form-group row">
 						      <div class="col-sm-12">
 						        <label for="txtCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
 						        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" data-minlength="10" maxlength="10">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 						        	<label for="optCarrier" class="control-label">Cell Phone Carrier</label>
 									<select class="form-control" name="carrier" id="carrier" data-carrier>
@@ -161,7 +161,7 @@ new ProtectedMember();
 									<div class="help-block with-errors"></div>
 							    </div>
 							</div>
-							<div class="form-group">
+							<div class="form-group row">
 								<div class="col-sm-12">
 									<label for="Instrument" class="control-label">Instrument(s)</label><br>
 									<div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
@@ -211,9 +211,9 @@ new ProtectedMember();
 								</div>
 							</div>
 						</fieldset>
-						<div class="form-group">
+						<div class="form-group row">
 						</div>
-						<div class="form-group">
+						<div class="form-group row">
 						  <div class="col-lg-12">
 						    <button type="submit" class="btn btn-primary">Submit</button>
 							<div id="msgSubmit" class="h4 hidden"></div>
