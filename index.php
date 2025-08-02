@@ -107,13 +107,13 @@
 						<div id="bandAlerts" style="display:none">
 							<?php
 								if ($concert['pants'] == 0) {
-										echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a black pants concert</div>";
+										echo "<div><span class='fa fa-exclamation-triangle' aria-hidden='true'></span> This is a black pants concert</div>";
 								}
 								elseif ($concert['pants'] == 1) {
-									echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a tan pants concert</div>";
+									echo "<div><span class='fa fa-exclamation-triangle' aria-hidden='true'></span> This is a tan pants concert</div>";
 								}
 								if ($concert['chair'] == 1) {
-									echo "<div><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> A chair is required at this concert</div>";
+									echo "<div><span class='fa fa-exclamation-triangle' aria-hidden='true'></span> A chair is required at this concert</div>";
 								}
 							?>
 						</div>

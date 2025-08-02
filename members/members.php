@@ -40,7 +40,7 @@ new ProtectedMember();
 					<div class="col-sm-3">
 						<div class="bs-component">
 							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_edit_delete">Add Member</button>
-							<button type="button" class="btn btn-info glyphicon glyphicon-print" onclick="printMembers()"></button>
+							<button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
 						</div>
 					</div>
 					<div class="col-sm-9">
@@ -51,7 +51,7 @@ new ProtectedMember();
 				<div class="row form-group row">
 					<div class="col-sm-12">
 						<div class="bs-component">
-							<button type="button" class="btn btn-info glyphicon glyphicon-print" onclick="printMembers()"></button>
+							<button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
 						</div>
 					</div>
 				</div>
@@ -155,7 +155,7 @@ new ProtectedMember();
 							        	<div class="input-group">
 											<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
 											<span class="input-group-text">
-												<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="glyphicon glyphicon-remove"></span></a>
+												<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="fa fa-remove"></span></a>
 											</span>
 							        	</div>
 								    </div>
@@ -163,7 +163,7 @@ new ProtectedMember();
 							    <div class="form-group row">
 									<div class="col-sm-12">
 										<button type="button" class="btn btn-light btn-xs" id="addRow">
-										  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Email
+										  <span class="fa fa-plus" aria-hidden="true"></span> Add New Email
 										</button>
 									</div>
 							    </div>
