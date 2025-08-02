@@ -102,7 +102,7 @@ new ProtectedMusic();
 									<div class="input-group date" id="dpStartDt">
 										<input type="text" class="form-control" name="start_dt" id="start_dt" placeholder="First day to show message" required="true" data-error="Date is required." onblur="checkDates(this.value)">
 										<span class="input-group-text">
-											<span class="glyphicon glyphicon-calendar"></span>
+											<span class="fa fa-calendar"></span>
 										</span>
 									</div>
 									<div class="help-block with-errors"></div>
@@ -114,7 +114,7 @@ new ProtectedMusic();
 									<div class="input-group date" id="dpEndDt">
 										<input type="text" class="form-control" name="end_dt" id="end_dt" placeholder="Last day to show message" required="true" data-error="Date is required." onblur="checkDates(this.value)">
 										<span class="input-group-text">
-											<span class="glyphicon glyphicon-calendar"></span>
+											<span class="fa fa-calendar"></span>
 										</span>
 									</div>
 									<div class="help-block with-errors"></div>

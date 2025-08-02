@@ -125,7 +125,7 @@ new ProtectedAdmin();
 							        	<div class="input-group">
 											<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
 											<span class="input-group-text">
-												<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="glyphicon glyphicon-remove"></span></a>
+												<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="fa fa-remove"></span></a>
 											</span>
 							        	</div>
 								    </div>
@@ -133,7 +133,7 @@ new ProtectedAdmin();
 							    <div class="form-group row">
 									<div class="col-sm-12">
 										<button type="button" class="btn btn-light btn-xs" id="addRow">
-										  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Email
+										  <span class="fa fa-plus" aria-hidden="true"></span> Add New Email
 										</button>
 									</div>
 							    </div>
