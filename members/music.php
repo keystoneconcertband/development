@@ -92,7 +92,7 @@ new ProtectedMusic();
 									<div class="input-group date" id="dpConcert">
 										<input type="text" class="form-control" name="concert_date" id="concert_date" placeholder="Date of Concert" required="true" data-error="Date is required.">
 										<span class="input-group-text">
-											<span class="glyphicon glyphicon-calendar"></span>
+											<span class="fa fa-calendar"></span>
 										</span>
 									</div>
 									<div class="help-block with-errors"></div>
@@ -170,7 +170,7 @@ new ProtectedMusic();
 									<div class="input-group date" id="dpLastPlayed">
 										<input type="text" class="form-control" name="last_played" id="last_played" placeholder="Last Played" value="">
 										<span class="input-group-text">
-											<span class="glyphicon glyphicon-calendar"></span>
+											<span class="fa fa-calendar"></span>
 										</span>
 									</div>
 									<div class="help-block with-errors"></div>
