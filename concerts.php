@@ -84,13 +84,13 @@
 							echo "		        <h5 class='card-title'>Band Members</h5>";
 							echo "			    <ul class='list-group list-group-flush'>";
 			  				if ($concert['pants'] == 0) {
-								echo "		      <li class='list-group-item'><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a black pants concert</li>\n";
+								echo "		      <li class='list-group-item'><span class='fa fa-exclamation-triangle' aria-hidden='true'></span> This is a black pants concert</li>\n";
 							}
 							elseif ($concert['pants'] == 1) {
-								echo "		        <li class='list-group-item'><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> This is a tan pants concert</li>\n";
+								echo "		        <li class='list-group-item'><span class='fa fa-exclamation-triangle' aria-hidden='true'></span> This is a tan pants concert</li>\n";
 							}
 							if ($concert['chair'] == 1) {
-								echo "		        <li class='list-group-item'><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> A chair is required for this concert</li>\n";
+								echo "		        <li class='list-group-item'><span class='fa fa-exclamation-triangle' aria-hidden='true'></span> A chair is required for this concert</li>\n";
 							}
 							echo "			    </ul>";
 							echo "		      </div>"; // end card-body
