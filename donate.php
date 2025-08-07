@@ -46,20 +46,19 @@
                 <p><button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#addressModal">View
                         address &raquo;</button></p>
 
-                <div id="addressModal" class="modal" role="dialog">
+                <div id="addressModal" class="modal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-bs-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title">Mailing Address</h4>
+                                <h5 class="modal-title">Mailing Address</h5>
                             </div>
                             <div class="modal-body">
-                                <p>Keystone Concert Band<br>
+                                <p><strong>Keystone Concert Band</strong><br>
                                     145 E Main Street<br>
                                     1st Floor<br>
                                     Mechanicsburg, PA 17055
                                 </p>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
