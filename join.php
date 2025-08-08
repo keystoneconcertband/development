@@ -8,13 +8,7 @@
     <title>Join the band - Keystone Concert Band</title>
 
     <?php require_once 'includes/common_css.php'; ?>
-    <link rel="stylesheet" href="/css/checkboxes.min.css" />
-
-    <style type="text/css">
-    .row .col-lg-12 ul li {
-        margin-bottom: 10px;
-    }
-    </style>
+    <!--<link rel="stylesheet" href="/css/checkboxes.min.css" />-->
 </head>
 
 <body>
@@ -97,111 +91,123 @@
                 <form class="form-horizontal" id="frmJoin" data-bs-toggle="validator">
                     <fieldset>
                         <legend></legend>
-                        <div class="form-group row">
+                        <div>
                             <div class="col-lg-12">
                                 If you are interested in joining the band, please fill out the form below with your
                                 contact information so we can get back to you.<br />
                                 <em>Fields marked with an * are required.</em>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="txtName" class="col-lg-2 control-label">* Name</label>
-                            <div class="col-lg-10">
+                        <div>
+                            <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name"
                                     required="true">
-                                <div class="help-block with-errors"></div>
+                                <label for="floatingInput">* Name</label>
+                               <div class="invalid-feedback">Please enter a name</div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="txtPhone" class="col-lg-2 control-label">Phone Number</label>
-                            <div class="col-lg-10">
+                        <div>
+                            <div class="form-floating mb-3">
                                 <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
                                     placeholder="Phone Number" data-minlength="10" maxlength="10">
-                                <div class="help-block with-errors"></div>
+                                <label for="floatingInput">Phone Number</label>
+                                <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid 10-digit phone number.</div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="txtEmail" class="col-lg-2 control-label">* Email Address</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" id="txtEmail" name="txtEmail"
+                        <div>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="txtEmail" name="txtEmail"
                                     placeholder="Email Address" required="true">
+                                <label for="floatingInput">* Email Address</label>
+                                <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="txtPlayLength" name="txtPlayLength"
+                                    placeholder="How long have you been playing?" required="true">
+                                <label for="floatingInput">* How long have you been playing?</label>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="txtEmail" class="col-lg-2 control-label">* Instrument(s) played</label>
-                            <div class="col-lg-10">
-                                <div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
-                                    <input type="checkbox" id="baritone" value="baritone" name="chkInstrument[]">
-                                    <label for="baritone"> Baritone</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="bassClarinet" value="bassClarinet"
-                                        name="chkInstrument[]">
-                                    <label for="bassClarinet"> Bass Clarinet</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="bassoon" value="bassoon" name="chkInstrument[]">
-                                    <label for="bassoon"> Bassoon</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="clarinet" value="clarinet" name="chkInstrument[]">
-                                    <label for="clarinet"> Clarinet</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="flute" value="flute" name="chkInstrument[]">
-                                    <label for="flute"> Flute</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="frenchHorn" value="frenchHorn" name="chkInstrument[]">
-                                    <label for="frenchHorn"> French Horn</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="saxophone" value="saxophone" name="chkInstrument[]">
-                                    <label for="saxophone"> Saxophone</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="trombone" value="trombone" name="chkInstrument[]">
-                                    <label for="trombone"> Trombone</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
-                                    <label for="trumpet"> Trumpet</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
-                                    <label for="tuba"> Tuba</label>
-                                </div>
-                                <div class="checkbox checkbox-success checkbox-inline">
-                                    <input type="checkbox" id="percussion" value="percussion" name="chkInstrument[]">
-                                    <label for="percussion"> Percussion</label>
-                                </div>
-                                <div class="help-block with-errors"></div>
-                            </div>
+                        <div>
+                            <label class="form-label mt-4" for="chkInstrument">* Instrument(s) played</label>
                         </div>
-                        <div class="form-group row">
-                            <label for="txtPlayLength" class="col-lg-2 control-label">* How long have you been
-                                playing?</label>
-                            <div class="col-lg-10">
-                                <textarea class="form-control" rows="3" id="txtPlayLength" name="txtPlayLength"
-                                    required="true"></textarea>
-                                <div class="help-block with-errors"></div>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="baritone" value="baritone" name="chkInstrument[]">
+                            <label class="form-check-label" for="baritone">
+                                Baritone
+                            </label>
                         </div>
-                        <div class="form-group row">
-                            <label for="txtComments" class="col-lg-2 control-label">Additional
-                                Comments/Questions</label>
-                            <div class="col-lg-10">
-                                <textarea class="form-control" rows="3" id="txtComments" name="txtComments"></textarea>
-                                <div class="help-block with-errors"></div>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="bassClarinet" value="bassClarinet" name="chkInstrument[]">
+                            <label class="form-check-label" for="bassClarinet">
+                                Bass Clarinet
+                            </label>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-lg-10 col-lg-offset-2">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <div id="msgSubmit" class="h4 hidden"></div>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="bassoon" value="bassoon" name="chkInstrument[]">
+                            <label class="form-check-label" for="bassoon">
+                                Bassoon
+                            </label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clarinet" value="clarinet" name="chkInstrument[]">
+                            <label class="form-check-label" for="clarinet">
+                                Clarinet
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="flute" value="flute" name="chkInstrument[]">
+                            <label class="form-check-label" for="flute">
+                                Flute
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="frenchHorn" value="frenchHorn" name="chkInstrument[]">
+                            <label class="form-check-label" for="frenchHorn">
+                                French Horn
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="saxophone" value="saxophone" name="chkInstrument[]">
+                            <label class="form-check-label" for="saxophone">
+                                Saxophone
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="trombone" value="trombone" name="chkInstrument[]">
+                            <label class="form-check-label" for="trombone">
+                                Trombone
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
+                            <label class="form-check-label" for="trumpet">
+                                Trumpet
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
+                            <label class="form-check-label" for="tuba">
+                                Tuba
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="percussion" value="percussion" name="chkInstrument[]">
+                            <label class="form-check-label" for="percussion">
+                                Percussion
+                            </label>
+                        </div>
+                        <div class="help-block with-errors"></div>
+                        <div>
+                            <label for="exampleTextarea" class="form-label mt-4">Additional Comments/Questions</label>
+                            <textarea class="form-control" id="txtComments" name="txtComments" rows="3"></textarea>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div id="msgSubmit" class="h4 hidden"></div>
                     </fieldset>
                 </form>
             </div>
@@ -210,8 +216,6 @@
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js">
-    </script>
     <script type="text/javascript" src="kcb-js/join.js"></script>
 </body>
 

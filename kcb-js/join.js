@@ -1,13 +1,3 @@
-$("#frmJoin").validator().on("submit", function (event) {
-    if (event.isDefaultPrevented()) {
-        formError();
-        submitMSG(false, "Oops! Looks like you have a validation error. Check for errors in the form.");
-    } else {
-        event.preventDefault();
-        submitForm();
-    }
-});
-
 function submitForm() {
 	$.ajax(
 	{
