@@ -67,6 +67,7 @@
 			</a>
 		</div><!-- /.carousel -->
 		<?php
+			/*
 			$messages = $homepage->getHomepageMessages();
 			
 			foreach($messages as $msg) {
@@ -81,6 +82,7 @@
 						<p>' . $msg['message'] . '</p></div>');
 				}
 			}
+			*/
 		?>
 		<div class="container marketing">
 			<!-- Three columns of text below the carousel -->
@@ -89,6 +91,8 @@
 					<img class="img-circle" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140" height="140">
 					<h2>Upcoming Concert</h2>
 						<?php
+						$concert = "";
+						/*
 							$concert = $homepage->getCurrentConcert();
 											
 							if(!$concert) {
@@ -109,6 +113,7 @@
 								echo "<h4><a href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
 								echo "<div style='width: 100%'><iframe width='100%' height='340' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://maps.google.com/maps?width=100%25&amp;height=340&amp;hl=en&amp;q=" . urlencode($concert['address']) ."&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'></iframe></div>";
 							}
+							*/
 						?>
 					<p><a class="btn btn-default" href="concerts.php" role="button">View more &raquo;</a></p>
 					<?php if($concert) { ?>

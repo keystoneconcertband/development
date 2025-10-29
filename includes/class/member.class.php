@@ -1,7 +1,7 @@
 <?php
 // kcbBase is its parent
 require_once "kcbBase.class.php";
-require_once "member.db.class.php";
+#require_once "member.db.class.php";
 
 class Member
 {
@@ -15,7 +15,7 @@ class Member
     public function __construct($authReq)
     {
         $this->setKcb(new KcbBase());
-        $this->setDB(new MemberDB());
+        #$this->setDB(new MemberDB());
 
         if ($authReq) {
             if (!$this->validSession()) {
