@@ -56,82 +56,83 @@
 							<div class="col-sm-10" style="margin-bottom: 15px;">
 								All members of the band are volunteers and play for the love of playing! Interested in adding your name to this page and joining the band? Just
 								contact us via the <a href="join.php">Join Us</a> page and we'll be sure to get back to you!
-							</div>
+							</div><!--
 							<div class="col-sm-2" style="margin-bottom: 15px;">
 								<a href="#" class="btn btn-primary" type="button" data-toggle="modal" data-target="#loginModal">KCB Member Login</a>
-							</div>
+							</div>-->
 						</div>
 					</div>
+
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Baritone</h3>
-							<p class="list-group-item-text"><?php getInstrument('baritone'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('baritone'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Bass Clarinet</h3>
-							<p class="list-group-item-text"><?php getInstrument('bassClarinet'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('bassClarinet'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Bassoon</h3>
-							<p class="list-group-item-text"><?php getInstrument('bassoon'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('bassoon'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Clarinet</h3>
-							<p class="list-group-item-text"><?php getInstrument('clarinet'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('clarinet'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Flute</h3>
-							<p class="list-group-item-text"><?php getInstrument('flute'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('flute'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">French Horn</h3>
-							<p class="list-group-item-text"><?php getInstrument('frenchHorn'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('frenchHorn'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Oboe</h3>
-							<p class="list-group-item-text"><?php getInstrument('oboe'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('oboe'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Percussion</h3>
-							<p class="list-group-item-text"><?php getInstrument('percussion'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('percussion'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Saxophone</h3>
-							<p class="list-group-item-text"><?php getInstrument('saxophone'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('saxophone'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Trombone</h3>
-							<p class="list-group-item-text"><?php getInstrument('trombone'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('trombone'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Trumpet</h3>
-							<p class="list-group-item-text"><?php getInstrument('trumpet'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('trumpet'); ?></p>
 						</div>							
 					</div>
 					<div class="col-lg-12">
 						<div class="list-group">
 							<h3 class="list-group-item-heading">Tuba</h3>
-							<p class="list-group-item-text"><?php getInstrument('tuba'); ?></p>
+							<p class="list-group-item-text"><?php #getInstrument('tuba'); ?></p>
 						</div>							
 					</div>
 				</div>	

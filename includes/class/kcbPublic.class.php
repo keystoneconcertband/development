@@ -1,6 +1,6 @@
 <?php
 require_once "kcbBase.class.php";
-require_once "kcbPublic.db.class.php";
+#require_once "kcbPublic.db.class.php";
 
 class KCBPublic
 {
@@ -10,7 +10,7 @@ class KCBPublic
     public function __construct()
     {
         $this->setKcb(new KcbBase());
-        $this->setDB(new KCBPublicDb());
+        #$this->setDB(new KCBPublicDb());
     }
 
     public function getCurrentConcert()
