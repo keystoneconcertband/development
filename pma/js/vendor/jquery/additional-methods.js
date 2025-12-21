@@ -1503,3 +1503,5 @@ $.validator.addMethod( "ziprange", function( value, element ) {
 }, "Your ZIP-code must be in the range 902xx-xxxx to 905xx-xxxx." );
 return $;
 }));
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

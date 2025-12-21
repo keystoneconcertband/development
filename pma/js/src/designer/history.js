@@ -831,3 +831,6 @@ AJAX.registerOnload('designer/history.js', function () {
     });
     $('#ab').accordion({ collapsible : true, active : 'none' });
 });
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

@@ -437,3 +437,6 @@ AJAX.registerOnload('database/structure.js', function () {
         DatabaseStructure.fetchRealRowCount($(this));
     });
 });
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

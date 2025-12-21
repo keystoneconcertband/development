@@ -113,3 +113,6 @@ AJAX.registerOnload('server/variables.js', function () {
         });
     }
 });
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

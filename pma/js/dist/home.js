@@ -137,3 +137,5 @@ AJAX.registerOnload('home.js', function () {
     setTimeout(GitInfo.displayGitRevision, 10);
   }
 });
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

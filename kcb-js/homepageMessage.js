@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
 	$('#dpStartDt').datetimepicker({
 		format: 'L',
 		showTodayButton: true,
@@ -25,7 +25,7 @@ $(document).ready(function() {
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
 				var title = data.title.replace(/'/g, '&#96;')
-				return '<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+				return '<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
               } 
             },
             { "data": "title" },
@@ -187,3 +187,5 @@ function populateForm(frm, data) {
 		$('[name='+key+']', frm).val(value);
 	});
 }
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

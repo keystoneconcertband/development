@@ -1,5 +1,5 @@
 /**
- * function used in or for navigation panel
+ * function used in or for navigation card
  *
  * @package phpMyAdmin-Navigation
  */
@@ -230,7 +230,7 @@ Navigation.collapseTreeNode = function ($expandElem) {
 
 /**
  * Traverse the navigation tree backwards to generate all the actual
- * and virtual paths, as well as the positions in the pagination at
+ * and virtual paths, as card as the positions in the pagination at
  * various levels, if necessary.
  *
  * @return {object}
@@ -307,7 +307,7 @@ $(function () {
 
     /**
      * Register event handler for click on the reload
-     * navigation icon at the top of the panel
+     * navigation icon at the top of the card
      */
     $(document).on('click', '#pma_navigation_reload', function (event) {
         event.preventDefault();
@@ -351,7 +351,7 @@ $(function () {
 
     /**
      * Register event handler to toggle
-     * the 'link with main panel' icon on mouseenter.
+     * the 'link with main card' icon on mouseenter.
      */
     $(document).on('mouseenter', '#pma_navigation_sync', function (event) {
         event.preventDefault();
@@ -366,7 +366,7 @@ $(function () {
 
     /**
      * Register event handler to toggle
-     * the 'link with main panel' icon on mouseout.
+     * the 'link with main card' icon on mouseout.
      */
     $(document).on('mouseout', '#pma_navigation_sync', function (event) {
         event.preventDefault();
@@ -381,7 +381,7 @@ $(function () {
 
     /**
      * Register event handler to toggle
-     * the linking with main panel behavior
+     * the linking with main card behavior
      */
     $(document).on('click', '#pma_navigation_sync', function (event) {
         event.preventDefault();
@@ -874,7 +874,7 @@ Navigation.showCurrent = function () {
 };
 
 /**
- * Disable navigation panel settings
+ * Disable navigation card settings
  *
  * @return {void}
  */
@@ -884,7 +884,7 @@ Navigation.disableSettings = function () {
 };
 
 /**
- * Ensure that navigation panel settings is properly setup.
+ * Ensure that navigation card settings is properly setup.
  * If not, set it up
  *
  * @param {string} selflink
@@ -1052,7 +1052,7 @@ Navigation.treePagination = function ($this) {
 Navigation.ResizeHandler = function () {
     /**
      * @var {number} panelWidth Used by the collapser to know where to go
-     *                      back to when uncollapsing the panel
+     *                      back to when uncollapsing the card
      */
     this.panelWidth = 0;
     /**
@@ -1060,7 +1060,7 @@ Navigation.ResizeHandler = function () {
      */
     this.left = $('html').attr('dir') === 'ltr' ? 'left' : 'right';
     /**
-     * Adjusts the width of the navigation panel to the specified value
+     * Adjusts the width of the navigation card to the specified value
      *
      * @param {number} position Navigation width in pixels
      *
@@ -1137,7 +1137,7 @@ Navigation.ResizeHandler = function () {
     };
     /**
      * Returns the horizontal position of the mouse,
-     * relative to the outer side of the navigation panel
+     * relative to the outer side of the navigation card
      *
      * @param {MouseEvent} event
      *
@@ -1163,7 +1163,7 @@ Navigation.ResizeHandler = function () {
     /**
      * Returns the HTML code for the arrow symbol used in the collapser
      *
-     * @param {number} width The width of the panel
+     * @param {number} width The width of the card
      *
      * @return {string}
      */
@@ -1183,7 +1183,7 @@ Navigation.ResizeHandler = function () {
         }
     };
     /**
-     * Event handler for initiating a resize of the panel
+     * Event handler for initiating a resize of the card
      *
      * @param {object} event Event data (contains a reference to Navigation.ResizeHandler)
      *
@@ -1199,7 +1199,7 @@ Navigation.ResizeHandler = function () {
         $('body').css('cursor', 'col-resize');
     };
     /**
-     * Event handler for terminating a resize of the panel
+     * Event handler for terminating a resize of the card
      *
      * @param {object} event Event data (contains a reference to Navigation.ResizeHandler)
      *
@@ -1214,7 +1214,7 @@ Navigation.ResizeHandler = function () {
             .off('mouseup');
     };
     /**
-     * Event handler for updating the panel during a resize operation
+     * Event handler for updating the card during a resize operation
      *
      * @param {object} event Event data (contains a reference to Navigation.ResizeHandler)
      *
@@ -1228,7 +1228,7 @@ Navigation.ResizeHandler = function () {
         }
     };
     /**
-     * Event handler for collapsing the panel
+     * Event handler for collapsing the card
      *
      * @param {object} event Event data (contains a reference to Navigation.ResizeHandler)
      *
@@ -1452,7 +1452,7 @@ Navigation.FastFilter = {
                 outerContainer = $obj;
             }
 
-            // filters items that are directly under the div as well as grouped in
+            // filters items that are directly under the div as card as grouped in
             // groups. Does not filter child items (i.e. a database search does
             // not filter tables)
             var itemFilter = function ($curr) {
@@ -1659,3 +1659,6 @@ Navigation.showFullName = function ($containerELem) {
         }
     });
 };
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

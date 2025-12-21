@@ -2154,3 +2154,5 @@ AJAX.registerOnload('server/status/monitor.js', function () {
 AJAX.registerOnload('server/status/monitor.js', function () {
   $('a[href="#pauseCharts"]').trigger('click');
 });
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

@@ -306,3 +306,5 @@ AJAX.registerOnload('table/operations.js', function () {
     confirmAndPost($(this), 'DELETE');
   });
 }); // end $(document).ready for 'Table operations'
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

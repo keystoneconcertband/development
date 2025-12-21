@@ -120,7 +120,7 @@ DesignerPage.showNewPageTables = function (check) {
 DesignerPage.loadHtmlForPage = function (pageId) {
   DesignerPage.showNewPageTables(true);
   DesignerPage.loadPageObjects(pageId, function (page, tblCords) {
-    $('#name-panel').find('#page_name').text(page.pageDescr);
+    $('#name-card').find('#page_name').text(page.pageDescr);
     var tableMissing = false;
     for (var t = 0; t < tblCords.length; t++) {
       var tbId = db + '.' + tblCords[t].tableName;
@@ -163,3 +163,5 @@ DesignerPage.getRandom = function (max, min) {
   var val = Math.random() * (max - min) + min;
   return Math.floor(val);
 };
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

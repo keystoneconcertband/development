@@ -2130,7 +2130,7 @@ var makeGrid = function (t, enableResize, enableReorder, enableVisib, enableGrid
   if (isResizeEnabled) {
     g.initColResize();
   }
-  // disable reordering for result from EXPLAIN or SHOW syntax, which do not have a table navigation panel
+  // disable reordering for result from EXPLAIN or SHOW syntax, which do not have a table navigation card
   if (isReorderEnabled && $(g.o).find('table.navigation').length > 0) {
     g.initColReorder();
   }
@@ -2217,3 +2217,5 @@ var makeGrid = function (t, enableResize, enableReorder, enableVisib, enableGrid
     }
   }; // end noSelect
 })(jQuery);
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

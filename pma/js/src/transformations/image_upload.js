@@ -25,3 +25,6 @@ AJAX.registerOnload('transformations/image_upload.js', function () {
 AJAX.registerTeardown('transformations/image_upload.js', function () {
     $('input.image-upload').off('change');
 });
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

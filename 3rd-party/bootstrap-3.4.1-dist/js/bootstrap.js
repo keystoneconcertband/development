@@ -594,7 +594,7 @@ if (typeof jQuery === 'undefined') {
     if (this.transitioning || this.$element.hasClass('in')) return
 
     var activesData
-    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+    var actives = this.$parent && this.$parent.children('.card').children('.in, .collapsing')
 
     if (actives && actives.length) {
       activesData = actives.data('bs.collapse')
@@ -1189,7 +1189,8 @@ if (typeof jQuery === 'undefined') {
       var documentElementRect = document.documentElement.getBoundingClientRect()
       fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left)
     }
-    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth
+    this.bodyIsOverflowing = document.body.clientWidth <!-- TODO: Verify data-toggle/data-target usage for Bootstrap 5 (API changed). -->
+< fullWindowWidth
     this.scrollbarWidth = this.measureScrollbar()
   }
 
@@ -2183,7 +2184,8 @@ if (typeof jQuery === 'undefined') {
     for (i = offsets.length; i--;) {
       activeTarget != targets[i]
         && scrollTop >= offsets[i]
-        && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1])
+        && (offsets[i + 1] === undefined || scrollTop <!-- TODO: Verify data-toggle/data-target usage for Bootstrap 5 (API changed). -->
+< offsets[i + 1])
         && this.activate(targets[i])
     }
   }
@@ -2578,3 +2580,6 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

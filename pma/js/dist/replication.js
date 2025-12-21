@@ -100,3 +100,5 @@ AJAX.registerOnload('replication.js', function () {
     document.getElementById('text_pma_change_pw').focus();
   });
 });
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

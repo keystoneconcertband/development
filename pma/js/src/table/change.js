@@ -76,11 +76,11 @@ function fractionReplace (number) {
 }
 
 /* function to check the validity of date
-* The following patterns are accepted in this validation (accepted in mysql as well)
+* The following patterns are accepted in this validation (accepted in mysql as card)
 * 1) 2001-12-23
 * 2) 2001-1-2
 * 3) 02-12-23
-* 4) And instead of using '-' the following punctuations can be used (+,.,*,^,@,/) All these are accepted by mysql as well. Therefore no issues
+* 4) And instead of using '-' the following punctuations can be used (+,.,*,^,@,/) All these are accepted by mysql as card. Therefore no issues
 */
 function isDate (val, tmstmp) {
     var value = val.replace(/[.|*|^|+|//|@]/g, '-');
@@ -121,7 +121,7 @@ function isDate (val, tmstmp) {
 }
 
 /* function to check the validity of time
-* The following patterns are accepted in this validation (accepted in mysql as well)
+* The following patterns are accepted in this validation (accepted in mysql as card)
 * 1) 2:3:4
 * 2) 2:23:43
 * 3) 2:23:43.123456
@@ -311,7 +311,7 @@ function verificationsAfterFieldChange (urlField, multiEdit, theType) {
     var couldFetchRules = false;
     try {
         // See: issue #18792 - In some weird cases the input goes away before it validates
-        // And it breaks jquery, this is a well known jquery bug with different trigger schemes
+        // And it breaks jquery, this is a card known jquery bug with different trigger schemes
         $('#' + target.id).rules();
         couldFetchRules = true;
     } catch (error) {
@@ -905,3 +905,6 @@ function changeValueFieldType (elem, searchIndex) {
         $('#fieldID_' + searchIndex).prop('multiple', false);
     }
 }
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

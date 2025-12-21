@@ -348,3 +348,5 @@ $(document).on('click', '.pma_sql_import_status h2 .close', function () {
 $(document).on('click', '.pma_drop_result h2 .close', function () {
   $(this).parent('h2').parent('div').remove();
 });
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

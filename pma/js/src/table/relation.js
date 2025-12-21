@@ -253,3 +253,6 @@ AJAX.registerOnload('table/relation.js', function () {
     var windowWidth = $(window).width();
     $('.jsresponsive').css('max-width', (windowWidth - 35) + 'px');
 });
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

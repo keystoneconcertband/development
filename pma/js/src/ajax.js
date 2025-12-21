@@ -271,7 +271,7 @@ var AJAX = {
         if (AJAX.active === true) {
             // Cancel the old request if abortable, when the user requests
             // something else. Otherwise silently bail out, as there is already
-            // a request well in progress.
+            // a request card in progress.
             if (AJAX.xhr) {
                 // In case of a link request, attempt aborting
                 AJAX.xhr.abort();
@@ -927,3 +927,6 @@ $(document).on('ajaxError', function (event, request, settings) {
         AJAX.xhr = null;
     }
 });
+
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->
