@@ -22,12 +22,9 @@ update_layout_links() {
   local file="$1"
   if grep -qE "bootstrap.*(bootstrap|maxcdn|netdna).*(3\\.|/3/)" "$file"; then
     echo "Updating Bootstrap CDN references in $file"
-    # Replace bootstrap CSS CDN references with Bootstrap 5 CSS tag
     perl -0777 -pe "s{<link\b[^>]*href=[\"'][^\"']*bootstrap[^\"']*(3\\.[^\"']*|/3/)[^\"']*[\"'][^>]*>}{<link href=\"$BOOTSTRAP_CSS\" rel=\"stylesheet\" integrity=\"\" crossorigin=\"anonymous\">}gim" -i "$file" || true
-    # Replace bootstrap JS references with Bootstrap 5 bundle
     perl -0777 -pe "s{<script\b[^>]*src=[\"'][^\"']*bootstrap[^\"']*(3\\.[^\"']*|/3/)[^\"']*[\"'][^>]*>\\s*</script>}{<script src=\"$BOOTSTRAP_JS\" integrity=\"\" crossorigin=\"anonymous\"></script>}gim" -i "$file" || true
 
-    # Add Font Awesome CSS if not present
     if ! grep -qF "$FONTAWESOME_CSS" "$file"; then
       if grep -qF "$BOOTSTRAP_CSS" "$file"; then
         perl -0777 -pe "s{(<link[^>]*href=[\"']$BOOTSTRAP_CSS[\"'][^>]*>)}{\$1\n<link rel=\"stylesheet\" href=\"$FONTAWESOME_CSS\">}s" -i "$file" || true
@@ -36,7 +33,6 @@ update_layout_links() {
       fi
     fi
 
-    # Remove jQuery script tags and insert a TODO comment
     if grep -qi "jquery" "$file"; then
       echo "Removing jQuery script tags from $file and inserting TODO comment"
       perl -0777 -pe "s{<script\b[^>]*src=[\"'][^\"']*jquery[^\"']*[\"'][^>]*>\\s*</script>\\s*}{}gi" -i "$file" || true
@@ -45,16 +41,14 @@ update_layout_links() {
   fi
 }
 
-# Update layout-like files found (common names)
+# Update common layout names
 find . -type f \( -iname "application.html.erb" -o -iname "index.html" -o -iname "*.html" -o -iname "*.erb" -o -iname "*.haml" -o -iname "*.slim" -o -iname "*.eex" -o -iname "*.tpl" -o -iname "default.html" \) | while read -r f; do
   update_layout_links "$f"
 done
 
 # Bulk class replacements (conservative)
 echo "Running class replacements (panels -> card, btn-default -> btn-secondary, etc.)"
-if [ -z "$TARGET_FILES" ]; then
-  echo "No target files found to update classes."
-else
+if [ -n "$TARGET_FILES" ]; then
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel\b/card/g'
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel-heading\b/card-header/g'
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel-body\b/card-body/g'
@@ -69,11 +63,10 @@ else
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bnavbar-toggle\b/navbar-toggler/g'
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\binput-group-addon\b/input-group-text/g'
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bcenter-block\b/mx-auto/g'
-  # col-xs-* -> col-*
   echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bcol-xs-([0-9]{1,2})\b/col-$1/g'
 fi
 
-# Add TODOs for visibility utility classes that don't have direct 1:1 mapping
+# TODO annotations for visibility utilities
 echo "$TARGET_FILES" | xargs -r grep -IHnE "visible-(xs|sm|md|lg)|hidden-(xs|sm|md|lg)" | cut -d: -f1 | sort -u | while read -r vf; do
   echo "<!-- TODO: Replace Bootstrap 3 visibility utility classes in $vf with Bootstrap 5 utilities (e.g., d-none, d-sm-block, etc.) -->" >> "$vf"
 done
@@ -98,28 +91,32 @@ glyphicon-arrow-left::fa fa-arrow-left
 glyphicon-arrow-right::fa fa-arrow-right
 "
 
-# Replace mapped glyphicons
-echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bglyphicon\s+glyphicon-([a-z0-9\-_]+)\b/glyphicon glyphicon-$1/g' 2>/dev/null || true
+# Replace known mappings
 for pair in $GLYPH_MAP; do
   key=$(echo "$pair" | cut -d: -f1)
   val=$(echo "$pair" | cut -d: -f3-)
-  # Replace occurrences of glyphicon-{name} with fa classes (best-effort)
   echo "$TARGET_FILES" | xargs -r perl -pi -e "s/\\b${key}\\b/${val}/g"
 done
 
-# Any remaining 'glyphicon' occurrences -> insert TODO placeholder
+# Any remaining 'glyphicon' occurrences -> fa-question placeholder + TODO
 echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bglyphicon\s+glyphicon-([a-z0-9\-\_]+)\b/<i class="fa fa-question" aria-hidden="true"><\/i><!-- TODO: Replace this glyphicon-$1 with an appropriate Font Awesome icon -->/gi'
 
-# Simple jQuery -> vanilla JS conversions (very conservative)
-echo "Converting some simple jQuery patterns to vanilla JS (best-effort). Files updated: .js .coffee .erb .html etc."
+# Simple jQuery -> vanilla JS conversions (conservative and safe)
+echo "Converting some simple jQuery patterns to vanilla JS (best-effort)."
 JSFILES=$(git ls-files | grep -E "\.(js|coffee|jsx|tsx|erb|html)$" || true)
 if [ -n "$JSFILES" ]; then
-  echo "$JSFILES" | xargs -r perl -0777 -pi -e "s/\$\(document\)\.ready\s*\(\s*function\s*\(\s*\)\s*\{(.*?)\}\s*\)\s*;/document.addEventListener('DOMContentLoaded', function() {\$1});/gims"
-  echo "$JSFILES" | xargs -r perl -0777 -pi -e "s/\$\(document\)\.ready\s*\(\s*function\s*\(([^)]*)\)\s*\{(.*?)\}\s*\)\s*;/document.addEventListener('DOMContentLoaded', function(event) {\$2});/gims"
-
-  # Add TODO markers for remaining jQuery $(
-  echo "$JSFILES" | xargs -r grep -IHn "\\$\\(" | cut -d: -f1 | sort -u | while read -r f; do
-    if [ -n "$f" ]; then
+  # Safer literal replacement for the most common form: $(document).ready(function() {
+  for f in $JSFILES; do
+    # Replace literal "$(document).ready(function() {" with "document.addEventListener('DOMContentLoaded', function() {"
+    if grep -q "\$\(document\)\.ready\s*(\s*function\s*(\s*)\s*{" "$f" 2>/dev/null || true; then
+      perl -pi -e 's/\$\(\s*document\s*\)\.ready\s*\(\s*function\s*\(\s*\)\s*\{/document.addEventListener('"'"'DOMContentLoaded'"'"', function() {/g' "$f" || true
+    fi
+    # For other $(document).ready(...) forms we don't attempt complex transformation; insert a TODO
+    if grep -q "\$\(document\)\.ready" "$f" 2>/dev/null || true; then
+      echo "// TODO: Review and port jQuery $(document).ready(...) usage to vanilla JS (DOMContentLoaded) in $f" >> "$f"
+    fi
+    # If file contains any remaining occurrences of "$(" add a general TODO at the end
+    if grep -q "\$\(" "$f" 2>/dev/null || true; then
       echo "// TODO: File contains remaining jQuery usage; manually port or review." >> "$f"
     fi
   done
