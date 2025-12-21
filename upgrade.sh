@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Wrapper that runs an embedded Python 3 processor to safely perform repo-wide edits.
+# Usage: bash ./scripts/upgrade-bootstrap-3-to-5.sh
 BRANCH="upgrade/bootstrap-3-to-5"
 COMMIT_MSG="chore: upgrade Bootstrap 3 → 5, add Font Awesome, remove jQuery (automated changes)"
-BOOTSTRAP_CSS="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-BOOTSTRAP_JS="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-FONTAWESOME_CSS="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css"
+BOOTSTRAP_VER="5.3.2"
+FONTAWESOME_VER="6.5.0"
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "python3 is required. Install Python 3 and re-run."
+  exit 1
+fi
 
 echo "Ensure your working tree is clean..."
 if [ -n "$(git status --porcelain)" ]; then
@@ -14,138 +20,172 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-# Find candidate files to modify
-TARGET_FILES=$(git ls-files | grep -E "\.(html|erb|haml|slim|eex|tpl|js|coffee|jsx|tsx|css|scss|less|rb|yml|yaml|xml|ts)$" || true)
+python3 - <<'PY'
+import re, sys, subprocess, os
 
-echo "Updating layout CDN links for Bootstrap 3 -> Bootstrap 5 and adding Font Awesome..."
-update_layout_links() {
-  local file="$1"
-  if grep -qE "bootstrap.*(bootstrap|maxcdn|netdna).*(3\\.|/3/)" "$file"; then
-    echo "Updating Bootstrap CDN references in $file"
-    perl -0777 -pe "s{<link\b[^>]*href=[\"'][^\"']*bootstrap[^\"']*(3\\.[^\"']*|/3/)[^\"']*[\"'][^>]*>}{<link href=\"$BOOTSTRAP_CSS\" rel=\"stylesheet\" integrity=\"\" crossorigin=\"anonymous\">}gim" -i "$file" || true
-    perl -0777 -pe "s{<script\b[^>]*src=[\"'][^\"']*bootstrap[^\"']*(3\\.[^\"']*|/3/)[^\"']*[\"'][^>]*>\\s*</script>}{<script src=\"$BOOTSTRAP_JS\" integrity=\"\" crossorigin=\"anonymous\"></script>}gim" -i "$file" || true
+BOOTSTRAP_CSS = f'https://cdn.jsdelivr.net/npm/bootstrap@' + os.environ.get('BOOTSTRAP_VER', '5.3.2') + '/dist/css/bootstrap.min.css'
+BOOTSTRAP_JS = f'https://cdn.jsdelivr.net/npm/bootstrap@' + os.environ.get('BOOTSTRAP_VER', '5.3.2') + '/dist/js/bootstrap.bundle.min.js'
+FONTAWESOME_CSS = f'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@' + os.environ.get('FONTAWESOME_VER', '6.5.0') + '/css/all.min.css'
 
-    if ! grep -qF "$FONTAWESOME_CSS" "$file"; then
-      if grep -qF "$BOOTSTRAP_CSS" "$file"; then
-        perl -0777 -pe "s{(<link[^>]*href=[\"']$BOOTSTRAP_CSS[\"'][^>]*>)}{\$1\n<link rel=\"stylesheet\" href=\"$FONTAWESOME_CSS\">}s" -i "$file" || true
-      else
-        perl -0777 -pe "s{</head>}{<link rel=\"stylesheet\" href=\"$FONTAWESOME_CSS\">\\n</head>}s" -i "$file" || true
-      fi
-    fi
+# Target file extensions
+exts = ('.html', '.erb', '.haml', '.slim', '.eex', '.tpl', '.js', '.coffee', '.jsx', '.tsx', '.css', '.scss', '.less', '.rb', '.yml', '.yaml', '.xml', '.ts')
 
-    if grep -qi "jquery" "$file"; then
-      echo "Removing jQuery script tags from $file and inserting TODO comment"
-      perl -0777 -pe "s{<script\b[^>]*src=[\"'][^\"']*jquery[^\"']*[\"'][^>]*>\\s*</script>\\s*}{}gi" -i "$file" || true
-      perl -0777 -pe "s{(</head>)}{<!-- TODO: jQuery removed from layout. If your app uses jQuery plugins, manually port them. -->\\n\\1}s" -i "$file" || true
-    fi
-  fi
+# Collect tracked files from git
+proc = subprocess.run(['git', 'ls-files'], stdout=subprocess.PIPE, check=True, text=True)
+all_files = [p for p in proc.stdout.splitlines() if p.endswith(exts)]
+print(f"Found {len(all_files)} candidate files to inspect.")
+
+# Prepare class replacements (pattern -> replacement)
+class_replacements = [
+    (r'\bpanel\b', 'card'),
+    (r'\bpanel-heading\b', 'card-header'),
+    (r'\bpanel-body\b', 'card-body'),
+    (r'\bpanel-footer\b', 'card-footer'),
+    (r'\bpanel-title\b', 'card-title'),
+    (r'\bwell\b', 'card'),
+    (r'\bbtn-default\b', 'btn-secondary'),
+    (r'\bbtn-xs\b', 'btn-sm'),
+    (r'\bimg-responsive\b', 'img-fluid'),
+    (r'\bpull-left\b', 'float-start'),
+    (r'\bpull-right\b', 'float-end'),
+    (r'\bnavbar-toggle\b', 'navbar-toggler'),
+    (r'\binput-group-addon\b', 'input-group-text'),
+    (r'\bcenter-block\b', 'mx-auto'),
+    (r'\bcol-xs-([0-9]{1,2})\b', r'col-\1'),
+]
+
+# Glyphicon -> FA mapping (best-effort)
+glyph_map = {
+    'glyphicon-search':'fa fa-search',
+    'glyphicon-chevron-right':'fa fa-chevron-right',
+    'glyphicon-chevron-left':'fa fa-chevron-left',
+    'glyphicon-pencil':'fa fa-pen',
+    'glyphicon-trash':'fa fa-trash',
+    'glyphicon-edit':'fa fa-edit',
+    'glyphicon-plus':'fa fa-plus',
+    'glyphicon-minus':'fa fa-minus',
+    'glyphicon-user':'fa fa-user',
+    'glyphicon-lock':'fa fa-lock',
+    'glyphicon-envelope':'fa fa-envelope',
+    'glyphicon-ok':'fa fa-check',
+    'glyphicon-remove':'fa fa-times',
+    'glyphicon-arrow-left':'fa fa-arrow-left',
+    'glyphicon-arrow-right':'fa fa-arrow-right',
 }
 
-# Update common layout names
-find . -type f \( -iname "application.html.erb" -o -iname "index.html" -o -iname "*.html" -o -iname "*.erb" -o -iname "*.haml" -o -iname "*.slim" -o -iname "*.eex" -o -iname "*.tpl" -o -iname "default.html" \) | while read -r f; do
-  update_layout_links "$f"
-done
+# Regex helpers
+re_bootstrap_css = re.compile(r'<link\b[^>]*href=(["\'])(?:(?:(?:(?:https?:)?\/\/)?[^"\']*bootstrap[^"\']*(?:/3/|/3\.)[^"\']*))\1[^>]*>', re.IGNORECASE|re.DOTALL)
+re_bootstrap_js = re.compile(r'<script\b[^>]*src=(["\'])(?:(?:(?:https?:)?\/\/)?[^"\']*bootstrap[^"\']*(?:/3/|/3\.)[^"\']*)\1[^>]*>.*?</script\s*>', re.IGNORECASE|re.DOTALL)
+re_jquery_script = re.compile(r'<script\b[^>]*src=(["\'])(?:(?:(?:https?:)?\/\/)?[^"\']*jquery[^"\']*)\1[^>]*>.*?</script\s*>', re.IGNORECASE|re.DOTALL)
+re_data_toggle = re.compile(r'(data-toggle|data-target)\s*=', re.IGNORECASE)
 
-# Bulk class replacements (conservative)
-echo "Running class replacements (panels -> card, btn-default -> btn-secondary, etc.)"
-if [ -n "$TARGET_FILES" ]; then
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel\b/card/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel-heading\b/card-header/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel-body\b/card-body/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel-footer\b/card-footer/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpanel-title\b/card-title/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bwell\b/card/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bbtn-default\b/btn-secondary/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bbtn-xs\b/btn-sm/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bimg-responsive\b/img-fluid/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpull-left\b/float-start/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bpull-right\b/float-end/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bnavbar-toggle\b/navbar-toggler/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\binput-group-addon\b/input-group-text/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bcenter-block\b/mx-auto/g'
-  echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bcol-xs-([0-9]{1,2})\b/col-$1/g'
-fi
+# Detect head tag for inserting Font Awesome
+re_head_close = re.compile(r'</head\s*>', re.IGNORECASE)
 
-# TODO annotations for visibility utilities
-echo "$TARGET_FILES" | xargs -r grep -IHnE "visible-(xs|sm|md|lg)|hidden-(xs|sm|md|lg)" | cut -d: -f1 | sort -u | while read -r vf; do
-  echo "<!-- TODO: Replace Bootstrap 3 visibility utility classes in $vf with Bootstrap 5 utilities (e.g., d-none, d-sm-block, etc.) -->" >> "$vf"
-done
+# jQuery ready pattern (common simple form)
+re_doc_ready = re.compile(r'\$\(\s*document\s*\)\.ready\s*\(\s*function\s*\(\s*\)\s*\{', re.IGNORECASE)
 
-# Glyphicon -> Font Awesome mapping (best-effort) without associative arrays
-echo "Replacing common glyphicons with Font Awesome (best-effort). Ambiguous icons get a TODO placeholder."
-GLYPH_MAP="
-glyphicon-search::fa fa-search
-glyphicon-chevron-right::fa fa-chevron-right
-glyphicon-chevron-left::fa fa-chevron-left
-glyphicon-pencil::fa fa-pen
-glyphicon-trash::fa fa-trash
-glyphicon-edit::fa fa-edit
-glyphicon-plus::fa fa-plus
-glyphicon-minus::fa fa-minus
-glyphicon-user::fa fa-user
-glyphicon-lock::fa fa-lock
-glyphicon-envelope::fa fa-envelope
-glyphicon-ok::fa fa-check
-glyphicon-remove::fa fa-times
-glyphicon-arrow-left::fa fa-arrow-left
-glyphicon-arrow-right::fa fa-arrow-right
-"
+changed_files = []
 
-# Replace known mappings
-for pair in $GLYPH_MAP; do
-  key=$(echo "$pair" | cut -d: -f1)
-  val=$(echo "$pair" | cut -d: -f3-)
-  echo "$TARGET_FILES" | xargs -r perl -pi -e "s/\\b${key}\\b/${val}/g"
-done
+for path in all_files:
+    try:
+        with open(path, 'r', encoding='utf-8') as fh:
+            text = fh.read()
+    except Exception:
+        # skip files we cannot read as utf-8
+        continue
 
-# Any remaining 'glyphicon' occurrences -> fa-question placeholder + TODO
-echo "$TARGET_FILES" | xargs -r perl -pi -e 's/\bglyphicon\s+glyphicon-([a-z0-9\-\_]+)\b/<i class="fa fa-question" aria-hidden="true"><\/i><!-- TODO: Replace this glyphicon-$1 with an appropriate Font Awesome icon -->/gi'
+    orig = text
+    modified = text
 
-# Simple jQuery -> vanilla JS conversions (conservative and safe)
-echo "Converting some simple jQuery patterns to vanilla JS (best-effort)."
-JSFILES=$(git ls-files | grep -E "\.(js|coffee|jsx|tsx|erb|html)$" || true)
-if [ -n "$JSFILES" ]; then
-  # Safer literal replacement for the most common form: $(document).ready(function() {
-  for f in $JSFILES; do
-    # Replace literal "$(document).ready(function() {" with "document.addEventListener('DOMContentLoaded', function() {"
-    if grep -q "\$\(document\)\.ready\s*(\s*function\s*(\s*)\s*{" "$f" 2>/dev/null || true; then
-      perl -pi -e 's/\$\(\s*document\s*\)\.ready\s*\(\s*function\s*\(\s*\)\s*\{/document.addEventListener('"'"'DOMContentLoaded'"'"', function() {/g' "$f" || true
-    fi
-    # For other $(document).ready(...) forms we don't attempt complex transformation; insert a TODO
-    if grep -q "\$\(document\)\.ready" "$f" 2>/dev/null || true; then
-      echo "// TODO: Review and port jQuery $(document).ready(...) usage to vanilla JS (DOMContentLoaded) in $f" >> "$f"
-    fi
-    # If file contains any remaining occurrences of "$(" add a general TODO at the end
-    if grep -q "\$\(" "$f" 2>/dev/null || true; then
-      echo "// TODO: File contains remaining jQuery usage; manually port or review." >> "$f"
-    fi
-  done
-fi
+    # Replace bootstrap 3 CDN links/scripts with bootstrap 5 links
+    if re_bootstrap_css.search(modified) or re_bootstrap_js.search(modified):
+        modified = re_bootstrap_css.sub(f'<link href="{BOOTSTRAP_CSS}" rel="stylesheet" integrity="" crossorigin="anonymous">', modified)
+        modified = re_bootstrap_js.sub(f'<script src="{BOOTSTRAP_JS}" integrity="" crossorigin="anonymous"></script>', modified)
 
-# Add TODOs for data-toggle/data-target attributes (Bootstrap 5 changed some APIs)
-echo "$TARGET_FILES" | xargs -r perl -0777 -pi -e 's|(<[^>]+(?:data-toggle|data-target)=[^>]+>)|<!-- TODO: Verify data-toggle/data-target usage for Bootstrap 5 (API changed). -->\n\1|gim'
+    # Add Font Awesome if head present and FA not already present
+    if re.search(r'fontawesome|font-awesome|fortawesome', modified, re.IGNORECASE) is None:
+        if re_head_close.search(modified):
+            modified = re_head_close.sub(f'<link href="{FONTAWESOME_CSS}" rel="stylesheet" integrity="" crossorigin="anonymous">\\n</head>', modified, count=1)
 
-# Ensure package.json not accidentally modified
-if git status --porcelain | grep -q "package.json"; then
-  echo "Reverting accidental changes to package.json..."
-  git checkout -- package.json
-fi
+    # Remove jQuery CDN script tags
+    if re_jquery_script.search(modified):
+        modified = re_jquery_script.sub('', modified)
+        # add TODO near head end if head exists
+        if re_head_close.search(modified):
+            modified = re_head_close.sub('<!-- TODO: jQuery CDN removed. If your app uses jQuery plugins, manually port them. -->\\n</head>', modified, count=1)
 
-echo "Staging changes..."
-git add -A
+    # Class replacements
+    for patt, repl in class_replacements:
+        try:
+            modified = re.sub(patt, repl, modified, flags=re.IGNORECASE)
+        except re.error:
+            # skip bad patterns
+            pass
 
-if git diff --cached --quiet; then
-  echo "No changes detected after automated pass."
-else
-  git commit -m "$COMMIT_MSG"
-  echo "Committed automated changes to $BRANCH."
-fi
+    # Glyphicon mapping: replace 'glyphicon glyphicon-xxx' first
+    # replace combined class token forms
+    modified = re.sub(r'\bglyphicon\s+glyphicon-([a-z0-9\-_]+)\b', lambda m: glyph_map.get('glyphicon-'+m.group(1), f'fa fa-{m.group(1)}') , modified, flags=re.IGNORECASE)
 
-echo "Done. Review changes: git diff origin/main..$BRANCH"
-echo "When you're ready: git push -u origin $BRANCH"
-echo "High-priority manual checks:"
-echo " - Navbar structure and toggler behavior"
-echo " - Modals, tooltips, popovers (new bootstrap JS API)"
-echo " - Input groups and forms (input-group-text, sizing)"
-echo " - Glyphicons replaced with Font Awesome placeholders (fa-question) — update as needed"
-echo " - Remaining jQuery usages marked with TODO comments"
+    # Replace standalone glyphicon-name occurrences (best-effort)
+    for gk, gv in glyph_map.items():
+        modified = re.sub(r'\b' + re.escape(gk) + r'\b', gv, modified, flags=re.IGNORECASE)
+
+    # Any remaining 'glyphicon' tokens -> placeholder with TODO
+    if re.search(r'\bglyphicon\b', modified, re.IGNORECASE):
+        modified = re.sub(r'\bglyphicon\b\s*(?:glyphicon-([a-z0-9\-_]+))?', '<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->', modified, flags=re.IGNORECASE)
+
+    # Convert common $(document).ready(function() { -> document.addEventListener("DOMContentLoaded", function() {
+    if re_doc_ready.search(modified):
+        modified = re_doc_ready.sub('document.addEventListener("DOMContentLoaded", function() {', modified)
+
+    # If data-toggle/data-target attributes are present, insert TODO comment immediately before element
+    if re_data_toggle.search(modified):
+        modified = re.sub(r'(<[^>]*\b(?:data-toggle|data-target)\s*=[^>]*>)', r'<!-- TODO: Verify data-toggle/data-target usage for Bootstrap 5 (API changed). -->\n\1', modified, flags=re.IGNORECASE)
+
+    # For remaining jQuery $(... occurrences, append a TODO at EOF (do not aggressively transform)
+    if re.search(r'\$\s*\(', modified):
+        # avoid duplicating TODOs
+        if '<!-- TODO: Remaining jQuery usages' not in modified:
+            modified = modified + '\n\n<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->\n'
+
+    # If modified, write back
+    if modified != orig:
+        try:
+            with open(path, 'w', encoding='utf-8') as fh:
+                fh.write(modified)
+            changed_files.append(path)
+            print(f"Updated: {path}")
+        except Exception as e:
+            print(f"Failed to write {path}: {e}", file=sys.stderr)
+
+# Stage and commit if any changes
+if changed_files:
+    subprocess.run(['git', 'add', '-A'], check=True)
+    # If nothing to commit, skip
+    commit_proc = subprocess.run(['git', 'diff', '--cached', '--quiet'])
+    if commit_proc.returncode == 1:
+        subprocess.run(['git', 'commit', '-m', os.environ.get('COMMIT_MSG', "automated changes (bootstrap upgrade)")], check=True)
+        print(f"Committed {len(changed_files)} files.")
+    else:
+        print("No staged changes to commit.")
+else:
+    print("No files changed by automated pass.")
+PY
+
+# Note: the embedded Python used environment variables for versions if you want to override.
+# Provide the environment variables to override if desired:
+# BOOTSTRAP_VER and FONTAWESOME_VER (but defaults are set inside the Python block above).
+
+echo "Automated pass complete. Review changes:"
+git --no-pager diff --name-only origin/main..HEAD || true
+echo
+echo "If changes look good, push the branch:"
+echo "  git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+echo
+echo "Manual follow-ups (high priority):"
+echo " - Verify navbar collapse behavior and toggler markup"
+echo " - Verify modals, tooltips, popovers (Bootstrap 5 changed JS API)"
+echo " - Verify forms and input-group layout (input-group-text)"
+echo " - Replace any fa-question placeholders with proper Font Awesome icons"
+echo " - Manually port any remaining jQuery usage (TODOs left in files)"
