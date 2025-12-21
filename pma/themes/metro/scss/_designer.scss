@@ -314,7 +314,7 @@ a {
   }
 }
 
-.card {
+.panel {
   position: fixed;
   top: 90px;
   right: 0;
@@ -434,7 +434,7 @@ a {
   }
 }
 
-#name-card {
+#name-panel {
   border-bottom: 1px solid #ccc;
   text-align: center;
   background: #efefef;
@@ -446,7 +446,7 @@ a {
   margin-right: -20px;
 }
 
-.content_fullscreen #name-card {
+.content_fullscreen #name-panel {
   margin-top: 0;
   margin-left: 0;
   margin-right: 0;

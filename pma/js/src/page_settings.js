@@ -69,6 +69,3 @@ AJAX.registerOnload('page_settings.js', function () {
     }
     $('#pma_navigation_settings_icon').on('click', showNaviSettings);
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

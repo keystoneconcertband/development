@@ -41,8 +41,8 @@
  * the excanvas script for IE support in your web page:
  * 
  * > <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
- * > 
- * > 
+ * > <script language="javascript" type="text/javascript" src="jquery-1.4.4.min.js"></script>
+ * > <script language="javascript" type="text/javascript" src="jquery.jqplot.min.js"></script>
  * > <link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />
  * 
  * jqPlot can be customized by overriding the defaults of any of the objects which make
@@ -655,7 +655,7 @@
         this.scaleToHiddenSeries = false;
         // minimum and maximum values on the axis.
         this._dataBounds = {min:null, max:null};
-        // statistics (min, max, mean) as card as actual data intervals for each series attached to axis.
+        // statistics (min, max, mean) as well as actual data intervals for each series attached to axis.
         // holds collection of {intervals:[], min:, max:, mean: } objects for each series on axis.
         this._intervalStats = [];
         // pixel position from the top left of the min value and max value on the axis.
@@ -1272,7 +1272,7 @@
         // Use this to adjust alpha separate from fill color.
         this.fillAlpha;
         // prop: fillAndStroke
-        // If true will stroke the line (with color this.color) as card as fill under it.
+        // If true will stroke the line (with color this.color) as well as fill under it.
         // Applies only when fill is true.
         this.fillAndStroke = false;
         // prop: disableStack
@@ -1403,7 +1403,7 @@
         var j, data, gridData;
         
         // hooks get called even if series not shown
-        // we don't clear canvas here, it would wipe out all other series as card.
+        // we don't clear canvas here, it would wipe out all other series as well.
         for (j=0; j<$.jqplot.preDrawSeriesHooks.length; j++) {
             $.jqplot.preDrawSeriesHooks[j].call(this, sctx, options);
         }
@@ -1445,7 +1445,7 @@
         var j, data, gridData;
         
         // hooks get called even if series not shown
-        // we don't clear canvas here, it would wipe out all other series as card.
+        // we don't clear canvas here, it would wipe out all other series as well.
         for (j=0; j<$.jqplot.preDrawSeriesShadowHooks.length; j++) {
             $.jqplot.preDrawSeriesShadowHooks[j].call(this, sctx, options);
         }
@@ -1883,7 +1883,7 @@
         this.seriesColors = $.jqplot.config.defaultColors;
         // prop: sortData
         // false to not sort the data passed in by the user.
-        // Many bar, stacked and other graphs as card as many plugins depend on
+        // Many bar, stacked and other graphs as well as many plugins depend on
         // having sorted data.
         this.sortData = true;
         // prop: stackSeries
@@ -5767,7 +5767,7 @@
                         var isnegative = false;
                         var posfs = opts.fillStyle;
                     
-                        // if stoking line as card as filling, get a copy of line data.
+                        // if stoking line as well as filling, get a copy of line data.
                         if (fillAndStroke) {
                             var fasgd = gd.slice(0);
                         }
@@ -5857,7 +5857,7 @@
                     // Not filled to zero
                     ////////////////////////
                     else {                    
-                        // if stoking line as card as filling, get a copy of line data.
+                        // if stoking line as well as filling, get a copy of line data.
                         if (fillAndStroke) {
                             var fasgd = gd.slice(0);
                         }
@@ -10669,7 +10669,7 @@
         /////////
         // Need to check for '15-Dec-09' also.
         // FF will not parse, but Chrome will.
-        // Chrome will set date to 2009 as card.
+        // Chrome will set date to 2009 as well.
         /////////
         
         // first check for 'dd-mmm-yyyy' or 'dd/mmm/yyyy' like '15-Dec-2010'
@@ -11517,6 +11517,3 @@
     };
 
 })(jQuery);
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

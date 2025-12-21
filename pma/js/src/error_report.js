@@ -302,6 +302,3 @@ AJAX.registerOnload('error_report.js', function () {
     TraceKit.report.subscribe(ErrorReport.errorHandler);
     ErrorReport.setUpErrorReporting();
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

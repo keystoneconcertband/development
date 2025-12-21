@@ -90,5 +90,3 @@ AJAX.registerOnload('keyhandler.js', function () {
     onKeyDownArrowsHandler(event.originalEvent);
   });
 });
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

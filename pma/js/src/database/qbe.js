@@ -84,6 +84,3 @@ AJAX.registerOnload('database/qbe.js', function () {
     var windowwidth = $(window).width();
     $('.jsresponsive').css('max-width', (windowwidth - 35) + 'px');
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

@@ -2388,7 +2388,7 @@ AJAX.registerOnload('functions.js', function () {
           if (typeof data !== 'undefined' && data.success === true) {
             $('#properties_message').removeClass('alert-danger').html('');
             Functions.ajaxShowMessage(data.message);
-            // Only if the create table dialog (distinct card) exists
+            // Only if the create table dialog (distinct panel) exists
             var $createTableDialog = $('#create_table_dialog');
             if ($createTableDialog.length > 0) {
               $createTableDialog.dialog('close').remove();
@@ -4365,5 +4365,3 @@ Functions.getPostData = function () {
   return dataPost;
 };
 jQuery.fn.getPostData = Functions.getPostData;
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

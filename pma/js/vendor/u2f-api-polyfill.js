@@ -6,7 +6,7 @@
 
 // NOTE FROM MAINTAINER: This file is copied from google/u2f-ref-code with as
 // few alterations as possible. Any changes that were necessary are annotated
-// with "NECESSARY CHANGE". These changes, as card as this note, should be
+// with "NECESSARY CHANGE". These changes, as well as this note, should be
 // preserved when updating this file from the source.
 
 /**

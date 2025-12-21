@@ -576,6 +576,3 @@ AJAX.registerOnload('database/events.js', function () {
         $(this).closest('table').find('tr.recurring_event_row, tr.onetime_event_row').toggle();
     });
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

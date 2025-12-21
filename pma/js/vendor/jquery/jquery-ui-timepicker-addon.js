@@ -192,7 +192,7 @@
 					}
 				},
 				onChangeMonthYear: function (year, month, dp_inst) {
-					// Update the time as card : this prevents the time from disappearing from the $input field.
+					// Update the time as well : this prevents the time from disappearing from the $input field.
 					// tp_inst._updateDateTime(dp_inst);
 					if ($.isFunction(tp_inst._defaults.evnts.onChangeMonthYear)) {
 						tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
@@ -2289,6 +2289,3 @@
 	$.timepicker.version = "1.6.3";
 
 }));
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

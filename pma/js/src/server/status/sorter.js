@@ -37,7 +37,7 @@ $(function () {
             case '%':
                 factor = -2;
                 break;
-            // Todo: Complete this list (as card as in the regexp a few lines up)
+            // Todo: Complete this list (as well as in the regexp a few lines up)
             case 'k':
                 factor = 3;
                 break;
@@ -69,6 +69,3 @@ $(function () {
         type: 'numeric'
     });
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

@@ -1,6 +1,6 @@
 $minus-img: '../img/designer/minus.png';
 $plus-img: '../img/designer/plus.png';
-$top-card-img: '../img/designer/top_panel.png';
+$top-panel-img: '../img/designer/top_panel.png';
 $small-tab-img: '../img/designer/small_tab.png';
 $frams1-img: '../img/designer/1.png';
 $frams2-img: '../img/designer/2.png';
@@ -284,7 +284,7 @@ canvas.designer {
   font-weight: bold;
   margin: 0;
   padding: 0;
-  background-image: url($top-card-img);
+  background-image: url($top-panel-img);
   background-position: top;
   background-repeat: repeat-x;
   border-right: #999 solid 1px;
@@ -376,7 +376,7 @@ a {
   }
 }
 
-.card {
+.panel {
   position: fixed;
   top: 60px;
   right: 0;
@@ -479,7 +479,7 @@ a {
   }
 }
 
-#name-card {
+#name-panel {
   border-bottom: 1px solid grey;
   text-align: center;
   background: #efefef;

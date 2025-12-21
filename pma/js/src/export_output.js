@@ -11,6 +11,3 @@ AJAX.registerOnload('export_output.js', function () {
         $('#export_refresh_form').trigger('submit');
     });
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

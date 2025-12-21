@@ -30,6 +30,3 @@ AJAX.registerOnload('keyhandler.js', function () {
 AJAX.registerTeardown('keyhandler.js', function () {
     $(document).off('click', 'th.draggable.column_heading.pointer.marker a');
 });
-
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

@@ -146,7 +146,7 @@ function openGISEditor() {
 }
 
 /**
- * Prepare and insert the GIS data in card Known Text format
+ * Prepare and insert the GIS data in Well Known Text format
  * to the input field.
  */
 function insertDataAndClose() {
@@ -331,5 +331,3 @@ AJAX.registerOnload('gis_data_editor.js', function () {
     $noOfGeomsInput.val(noOfGeoms + 1);
   });
 });
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

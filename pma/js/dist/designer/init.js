@@ -24,7 +24,7 @@ AJAX.registerTeardown('designer/init.js', function () {
 });
 AJAX.registerOnload('designer/init.js', function () {
   $('.trigger').on('click', function () {
-    $('.card').toggle('fast');
+    $('.panel').toggle('fast');
     $(this).toggleClass('active');
     $('#ab').accordion('refresh');
     return false;
@@ -61,5 +61,3 @@ AJAX.registerOnload('designer/init.js', function () {
     $('#query_where').css('display', 'none');
   });
 });
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

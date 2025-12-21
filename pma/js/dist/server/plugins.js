@@ -14,5 +14,3 @@ AJAX.registerOnload('server/plugins.js', function () {
   });
   $tables.find('thead th').append('<div class="sorticon"></div>');
 });
-
-<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->
