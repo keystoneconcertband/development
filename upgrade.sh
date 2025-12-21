@@ -14,11 +14,6 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-echo "Creating branch $BRANCH from main..."
-git checkout main
-git pull --ff-only
-git checkout -b "$BRANCH"
-
 # Find candidate files to modify
 TARGET_FILES=$(git ls-files | grep -E "\.(html|erb|haml|slim|eex|tpl|js|coffee|jsx|tsx|css|scss|less|rb|yml|yaml|xml|ts)$" || true)
 
