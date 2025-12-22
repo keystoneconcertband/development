@@ -268,7 +268,7 @@ th {
   src: url("../fonts/glyphicons-halflings-regular.eot");
   src: url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->{
+.glyphicon {
   position: relative;
   top: 1px;
   display: inline-block;
@@ -279,791 +279,791 @@ th {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-asterisk:before {
+.glyphicon-asterisk:before {
   content: "\002a";
 }
-.fa fa-plus:before {
+.glyphicon-plus:before {
   content: "\002b";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-euro:before,
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-eur:before {
+.glyphicon-euro:before,
+.glyphicon-eur:before {
   content: "\20ac";
 }
-.fa fa-minus:before {
+.glyphicon-minus:before {
   content: "\2212";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-cloud:before {
+.glyphicon-cloud:before {
   content: "\2601";
 }
-.fa fa-envelope:before {
+.glyphicon-envelope:before {
   content: "\2709";
 }
-.fa fa-pen:before {
+.glyphicon-pencil:before {
   content: "\270f";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-glass:before {
+.glyphicon-glass:before {
   content: "\e001";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-music:before {
+.glyphicon-music:before {
   content: "\e002";
 }
-.fa fa-search:before {
+.glyphicon-search:before {
   content: "\e003";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-heart:before {
+.glyphicon-heart:before {
   content: "\e005";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-star:before {
+.glyphicon-star:before {
   content: "\e006";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-star-empty:before {
+.glyphicon-star-empty:before {
   content: "\e007";
 }
-.fa fa-user:before {
+.glyphicon-user:before {
   content: "\e008";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-film:before {
+.glyphicon-film:before {
   content: "\e009";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-th-large:before {
+.glyphicon-th-large:before {
   content: "\e010";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-th:before {
+.glyphicon-th:before {
   content: "\e011";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-th-list:before {
+.glyphicon-th-list:before {
   content: "\e012";
 }
-.fa fa-check:before {
+.glyphicon-ok:before {
   content: "\e013";
 }
-.fa fa-times:before {
+.glyphicon-remove:before {
   content: "\e014";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-zoom-in:before {
+.glyphicon-zoom-in:before {
   content: "\e015";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-zoom-out:before {
+.glyphicon-zoom-out:before {
   content: "\e016";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-off:before {
+.glyphicon-off:before {
   content: "\e017";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-signal:before {
+.glyphicon-signal:before {
   content: "\e018";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-cog:before {
+.glyphicon-cog:before {
   content: "\e019";
 }
-.fa fa-trash:before {
+.glyphicon-trash:before {
   content: "\e020";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-home:before {
+.glyphicon-home:before {
   content: "\e021";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-file:before {
+.glyphicon-file:before {
   content: "\e022";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-time:before {
+.glyphicon-time:before {
   content: "\e023";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-road:before {
+.glyphicon-road:before {
   content: "\e024";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-download-alt:before {
+.glyphicon-download-alt:before {
   content: "\e025";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-download:before {
+.glyphicon-download:before {
   content: "\e026";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-upload:before {
+.glyphicon-upload:before {
   content: "\e027";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-inbox:before {
+.glyphicon-inbox:before {
   content: "\e028";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-play-circle:before {
+.glyphicon-play-circle:before {
   content: "\e029";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-repeat:before {
+.glyphicon-repeat:before {
   content: "\e030";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-refresh:before {
+.glyphicon-refresh:before {
   content: "\e031";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-list-alt:before {
+.glyphicon-list-alt:before {
   content: "\e032";
 }
-.fa fa-lock:before {
+.glyphicon-lock:before {
   content: "\e033";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-flag:before {
+.glyphicon-flag:before {
   content: "\e034";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-headphones:before {
+.glyphicon-headphones:before {
   content: "\e035";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-volume-off:before {
+.glyphicon-volume-off:before {
   content: "\e036";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-volume-down:before {
+.glyphicon-volume-down:before {
   content: "\e037";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-volume-up:before {
+.glyphicon-volume-up:before {
   content: "\e038";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-qrcode:before {
+.glyphicon-qrcode:before {
   content: "\e039";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-barcode:before {
+.glyphicon-barcode:before {
   content: "\e040";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tag:before {
+.glyphicon-tag:before {
   content: "\e041";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tags:before {
+.glyphicon-tags:before {
   content: "\e042";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-book:before {
+.glyphicon-book:before {
   content: "\e043";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bookmark:before {
+.glyphicon-bookmark:before {
   content: "\e044";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-print:before {
+.glyphicon-print:before {
   content: "\e045";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-camera:before {
+.glyphicon-camera:before {
   content: "\e046";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-font:before {
+.glyphicon-font:before {
   content: "\e047";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bold:before {
+.glyphicon-bold:before {
   content: "\e048";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-italic:before {
+.glyphicon-italic:before {
   content: "\e049";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-text-height:before {
+.glyphicon-text-height:before {
   content: "\e050";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-text-width:before {
+.glyphicon-text-width:before {
   content: "\e051";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-align-left:before {
+.glyphicon-align-left:before {
   content: "\e052";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-align-center:before {
+.glyphicon-align-center:before {
   content: "\e053";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-align-right:before {
+.glyphicon-align-right:before {
   content: "\e054";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-align-justify:before {
+.glyphicon-align-justify:before {
   content: "\e055";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-list:before {
+.glyphicon-list:before {
   content: "\e056";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-indent-left:before {
+.glyphicon-indent-left:before {
   content: "\e057";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-indent-right:before {
+.glyphicon-indent-right:before {
   content: "\e058";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-facetime-video:before {
+.glyphicon-facetime-video:before {
   content: "\e059";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-picture:before {
+.glyphicon-picture:before {
   content: "\e060";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-map-marker:before {
+.glyphicon-map-marker:before {
   content: "\e062";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-adjust:before {
+.glyphicon-adjust:before {
   content: "\e063";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tint:before {
+.glyphicon-tint:before {
   content: "\e064";
 }
-.fa fa-edit:before {
+.glyphicon-edit:before {
   content: "\e065";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-share:before {
+.glyphicon-share:before {
   content: "\e066";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-check:before {
+.glyphicon-check:before {
   content: "\e067";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-move:before {
+.glyphicon-move:before {
   content: "\e068";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-step-backward:before {
+.glyphicon-step-backward:before {
   content: "\e069";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-fast-backward:before {
+.glyphicon-fast-backward:before {
   content: "\e070";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-backward:before {
+.glyphicon-backward:before {
   content: "\e071";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-play:before {
+.glyphicon-play:before {
   content: "\e072";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-pause:before {
+.glyphicon-pause:before {
   content: "\e073";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-stop:before {
+.glyphicon-stop:before {
   content: "\e074";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-forward:before {
+.glyphicon-forward:before {
   content: "\e075";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-fast-forward:before {
+.glyphicon-fast-forward:before {
   content: "\e076";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-step-forward:before {
+.glyphicon-step-forward:before {
   content: "\e077";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-eject:before {
+.glyphicon-eject:before {
   content: "\e078";
 }
-.fa fa-chevron-left:before {
+.glyphicon-chevron-left:before {
   content: "\e079";
 }
-.fa fa-chevron-right:before {
+.glyphicon-chevron-right:before {
   content: "\e080";
 }
-.fa fa-plus-sign:before {
+.glyphicon-plus-sign:before {
   content: "\e081";
 }
-.fa fa-minus-sign:before {
+.glyphicon-minus-sign:before {
   content: "\e082";
 }
-.fa fa-times-sign:before {
+.glyphicon-remove-sign:before {
   content: "\e083";
 }
-.fa fa-check-sign:before {
+.glyphicon-ok-sign:before {
   content: "\e084";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-question-sign:before {
+.glyphicon-question-sign:before {
   content: "\e085";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-info-sign:before {
+.glyphicon-info-sign:before {
   content: "\e086";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-screenshot:before {
+.glyphicon-screenshot:before {
   content: "\e087";
 }
-.fa fa-times-circle:before {
+.glyphicon-remove-circle:before {
   content: "\e088";
 }
-.fa fa-check-circle:before {
+.glyphicon-ok-circle:before {
   content: "\e089";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-ban-circle:before {
+.glyphicon-ban-circle:before {
   content: "\e090";
 }
-.fa fa-arrow-left:before {
+.glyphicon-arrow-left:before {
   content: "\e091";
 }
-.fa fa-arrow-right:before {
+.glyphicon-arrow-right:before {
   content: "\e092";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-arrow-up:before {
+.glyphicon-arrow-up:before {
   content: "\e093";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-arrow-down:before {
+.glyphicon-arrow-down:before {
   content: "\e094";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-share-alt:before {
+.glyphicon-share-alt:before {
   content: "\e095";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-resize-full:before {
+.glyphicon-resize-full:before {
   content: "\e096";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-resize-small:before {
+.glyphicon-resize-small:before {
   content: "\e097";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-exclamation-sign:before {
+.glyphicon-exclamation-sign:before {
   content: "\e101";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-gift:before {
+.glyphicon-gift:before {
   content: "\e102";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-leaf:before {
+.glyphicon-leaf:before {
   content: "\e103";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-fire:before {
+.glyphicon-fire:before {
   content: "\e104";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-eye-open:before {
+.glyphicon-eye-open:before {
   content: "\e105";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-eye-close:before {
+.glyphicon-eye-close:before {
   content: "\e106";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-warning-sign:before {
+.glyphicon-warning-sign:before {
   content: "\e107";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-plane:before {
+.glyphicon-plane:before {
   content: "\e108";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-calendar:before {
+.glyphicon-calendar:before {
   content: "\e109";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-random:before {
+.glyphicon-random:before {
   content: "\e110";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-comment:before {
+.glyphicon-comment:before {
   content: "\e111";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-magnet:before {
+.glyphicon-magnet:before {
   content: "\e112";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-chevron-up:before {
+.glyphicon-chevron-up:before {
   content: "\e113";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-chevron-down:before {
+.glyphicon-chevron-down:before {
   content: "\e114";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-retweet:before {
+.glyphicon-retweet:before {
   content: "\e115";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-shopping-cart:before {
+.glyphicon-shopping-cart:before {
   content: "\e116";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-folder-close:before {
+.glyphicon-folder-close:before {
   content: "\e117";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-folder-open:before {
+.glyphicon-folder-open:before {
   content: "\e118";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-resize-vertical:before {
+.glyphicon-resize-vertical:before {
   content: "\e119";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-resize-horizontal:before {
+.glyphicon-resize-horizontal:before {
   content: "\e120";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hdd:before {
+.glyphicon-hdd:before {
   content: "\e121";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bullhorn:before {
+.glyphicon-bullhorn:before {
   content: "\e122";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bell:before {
+.glyphicon-bell:before {
   content: "\e123";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-certificate:before {
+.glyphicon-certificate:before {
   content: "\e124";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-thumbs-up:before {
+.glyphicon-thumbs-up:before {
   content: "\e125";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-thumbs-down:before {
+.glyphicon-thumbs-down:before {
   content: "\e126";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hand-right:before {
+.glyphicon-hand-right:before {
   content: "\e127";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hand-left:before {
+.glyphicon-hand-left:before {
   content: "\e128";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hand-up:before {
+.glyphicon-hand-up:before {
   content: "\e129";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hand-down:before {
+.glyphicon-hand-down:before {
   content: "\e130";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-circle-arrow-right:before {
+.glyphicon-circle-arrow-right:before {
   content: "\e131";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-circle-arrow-left:before {
+.glyphicon-circle-arrow-left:before {
   content: "\e132";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-circle-arrow-up:before {
+.glyphicon-circle-arrow-up:before {
   content: "\e133";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-circle-arrow-down:before {
+.glyphicon-circle-arrow-down:before {
   content: "\e134";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-globe:before {
+.glyphicon-globe:before {
   content: "\e135";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-wrench:before {
+.glyphicon-wrench:before {
   content: "\e136";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tasks:before {
+.glyphicon-tasks:before {
   content: "\e137";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-filter:before {
+.glyphicon-filter:before {
   content: "\e138";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-briefcase:before {
+.glyphicon-briefcase:before {
   content: "\e139";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-fullscreen:before {
+.glyphicon-fullscreen:before {
   content: "\e140";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-dashboard:before {
+.glyphicon-dashboard:before {
   content: "\e141";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-paperclip:before {
+.glyphicon-paperclip:before {
   content: "\e142";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-heart-empty:before {
+.glyphicon-heart-empty:before {
   content: "\e143";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-link:before {
+.glyphicon-link:before {
   content: "\e144";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-phone:before {
+.glyphicon-phone:before {
   content: "\e145";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-pushpin:before {
+.glyphicon-pushpin:before {
   content: "\e146";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-usd:before {
+.glyphicon-usd:before {
   content: "\e148";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-gbp:before {
+.glyphicon-gbp:before {
   content: "\e149";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort:before {
+.glyphicon-sort:before {
   content: "\e150";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort-by-alphabet:before {
+.glyphicon-sort-by-alphabet:before {
   content: "\e151";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort-by-alphabet-alt:before {
+.glyphicon-sort-by-alphabet-alt:before {
   content: "\e152";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort-by-order:before {
+.glyphicon-sort-by-order:before {
   content: "\e153";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort-by-order-alt:before {
+.glyphicon-sort-by-order-alt:before {
   content: "\e154";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort-by-attributes:before {
+.glyphicon-sort-by-attributes:before {
   content: "\e155";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sort-by-attributes-alt:before {
+.glyphicon-sort-by-attributes-alt:before {
   content: "\e156";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-unchecked:before {
+.glyphicon-unchecked:before {
   content: "\e157";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-expand:before {
+.glyphicon-expand:before {
   content: "\e158";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-collapse-down:before {
+.glyphicon-collapse-down:before {
   content: "\e159";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-collapse-up:before {
+.glyphicon-collapse-up:before {
   content: "\e160";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-log-in:before {
+.glyphicon-log-in:before {
   content: "\e161";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-flash:before {
+.glyphicon-flash:before {
   content: "\e162";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-log-out:before {
+.glyphicon-log-out:before {
   content: "\e163";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-new-window:before {
+.glyphicon-new-window:before {
   content: "\e164";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-record:before {
+.glyphicon-record:before {
   content: "\e165";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-save:before {
+.glyphicon-save:before {
   content: "\e166";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-open:before {
+.glyphicon-open:before {
   content: "\e167";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-saved:before {
+.glyphicon-saved:before {
   content: "\e168";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-import:before {
+.glyphicon-import:before {
   content: "\e169";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-export:before {
+.glyphicon-export:before {
   content: "\e170";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-send:before {
+.glyphicon-send:before {
   content: "\e171";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-floppy-disk:before {
+.glyphicon-floppy-disk:before {
   content: "\e172";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-floppy-saved:before {
+.glyphicon-floppy-saved:before {
   content: "\e173";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-floppy-remove:before {
+.glyphicon-floppy-remove:before {
   content: "\e174";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-floppy-save:before {
+.glyphicon-floppy-save:before {
   content: "\e175";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-floppy-open:before {
+.glyphicon-floppy-open:before {
   content: "\e176";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-credit-card:before {
+.glyphicon-credit-card:before {
   content: "\e177";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-transfer:before {
+.glyphicon-transfer:before {
   content: "\e178";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-cutlery:before {
+.glyphicon-cutlery:before {
   content: "\e179";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-header:before {
+.glyphicon-header:before {
   content: "\e180";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-compressed:before {
+.glyphicon-compressed:before {
   content: "\e181";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-earphone:before {
+.glyphicon-earphone:before {
   content: "\e182";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-phone-alt:before {
+.glyphicon-phone-alt:before {
   content: "\e183";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tower:before {
+.glyphicon-tower:before {
   content: "\e184";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-stats:before {
+.glyphicon-stats:before {
   content: "\e185";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sd-video:before {
+.glyphicon-sd-video:before {
   content: "\e186";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hd-video:before {
+.glyphicon-hd-video:before {
   content: "\e187";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-subtitles:before {
+.glyphicon-subtitles:before {
   content: "\e188";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sound-stereo:before {
+.glyphicon-sound-stereo:before {
   content: "\e189";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sound-dolby:before {
+.glyphicon-sound-dolby:before {
   content: "\e190";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sound-5-1:before {
+.glyphicon-sound-5-1:before {
   content: "\e191";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sound-6-1:before {
+.glyphicon-sound-6-1:before {
   content: "\e192";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sound-7-1:before {
+.glyphicon-sound-7-1:before {
   content: "\e193";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-copyright-mark:before {
+.glyphicon-copyright-mark:before {
   content: "\e194";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-registration-mark:before {
+.glyphicon-registration-mark:before {
   content: "\e195";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-cloud-download:before {
+.glyphicon-cloud-download:before {
   content: "\e197";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-cloud-upload:before {
+.glyphicon-cloud-upload:before {
   content: "\e198";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tree-conifer:before {
+.glyphicon-tree-conifer:before {
   content: "\e199";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tree-deciduous:before {
+.glyphicon-tree-deciduous:before {
   content: "\e200";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-cd:before {
+.glyphicon-cd:before {
   content: "\e201";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-save-file:before {
+.glyphicon-save-file:before {
   content: "\e202";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-open-file:before {
+.glyphicon-open-file:before {
   content: "\e203";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-level-up:before {
+.glyphicon-level-up:before {
   content: "\e204";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-copy:before {
+.glyphicon-copy:before {
   content: "\e205";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-paste:before {
+.glyphicon-paste:before {
   content: "\e206";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-alert:before {
+.glyphicon-alert:before {
   content: "\e209";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-equalizer:before {
+.glyphicon-equalizer:before {
   content: "\e210";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-king:before {
+.glyphicon-king:before {
   content: "\e211";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-queen:before {
+.glyphicon-queen:before {
   content: "\e212";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-pawn:before {
+.glyphicon-pawn:before {
   content: "\e213";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bishop:before {
+.glyphicon-bishop:before {
   content: "\e214";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-knight:before {
+.glyphicon-knight:before {
   content: "\e215";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-baby-formula:before {
+.glyphicon-baby-formula:before {
   content: "\e216";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-tent:before {
+.glyphicon-tent:before {
   content: "\26fa";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-blackboard:before {
+.glyphicon-blackboard:before {
   content: "\e218";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bed:before {
+.glyphicon-bed:before {
   content: "\e219";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-apple:before {
+.glyphicon-apple:before {
   content: "\f8ff";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-erase:before {
+.glyphicon-erase:before {
   content: "\e221";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-hourglass:before {
+.glyphicon-hourglass:before {
   content: "\231b";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-lamp:before {
+.glyphicon-lamp:before {
   content: "\e223";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-duplicate:before {
+.glyphicon-duplicate:before {
   content: "\e224";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-piggy-bank:before {
+.glyphicon-piggy-bank:before {
   content: "\e225";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-scissors:before {
+.glyphicon-scissors:before {
   content: "\e226";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-bitcoin:before {
+.glyphicon-bitcoin:before {
   content: "\e227";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-btc:before {
+.glyphicon-btc:before {
   content: "\e227";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-xbt:before {
+.glyphicon-xbt:before {
   content: "\e227";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-yen:before {
+.glyphicon-yen:before {
   content: "\00a5";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-jpy:before {
+.glyphicon-jpy:before {
   content: "\00a5";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-ruble:before {
+.glyphicon-ruble:before {
   content: "\20bd";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-rub:before {
+.glyphicon-rub:before {
   content: "\20bd";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-scale:before {
+.glyphicon-scale:before {
   content: "\e230";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-ice-lolly:before {
+.glyphicon-ice-lolly:before {
   content: "\e231";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-ice-lolly-tasted:before {
+.glyphicon-ice-lolly-tasted:before {
   content: "\e232";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-education:before {
+.glyphicon-education:before {
   content: "\e233";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-option-horizontal:before {
+.glyphicon-option-horizontal:before {
   content: "\e234";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-option-vertical:before {
+.glyphicon-option-vertical:before {
   content: "\e235";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-menu-hamburger:before {
+.glyphicon-menu-hamburger:before {
   content: "\e236";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-modal-window:before {
+.glyphicon-modal-window:before {
   content: "\e237";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-oil:before {
+.glyphicon-oil:before {
   content: "\e238";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-grain:before {
+.glyphicon-grain:before {
   content: "\e239";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-sunglasses:before {
+.glyphicon-sunglasses:before {
   content: "\e240";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-text-size:before {
+.glyphicon-text-size:before {
   content: "\e241";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-text-color:before {
+.glyphicon-text-color:before {
   content: "\e242";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-text-background:before {
+.glyphicon-text-background:before {
   content: "\e243";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-object-align-top:before {
+.glyphicon-object-align-top:before {
   content: "\e244";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-object-align-bottom:before {
+.glyphicon-object-align-bottom:before {
   content: "\e245";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-object-align-horizontal:before {
+.glyphicon-object-align-horizontal:before {
   content: "\e246";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-object-align-left:before {
+.glyphicon-object-align-left:before {
   content: "\e247";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-object-align-vertical:before {
+.glyphicon-object-align-vertical:before {
   content: "\e248";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-object-align-right:before {
+.glyphicon-object-align-right:before {
   content: "\e249";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-triangle-right:before {
+.glyphicon-triangle-right:before {
   content: "\e250";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-triangle-left:before {
+.glyphicon-triangle-left:before {
   content: "\e251";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-triangle-bottom:before {
+.glyphicon-triangle-bottom:before {
   content: "\e252";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-triangle-top:before {
+.glyphicon-triangle-top:before {
   content: "\e253";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-console:before {
+.glyphicon-console:before {
   content: "\e254";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-superscript:before {
+.glyphicon-superscript:before {
   content: "\e255";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-subscript:before {
+.glyphicon-subscript:before {
   content: "\e256";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-menu-left:before {
+.glyphicon-menu-left:before {
   content: "\e257";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-menu-right:before {
+.glyphicon-menu-right:before {
   content: "\e258";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-menu-down:before {
+.glyphicon-menu-down:before {
   content: "\e259";
 }
-.<i class="fa fa-question" aria-hidden="true"></i><!-- TODO: Replace this glyphicon with an appropriate Font Awesome icon -->-menu-up:before {
+.glyphicon-menu-up:before {
   content: "\e260";
 }
 * {
@@ -1115,7 +1115,7 @@ figure {
 img {
   vertical-align: middle;
 }
-.img-fluid,
+.img-responsive,
 .thumbnail > img,
 .thumbnail a > img,
 .carousel-inner > .item > img,
@@ -1498,7 +1498,7 @@ blockquote .small:before {
   content: "\2014 \00A0";
 }
 .blockquote-reverse,
-blockquote.float-end {
+blockquote.pull-right {
   padding-right: 15px;
   padding-left: 0;
   text-align: right;
@@ -1506,19 +1506,19 @@ blockquote.float-end {
   border-left: 0;
 }
 .blockquote-reverse footer:before,
-blockquote.float-end footer:before,
+blockquote.pull-right footer:before,
 .blockquote-reverse small:before,
-blockquote.float-end small:before,
+blockquote.pull-right small:before,
 .blockquote-reverse .small:before,
-blockquote.float-end .small:before {
+blockquote.pull-right .small:before {
   content: "";
 }
 .blockquote-reverse footer:after,
-blockquote.float-end footer:after,
+blockquote.pull-right footer:after,
 .blockquote-reverse small:after,
-blockquote.float-end small:after,
+blockquote.pull-right small:after,
 .blockquote-reverse .small:after,
-blockquote.float-end .small:after {
+blockquote.pull-right .small:after {
   content: "\00A0 \2014";
 }
 address {
@@ -1619,51 +1619,51 @@ pre code {
   padding-right: 0;
   padding-left: 0;
 }
-.col-1,
+.col-xs-1,
 .col-sm-1,
 .col-md-1,
 .col-lg-1,
-.col-2,
+.col-xs-2,
 .col-sm-2,
 .col-md-2,
 .col-lg-2,
-.col-3,
+.col-xs-3,
 .col-sm-3,
 .col-md-3,
 .col-lg-3,
-.col-4,
+.col-xs-4,
 .col-sm-4,
 .col-md-4,
 .col-lg-4,
-.col-5,
+.col-xs-5,
 .col-sm-5,
 .col-md-5,
 .col-lg-5,
-.col-6,
+.col-xs-6,
 .col-sm-6,
 .col-md-6,
 .col-lg-6,
-.col-7,
+.col-xs-7,
 .col-sm-7,
 .col-md-7,
 .col-lg-7,
-.col-8,
+.col-xs-8,
 .col-sm-8,
 .col-md-8,
 .col-lg-8,
-.col-9,
+.col-xs-9,
 .col-sm-9,
 .col-md-9,
 .col-lg-9,
-.col-10,
+.col-xs-10,
 .col-sm-10,
 .col-md-10,
 .col-lg-10,
-.col-11,
+.col-xs-11,
 .col-sm-11,
 .col-md-11,
 .col-lg-11,
-.col-12,
+.col-xs-12,
 .col-sm-12,
 .col-md-12,
 .col-lg-12 {
@@ -1672,54 +1672,54 @@ pre code {
   padding-right: 15px;
   padding-left: 15px;
 }
-.col-1,
-.col-2,
-.col-3,
-.col-4,
-.col-5,
-.col-6,
-.col-7,
-.col-8,
-.col-9,
-.col-10,
-.col-11,
-.col-12 {
+.col-xs-1,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12 {
   float: left;
 }
-.col-12 {
+.col-xs-12 {
   width: 100%;
 }
-.col-11 {
+.col-xs-11 {
   width: 91.66666667%;
 }
-.col-10 {
+.col-xs-10 {
   width: 83.33333333%;
 }
-.col-9 {
+.col-xs-9 {
   width: 75%;
 }
-.col-8 {
+.col-xs-8 {
   width: 66.66666667%;
 }
-.col-7 {
+.col-xs-7 {
   width: 58.33333333%;
 }
-.col-6 {
+.col-xs-6 {
   width: 50%;
 }
-.col-5 {
+.col-xs-5 {
   width: 41.66666667%;
 }
-.col-4 {
+.col-xs-4 {
   width: 33.33333333%;
 }
-.col-3 {
+.col-xs-3 {
   width: 25%;
 }
-.col-2 {
+.col-xs-2 {
   width: 16.66666667%;
 }
-.col-1 {
+.col-xs-1 {
   width: 8.33333333%;
 }
 .col-xs-pull-12 {
@@ -2933,7 +2933,7 @@ select[multiple].input-lg {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
 }
-.has-success .input-group-text {
+.has-success .input-group-addon {
   color: #3c763d;
   background-color: #dff0d8;
   border-color: #3c763d;
@@ -2963,7 +2963,7 @@ select[multiple].input-lg {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
 }
-.has-warning .input-group-text {
+.has-warning .input-group-addon {
   color: #8a6d3b;
   background-color: #fcf8e3;
   border-color: #8a6d3b;
@@ -2993,7 +2993,7 @@ select[multiple].input-lg {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
 }
-.has-error .input-group-text {
+.has-error .input-group-addon {
   color: #a94442;
   background-color: #f2dede;
   border-color: #a94442;
@@ -3031,7 +3031,7 @@ select[multiple].input-lg {
     display: inline-table;
     vertical-align: middle;
   }
-  .form-inline .input-group .input-group-text,
+  .form-inline .input-group .input-group-addon,
   .form-inline .input-group .input-group-btn,
   .form-inline .input-group .form-control {
     width: auto;
@@ -3157,56 +3157,56 @@ a.btn.disabled,
 fieldset[disabled] a.btn {
   pointer-events: none;
 }
-.btn-secondary {
+.btn-default {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
 }
-.btn-secondary:focus,
-.btn-secondary.focus {
+.btn-default:focus,
+.btn-default.focus {
   color: #333;
   background-color: #e6e6e6;
   border-color: #8c8c8c;
 }
-.btn-secondary:hover {
+.btn-default:hover {
   color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
-.btn-secondary:active,
-.btn-secondary.active,
-.open > .dropdown-toggle.btn-secondary {
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
   color: #333;
   background-color: #e6e6e6;
   background-image: none;
   border-color: #adadad;
 }
-.btn-secondary:active:hover,
-.btn-secondary.active:hover,
-.open > .dropdown-toggle.btn-secondary:hover,
-.btn-secondary:active:focus,
-.btn-secondary.active:focus,
-.open > .dropdown-toggle.btn-secondary:focus,
-.btn-secondary:active.focus,
-.btn-secondary.active.focus,
-.open > .dropdown-toggle.btn-secondary.focus {
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
   color: #333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
-.btn-secondary.disabled:hover,
-.btn-secondary[disabled]:hover,
-fieldset[disabled] .btn-secondary:hover,
-.btn-secondary.disabled:focus,
-.btn-secondary[disabled]:focus,
-fieldset[disabled] .btn-secondary:focus,
-.btn-secondary.disabled.focus,
-.btn-secondary[disabled].focus,
-fieldset[disabled] .btn-secondary.focus {
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus {
   background-color: #fff;
   border-color: #ccc;
 }
-.btn-secondary .badge {
+.btn-default .badge {
   color: #fff;
   background-color: #333;
 }
@@ -3522,7 +3522,7 @@ fieldset[disabled] .btn-link:focus {
   line-height: 1.5;
   border-radius: 3px;
 }
-.btn-sm,
+.btn-xs,
 .btn-group-xs > .btn {
   padding: 1px 5px;
   font-size: 12px;
@@ -3615,7 +3615,7 @@ tbody.collapse.in {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
-.dropdown-menu.float-end {
+.dropdown-menu.pull-right {
   right: 0;
   left: auto;
 }
@@ -3691,7 +3691,7 @@ tbody.collapse.in {
   left: 0;
   z-index: 990;
 }
-.float-end > .dropdown-menu {
+.pull-right > .dropdown-menu {
   right: 0;
   left: auto;
 }
@@ -3910,7 +3910,7 @@ tbody.collapse.in {
   z-index: 3;
 }
 .input-group-lg > .form-control,
-.input-group-lg > .input-group-text,
+.input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn {
   height: 46px;
   padding: 10px 16px;
@@ -3919,21 +3919,21 @@ tbody.collapse.in {
   border-radius: 6px;
 }
 select.input-group-lg > .form-control,
-select.input-group-lg > .input-group-text,
+select.input-group-lg > .input-group-addon,
 select.input-group-lg > .input-group-btn > .btn {
   height: 46px;
   line-height: 46px;
 }
 textarea.input-group-lg > .form-control,
-textarea.input-group-lg > .input-group-text,
+textarea.input-group-lg > .input-group-addon,
 textarea.input-group-lg > .input-group-btn > .btn,
 select[multiple].input-group-lg > .form-control,
-select[multiple].input-group-lg > .input-group-text,
+select[multiple].input-group-lg > .input-group-addon,
 select[multiple].input-group-lg > .input-group-btn > .btn {
   height: auto;
 }
 .input-group-sm > .form-control,
-.input-group-sm > .input-group-text,
+.input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .btn {
   height: 30px;
   padding: 5px 10px;
@@ -3942,36 +3942,36 @@ select[multiple].input-group-lg > .input-group-btn > .btn {
   border-radius: 3px;
 }
 select.input-group-sm > .form-control,
-select.input-group-sm > .input-group-text,
+select.input-group-sm > .input-group-addon,
 select.input-group-sm > .input-group-btn > .btn {
   height: 30px;
   line-height: 30px;
 }
 textarea.input-group-sm > .form-control,
-textarea.input-group-sm > .input-group-text,
+textarea.input-group-sm > .input-group-addon,
 textarea.input-group-sm > .input-group-btn > .btn,
 select[multiple].input-group-sm > .form-control,
-select[multiple].input-group-sm > .input-group-text,
+select[multiple].input-group-sm > .input-group-addon,
 select[multiple].input-group-sm > .input-group-btn > .btn {
   height: auto;
 }
-.input-group-text,
+.input-group-addon,
 .input-group-btn,
 .input-group .form-control {
   display: table-cell;
 }
-.input-group-text:not(:first-child):not(:last-child),
+.input-group-addon:not(:first-child):not(:last-child),
 .input-group-btn:not(:first-child):not(:last-child),
 .input-group .form-control:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
-.input-group-text,
+.input-group-addon,
 .input-group-btn {
   width: 1%;
   white-space: nowrap;
   vertical-align: middle;
 }
-.input-group-text {
+.input-group-addon {
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 400;
@@ -3982,22 +3982,22 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.input-group-text.input-sm {
+.input-group-addon.input-sm {
   padding: 5px 10px;
   font-size: 12px;
   border-radius: 3px;
 }
-.input-group-text.input-lg {
+.input-group-addon.input-lg {
   padding: 10px 16px;
   font-size: 18px;
   border-radius: 6px;
 }
-.input-group-text input[type="radio"],
-.input-group-text input[type="checkbox"] {
+.input-group-addon input[type="radio"],
+.input-group-addon input[type="checkbox"] {
   margin-top: 0;
 }
 .input-group .form-control:first-child,
-.input-group-text:first-child,
+.input-group-addon:first-child,
 .input-group-btn:first-child > .btn,
 .input-group-btn:first-child > .btn-group > .btn,
 .input-group-btn:first-child > .dropdown-toggle,
@@ -4006,11 +4006,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.input-group-text:first-child {
+.input-group-addon:first-child {
   border-right: 0;
 }
 .input-group .form-control:last-child,
-.input-group-text:last-child,
+.input-group-addon:last-child,
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .btn-group > .btn,
 .input-group-btn:last-child > .dropdown-toggle,
@@ -4019,7 +4019,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.input-group-text:last-child {
+.input-group-addon:last-child {
   border-left: 0;
 }
 .input-group-btn {
@@ -4367,7 +4367,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin-left: -15px;
   }
 }
-.navbar-toggler {
+.navbar-toggle {
   position: relative;
   float: right;
   padding: 9px 10px;
@@ -4379,20 +4379,20 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
   border-radius: 4px;
 }
-.navbar-toggler:focus {
+.navbar-toggle:focus {
   outline: 0;
 }
-.navbar-toggler .icon-bar {
+.navbar-toggle .icon-bar {
   display: block;
   width: 22px;
   height: 2px;
   border-radius: 1px;
 }
-.navbar-toggler .icon-bar + .icon-bar {
+.navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;
 }
 @media (min-width: 768px) {
-  .navbar-toggler {
+  .navbar-toggle {
     display: none;
   }
 }
@@ -4469,7 +4469,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     display: inline-table;
     vertical-align: middle;
   }
-  .navbar-form .input-group .input-group-text,
+  .navbar-form .input-group .input-group-addon,
   .navbar-form .input-group .input-group-btn,
   .navbar-form .input-group .form-control {
     width: auto;
@@ -4541,7 +4541,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.navbar-btn.btn-sm {
+.navbar-btn.btn-xs {
   margin-top: 14px;
   margin-bottom: 14px;
 }
@@ -4631,14 +4631,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     background-color: transparent;
   }
 }
-.navbar-default .navbar-toggler {
+.navbar-default .navbar-toggle {
   border-color: #ddd;
 }
-.navbar-default .navbar-toggler:hover,
-.navbar-default .navbar-toggler:focus {
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
   background-color: #ddd;
 }
-.navbar-default .navbar-toggler .icon-bar {
+.navbar-default .navbar-toggle .icon-bar {
   background-color: #888;
 }
 .navbar-default .navbar-collapse,
@@ -4733,14 +4733,14 @@ fieldset[disabled] .navbar-default .btn-link:focus {
     background-color: transparent;
   }
 }
-.navbar-inverse .navbar-toggler {
+.navbar-inverse .navbar-toggle {
   border-color: #333;
 }
-.navbar-inverse .navbar-toggler:hover,
-.navbar-inverse .navbar-toggler:focus {
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
   background-color: #333;
 }
-.navbar-inverse .navbar-toggler .icon-bar {
+.navbar-inverse .navbar-toggle .icon-bar {
   background-color: #fff;
 }
 .navbar-inverse .navbar-collapse,
@@ -5006,7 +5006,7 @@ a.label:focus {
   position: relative;
   top: -1px;
 }
-.btn-sm .badge,
+.btn-xs .badge,
 .btn-group-xs > .btn .badge {
   top: 0;
   padding: 1px 5px;
@@ -5290,11 +5290,11 @@ a.thumbnail.active {
   max-width: none;
 }
 .media-right,
-.media > .float-end {
+.media > .pull-right {
   padding-left: 10px;
 }
 .media-left,
-.media > .float-start {
+.media > .pull-left {
   padding-right: 10px;
 }
 .media-left,
@@ -5523,7 +5523,7 @@ button.list-group-item-danger.active:focus {
   margin-bottom: 0;
   line-height: 1.3;
 }
-.card {
+.panel {
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid transparent;
@@ -5531,339 +5531,339 @@ button.list-group-item-danger.active:focus {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.card-body {
+.panel-body {
   padding: 15px;
 }
-.card-heading {
+.panel-heading {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
-.card-heading > .dropdown .dropdown-toggle {
+.panel-heading > .dropdown .dropdown-toggle {
   color: inherit;
 }
-.card-title {
+.panel-title {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 16px;
   color: inherit;
 }
-.card-title > a,
-.card-title > small,
-.card-title > .small,
-.card-title > small > a,
-.card-title > .small > a {
+.panel-title > a,
+.panel-title > small,
+.panel-title > .small,
+.panel-title > small > a,
+.panel-title > .small > a {
   color: inherit;
 }
-.card-footer {
+.panel-footer {
   padding: 10px 15px;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.card > .list-group,
-.card > .card-collapse > .list-group {
+.panel > .list-group,
+.panel > .panel-collapse > .list-group {
   margin-bottom: 0;
 }
-.card > .list-group .list-group-item,
-.card > .card-collapse > .list-group .list-group-item {
+.panel > .list-group .list-group-item,
+.panel > .panel-collapse > .list-group .list-group-item {
   border-width: 1px 0;
   border-radius: 0;
 }
-.card > .list-group:first-child .list-group-item:first-child,
-.card > .card-collapse > .list-group:first-child .list-group-item:first-child {
+.panel > .list-group:first-child .list-group-item:first-child,
+.panel > .panel-collapse > .list-group:first-child .list-group-item:first-child {
   border-top: 0;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
-.card > .list-group:last-child .list-group-item:last-child,
-.card > .card-collapse > .list-group:last-child .list-group-item:last-child {
+.panel > .list-group:last-child .list-group-item:last-child,
+.panel > .panel-collapse > .list-group:last-child .list-group-item:last-child {
   border-bottom: 0;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.card > .card-heading + .card-collapse > .list-group .list-group-item:first-child {
+.panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.card-heading + .list-group .list-group-item:first-child {
+.panel-heading + .list-group .list-group-item:first-child {
   border-top-width: 0;
 }
-.list-group + .card-footer {
+.list-group + .panel-footer {
   border-top-width: 0;
 }
-.card > .table,
-.card > .table-responsive > .table,
-.card > .card-collapse > .table {
+.panel > .table,
+.panel > .table-responsive > .table,
+.panel > .panel-collapse > .table {
   margin-bottom: 0;
 }
-.card > .table caption,
-.card > .table-responsive > .table caption,
-.card > .card-collapse > .table caption {
+.panel > .table caption,
+.panel > .table-responsive > .table caption,
+.panel > .panel-collapse > .table caption {
   padding-right: 15px;
   padding-left: 15px;
 }
-.card > .table:first-child,
-.card > .table-responsive:first-child > .table:first-child {
+.panel > .table:first-child,
+.panel > .table-responsive:first-child > .table:first-child {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
-.card > .table:first-child > thead:first-child > tr:first-child,
-.card > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
-.card > .table:first-child > tbody:first-child > tr:first-child,
-.card > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {
+.panel > .table:first-child > thead:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
+.panel > .table:first-child > tbody:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
-.card > .table:first-child > thead:first-child > tr:first-child td:first-child,
-.card > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
-.card > .table:first-child > tbody:first-child > tr:first-child td:first-child,
-.card > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
-.card > .table:first-child > thead:first-child > tr:first-child th:first-child,
-.card > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
-.card > .table:first-child > tbody:first-child > tr:first-child th:first-child,
-.card > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
+.panel > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
   border-top-left-radius: 3px;
 }
-.card > .table:first-child > thead:first-child > tr:first-child td:last-child,
-.card > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
-.card > .table:first-child > tbody:first-child > tr:first-child td:last-child,
-.card > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
-.card > .table:first-child > thead:first-child > tr:first-child th:last-child,
-.card > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
-.card > .table:first-child > tbody:first-child > tr:first-child th:last-child,
-.card > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
+.panel > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
   border-top-right-radius: 3px;
 }
-.card > .table:last-child,
-.card > .table-responsive:last-child > .table:last-child {
+.panel > .table:last-child,
+.panel > .table-responsive:last-child > .table:last-child {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.card > .table:last-child > tbody:last-child > tr:last-child,
-.card > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
-.card > .table:last-child > tfoot:last-child > tr:last-child,
-.card > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {
+.panel > .table:last-child > tbody:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
+.panel > .table:last-child > tfoot:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.card > .table:last-child > tbody:last-child > tr:last-child td:first-child,
-.card > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
-.card > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
-.card > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
-.card > .table:last-child > tbody:last-child > tr:last-child th:first-child,
-.card > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
-.card > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
-.card > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
+.panel > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
   border-bottom-left-radius: 3px;
 }
-.card > .table:last-child > tbody:last-child > tr:last-child td:last-child,
-.card > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
-.card > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
-.card > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
-.card > .table:last-child > tbody:last-child > tr:last-child th:last-child,
-.card > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
-.card > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
-.card > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
+.panel > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
   border-bottom-right-radius: 3px;
 }
-.card > .card-body + .table,
-.card > .card-body + .table-responsive,
-.card > .table + .card-body,
-.card > .table-responsive + .card-body {
+.panel > .panel-body + .table,
+.panel > .panel-body + .table-responsive,
+.panel > .table + .panel-body,
+.panel > .table-responsive + .panel-body {
   border-top: 1px solid #ddd;
 }
-.card > .table > tbody:first-child > tr:first-child th,
-.card > .table > tbody:first-child > tr:first-child td {
+.panel > .table > tbody:first-child > tr:first-child th,
+.panel > .table > tbody:first-child > tr:first-child td {
   border-top: 0;
 }
-.card > .table-bordered,
-.card > .table-responsive > .table-bordered {
+.panel > .table-bordered,
+.panel > .table-responsive > .table-bordered {
   border: 0;
 }
-.card > .table-bordered > thead > tr > th:first-child,
-.card > .table-responsive > .table-bordered > thead > tr > th:first-child,
-.card > .table-bordered > tbody > tr > th:first-child,
-.card > .table-responsive > .table-bordered > tbody > tr > th:first-child,
-.card > .table-bordered > tfoot > tr > th:first-child,
-.card > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
-.card > .table-bordered > thead > tr > td:first-child,
-.card > .table-responsive > .table-bordered > thead > tr > td:first-child,
-.card > .table-bordered > tbody > tr > td:first-child,
-.card > .table-responsive > .table-bordered > tbody > tr > td:first-child,
-.card > .table-bordered > tfoot > tr > td:first-child,
-.card > .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+.panel > .table-bordered > thead > tr > th:first-child,
+.panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
+.panel > .table-bordered > tbody > tr > th:first-child,
+.panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
+.panel > .table-bordered > tfoot > tr > th:first-child,
+.panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+.panel > .table-bordered > thead > tr > td:first-child,
+.panel > .table-responsive > .table-bordered > thead > tr > td:first-child,
+.panel > .table-bordered > tbody > tr > td:first-child,
+.panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
+.panel > .table-bordered > tfoot > tr > td:first-child,
+.panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child {
   border-left: 0;
 }
-.card > .table-bordered > thead > tr > th:last-child,
-.card > .table-responsive > .table-bordered > thead > tr > th:last-child,
-.card > .table-bordered > tbody > tr > th:last-child,
-.card > .table-responsive > .table-bordered > tbody > tr > th:last-child,
-.card > .table-bordered > tfoot > tr > th:last-child,
-.card > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
-.card > .table-bordered > thead > tr > td:last-child,
-.card > .table-responsive > .table-bordered > thead > tr > td:last-child,
-.card > .table-bordered > tbody > tr > td:last-child,
-.card > .table-responsive > .table-bordered > tbody > tr > td:last-child,
-.card > .table-bordered > tfoot > tr > td:last-child,
-.card > .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+.panel > .table-bordered > thead > tr > th:last-child,
+.panel > .table-responsive > .table-bordered > thead > tr > th:last-child,
+.panel > .table-bordered > tbody > tr > th:last-child,
+.panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
+.panel > .table-bordered > tfoot > tr > th:last-child,
+.panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+.panel > .table-bordered > thead > tr > td:last-child,
+.panel > .table-responsive > .table-bordered > thead > tr > td:last-child,
+.panel > .table-bordered > tbody > tr > td:last-child,
+.panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
+.panel > .table-bordered > tfoot > tr > td:last-child,
+.panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child {
   border-right: 0;
 }
-.card > .table-bordered > thead > tr:first-child > td,
-.card > .table-responsive > .table-bordered > thead > tr:first-child > td,
-.card > .table-bordered > tbody > tr:first-child > td,
-.card > .table-responsive > .table-bordered > tbody > tr:first-child > td,
-.card > .table-bordered > thead > tr:first-child > th,
-.card > .table-responsive > .table-bordered > thead > tr:first-child > th,
-.card > .table-bordered > tbody > tr:first-child > th,
-.card > .table-responsive > .table-bordered > tbody > tr:first-child > th {
+.panel > .table-bordered > thead > tr:first-child > td,
+.panel > .table-responsive > .table-bordered > thead > tr:first-child > td,
+.panel > .table-bordered > tbody > tr:first-child > td,
+.panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
+.panel > .table-bordered > thead > tr:first-child > th,
+.panel > .table-responsive > .table-bordered > thead > tr:first-child > th,
+.panel > .table-bordered > tbody > tr:first-child > th,
+.panel > .table-responsive > .table-bordered > tbody > tr:first-child > th {
   border-bottom: 0;
 }
-.card > .table-bordered > tbody > tr:last-child > td,
-.card > .table-responsive > .table-bordered > tbody > tr:last-child > td,
-.card > .table-bordered > tfoot > tr:last-child > td,
-.card > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
-.card > .table-bordered > tbody > tr:last-child > th,
-.card > .table-responsive > .table-bordered > tbody > tr:last-child > th,
-.card > .table-bordered > tfoot > tr:last-child > th,
-.card > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
+.panel > .table-bordered > tbody > tr:last-child > td,
+.panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
+.panel > .table-bordered > tfoot > tr:last-child > td,
+.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
+.panel > .table-bordered > tbody > tr:last-child > th,
+.panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
+.panel > .table-bordered > tfoot > tr:last-child > th,
+.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
   border-bottom: 0;
 }
-.card > .table-responsive {
+.panel > .table-responsive {
   margin-bottom: 0;
   border: 0;
 }
-.card-group {
+.panel-group {
   margin-bottom: 20px;
 }
-.card-group .card {
+.panel-group .panel {
   margin-bottom: 0;
   border-radius: 4px;
 }
-.card-group .card + .card {
+.panel-group .panel + .panel {
   margin-top: 5px;
 }
-.card-group .card-heading {
+.panel-group .panel-heading {
   border-bottom: 0;
 }
-.card-group .card-heading + .card-collapse > .card-body,
-.card-group .card-heading + .card-collapse > .list-group {
+.panel-group .panel-heading + .panel-collapse > .panel-body,
+.panel-group .panel-heading + .panel-collapse > .list-group {
   border-top: 1px solid #ddd;
 }
-.card-group .card-footer {
+.panel-group .panel-footer {
   border-top: 0;
 }
-.card-group .card-footer + .card-collapse .card-body {
+.panel-group .panel-footer + .panel-collapse .panel-body {
   border-bottom: 1px solid #ddd;
 }
-.card-default {
+.panel-default {
   border-color: #ddd;
 }
-.card-default > .card-heading {
+.panel-default > .panel-heading {
   color: #333333;
   background-color: #f5f5f5;
   border-color: #ddd;
 }
-.card-default > .card-heading + .card-collapse > .card-body {
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #ddd;
 }
-.card-default > .card-heading .badge {
+.panel-default > .panel-heading .badge {
   color: #f5f5f5;
   background-color: #333333;
 }
-.card-default > .card-footer + .card-collapse > .card-body {
+.panel-default > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #ddd;
 }
-.card-primary {
+.panel-primary {
   border-color: #337ab7;
 }
-.card-primary > .card-heading {
+.panel-primary > .panel-heading {
   color: #fff;
   background-color: #337ab7;
   border-color: #337ab7;
 }
-.card-primary > .card-heading + .card-collapse > .card-body {
+.panel-primary > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #337ab7;
 }
-.card-primary > .card-heading .badge {
+.panel-primary > .panel-heading .badge {
   color: #337ab7;
   background-color: #fff;
 }
-.card-primary > .card-footer + .card-collapse > .card-body {
+.panel-primary > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #337ab7;
 }
-.card-success {
+.panel-success {
   border-color: #d6e9c6;
 }
-.card-success > .card-heading {
+.panel-success > .panel-heading {
   color: #3c763d;
   background-color: #dff0d8;
   border-color: #d6e9c6;
 }
-.card-success > .card-heading + .card-collapse > .card-body {
+.panel-success > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #d6e9c6;
 }
-.card-success > .card-heading .badge {
+.panel-success > .panel-heading .badge {
   color: #dff0d8;
   background-color: #3c763d;
 }
-.card-success > .card-footer + .card-collapse > .card-body {
+.panel-success > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #d6e9c6;
 }
-.card-info {
+.panel-info {
   border-color: #bce8f1;
 }
-.card-info > .card-heading {
+.panel-info > .panel-heading {
   color: #31708f;
   background-color: #d9edf7;
   border-color: #bce8f1;
 }
-.card-info > .card-heading + .card-collapse > .card-body {
+.panel-info > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #bce8f1;
 }
-.card-info > .card-heading .badge {
+.panel-info > .panel-heading .badge {
   color: #d9edf7;
   background-color: #31708f;
 }
-.card-info > .card-footer + .card-collapse > .card-body {
+.panel-info > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #bce8f1;
 }
-.card-warning {
+.panel-warning {
   border-color: #faebcc;
 }
-.card-warning > .card-heading {
+.panel-warning > .panel-heading {
   color: #8a6d3b;
   background-color: #fcf8e3;
   border-color: #faebcc;
 }
-.card-warning > .card-heading + .card-collapse > .card-body {
+.panel-warning > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #faebcc;
 }
-.card-warning > .card-heading .badge {
+.panel-warning > .panel-heading .badge {
   color: #fcf8e3;
   background-color: #8a6d3b;
 }
-.card-warning > .card-footer + .card-collapse > .card-body {
+.panel-warning > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #faebcc;
 }
-.card-danger {
+.panel-danger {
   border-color: #ebccd1;
 }
-.card-danger > .card-heading {
+.panel-danger > .panel-heading {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
 }
-.card-danger > .card-heading + .card-collapse > .card-body {
+.panel-danger > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #ebccd1;
 }
-.card-danger > .card-heading .badge {
+.panel-danger > .panel-heading .badge {
   color: #f2dede;
   background-color: #a94442;
 }
-.card-danger > .card-footer + .card-collapse > .card-body {
+.panel-danger > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #ebccd1;
 }
 .embed-responsive {
@@ -5892,7 +5892,7 @@ button.list-group-item-danger.active:focus {
 .embed-responsive-4by3 {
   padding-bottom: 75%;
 }
-.card {
+.well {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
@@ -5902,15 +5902,15 @@ button.list-group-item-danger.active:focus {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.card blockquote {
+.well blockquote {
   border-color: #ddd;
   border-color: rgba(0, 0, 0, 0.15);
 }
-.card-lg {
+.well-lg {
   padding: 24px;
   border-radius: 6px;
 }
-.card-sm {
+.well-sm {
   padding: 9px;
   border-radius: 3px;
 }
@@ -6433,8 +6433,8 @@ button.close {
 }
 .carousel-control .icon-prev,
 .carousel-control .icon-next,
-.carousel-control .fa fa-chevron-left,
-.carousel-control .fa fa-chevron-right {
+.carousel-control .glyphicon-chevron-left,
+.carousel-control .glyphicon-chevron-right {
   position: absolute;
   top: 50%;
   z-index: 5;
@@ -6442,12 +6442,12 @@ button.close {
   margin-top: -10px;
 }
 .carousel-control .icon-prev,
-.carousel-control .fa fa-chevron-left {
+.carousel-control .glyphicon-chevron-left {
   left: 50%;
   margin-left: -10px;
 }
 .carousel-control .icon-next,
-.carousel-control .fa fa-chevron-right {
+.carousel-control .glyphicon-chevron-right {
   right: 50%;
   margin-right: -10px;
 }
@@ -6509,8 +6509,8 @@ button.close {
   text-shadow: none;
 }
 @media screen and (min-width: 768px) {
-  .carousel-control .fa fa-chevron-left,
-  .carousel-control .fa fa-chevron-right,
+  .carousel-control .glyphicon-chevron-left,
+  .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-prev,
   .carousel-control .icon-next {
     width: 30px;
@@ -6518,11 +6518,11 @@ button.close {
     margin-top: -10px;
     font-size: 30px;
   }
-  .carousel-control .fa fa-chevron-left,
+  .carousel-control .glyphicon-chevron-left,
   .carousel-control .icon-prev {
     margin-left: -10px;
   }
-  .carousel-control .fa fa-chevron-right,
+  .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-next {
     margin-right: -10px;
   }
@@ -6561,8 +6561,8 @@ button.close {
 .navbar-collapse:after,
 .pager:before,
 .pager:after,
-.card-body:before,
-.card-body:after,
+.panel-body:before,
+.panel-body:after,
 .modal-header:before,
 .modal-header:after,
 .modal-footer:before,
@@ -6583,20 +6583,20 @@ button.close {
 .navbar-header:after,
 .navbar-collapse:after,
 .pager:after,
-.card-body:after,
+.panel-body:after,
 .modal-header:after,
 .modal-footer:after {
   clear: both;
 }
-.mx-auto {
+.center-block {
   display: block;
   margin-right: auto;
   margin-left: auto;
 }
-.float-end {
+.pull-right {
   float: right !important;
 }
-.float-start {
+.pull-left {
   float: left !important;
 }
 .hide {
