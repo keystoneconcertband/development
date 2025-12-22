@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
 	$( "#concert_title" ).autocomplete({
       source: "musicTitleSearch.php",
       minLength: 2,
@@ -53,7 +53,7 @@ $(document).ready(function() {
 			{ data: null, render: function ( data, type, row ) {
 				if(accountType === "1" || accountType === "2") {
 					var title = data.title.replace(/'/g, '&#96;')
-					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+					return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteRecord(\''+title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
 				}
 				else {
 					return "";
@@ -319,3 +319,5 @@ function populateGenreDropdown() {
 	    });	
 	}
 }
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

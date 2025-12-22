@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function() {
     var table = $('#kcbLogonTable').DataTable( {
 	    responsive: true,
 		"order": [2, "desc" ],
@@ -13,3 +13,5 @@ $(document).ready(function () {
         ]
     });
 });
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

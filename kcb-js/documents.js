@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
     var table = $('#kcbDocumentTable').DataTable( {
 	    responsive: true,
 		"order": [sort, "desc" ],
@@ -9,7 +9,7 @@ $(document).ready(function() {
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
 				if(accountType === "1" || accountType === "2") {
-					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteFile(\''+data.name+'\', \''+data.deleteUrl+'\')"></span></a>';
+					return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteFile(\''+data.name+'\', \''+data.deleteUrl+'\')"></span></a>';
 				}
 				else {
 					return "";
@@ -77,3 +77,5 @@ function formatSizeUnits(bytes){
       else                        {bytes='0 bytes';}
       return bytes;
 }
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->

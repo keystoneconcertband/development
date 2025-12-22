@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function() {
 	$.ajax({
         cache: false,
         type: 'POST',
@@ -129,7 +129,7 @@ function populateEmail(data) {
 				    $(".email1").val(arr[i]);
 			    }
 			    else {
-				    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"><span class="input-group-addon"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
+				    $('#emailContainer' + i).after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value="'+arr[i]+'"><span class="input-group-text"><a href="#noscroll" id="email'+emailCount+'" onclick="deleteEmail(\'emailContainer'+emailCount+'\');"><span class="fa fa-times"></span></a></span></div></div></div>');
 			    }
 		    }
 		}
@@ -147,3 +147,5 @@ function populateInstrument(data) {
 	    }		
 	}
 }
+
+<!-- TODO: Remaining jQuery usages detected in this file. Manually port to vanilla JS or keep jQuery temporarily. -->
