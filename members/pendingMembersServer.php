@@ -33,10 +33,6 @@
 			$response = 'Zip Code is required.';
 			$validRequest = false;
 		}
-		else if((isset($_POST['text']) && $_POST['text'] !== "" && !isset($_POST['carrier'])) || (isset($_POST['text']) && $_POST['text'] !== "" && isset($_POST['carrier']) && $_POST['carrier'] === "0")) {
-			$response = "If Cell Number is entered, a carrier is required.";
-			$validRequest = false;
-		}
 		else {
 			$emailExists = false;
 			// array_filter will filter out any "blank" entries.

@@ -12,12 +12,6 @@ $(document).ready(function () {
 			if(data.displayFullName === 1) {
 				$('#displayFullName').prop('checked', true);
 			}
-            if(data.carrier) {
-    	        $("#carrier").val(data.carrier).change();            
-            }
-            else {
-	            $("#carrier").val("0").change();            
-            }
         },
 		error: function(xhr, resp, text) {
 			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
@@ -34,19 +28,6 @@ $(document).ready(function () {
 		$('.emailContainers:last').after('<div class="form-group emailContainers" id="emailContainer'+emailCount+'" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email '+emailCount+'</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address '+emailCount+'" maxlength="100" value=""></div></div>');
 		$('.emailContainers').next("div").slideDown("slow");
 	});
-});
-
-$("#memberInfo").validator({
-    custom: {
-        'carrier': function($el) {
-	        var cell = $("#inputCellPhoneNbr").val();
-	        var carrier = $("#inputCarrier").val();
-	        
-	        if(cell !== '' && carrier === '0') {
-		    	return "Carrier is required when cell phone nbr is entered.";   
-	        }
-	    }
-    }
 });
 
 $("#memberInfo").validator().on("submit", function (event) {
@@ -147,3 +128,19 @@ function populateInstrument(data) {
 	    }		
 	}
 }
+
+// Get the phone input field
+const phoneInput = document.getElementById('text');
+
+// Listen for input changes
+phoneInput.addEventListener('input', function () {
+	try {
+	// Remove all non-digit characters (including dashes, spaces, parentheses)
+	const cleaned = this.value.replace(/\D/g, '');
+
+	// Update the field with cleaned value
+	this.value = cleaned;
+	} catch (err) {
+		console.error('Error cleaning phone number:', err);
+	}
+});

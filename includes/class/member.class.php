@@ -215,27 +215,6 @@ class Member
     private function sendAuthRequest($email)
     {
         $member = $this->getDb()->getMember($email);
-        /* Apr 6 2024 Disabling as emailing texts has become difficult...
-        if (isset($member['text']) && $member['text'] !== "") {
-            // User has texting enabled, send auth code as text
-            $six_digit_random_number = mt_rand(100000, 999999);
-            $response = $this->authCodeLogic($email, $six_digit_random_number);
-
-            // If valid
-            if ($response == "auth_required_no_cookie") {
-                $message = "Your KCB Members security code is " . $six_digit_random_number . ". It will expire in " . self::MAX_EXPIRE . " minutes.";
-                $textAddress = $member['text'] . "@" . $member['carrier'];
-
-                // Send text
-                if (!$this->getKcb()->sendEmail($textAddress, $message, "KCB Login Code", false)) {
-                    $response = "Unable to send login code email. Please try again later.";
-                }
-            }
-        } else {
-            // User doesn't have a text address. Send them an email.
-            $response = $this->sendAuthEmail($email, $member);
-        }
-        */
         $response = $this->sendAuthEmail($email, $member);
         return $response;
     }

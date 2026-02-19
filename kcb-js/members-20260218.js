@@ -3,13 +3,18 @@ $(document).ready(function() {
 	    responsive: true,
 		"order": [1, "asc" ],
 	    "ajax": {
-		    "url":"inactiveMembersServer.php",
+		    "url":"membersServer.php",
 			"dataSrc": ""
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				return '<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
-              }
+				if(accountType === "1" || accountType === "2") {
+					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\', '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+				}
+				else {
+					return "";
+				}
+              } 
             },
             { "data": "fullName" },
 			{ data: null, render: function ( data, type, row ) {
@@ -45,15 +50,6 @@ $(document).ready(function() {
               } 
             },
 			{ data: null, render: function ( data, type, row ) {
-				if(data.home_phone) {
-                	return data.home_phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-                }
-                else {
-	                return "";
-                }
-              } 
-            },
-			{ data: null, render: function ( data, type, row ) {
 			    if(data.address1) {
 				    var addr = data.address1 + '<br />';
 				    							
@@ -68,11 +64,15 @@ $(document).ready(function() {
                 else {
 	                return "";
                 }
-              }
+              } 
             },
-            { "data": "disabled_dt_tm" }
+            { "data": "office" }
         ]
     });
+
+	// Hide first column if user doesn't have access
+    var column = table.column(0);
+    column.visible(accountType === "1" || accountType === "2");
 
 	$('#addRow').click(function () {
 		var lastId = $('.emailContainers:last').attr('id');
@@ -123,11 +123,42 @@ function deleteEmail(emailContainer) {
 	}
 }
 
+function submitForm() {
+	// Determine whether we are adding or editing record		
+	if($("#uid").val() !== "") {
+		editRecord();
+	}
+	else {
+		addRecord();
+	}
+}
+
+function addRecord() {
+	$.ajax(
+	{
+        url: "membersServer.php",
+        type: "POST",
+		dataType : 'json', 
+        data: $("#form_member").serialize() + '&type=add',
+        success: function(text){
+            if (text === "success"){
+                formSuccess("User successfully added.");
+            } else {
+                formError(text);
+            }
+        },
+		error: function(xhr, resp, text) {
+			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
+            console.log(xhr, resp, text);
+        }
+    });
+}
+
 function showEditRecord(uid) {
 	$.ajax({
         cache: false,
         type: 'POST',
-        url: 'inactiveMembersServer.php',
+        url: 'membersServer.php',
         data: JSON.parse('{"type":"getMemberRecord","uid":"'+uid+'"}'),
         success: function(data) {	        
             populateForm('#form_member', data);
@@ -137,12 +168,6 @@ function showEditRecord(uid) {
 			if(data.displayFullName === 1) {
 				$('#displayFullName').prop('checked', true);
 			}
-            if(data.carrier) {
-    	        $("#carrier").val(data.carrier).change();            
-            }
-            else {
-	            $("#carrier").val("0").change();            
-            }            
             
             $("#uid").val(uid);
 			$('#modal_edit_delete').modal('show');
@@ -154,15 +179,15 @@ function showEditRecord(uid) {
     });	
 }
 
-function submitForm() {
+function editRecord() {
 	$.ajax({
         cache: false,
         type: 'POST',
-        url: 'inactiveMembersServer.php',
+        url: 'membersServer.php',
         data: $("#form_member").serialize() + '&type=edit',
         success: function(text) {
             if (text === "success"){
-                formSuccess("User successfully re-activated.");
+                formSuccess("User successfully modified.");
             } else {
                 formError(text);
             }
@@ -172,6 +197,30 @@ function submitForm() {
             console.log(xhr, resp, text);
         }
     });	
+}
+
+function deleteRecord(title, uid) {
+	if(confirm("Do you want to remove " + title + " from the band roster and email list?")) {
+		$.ajax(
+		{
+	        url: "membersServer.php",
+	        type: "POST",
+			dataType : 'json', 
+	        data: JSON.parse('{"type":"delete","uid":"'+uid+'"}'),
+	        success: function(text){
+		        formError(text);
+	            if (text === "success"){					 
+                	formSuccess("User successfully removed.");
+	            } else {
+	                formError(text);
+	            }
+	        },
+			error: function(xhr, resp, text) {
+				submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
+	            console.log(xhr, resp, text);
+	        }
+	    });
+	}
 }
 
 function formSuccess(text) {
@@ -237,5 +286,20 @@ function populateInstrument(data) {
 }
 
 function printMembers() {
-	var win = window.open('inactiveMembersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
+	var win = window.open('membersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
 }
+// Get the phone input field
+const phoneInput = document.getElementById('text');
+
+// Listen for input changes
+phoneInput.addEventListener('input', function () {
+	try {
+	// Remove all non-digit characters (including dashes, spaces, parentheses)
+	const cleaned = this.value.replace(/\D/g, '');
+
+	// Update the field with cleaned value
+	this.value = cleaned;
+	} catch (err) {
+		console.error('Error cleaning phone number:', err);
+	}
+});

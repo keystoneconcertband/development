@@ -1,26 +1,17 @@
 $(document).ready(function() {
     var table = $('#kcbMemberTable').DataTable( {
 	    responsive: true,
-		"order": [5, "desc" ],
+		"order": [1, "asc" ],
 	    "ajax": {
-		    "url":"pendingMembersServer.php",
+		    "url":"inactiveMembersServer.php",
 			"dataSrc": ""
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\', '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
-			  }
+				return '<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+              }
             },
             { "data": "fullName" },
-			{ data: null, render: function ( data, type, row ) {
-				if(data.text) {
-                	return data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-                }
-                else {
-	                return "";
-                }
-              } 
-            },
 			{ data: null, render: function ( data, type, row ) {
 				if(data.email) {
 					var email_arr = data.email.split(',');
@@ -44,7 +35,33 @@ $(document).ready(function() {
                 }
               } 
             },
-            { "data": "estbd_dt_tm" }
+			{ data: null, render: function ( data, type, row ) {
+				if(data.text) {
+                	return data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+                else {
+	                return "";
+                }
+              } 
+            },
+			{ data: null, render: function ( data, type, row ) {
+			    if(data.address1) {
+				    var addr = data.address1 + '<br />';
+				    							
+					if(data.address2) {
+						addr += data.address2 + '<br />';
+					}
+					
+					addr += data.city + ', ' + data.state + ' ' + data.zip;
+					
+					return addr;
+			    }
+                else {
+	                return "";
+                }
+              }
+            },
+            { "data": "disabled_dt_tm" }
         ]
     });
 
@@ -84,7 +101,6 @@ $('#modal_edit_delete').on('hidden.bs.modal', function () {
    	
    	// Readd the email container
    	$('#zipContainer').after('<div class="form-group emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="control-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-addon"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
-
 });
 
 function deleteEmail(emailContainer) {
@@ -102,18 +118,18 @@ function showEditRecord(uid) {
 	$.ajax({
         cache: false,
         type: 'POST',
-        url: 'pendingMembersServer.php',
+        url: 'inactiveMembersServer.php',
         data: JSON.parse('{"type":"getMemberRecord","uid":"'+uid+'"}'),
         success: function(data) {	        
             populateForm('#form_member', data);
             populateEmail(data);
             populateInstrument(data);
 
-			// Default State
-            $("#state").val("PA");
+			if(data.displayFullName === 1) {
+				$('#displayFullName').prop('checked', true);
+			}
+            
             $("#uid").val(uid);
-
-			// Show modal
 			$('#modal_edit_delete').modal('show');
         },
 		error: function(xhr, resp, text) {
@@ -127,11 +143,11 @@ function submitForm() {
 	$.ajax({
         cache: false,
         type: 'POST',
-        url: 'pendingMembersServer.php',
+        url: 'inactiveMembersServer.php',
         data: $("#form_member").serialize() + '&type=edit',
         success: function(text) {
             if (text === "success"){
-                formSuccess("User successfully modified.");
+                formSuccess("User successfully re-activated.");
             } else {
                 formError(text);
             }
@@ -141,30 +157,6 @@ function submitForm() {
             console.log(xhr, resp, text);
         }
     });	
-}
-
-function deleteRecord(title, uid) {
-	if(confirm("Do you want to remove " + title + " from the band roster and email list?")) {
-		$.ajax(
-		{
-	        url: "pendingMembersServer.php",
-	        type: "POST",
-			dataType : 'json', 
-	        data: JSON.parse('{"type":"delete","uid":"'+uid+'"}'),
-	        success: function(text){
-		        formError(text);
-	            if (text === "success"){					 
-                	formSuccess("User successfully removed.");
-	            } else {
-	                formError(text);
-	            }
-	        },
-			error: function(xhr, resp, text) {
-				submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-	            console.log(xhr, resp, text);
-	        }
-	    });
-	}
 }
 
 function formSuccess(text) {
@@ -227,4 +219,8 @@ function populateInstrument(data) {
 			$('#' + arr[i]).prop('checked', true);
 	    }		
 	}
+}
+
+function printMembers() {
+	var win = window.open('inactiveMembersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
 }
