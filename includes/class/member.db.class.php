@@ -47,9 +47,9 @@ class MemberDB
     {
         $this->getDb()->bind("email", $email);
         return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName,
-                                           m.text, m.carrier, m.displayFullName,
+                                           m.text, m.displayFullName,
                                            m.lastLogon, m.logonCount, m.disabled_dt_tm, m.disabled,
-                                           a.address1, a.address2, a.city, a.state, a.zip, a.home_phone
+                                           a.address1, a.address2, a.city, a.state, a.zip
                                     FROM kcb_members m
                                     INNER JOIN kcb_email_address e ON e.member_uid=m.uid
                                     LEFT OUTER JOIN kcb_address a ON a.member_uid=m.uid
@@ -61,8 +61,8 @@ class MemberDB
     {
         $this->getDb()->bind("uid", $uid);
         return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier,
-                                        a.home_phone, a.address1, a.address2, a.city, 'PA' AS state,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
+                                        a.address1, a.address2, a.city, 'PA' AS state,
                                         a.zip, m.office, m.displayFullName,
                                         GROUP_CONCAT(DISTINCT li.instrument) AS `instrument`
                                     FROM kcb_members m
@@ -71,7 +71,7 @@ class MemberDB
                                     LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                     LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                     WHERE m.UID = :uid
-                                    GROUP BY m.UID, lastName, firstName, m.text, carrier, home_phone,
+                                    GROUP BY m.UID, lastName, firstName, m.text,
                                         address1, address2, city, state, zip, office, displayFullName");
     }
 
@@ -79,8 +79,8 @@ class MemberDB
     public function getActiveMembers()
     {
         return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier,
-                                        a.home_phone, a.address1, a.address2, a.city, a.state, a.zip, m.office,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
+                                        a.address1, a.address2, a.city, a.state, a.zip, m.office,
                                         GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
                                       FROM kcb_members m
                                       LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
@@ -89,7 +89,7 @@ class MemberDB
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                       WHERE m.disabled = 0
                                         AND m.accountType <> 3
-                                      GROUP BY m.UID, fullName, m.text, carrier, home_phone,
+                                      GROUP BY m.UID, fullName, m.text,
                                         address1, address2, city, state, zip, office
                                       ORDER BY lastName, firstName");
     }
@@ -98,8 +98,8 @@ class MemberDB
     public function getInactiveMembers()
     {
         return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.carrier,
-                                        a.home_phone, a.address1, a.address2, a.city, 'PA' as state, a.zip,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
+                                        a.address1, a.address2, a.city, 'PA' as state, a.zip,
                                         m.disabled_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
                                       FROM kcb_members m
                                       LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
@@ -107,7 +107,7 @@ class MemberDB
                                       LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                       WHERE m.disabled = 1
-                                      GROUP BY m.UID, fullName, m.text, carrier, home_phone,
+                                      GROUP BY m.UID, fullName, m.text,
                                         address1, address2, city, state, zip, disabled_dt_tm
                                       ORDER BY lastName, firstName");
     }
@@ -286,17 +286,14 @@ class MemberDB
     {
         $uid = 0;
         $text = null;
-        $carrier = null;
 
         if ($mbrArray['text'] !== '') {
             $text = $mbrArray['text'];
-            $carrier = $mbrArray['carrier'];
         }
 
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
-        $this->getDb()->bind('carrier', $carrier);
         $this->getDb()->bind("updateUser", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
 
@@ -307,9 +304,9 @@ class MemberDB
         }
 
         $retVal = $this->getDb()->query("INSERT INTO kcb_members(firstName, lastName, displayFullName, text,
-                                            carrier, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by)
+                                            estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by)
                                          VALUES (:firstName, :lastName, :displayFullName, :text,
-                                            :carrier, now(), :updateUser, now(), :updateUser2)");
+                                            now(), :updateUser, now(), :updateUser2)");
 
         if ($retVal) {
             $uid = $this->getDb()->lastInsertId();
@@ -347,18 +344,15 @@ class MemberDB
     public function updateMember($uid, $mbrArray, $updateUser)
     {
         $text = null;
-        $carrier = null;
 
         if ($mbrArray['text'] !== '') {
             $text = $mbrArray['text'];
-            $carrier = $mbrArray['carrier'];
         }
 
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
-        $this->getDb()->bind('carrier', $carrier);
         $this->getDb()->bind("updateUser", $updateUser);
 
         if (array_key_exists('displayFullName', $mbrArray)) {
@@ -367,7 +361,7 @@ class MemberDB
             $this->getDb()->bind('displayFullName', "0");
         }
 
-        $retVal = $this->getDb()->query("UPDATE kcb_members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, carrier = :carrier, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser, disabled= 0, disabled_dt_tm = NULL WHERE UID = :uid");
+        $retVal = $this->getDb()->query("UPDATE kcb_members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser, disabled= 0, disabled_dt_tm = NULL WHERE UID = :uid");
 
         return $retVal;
     }
@@ -385,7 +379,6 @@ class MemberDB
     public function insertAddress($uid, $mbrArray, $updateUser)
     {
         $this->getDb()->bind('uid', $uid);
-        $this->getDb()->bind('home_phone', $mbrArray['home_phone']);
         $this->getDb()->bind('address1', $mbrArray['address1']);
         $this->getDb()->bind('address2', $mbrArray['address2']);
         $this->getDb()->bind('city', $mbrArray['city']);
@@ -393,7 +386,7 @@ class MemberDB
         $this->getDb()->bind("updateUser", $updateUser);
         $this->getDb()->bind("updateUser1", $updateUser);
 
-        $retVal = $this->getDb()->query("INSERT INTO kcb_address (member_uid, address1, address2, city, state, zip, home_phone, estbd_by, estbd_dt_tm, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :address1, :address2,:city, 'PA', :zip, :home_phone, :updateUser, now(), now(), :updateUser1)");
+        $retVal = $this->getDb()->query("INSERT INTO kcb_address (member_uid, address1, address2, city, state, zip, estbd_by, estbd_dt_tm, lst_tran_dt_tm, lst_updtd_by) VALUES(:uid, :address1, :address2,:city, 'PA', :zip, :updateUser, now(), now(), :updateUser1)");
 
         return $retVal;
     }
@@ -401,14 +394,13 @@ class MemberDB
     public function updateAddress($uid, $mbrArray, $updateUser)
     {
         $this->getDb()->bind('uid', $uid);
-        $this->getDb()->bind('home_phone', $mbrArray['home_phone']);
         $this->getDb()->bind('address1', $mbrArray['address1']);
         $this->getDb()->bind('address2', $mbrArray['address2']);
         $this->getDb()->bind('city', $mbrArray['city']);
         $this->getDb()->bind('zip', $mbrArray['zip']);
         $this->getDb()->bind("updateUser", $updateUser);
 
-        $retVal = $this->getDb()->query("UPDATE kcb_address SET address1 = :address1, address2 = :address2, city = :city, zip = :zip, home_phone = :home_phone, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE member_uid = :uid");
+        $retVal = $this->getDb()->query("UPDATE kcb_address SET address1 = :address1, address2 = :address2, city = :city, zip = :zip, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE member_uid = :uid");
 
         return $retVal;
     }

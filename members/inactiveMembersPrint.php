@@ -69,7 +69,6 @@ function formatPhone($number) {
 					echo "<td>" . formatCommaArrays($mbr['email']) . "</td>";
 					echo "<td>" . formatCommaArrays($mbr['instrument']) . "</td>";
 					echo "<td>" . formatPhone($mbr['text']) . "</td>";
-					echo "<td>" . formatPhone($mbr['home_phone']) . "</td>";
 					echo "<td>" . formatAddress($mbr) . "</td>";
 					echo "<td>" . $mbr['disabled_dt_tm'] . "</td>";
 					echo "</tr>";

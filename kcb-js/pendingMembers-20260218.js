@@ -1,22 +1,26 @@
 $(document).ready(function() {
     var table = $('#kcbMemberTable').DataTable( {
 	    responsive: true,
-		"order": [1, "asc" ],
+		"order": [5, "desc" ],
 	    "ajax": {
-		    "url":"membersServer.php",
+		    "url":"pendingMembersServer.php",
 			"dataSrc": ""
 		},
 		"columns": [
 			{ data: null, render: function ( data, type, row ) {
-				if(accountType === "1" || accountType === "2") {
-					return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\', '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
-				}
-				else {
-					return "";
-				}
-              } 
+				return '<a href="#nojump"><span class="glyphicon glyphicon-trash" onclick="deleteRecord(\''+data.fullName+'\', '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
+			  }
             },
             { "data": "fullName" },
+			{ data: null, render: function ( data, type, row ) {
+				if(data.text) {
+                	return data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+                else {
+	                return "";
+                }
+              } 
+            },
 			{ data: null, render: function ( data, type, row ) {
 				if(data.email) {
 					var email_arr = data.email.split(',');
@@ -40,48 +44,9 @@ $(document).ready(function() {
                 }
               } 
             },
-			{ data: null, render: function ( data, type, row ) {
-				if(data.text) {
-                	return data.text.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-                }
-                else {
-	                return "";
-                }
-              } 
-            },
-			{ data: null, render: function ( data, type, row ) {
-				if(data.home_phone) {
-                	return data.home_phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-                }
-                else {
-	                return "";
-                }
-              } 
-            },
-			{ data: null, render: function ( data, type, row ) {
-			    if(data.address1) {
-				    var addr = data.address1 + '<br />';
-				    							
-					if(data.address2) {
-						addr += data.address2 + '<br />';
-					}
-					
-					addr += data.city + ', ' + data.state + ' ' + data.zip;
-					
-					return addr;
-			    }
-                else {
-	                return "";
-                }
-              } 
-            },
-            { "data": "office" }
+            { "data": "estbd_dt_tm" }
         ]
     });
-
-	// Hide first column if user doesn't have access
-    var column = table.column(0);
-    column.visible(accountType === "1" || accountType === "2");
 
 	$('#addRow').click(function () {
 		var lastId = $('.emailContainers:last').attr('id');
@@ -119,6 +84,7 @@ $('#modal_edit_delete').on('hidden.bs.modal', function () {
    	
    	// Readd the email container
    	$('#zipContainer').after('<div class="form-group emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="control-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-addon"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="glyphicon glyphicon-remove"></span></a></span></div></div></div>');
+
 });
 
 function deleteEmail(emailContainer) {
@@ -132,59 +98,22 @@ function deleteEmail(emailContainer) {
 	}
 }
 
-function submitForm() {
-	// Determine whether we are adding or editing record		
-	if($("#uid").val() !== "") {
-		editRecord();
-	}
-	else {
-		addRecord();
-	}
-}
-
-function addRecord() {
-	$.ajax(
-	{
-        url: "membersServer.php",
-        type: "POST",
-		dataType : 'json', 
-        data: $("#form_member").serialize() + '&type=add',
-        success: function(text){
-            if (text === "success"){
-                formSuccess("User successfully added.");
-            } else {
-                formError(text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
-        }
-    });
-}
-
 function showEditRecord(uid) {
 	$.ajax({
         cache: false,
         type: 'POST',
-        url: 'membersServer.php',
+        url: 'pendingMembersServer.php',
         data: JSON.parse('{"type":"getMemberRecord","uid":"'+uid+'"}'),
         success: function(data) {	        
             populateForm('#form_member', data);
             populateEmail(data);
             populateInstrument(data);
 
-			if(data.displayFullName === 1) {
-				$('#displayFullName').prop('checked', true);
-			}
-            if(data.carrier) {
-    	        $("#carrier").val(data.carrier).change();            
-            }
-            else {
-	            $("#carrier").val("0").change();            
-            }            
-            
+			// Default State
+            $("#state").val("PA");
             $("#uid").val(uid);
+
+			// Show modal
 			$('#modal_edit_delete').modal('show');
         },
 		error: function(xhr, resp, text) {
@@ -194,11 +123,11 @@ function showEditRecord(uid) {
     });	
 }
 
-function editRecord() {
+function submitForm() {
 	$.ajax({
         cache: false,
         type: 'POST',
-        url: 'membersServer.php',
+        url: 'pendingMembersServer.php',
         data: $("#form_member").serialize() + '&type=edit',
         success: function(text) {
             if (text === "success"){
@@ -218,7 +147,7 @@ function deleteRecord(title, uid) {
 	if(confirm("Do you want to remove " + title + " from the band roster and email list?")) {
 		$.ajax(
 		{
-	        url: "membersServer.php",
+	        url: "pendingMembersServer.php",
 	        type: "POST",
 			dataType : 'json', 
 	        data: JSON.parse('{"type":"delete","uid":"'+uid+'"}'),
@@ -300,6 +229,18 @@ function populateInstrument(data) {
 	}
 }
 
-function printMembers() {
-	var win = window.open('membersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
-}
+// Get the phone input field
+const phoneInput = document.getElementById('text');
+
+// Listen for input changes
+phoneInput.addEventListener('input', function () {
+	try {
+	// Remove all non-digit characters (including dashes, spaces, parentheses)
+	const cleaned = this.value.replace(/\D/g, '');
+
+	// Update the field with cleaned value
+	this.value = cleaned;
+	} catch (err) {
+		console.error('Error cleaning phone number:', err);
+	}
+});

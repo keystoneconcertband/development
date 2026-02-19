@@ -67,13 +67,6 @@ new ProtectedMember();
 						    </div>
 							<div class="form-group">
 						      <div class="col-sm-12">
-						        <label for="txtHomePhoneNbr" class="control-label">Home Phone Nbr</label>
-						        <input type="tel" class="form-control" name="home_phone" id="home_phone" placeholder="Home Phone Number - NOT your cell phone number." data-minlength="10" maxlength="10">
-								<div class="help-block with-errors"></div>
-						      </div>
-							</div>
-							<div class="form-group">
-						      <div class="col-sm-12">
 						        <label for="txtAddress" class="control-label">Address</label>
 						        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" required="true" maxlength="255" data-error="Address is required.">
 								<div class="help-block with-errors"></div>
@@ -133,33 +126,9 @@ new ProtectedMember();
 							<div class="form-group">
 						      <div class="col-sm-12">
 						        <label for="txtCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
-						        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" data-minlength="10" maxlength="10">
+						        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" data-minlength="10" maxlength="13">
 								<div class="help-block with-errors"></div>
 						      </div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-						        	<label for="optCarrier" class="control-label">Cell Phone Carrier</label>
-									<select class="form-control" name="carrier" id="carrier" data-carrier>
-										<option value="0">Select an option</option>
-										<option value="txt.att.net">AT&amp;T</option>
-										<option value="sms.myboostmobile.com">Boost Mobile</option>
-										<option value="cspire1.com">C-Spire</option>
-										<option value="sms.cricketwireless.net">Cricket Wireless</option>
-										<option value="mailmymobile.net">Consumer Cellular</option>
-										<option value="msg.fi.google.com">Google Project Fi</option>
-										<option value="mymetropcs.com">Metro PCS</option>
-										<option value="mailmymobile.net">Mint Mobile</option>
-										<option value="messaging.sprintpcs.com">Sprint</option>
-										<option value="vtext.com">Straight Talk</option>
-										<option value="tmomail.net">T-Mobile</option>
-										<option value="mmst5.tracfone.com">TracFone</option>
-										<option value="vtext.com">Verizon</option>
-										<option value="vmobl.com">Virgin Mobile</option>
-										<option value="vtext.com">Xfinity Mobile</option>
-							        </select>
-									<div class="help-block with-errors"></div>
-							    </div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
@@ -228,6 +197,6 @@ new ProtectedMember();
 
 	<?php require '../includes/common_js.php'; ?>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
-	<script type="text/javascript" src="/kcb-js/myInfo.js"></script>
+	<script type="text/javascript" src="/kcb-js/myInfo-20260218.js"></script>
   </body>
 </html>
