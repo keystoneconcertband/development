@@ -12,7 +12,6 @@
 		.row .col-lg-12 ul li {
 			margin-bottom: 10px;
 		}
-		<?php // Need to add style to add padding to bottom of LI's and remove the double BR's. ?>
 	</style>
   </head>
 
@@ -37,17 +36,17 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-4">
-							<img alt="KCB Conductors - Donna Deaven" src="images/conductors-1x.png" srcset="images/conductors-2021.png" class="img-responsive"> 
+							<img alt="KCB Conductors - Donna Deaven" src="images/conductors-1x.png" srcset="images/conductors-2021.png" class="img-fluid"> 
 							<p><small>Donna Deaven</small></p>
 						</div>
 						<div class="col-md-8">
-							<ul class="nav nav-pills">
-							  <li class="active">
-							    <a data-toggle="tab" href="#donna">Donna Deaven</a>
+							<ul class="nav nav-tabs" role="tablist">
+							  <li class="nav-item" role="presentation">
+							    <button class="nav-link active" id="donna-tab" data-bs-toggle="tab" data-bs-target="#donna" type="button" role="tab" aria-controls="donna" aria-selected="true">Donna Deaven</button>
 							  </li>
 							</ul>
-							<div id="conductorsTabContent" class="tab-content">
-							  <div class="tab-pane fade active in" id="donna">
+							<div class="tab-content">
+							  <div class="tab-pane fade show active" id="donna" role="tabpanel" aria-labelledby="donna-tab">
 							    <h3>Donna Deaven, Principal Conductor</h3>
 								Donna J. Deaven has more than 30 years of experience in conducting bands,
 								orchestras, small ensembles, and as a private teacher and professional musician.

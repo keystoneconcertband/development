@@ -13,8 +13,7 @@ new protectedAdmin();
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="/css/member.css">
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
+	<link rel="stylesheet" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
   </head>
 
   <body>
@@ -30,12 +29,12 @@ new protectedAdmin();
 				</div>
 			</div>
 		</div>
-		<div class="row" style="margin-bottom: 20px;">
+		<div class="row mb-3">
 			<div class="col-lg-12">
 				<div class="page-header">
 					<h2>Text Message Members</h2>
 				</div>
-				<div class="well bs-component">
+				<div class="alert alert-info" role="alert">
 					Send an email to <a href="mailto:text@keystoneconcertband.com">text@keystoneconcertband.com</a>.
 					<br /><br />
 					<strong>Limited to Jonathan, Donna, Vicki and Chris</strong>

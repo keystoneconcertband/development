@@ -43,16 +43,15 @@
                 <h2>Mail a check</h2>
                 <p>If you would rather mail us a check, please click the button below to view the mailing address. If
                     you would like a receipt for your check, please include your address with your donation.</p>
-                <p><button class="btn btn-info" type="button" data-toggle="modal" data-target="#addressModal">View
+                <p><button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#addressModal">View
                         address &raquo;</button></p>
 
-                <div id="addressModal" class="modal" role="dialog">
-                    <div class="modal-dialog">
+                <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title">Mailing Address</h4>
+                                <h5 class="modal-title" id="addressModalLabel">Mailing Address</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>Keystone Concert Band<br>

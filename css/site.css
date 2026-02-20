@@ -1,27 +1,21 @@
-/* NOTES
-	- bootstrap.css : updated all references from 768 to 808 because the menu would wrap around to a new line at 807. To prevent this, just switch to the mobile view at 808 instead.	
-*/
+/* Bootstrap 5 Compatible Custom Styles */
 
-/* http://stackoverflow.com/questions/609273/convert-an-image-to-grayscale-in-html-css */
+/* Grayscale filter for muted images */
 img.text-muted{
-    filter: grayscale(100%); /* Current draft standard */
-    -webkit-filter: grayscale(100%); /* New WebKit */
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%); 
-    -o-filter: grayscale(100%); /* Not yet supported in Gecko, Opera or IE */ 
-    filter: url(resources.svg#desaturate); /* Gecko */
-    filter: gray; /* IE */
-    -webkit-filter: grayscale(1); /* Old WebKit */
+    -o-filter: grayscale(100%);
+    filter: url(resources.svg#desaturate);
+    filter: gray;
+    -webkit-filter: grayscale(1);
 }
-/* http://jsfiddle.net/KyleMit/Wc4xt/ */
-.panel-heading a:after {
-    font-family: 'Glyphicons Halflings';
-    content: "\e114";    
-    float: right; 
-    color: grey; 
-}
-.panel-heading a.collapsed:after {
-    content: "\e080";
+
+/* Accordion styling */
+.accordion-button:not(.collapsed) {
+    background-color: #e9ecef;
+    color: #000;
 }
 
 .jumbotron {
@@ -38,6 +32,7 @@ img.text-muted{
 	margin-top: 0px;
 }
 
+/* Responsive image sizing */
 @media (min-width: 1200px) {
 	img.bigMap {
 		float:right;

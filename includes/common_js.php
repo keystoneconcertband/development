@@ -1,7 +1,10 @@
-<?php
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBPFTM35MW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-// Update Bootstrap script
-// Replacing Bootstrap 3 JS with Bootstrap 5.3.8 bundle.min.js
-
-?>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.8/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    gtag('config', 'G-EBPFTM35MW');
+</script>

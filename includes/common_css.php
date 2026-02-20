@@ -1,6 +1,4 @@
-    <!-- YETI version of bootstrap core CSS -->
-    <link href="/3rd-party/bootswatch-3.4.1/yeti/bootstrap.min.css" rel="stylesheet">
-    <!-- Carousel CSS -->
-    <link href="/css/carousel.css" rel="stylesheet">
-    <link href="/css/site.css" rel="stylesheet">
-    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- Bootstrap 5.3.8 core CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<!-- Custom Site CSS -->
+	<link href="/css/site.css" rel="stylesheet">
