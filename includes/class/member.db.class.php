@@ -78,7 +78,7 @@ class MemberDB
     // Gets all active members
     public function getActiveMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
+        return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
                                         a.address1, a.address2, a.city, a.state, a.zip, m.office,
                                         GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`

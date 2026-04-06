@@ -36,9 +36,8 @@ new protectedAdmin();
 					<h2>Text Message Members</h2>
 				</div>
 				<div class="well bs-component">
-					Send an email to <a href="mailto:text@keystoneconcertband.com">text@keystoneconcertband.com</a>.
-					<br /><br />
-					<strong>Limited to Jonathan, Donna, Vicki and Chris</strong>
+					Messaging is now located at <a href="https://www.callmultiplier.com/login.php">Call Multiplier</a>.
+					Contact Jonathan if you require access.
 				</div>
 			</div>
 		</div>
