@@ -1,321 +1,404 @@
-$(document).ready(function() {
-	$( "#concert_title" ).autocomplete({
-      source: "musicTitleSearch.php",
-      minLength: 2,
-      select: function( event, ui ) {
-	      $("#concert_program_list #concert_program_empty").remove();
+document.addEventListener('DOMContentLoaded', function() {
+    $("#concert_title").autocomplete({
+        source: "musicTitleSearch.php",
+        minLength: 2,
+        select: function(event, ui) {
+            document.querySelectorAll('#concert_program_list #concert_program_empty').forEach(function(el) {
+                el.remove();
+            });
 
-		  // Only allow new things to be added to the list
-	      if ($("#concert_uids").val().indexOf(ui.item.value) < 0) {
-		      $("#concert_program_list").append('<li>' + ui.item.label + '</li>');
-		      
-		      if($("#concert_uids").val() === "") {
-			      $('#concert_uids').val($('#concert_uids').val() + ui.item.value);	      
-		      }
-		      else {
-			      $("#concert_uids").val($("#concert_uids").val() + "," + ui.item.value);	      
-		      }
-	      }
-	      
-	      $("#concert_title").val("");
-	      return false;
-      }
+            var concertUids = document.getElementById('concert_uids');
+            if (concertUids && concertUids.value.indexOf(ui.item.value) < 0) {
+                document.getElementById('concert_program_list').insertAdjacentHTML('beforeend', '<li>' + ui.item.label + '</li>');
+                if (concertUids.value === '') {
+                    concertUids.value = ui.item.value;
+                } else {
+                    concertUids.value = concertUids.value + ',' + ui.item.value;
+                }
+            }
+            document.getElementById('concert_title').value = '';
+            return false;
+        }
     });
 
-	$('#dpLastPlayed').datetimepicker({
-		format: 'L',
-		minDate: '1/1/2000',
-		maxDate: moment().add(1, 'days'),
-		showTodayButton: true,
-		showClear: true,
-		showClose: true
-	});
-	
-	$('#dpConcert').datetimepicker({
-		format: 'L',
-		minDate: '1/1/2000',
-		maxDate: moment().add(7, 'days'),
-		showTodayButton: true,
-		showClear: true,
-		showClose: true
-	});
-	
-	$("#kcbMusicTable").validator();
-    var table = $('#kcbMusicTable').DataTable( {
-	    responsive: true,
-		stateSave: true,
-		"order": [1, "asc" ],
-	    "ajax": {
-		    "url":"musicServer.php",
-			"dataSrc": ""
-		},
-		"columns": [
-			{ data: null, render: function ( data, type, row ) {
-				if(accountType === "1" || accountType === "2") {
-					var title = data.title.replace(/'/g, '&#96;')
-					return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\''+title+'\',  '+data.uid+')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
-				}
-				else {
-					return "";
-				}
-			  }
-            },
-            { "data": "title" },
-            { "data": "notes" },
-			{ data: null, render: function ( data, type, row ) {
-				if(data.music_link && data.music_link !== "") {
-					return '<a href="'+data.music_link+'" target="_blank">'+data.music_link+'</a><br />'
-				}
-				else {
-					return '<a href="http://www.youtube.com/results?search_query='+data.title+'" target="_blank">http://www.youtube.com/results?search_query='+data.title+'</a><br />'
-				}
-              } 
-            },
-            { "data": "genre" },
-            { "data": "last_played" },
-			{ data: null, render: function ( data, type, row ) {
-				if(data.number_plays) {
-					// TODO: Update this to display a listing of the last played dates
-					return data.number_plays;
-					//return '<a href="#'+data.number_plays+'" target="_blank">'+data.number_plays+'</a>'
-				}
-				else {
-					return "0";
-				}
-              } 
-            }
+    $('#dpLastPlayed').datetimepicker({
+        format: 'L',
+        minDate: '1/1/2000',
+        maxDate: moment().add(1, 'days'),
+        showTodayButton: true,
+        showClear: true,
+        showClose: true
+    });
+
+    $('#dpConcert').datetimepicker({
+        format: 'L',
+        minDate: '1/1/2000',
+        maxDate: moment().add(7, 'days'),
+        showTodayButton: true,
+        showClear: true,
+        showClose: true
+    });
+
+    $('#kcbMusicTable').validator();
+    var table = $('#kcbMusicTable').DataTable({
+        responsive: true,
+        stateSave: true,
+        order: [1, 'asc'],
+        ajax: {
+            url: 'musicServer.php',
+            dataSrc: ''
+        },
+        columns: [
+            { data: null, render: function (data) {
+                if (accountType === '1' || accountType === '2') {
+                    var title = data.title.replace(/'/g, '&#96;');
+                    return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\'' + title + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+                }
+                return '';
+            }},
+            { data: 'title' },
+            { data: 'notes' },
+            { data: null, render: function (data) {
+                if (data.music_link && data.music_link !== '') {
+                    return '<a href="' + data.music_link + '" target="_blank">' + data.music_link + '</a><br />';
+                }
+                return '<a href="http://www.youtube.com/results?search_query=' + data.title + '" target="_blank">http://www.youtube.com/results?search_query=' + data.title + '</a><br />';
+            }},
+            { data: 'genre' },
+            { data: 'last_played' },
+            { data: null, render: function (data) {
+                if (data.number_plays) {
+                    return data.number_plays;
+                }
+                return '0';
+            }}
         ]
     });
 
-	// Hide first column if user doesn't have access
     var column = table.column(0);
-    column.visible(accountType === "1" || accountType === "2");
+    column.visible(accountType === '1' || accountType === '2');
 });
 
-$("#form_concert").validator().on("submit", function (event) {
-    if (event.isDefaultPrevented()) {
-        formError();
-        submitMSG(false, "Check for errors in the form.");
-    } else {
-        event.preventDefault();
-        submitConcert();
-    }
-});
+var formConcert = document.getElementById('form_concert');
+if (formConcert) {
+    formConcert.addEventListener('submit', function (event) {
+        if (event.defaultPrevented || !formConcert.checkValidity()) {
+            event.preventDefault();
+            submitMSG(false, 'Check for errors in the form.');
+        } else {
+            event.preventDefault();
+            submitConcert();
+        }
+    });
+}
 
-$("#form_music").validator().on("submit", function (event) {
-    if (event.isDefaultPrevented()) {
-        formError();
-        submitMSG(false, "Check for errors in the form.");
-    } else {
-        event.preventDefault();
-        submitForm();
-    }
-});
+var formMusic = document.getElementById('form_music');
+if (formMusic) {
+    formMusic.addEventListener('submit', function (event) {
+        if (event.defaultPrevented || !formMusic.checkValidity()) {
+            event.preventDefault();
+            formError();
+            submitMSG(false, 'Check for errors in the form.');
+        } else {
+            event.preventDefault();
+            submitForm();
+        }
+    });
+}
 
-// On load
-$('#modal_concert').on('show.bs.modal', function () {
-    // Clear messages
-    $("#msgMainHeader").removeClass().text("");
-    $("#msgSubmit").removeClass().text("");
-});
+var modalConcert = document.getElementById('modal_concert');
+if (modalConcert) {
+    modalConcert.addEventListener('show.bs.modal', function () {
+        var msgMainHeader = document.getElementById('msgMainHeader');
+        var msgSubmit = document.getElementById('msgSubmit');
+        if (msgMainHeader) {
+            msgMainHeader.className = '';
+            msgMainHeader.textContent = '';
+        }
+        if (msgSubmit) {
+            msgSubmit.className = '';
+            msgSubmit.textContent = '';
+        }
+    });
+    modalConcert.addEventListener('hidden.bs.modal', function () {
+        if (formConcert) {
+            formConcert.reset();
+        }
+        var list = document.getElementById('concert_program_list');
+        if (list) {
+            list.innerHTML = '<li id="concert_program_empty">Empty</li>';
+        }
+    });
+}
 
-// On close
-$('#modal_concert').on('hidden.bs.modal', function () {    
-    // Clear form each time
-   	$("#form_concert").trigger('reset');
-   	$("#concert_program_list").empty();
-   	$("#concert_program_list").append('<li id="concert_program_empty">Empty</li>');
-});
-
-// On load
-$('#modal_add_edit').on('show.bs.modal', function () {
-    // Clear messages
-    $("#msgMainHeader").removeClass().text("");
-    $("#msgSubmit").removeClass().text("");
-
-  	populateGenreDropdown();
-});
-
-// On close
-$('#modal_add_edit').on('hidden.bs.modal', function () {
-    // re-hide number of plays each time the modal closes
-    $("#nbr_plays_div").hide();
-    
-    // Clear form each time
-   	$("#form_music").trigger('reset');
-
-   	// Reset UID
-    $("#uid").val("");    
-});
+var modalAddEdit = document.getElementById('modal_add_edit');
+if (modalAddEdit) {
+    modalAddEdit.addEventListener('show.bs.modal', function () {
+        var msgMainHeader = document.getElementById('msgMainHeader');
+        var msgSubmit = document.getElementById('msgSubmit');
+        if (msgMainHeader) {
+            msgMainHeader.className = '';
+            msgMainHeader.textContent = '';
+        }
+        if (msgSubmit) {
+            msgSubmit.className = '';
+            msgSubmit.textContent = '';
+        }
+        populateGenreDropdown();
+    });
+    modalAddEdit.addEventListener('hidden.bs.modal', function () {
+        var nbrPlaysDiv = document.getElementById('nbr_plays_div');
+        if (nbrPlaysDiv) {
+            nbrPlaysDiv.style.display = 'none';
+        }
+        if (formMusic) {
+            formMusic.reset();
+        }
+        var uid = document.getElementById('uid');
+        if (uid) uid.value = '';
+    });
+}
 
 function submitForm() {
-	// Determine whether we are adding or editing record
-	if($("#uid").val() !== "") {
-		editRecord();
-	}
-	else {
-		addRecord();
-	}
+    var uidField = document.getElementById('uid');
+    if (uidField && uidField.value !== '') {
+        editRecord();
+    } else {
+        addRecord();
+    }
 }
 
 function submitConcert() {
-	$.ajax(
-	{
-        url: "musicServer.php",
-        type: "POST",
-		dataType : 'json', 
-        data: $("#form_concert").serialize() + '&type=addConcert',
-        success: function(text){
-            if (text === true){
-	            // Reset concert data so if entering multiple concerts, there aren't duplicates
-				$("#concert_uids").val("");
-                formSuccess("Concert dates were successfully updated.");
-            } else {
-                formError(text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
+    if (!formConcert) return;
+    var formData = new URLSearchParams(new FormData(formConcert));
+    formData.append('type', 'addConcert');
+
+    fetch('musicServer.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
         }
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (text) {
+        if (text === true) {
+            var concertUids = document.getElementById('concert_uids');
+            if (concertUids) concertUids.value = '';
+            formSuccess('Concert dates were successfully updated.');
+        } else {
+            formError(text);
+        }
+    })
+    .catch(function (xhr) {
+        submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
+        console.log(xhr);
     });
 }
 
 function addRecord() {
-	$.ajax(
-	{
-        url: "musicServer.php",
-        type: "POST",
-		dataType : 'json', 
-        data: $("#form_music").serialize() + '&type=add',
-        success: function(text){
-            if (text === "success"){
-                formSuccess("Item successfully added.");
-            } else {
-                formError(text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
+    if (!formMusic) return;
+    var formData = new URLSearchParams(new FormData(formMusic));
+    formData.append('type', 'add');
+
+    fetch('musicServer.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
         }
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (text) {
+        if (text === 'success') {
+            formSuccess('Item successfully added.');
+        } else {
+            formError(text);
+        }
+    })
+    .catch(function (xhr) {
+        submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
+        console.log(xhr);
     });
 }
 
 function showEditRecord(uid) {
-    // Populate genre dropdown if it hasn't been loaded yet (otherwise the genre isn't selected next)
-    populateGenreDropdown();
+    var params = new URLSearchParams({ type: 'getMusicRecord', uid: uid.toString() });
 
-	$.ajax({
-        cache: false,
-        type: 'POST',
-        url: 'musicServer.php',
-        data: JSON.parse('{"type":"getMusicRecord","uid":"'+uid+'"}'),
-        success: function(data) {	        
-            populateForm('#form_music', data);
-            $("#uid").val(uid);
-			$("#nbr_plays_div").show();
-			$('#modal_add_edit').modal('show');
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
-            console.log(xhr, resp, text);
+    fetch('musicServer.php', {
+        method: 'POST',
+        body: params,
+        headers: {
+            'Accept': 'application/json'
         }
-    });	
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        populateForm('#form_music', data);
+        var uidField = document.getElementById('uid');
+        if (uidField) uidField.value = uid;
+        var nbrPlaysDiv = document.getElementById('nbr_plays_div');
+        if (nbrPlaysDiv) nbrPlaysDiv.style.display = 'block';
+        var modal = document.getElementById('modal_add_edit');
+        if (modal) {
+            var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+            bsModal.show();
+        }
+    })
+    .catch(function (xhr) {
+        submitMSG(false, 'Oops! An error occurred opening the form. Please try again later.');
+        console.log(xhr);
+    });
 }
 
 function editRecord() {
-	$.ajax({
-        cache: false,
-        type: 'POST',
-        url: 'musicServer.php',
-        data: $("#form_music").serialize() + '&type=edit',
-        success: function(text) {
-            if (text === "success"){
-                formSuccess("Item successfully modified.");
-            } else {
-                formError(text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
+    if (!formMusic) return;
+    var formData = new URLSearchParams(new FormData(formMusic));
+    formData.append('type', 'edit');
+
+    fetch('musicServer.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
         }
-    });	
+    })
+    .then(function (response) {
+        return response.text();
+    })
+    .then(function (text) {
+        if (text === 'success') {
+            formSuccess('Item successfully modified.');
+        } else {
+            formError(text);
+        }
+    })
+    .catch(function (xhr) {
+        submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
+        console.log(xhr);
+    });
 }
 
 function deleteRecord(title, uid) {
-	if(confirm("Do you want to delete title " + title + "?")) {
-		$.ajax(
-		{
-	        url: "musicServer.php",
-	        type: "POST",
-			dataType : 'json', 
-	        data: JSON.parse('{"type":"delete","uid":"'+uid+'"}'),
-	        success: function(text){
-		        formError(text);
-	            if (text === "success"){					 
-                	formSuccess("Item successfully deleted.");
-	            } else {
-	                formError(text);
-	            }
-	        },
-			error: function(xhr, resp, text) {
-				submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-	            console.log(xhr, resp, text);
-	        }
-	    });
-	}
+    if (!confirm('Do you want to delete title ' + title + '?')) {
+        return;
+    }
+    var params = new URLSearchParams({ type: 'delete', uid: uid.toString() });
+
+    fetch('musicServer.php', {
+        method: 'POST',
+        body: params,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(function (response) {
+        return response.text();
+    })
+    .then(function (text) {
+        if (text === 'success') {
+            formSuccess('Item successfully deleted.');
+        } else {
+            formError(text);
+        }
+    })
+    .catch(function (xhr) {
+        submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
+        console.log(xhr);
+    });
 }
 
 function formSuccess(text) {
     submitMSG(true, text);
-
-	$('#kcbMusicTable').DataTable().ajax.reload();
-    $('#modal_add_edit').modal('hide');
-    $('#modal_concert').modal('hide');
+    var table = $('#kcbMusicTable').DataTable();
+    if (table) {
+        table.ajax.reload();
+    }
+    var modalAddEdit = document.getElementById('modal_add_edit');
+    if (modalAddEdit) {
+        var bsModal = bootstrap.Modal.getInstance(modalAddEdit);
+        if (bsModal) bsModal.hide();
+    }
+    var modalConcert = document.getElementById('modal_concert');
+    if (modalConcert) {
+        var bsConcert = bootstrap.Modal.getInstance(modalConcert);
+        if (bsConcert) bsConcert.hide();
+    }
 }
 
 function formError(text) {
-    $("#form_music").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-        $(this).removeClass();
-    });
-    submitMSG(false,text);
+    if (!formMusic) return;
+    formMusic.classList.add('shake', 'animated');
+    function removeClasses() {
+        formMusic.classList.remove('shake', 'animated');
+        formMusic.removeEventListener('animationend', removeClasses);
+        formMusic.removeEventListener('webkitAnimationEnd', removeClasses);
+        formMusic.removeEventListener('mozAnimationEnd', removeClasses);
+        formMusic.removeEventListener('MSAnimationEnd', removeClasses);
+        formMusic.removeEventListener('oanimationend', removeClasses);
+    }
+    formMusic.addEventListener('animationend', removeClasses);
+    formMusic.addEventListener('webkitAnimationEnd', removeClasses);
+    formMusic.addEventListener('mozAnimationEnd', removeClasses);
+    formMusic.addEventListener('MSAnimationEnd', removeClasses);
+    formMusic.addEventListener('oanimationend', removeClasses);
+    submitMSG(false, text);
 }
 
 function submitMSG(valid, msg) {
-    if(valid) {
-        var msgClasses = "h4 tada animated text-success";
-    } else {
-        var msgClasses = "h4 text-danger";
+    var msgMainHeader = document.getElementById('msgMainHeader');
+    var msgSubmit = document.getElementById('msgSubmit');
+    var msgClasses = valid ? 'h4 tada animated text-success' : 'h4 text-danger';
+    if (msgMainHeader) {
+        msgMainHeader.className = msgClasses;
+        msgMainHeader.textContent = msg;
     }
-    $("#msgMainHeader").removeClass().addClass(msgClasses).text(msg);
-    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
+    if (msgSubmit) {
+        msgSubmit.className = msgClasses;
+        msgSubmit.textContent = msg;
+    }
 }
 
 function populateForm(frm, data) {
-	$.each(data, function(key, value) {
-		$('[name='+key+']', frm).val(value);
-	});
+    var form = document.querySelector(frm);
+    if (!form) return;
+    Object.keys(data).forEach(function (key) {
+        var field = form.querySelector('[name="' + key + '"]');
+        if (field) field.value = data[key];
+    });
 }
 
 function populateGenreDropdown() {
-	// Only needs to populate the first time the user opens the form
-	if($("#genre option").length === 1) {
-		$.ajax({
-	        cache: false,
-	        type: 'POST',
-	        url: 'musicServer.php',
-	        data: JSON.parse('{"type":"getMusicGenres"}'),
-	        success: function(data) {
-		        $.each(data, function(key, value) {
-		            $("#genre").append("<option>" + value.genre + "</option>");
-		        });
-	        },
-			error: function(xhr, resp, text) {
-				submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
-	            console.log(xhr, resp, text);
-	        }
-	    });	
-	}
+    var genreSelect = document.getElementById('genre');
+    if (!genreSelect) return;
+    if (genreSelect.options.length === 1) {
+        var params = new URLSearchParams({ type: 'getMusicGenres' });
+        fetch('musicServer.php', {
+            method: 'POST',
+            body: params,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            data.forEach(function (value) {
+                var option = document.createElement('option');
+                option.textContent = value.genre;
+                genreSelect.appendChild(option);
+            });
+        })
+        .catch(function (xhr) {
+            submitMSG(false, 'Oops! An error occurred opening the form. Please try again later.');
+            console.log(xhr);
+        });
+    }
 }

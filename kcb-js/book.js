@@ -1,51 +1,78 @@
-$("#frmBook").validator().on("submit", function (event) {
-    if (event.isDefaultPrevented()) {
-        formError();
-        submitMSG(false, "Oops! Looks like you have a validation error. Check for errors in the form.");
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('frmBook');
+  if (!form) return;
+
+  form.addEventListener('submit', function (event) {
+    if (event.defaultPrevented || !form.checkValidity()) {
+      event.preventDefault();
+      formError();
+      submitMSG(false, 'Oops! Looks like you have a validation error. Check for errors in the form.');
     } else {
-        event.preventDefault();
-        submitForm();
+      event.preventDefault();
+      submitForm();
     }
+  });
 });
 
 function submitForm() {
-	$.ajax(
-	{
-        url: "bookServer.php",
-        type: "POST",
-		dataType : 'json', 
-        data: $("#frmBook").serialize(),
-        success: function(text){
-            if (text === "success"){
-                formSuccess();
-            } else {
-                formError();
-                submitMSG(false,text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
-        }
-    });
-}
+  const form = document.getElementById('frmBook');
+  if (!form) return;
 
-function formSuccess(){
-	$('#frmBook').trigger("reset");
-    submitMSG(true, "Thanks for submitting your information. We will reply back shortly.");
-}
+  const formData = new FormData(form);
 
-function formError(){
-    $("#frmBook").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-        $(this).removeClass();
-    });
-}
-
-function submitMSG(valid, msg){
-    if(valid){
-        var msgClasses = "h4 tada animated text-success";
-    } else {
-        var msgClasses = "h4 text-danger";
+  fetch('bookServer.php', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
     }
-    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
+  })
+    .then((response) => response.json())
+    .then((text) => {
+      if (text === 'success') {
+        formSuccess();
+      } else {
+        formError();
+        submitMSG(false, text);
+      }
+    })
+    .catch((xhr) => {
+      submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
+      console.log(xhr);
+    });
+}
+
+function formSuccess() {
+  const form = document.getElementById('frmBook');
+  if (form) {
+    form.reset();
+  }
+  submitMSG(true, 'Thanks for submitting your information. We will reply back shortly.');
+}
+
+function formError() {
+  const form = document.getElementById('frmBook');
+  if (!form) return;
+  form.classList.add('shake', 'animated');
+  function removeClasses() {
+    form.classList.remove('shake', 'animated');
+    form.removeEventListener('animationend', removeClasses);
+    form.removeEventListener('webkitAnimationEnd', removeClasses);
+    form.removeEventListener('mozAnimationEnd', removeClasses);
+    form.removeEventListener('MSAnimationEnd', removeClasses);
+    form.removeEventListener('oanimationend', removeClasses);
+  }
+  form.addEventListener('animationend', removeClasses);
+  form.addEventListener('webkitAnimationEnd', removeClasses);
+  form.addEventListener('mozAnimationEnd', removeClasses);
+  form.addEventListener('MSAnimationEnd', removeClasses);
+  form.addEventListener('oanimationend', removeClasses);
+}
+
+function submitMSG(valid, msg) {
+  const msgSubmit = document.getElementById('msgSubmit');
+  if (!msgSubmit) return;
+
+  msgSubmit.className = valid ? 'h4 tada animated text-success' : 'h4 text-danger';
+  msgSubmit.textContent = msg;
 }
