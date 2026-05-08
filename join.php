@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new members! Will you join us?">
 
     <title>Join the band - Keystone Concert Band</title>
 
     <?php require_once 'includes/common_css.php'; ?>
-  </head>
+</head>
 
-  <body>
+<body>
     <?php require_once 'includes/nav.php'; ?>
     <div class="container">
         <div class="row">
-			<div class="col">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1 class="display-5">Join</h1>
-					</div>
-				</div>
-			</div>
+            <div class="col">
+                <div class="bs-component">
+                    <div class="jumbotron">
+                        <h1 class="display-5">Join</h1>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -27,16 +28,18 @@
                     <h2>Join us</h2>
                 </div>
                 <p>The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
-                organization. We welcome all wind band musicians, but have greater need for clarinet, bass clarinet,
-                euphonium, tuba, trombone, alto sax, baritone sax, trumpet, and percussion to fill out our sections. 
-                Band members range from teens to folks in their 80s, with varying levels of experience. 
-                If you would be interested in playing, please contact us below!<br />
-                <br />
-                The Band rehearses each Wednesday at <a
-                    href='https://www.google.com/maps?f=q&hl=en&geocode&q=3700+Rutherford+St,+Harrisburg,+PA+17111+(Band+Practice+Facility)&sll=40.260657,-76.827071&sspn=0.005731,0.007821&ie=UTF8&t=h&z=16&iwloc=addr'
-                    target="_blank">Good Shepherd Lutheran Church in Paxtang</a>, from 7:00PM until 9:00PM, and we play
-                around 8-15 concerts per year. Musical selections vary widely, and include original wind
-                band compositions, marches, movie music, Broadway, and popular music medleys.</p>
+                    organization. We welcome all wind band musicians, but have greater need for clarinet, bass clarinet,
+                    euphonium, tuba, trombone, alto sax, baritone sax, trumpet, and percussion to fill out our sections.
+                    Band members range from teens to folks in their 80s, with varying levels of experience.
+                    If you would be interested in playing, please contact us below!<br />
+                    <br />
+                    The Band rehearses each Wednesday at <a
+                        href='https://www.google.com/maps?f=q&hl=en&geocode&q=3700+Rutherford+St,+Harrisburg,+PA+17111+(Band+Practice+Facility)&sll=40.260657,-76.827071&sspn=0.005731,0.007821&ie=UTF8&t=h&z=16&iwloc=addr'
+                        target="_blank">Good Shepherd Lutheran Church in Paxtang</a>, from 7:00PM until 9:00PM, and we
+                    play
+                    around 8-15 concerts per year. Musical selections vary widely, and include original wind
+                    band compositions, marches, movie music, Broadway, and popular music medleys.
+                </p>
                 <h3>Frequently Asked Questions:</h3>
                 <ul>
                     <li><strong>How often do you practice?</strong><br />
@@ -89,7 +92,8 @@
                 <form class="row g-3" id="frmJoin">
                     <div class="d-none" aria-hidden="true">
                         <label for="honeypot">Leave this field blank</label>
-                        <input type="text" class="form-control" id="honeypot" name="honeypot" autocomplete="off" tabindex="-1">
+                        <input type="text" class="form-control" id="honeypot" name="honeypot" autocomplete="off"
+                            tabindex="-1">
                     </div>
                     <div class="col-lg-12">
                         If you are interested in joining the band, please fill out the form below with your
@@ -109,7 +113,8 @@
                             <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
                                 placeholder="Phone Number" data-minlength="10" maxlength="10" required="true">
                             <label for="floatingInput">* Phone Number</label>
-                            <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid 10-digit phone number.</div>
+                            <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid
+                                10-digit phone number.</div>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -117,7 +122,8 @@
                             <input type="email" class="form-control" id="txtEmail" name="txtEmail"
                                 placeholder="Email Address" required="true">
                             <label for="floatingInput">* Email Address</label>
-                            <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid email address.</div>
+                            <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid
+                                email address.</div>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -132,67 +138,78 @@
                             <label class="form-label mt-4" for="chkInstrument">Instrument(s) played</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="baritone" value="baritone" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="baritone" value="baritone"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="baritone">
                                 Baritone
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="bassClarinet" value="bassClarinet" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="bassClarinet" value="bassClarinet"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="bassClarinet">
                                 Bass Clarinet
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="bassoon" value="bassoon" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="bassoon" value="bassoon"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="bassoon">
                                 Bassoon
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="clarinet" value="clarinet" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="clarinet" value="clarinet"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="clarinet">
                                 Clarinet
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="flute" value="flute" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="flute" value="flute"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="flute">
                                 Flute
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="frenchHorn" value="frenchHorn" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="frenchHorn" value="frenchHorn"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="frenchHorn">
                                 French Horn
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="saxophone" value="saxophone" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="saxophone" value="saxophone"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="saxophone">
                                 Saxophone
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="trombone" value="trombone" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="trombone" value="trombone"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="trombone">
                                 Trombone
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="trumpet" value="trumpet"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="trumpet">
                                 Trumpet
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="tuba" value="tuba"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="tuba">
                                 Tuba
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="percussion" value="percussion" name="chkInstrument[]">
+                            <input class="form-check-input" type="checkbox" id="percussion" value="percussion"
+                                name="chkInstrument[]">
                             <label class="form-check-label" for="percussion">
                                 Percussion
                             </label>
