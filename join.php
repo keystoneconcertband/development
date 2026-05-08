@@ -88,7 +88,12 @@
                         instructor to provide us with a recommendation.</li>
                 </ul>
                 <h3>Contact Us</h3>
+                <div id="formAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                 <form class="row g-3" id="frmJoin">
+                        <div class="d-none" aria-hidden="true">
+                            <label for="honeypot">Leave this field blank</label>
+                            <input type="text" class="form-control" id="honeypot" name="honeypot" autocomplete="off" tabindex="-1">
+                        </div>
                         <div class="col-lg-12">
                             If you are interested in joining the band, please fill out the form below with your
                             contact information so we can get back to you.<br />
@@ -207,7 +212,6 @@
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        <div id="msgSubmit" class="h4 hidden"></div>
                 </form>
             </div>
         </div>

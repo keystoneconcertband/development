@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!form.checkValidity()) {
             event.preventDefault();
             formError();
-            submitMSG(false, "Oops! Looks like you have a validation error. Check for errors in the form.");
+            showAlert(false, "Oops! Looks like you have a validation error. Check for errors in the form.");
         } else {
             event.preventDefault();
             submitForm();
@@ -28,26 +28,26 @@ function submitForm() {
             formSuccess();
         } else {
             formError();
-            submitMSG(false, text);
+            showAlert(false, text);
         }
     })
     .catch(error => {
-        submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
+        formError();
+        showAlert(false, "Oops! An error occurred processing the form. Please try again later.");
         console.log(error);
     });
 }
 
 function formSuccess() {
     document.getElementById('frmJoin').reset();
-    submitMSG(true, "Thanks for submitting your information. We will reply back shortly.");
+    showAlert(true, "Thanks for submitting your information. We will reply back shortly.");
 }
 
 function formError() {
     const form = document.getElementById('frmJoin');
-    form.classList.remove(...form.classList);
     form.classList.add('shake', 'animated');
     function removeClasses() {
-        form.classList.remove(...form.classList);
+        form.classList.remove('shake', 'animated');
         form.removeEventListener('animationend', removeClasses);
         form.removeEventListener('webkitAnimationEnd', removeClasses);
         form.removeEventListener('mozAnimationEnd', removeClasses);
@@ -61,15 +61,10 @@ function formError() {
     form.addEventListener('oanimationend', removeClasses);
 }
 
-function submitMSG(valid, msg) {
-    const msgSubmit = document.getElementById('msgSubmit');
-    let msgClasses;
-    if (valid) {
-        msgClasses = ['h4', 'tada', 'animated', 'text-success'];
-    } else {
-        msgClasses = ['h4', 'text-danger'];
-    }
-    msgSubmit.className = '';
-    msgSubmit.classList.add(...msgClasses);
-    msgSubmit.textContent = msg;
+function showAlert(valid, msg) {
+    const alertBox = document.getElementById('formAlert');
+    alertBox.className = 'alert alert-dismissible fade show';
+    alertBox.classList.add(valid ? 'alert-success' : 'alert-danger');
+    alertBox.innerHTML = `${msg} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    alertBox.classList.remove('d-none');
 }
