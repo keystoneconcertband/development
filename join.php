@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new members! Will you join us?">
 
     <title>Join the band - Keystone Concert Band</title>
 
     <?php require_once 'includes/common_css.php'; ?>
-    <!--<link rel="stylesheet" href="/css/checkboxes.min.css" />-->
-</head>
+  </head>
 
-<body>
-
+  <body>
     <?php require_once 'includes/nav.php'; ?>
     <div class="container">
         <div class="row">
@@ -29,7 +26,7 @@
                 <div class="page-header">
                     <h2>Join us</h2>
                 </div>
-                The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
+                <p>The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
                 organization. We welcome all wind band musicians, but have greater need for clarinet, bass clarinet,
                 euphonium, tuba, trombone, alto sax, baritone sax, trumpet, and percussion to fill out our sections. 
                 Band members range from teens to folks in their 80s, with varying levels of experience. 
@@ -90,128 +87,125 @@
                 <h3>Contact Us</h3>
                 <div id="formAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                 <form class="row g-3" id="frmJoin">
-                        <div class="d-none" aria-hidden="true">
-                            <label for="honeypot">Leave this field blank</label>
-                            <input type="text" class="form-control" id="honeypot" name="honeypot" autocomplete="off" tabindex="-1">
+                    <div class="d-none" aria-hidden="true">
+                        <label for="honeypot">Leave this field blank</label>
+                        <input type="text" class="form-control" id="honeypot" name="honeypot" autocomplete="off" tabindex="-1">
+                    </div>
+                    <div class="col-lg-12">
+                        If you are interested in joining the band, please fill out the form below with your
+                        contact information so we can get back to you.<br />
+                        <em>Fields marked with an * are required.</em>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name"
+                                required="true">
+                            <label for="floatingInput">* Name</label>
+                            <div class="invalid-feedback">Please enter a name</div>
                         </div>
-                        <div class="col-lg-12">
-                            If you are interested in joining the band, please fill out the form below with your
-                            contact information so we can get back to you.<br />
-                            <em>Fields marked with an * are required.</em>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-floating mb-3">
+                            <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
+                                placeholder="Phone Number" data-minlength="10" maxlength="10" required="true">
+                            <label for="floatingInput">* Phone Number</label>
+                            <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid 10-digit phone number.</div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name"
-                                    required="true">
-                                <label for="floatingInput">* Name</label>
-                               <div class="invalid-feedback">Please enter a name</div>
-                            </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="txtEmail" name="txtEmail"
+                                placeholder="Email Address" required="true">
+                            <label for="floatingInput">* Email Address</label>
+                            <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid email address.</div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
-                                    placeholder="Phone Number" data-minlength="10" maxlength="10" required="true">
-                                <label for="floatingInput">* Phone Number</label>
-                                <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid 10-digit phone number.</div>
-                            </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtPlayLength" name="txtPlayLength"
+                                placeholder="How long have you been playing?" required="true">
+                            <label for="floatingInput">* How long have you been playing?</label>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="txtEmail" name="txtEmail"
-                                    placeholder="Email Address" required="true">
-                                <label for="floatingInput">* Email Address</label>
-                                <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid email address.</div>
-                            </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div>
+                            <label class="form-label mt-4" for="chkInstrument">Instrument(s) played</label>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="txtPlayLength" name="txtPlayLength"
-                                    placeholder="How long have you been playing?" required="true">
-                                <label for="floatingInput">* How long have you been playing?</label>
-                                <div class="help-block with-errors"></div>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="baritone" value="baritone" name="chkInstrument[]">
+                            <label class="form-check-label" for="baritone">
+                                Baritone
+                            </label>
                         </div>
-                        <div class="col-lg-12">
-                            <div>
-                                <label class="form-label mt-4" for="chkInstrument">Instrument(s) played</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="baritone" value="baritone" name="chkInstrument[]">
-                                <label class="form-check-label" for="baritone">
-                                    Baritone
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="bassClarinet" value="bassClarinet" name="chkInstrument[]">
-                                <label class="form-check-label" for="bassClarinet">
-                                    Bass Clarinet
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="bassoon" value="bassoon" name="chkInstrument[]">
-                                <label class="form-check-label" for="bassoon">
-                                    Bassoon
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="clarinet" value="clarinet" name="chkInstrument[]">
-                                <label class="form-check-label" for="clarinet">
-                                    Clarinet
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="flute" value="flute" name="chkInstrument[]">
-                                <label class="form-check-label" for="flute">
-                                    Flute
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="frenchHorn" value="frenchHorn" name="chkInstrument[]">
-                                <label class="form-check-label" for="frenchHorn">
-                                    French Horn
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="saxophone" value="saxophone" name="chkInstrument[]">
-                                <label class="form-check-label" for="saxophone">
-                                    Saxophone
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="trombone" value="trombone" name="chkInstrument[]">
-                                <label class="form-check-label" for="trombone">
-                                    Trombone
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
-                                <label class="form-check-label" for="trumpet">
-                                    Trumpet
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
-                                <label class="form-check-label" for="tuba">
-                                    Tuba
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="percussion" value="percussion" name="chkInstrument[]">
-                                <label class="form-check-label" for="percussion">
-                                    Percussion
-                                </label>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="bassClarinet" value="bassClarinet" name="chkInstrument[]">
+                            <label class="form-check-label" for="bassClarinet">
+                                Bass Clarinet
+                            </label>
                         </div>
-                        <div class="help-block with-errors"></div>
-                        <div class="col-lg-12">
-                            <label for="exampleTextarea" class="form-label mt-4">Additional Comments/Questions</label>
-                            <textarea class="form-control" id="txtComments" name="txtComments" rows="3"></textarea>
-                            <div class="help-block with-errors"></div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="bassoon" value="bassoon" name="chkInstrument[]">
+                            <label class="form-check-label" for="bassoon">
+                                Bassoon
+                            </label>
                         </div>
-                        <br />
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clarinet" value="clarinet" name="chkInstrument[]">
+                            <label class="form-check-label" for="clarinet">
+                                Clarinet
+                            </label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="flute" value="flute" name="chkInstrument[]">
+                            <label class="form-check-label" for="flute">
+                                Flute
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="frenchHorn" value="frenchHorn" name="chkInstrument[]">
+                            <label class="form-check-label" for="frenchHorn">
+                                French Horn
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="saxophone" value="saxophone" name="chkInstrument[]">
+                            <label class="form-check-label" for="saxophone">
+                                Saxophone
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="trombone" value="trombone" name="chkInstrument[]">
+                            <label class="form-check-label" for="trombone">
+                                Trombone
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="trumpet" value="trumpet" name="chkInstrument[]">
+                            <label class="form-check-label" for="trumpet">
+                                Trumpet
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="tuba" value="tuba" name="chkInstrument[]">
+                            <label class="form-check-label" for="tuba">
+                                Tuba
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="percussion" value="percussion" name="chkInstrument[]">
+                            <label class="form-check-label" for="percussion">
+                                Percussion
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <label for="exampleTextarea" class="form-label mt-4">Additional Comments/Questions</label>
+                        <textarea class="form-control" id="txtComments" name="txtComments" rows="3"></textarea>
+                    </div>
+                    <br />
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </form>
             </div>
         </div>
