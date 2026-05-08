@@ -112,6 +112,8 @@ class KCBPublic
 
         if (!isset($joinArray['txtName'])) {
             $response = "Name is required.";
+        } elseif (!empty($joinArray['honeypot'])) {
+            $response = "Invalid request.";
         } elseif (!empty($joinArray['txtPhone']) && strlen($joinArray['txtPhone']) < 10) {
             $response = "Phone number must be 10 digits.";
         } elseif (!isset($joinArray['txtEmail'])) {
