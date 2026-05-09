@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <?php require_once 'includes/asset.php'; ?>
     <?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new members! Will you join us?">
 
@@ -230,7 +231,7 @@
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="kcb-js/join.js"></script>
+    <script type="text/javascript" src="<?=asset('kcb-js/join.js')?>" ></script>
 </body>
 
 </html>

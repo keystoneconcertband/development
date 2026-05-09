@@ -1,5 +1,6 @@
 <?php
 include_once '../includes/class/protectedAdmin.class.php';
+require_once '../includes/asset.php';
 new protectedAdmin();
 ?>
 
@@ -56,6 +57,6 @@ new protectedAdmin();
 		var accountType = "<?=$_SESSION['accountType']?>";
 	</script>
 	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
-	<script type="text/javascript" src="/kcb-js/loginStats.js"></script>
+	<script type="text/javascript" src="<?=asset('/kcb-js/loginStats.js')?>" ></script>
   </body>
 </html>

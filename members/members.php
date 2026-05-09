@@ -1,5 +1,6 @@
 <?php
 include_once '../includes/class/protectedMember.class.php';
+require_once '../includes/asset.php';
 new ProtectedMember();
 ?>
 
@@ -241,6 +242,6 @@ new ProtectedMember();
 	</script>
 	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
-	<script type="text/javascript" src="/kcb-js/members-20260218.js"></script>
+	<script type="text/javascript" src="<?=asset('/kcb-js/members.js')?>" ></script>
   </body>
 </html>

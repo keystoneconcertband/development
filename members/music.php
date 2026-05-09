@@ -1,5 +1,6 @@
 <?php
 include_once '../includes/class/protectedMusic.class.php';
+require_once '../includes/asset.php';
 new ProtectedMusic();
 ?>
 
@@ -200,6 +201,6 @@ new ProtectedMusic();
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/moment-2.27.0/moment.min.js"></script>
 	<script type="text/javascript" src="/3rd-party/bootstrap-timepicker-4.17.47/bootstrap-datetimepicker.min.js"></script>
-	<script type="text/javascript" src="/kcb-js/music-20230825.js"></script>
+	<script type="text/javascript" src="<?=asset('/kcb-js/music.js')?>" ></script>
   </body>
 </html>

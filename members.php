@@ -1,5 +1,6 @@
 <?php
 	include_once('includes/class/member.class.php');
+	require_once 'includes/asset.php';
 	$mbr = new Member(false);
 ?>
 <!DOCTYPE html>
@@ -150,7 +151,7 @@
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script src="kcb-js/memberlogin-20190707.js"></script>
+    <script src="<?=asset('kcb-js/memberlogin.js')?>" ></script>
 </body>
 
 </html>

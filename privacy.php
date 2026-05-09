@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+	<?php require_once 'includes/asset.php'; ?>
 	<?php require_once 'includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new members! Will you join us?">
 
@@ -76,6 +77,6 @@
 
 	<?php require_once 'includes/common_js.php'; ?>
 	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
-	<script type="text/javascript" src="kcb-js/join.js"></script>
+	<script type="text/javascript" src="<?=asset('kcb-js/join.js')?>" ></script>
   </body>
 </html>
