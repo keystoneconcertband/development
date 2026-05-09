@@ -12,7 +12,7 @@ new Member(true);
     <title>Member Area - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link href="/css/member.css" rel="stylesheet">
+	<link href="<?= asset('/css/member.css') ?>" rel="stylesheet">
 
 	<style type="text/css">
 		a.kcb-a:hover {

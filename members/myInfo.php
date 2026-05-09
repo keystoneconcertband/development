@@ -13,7 +13,7 @@ new ProtectedMember();
     <title>My Personal Information - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link rel="stylesheet" href="/css/member.css">
+	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
     <link rel="stylesheet" href="/css/checkboxes.min.css"/>
     <style type="text/css">
 	    .extraEmailTemplate {

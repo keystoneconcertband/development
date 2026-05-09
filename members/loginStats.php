@@ -13,7 +13,7 @@ new protectedAdmin();
     <title>KCB Members - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link rel="stylesheet" href="/css/member.css">
+	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
     <link rel="stylesheet" href="/css/checkboxes.min.css"/>
 	<link rel="stylesheet" type="text/css" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
   </head>
