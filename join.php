@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h2>Join us</h2>
+                    <h2 class="border-bottom">Join us</h2>
                 </div>
                 <p>The Keystone Concert Band is always looking for solid, dependable musicians to become part of our
                     organization. We welcome all wind band musicians, but have greater need for clarinet, bass clarinet,
@@ -41,7 +41,7 @@
                     around 8-15 concerts per year. Musical selections vary widely, and include original wind
                     band compositions, marches, movie music, Broadway, and popular music medleys.
                 </p>
-                <h3>Frequently Asked Questions:</h3>
+                <h3 class="border-bottom">Frequently Asked Questions:</h3>
                 <ul>
                     <li><strong>How often do you practice?</strong><br />
                         We rehearse weekly, from early February through mid-December. We are off the last half of

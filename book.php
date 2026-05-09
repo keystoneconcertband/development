@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h2>Book a concert</h2>
+                    <h2 class="border-bottom">Book a concert</h2>
                 </div>
                 <p>The Keystone Concert Band plays a wide variety of music, and has performed in many different
                     locations.
@@ -38,7 +38,7 @@
                     form.
                     Please keep in mind that it is best to contact us at least 3-6 months before your event,
                     as we are filling dates as much as a year in advance.</p>
-                <h3>Contact Us</h3>
+                <h3 class="border-bottom">Contact Us</h3>
                 <form class="row g-3" id="frmBook">
                     <div class="d-none" aria-hidden="true">
                         <label for="honeypot">Leave this field blank</label>

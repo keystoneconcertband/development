@@ -37,73 +37,73 @@ new ProtectedMember();
 		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>My Information</h2>
 				</div>
 				<div class="well bs-component">
-					<form class="form-horizontal" id="memberInfo" data-bs-toggle="validator">
+					<form  id="memberInfo" data-bs-toggle="validator">
 						<fieldset>
 						    <legend>Personal Information</legend>
 						    <div class="form-group row">
 						      <div class="col-sm-12">
-						        <label for="txtFirstName" class="control-label">First Name</label>
+						        <label for="txtFirstName" class="form-label">First Name</label>
 						        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required="true" maxlength="50" data-error="First name is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 						    </div>
 						    <div class="form-group row">
 						      <div class="col-sm-12">
-						        <label for="txtLastName" class="control-label">Last Name</label>
+						        <label for="txtLastName" class="form-label">Last Name</label>
 						        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required="true" maxlength="50" data-error="Last name is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 						    </div>
 						    <div class="form-group row">
 						      <div class="col-lg-12">
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="displayFullName" value="1" name="displayFullName">
-				                        <label for="chkFullName"> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong>Firstname L</strong></em></label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="displayFullName" value="1" name="displayFullName">
+				                        <label class="form-check-label" for="chkFullName"> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong>Firstname L</strong></em></label>
 				                    </div>
 						      </div>
 						    </div>
 							<div class="form-group">
 						      <div class="col-sm-12">
-						        <label for="txtAddress" class="control-label">Address</label>
+						        <label for="txtAddress" class="form-label">Address</label>
 						        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" required="true" maxlength="255" data-error="Address is required.">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group row">
 						      <div class="col-sm-12">
-						        <label for="txtAddress2" class="control-label">Address 2</label>
+						        <label for="txtAddress2" class="form-label">Address 2</label>
 						        <input type="text" class="form-control" name="address2" id="address2" placeholder="Address 2" maxlength="255">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group row">
 						      <div class="col-sm-12">
-						        <label for="txtCity" class="control-label">City</label>
+						        <label for="txtCity" class="form-label">City</label>
 						        <input type="text" class="form-control" name="city" id="city" placeholder="City" required="true" maxlength="100">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group row">
 						      <div class="col-sm-2">
-						        <label for="txtState" class="control-label">State</label>
+						        <label for="txtState" class="form-label">State</label>
 						        <input type="text" class="form-control" name="state" id="state" placeholder="State" disabled="true" required="true" maxlength="2">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group row">
 						      <div class="col-sm-4">
-						        <label for="txtZip" class="control-label">Zip Code</label>
+						        <label for="txtZip" class="form-label">Zip Code</label>
 						        <input type="tel" class="form-control" name="zip" id="zip" placeholder="Zip Code" required="true" data-minlength="5" maxlength="5">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 						    <div class="form-group row emailContainers" id="emailContainer1">
 						      	<div class="col-sm-12">
-						        	<label for="Email" class="control-label">Email</label>
+						        	<label for="Email" class="form-label">Email</label>
 						        	<div class="input-group">
 										<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
 										<span class="input-group-text">
@@ -126,57 +126,57 @@ new ProtectedMember();
 						  <legend>Band Information</legend>
 							<div class="form-group row">
 						      <div class="col-sm-12">
-						        <label for="txtCellPhoneNbr" class="control-label">Cell Phone / Texting Notification Nbr</label>
+						        <label for="txtCellPhoneNbr" class="form-label">Cell Phone / Texting Notification Nbr</label>
 						        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" data-minlength="10" maxlength="13">
 								<div class="help-block with-errors"></div>
 						      </div>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="Instrument" class="control-label">Instrument(s)</label><br>
-									<div class="checkbox checkbox-success checkbox-inline" style="margin-left:10px;">
-				                        <input type="checkbox" id="baritone" value="baritone" name="instrument[]">
-				                        <label for="baritone"> Baritone</label>
+									<label for="Instrument" class="form-label">Instrument(s)</label><br>
+									<div class="form-check form-check-inline" style="margin-left:10px;">
+				                        <input type="checkbox" class="form-check-input" id="baritone" value="baritone" name="instrument[]">
+				                        <label class="form-check-label" for="baritone"> Baritone</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="bassClarinet" value="bassClarinet" name="instrument[]">
-				                        <label for="bassClarinet"> Bass Clarinet</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="bassClarinet" value="bassClarinet" name="instrument[]">
+				                        <label class="form-check-label" for="bassClarinet"> Bass Clarinet</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="bassoon" value="bassoon" name="instrument[]">
-				                        <label for="bassoon"> Bassoon</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="bassoon" value="bassoon" name="instrument[]">
+				                        <label class="form-check-label" for="bassoon"> Bassoon</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="clarinet" value="clarinet" name="instrument[]">
-				                        <label for="clarinet"> Clarinet</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="clarinet" value="clarinet" name="instrument[]">
+				                        <label class="form-check-label" for="clarinet"> Clarinet</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="flute" value="flute" name="instrument[]">
-				                        <label for="flute"> Flute</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="flute" value="flute" name="instrument[]">
+				                        <label class="form-check-label" for="flute"> Flute</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="frenchHorn" value="frenchHorn" name="instrument[]">
-				                        <label for="frenchHorn"> French Horn</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="frenchHorn" value="frenchHorn" name="instrument[]">
+				                        <label class="form-check-label" for="frenchHorn"> French Horn</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="saxophone" value="saxophone" name="instrument[]">
-				                        <label for="saxophone"> Saxophone</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="saxophone" value="saxophone" name="instrument[]">
+				                        <label class="form-check-label" for="saxophone"> Saxophone</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="trombone" value="trombone" name="instrument[]">
-				                        <label for="trombone"> Trombone</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="trombone" value="trombone" name="instrument[]">
+				                        <label class="form-check-label" for="trombone"> Trombone</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="trumpet" value="trumpet" name="instrument[]">
-				                        <label for="bassoon"> Trumpet</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="trumpet" value="trumpet" name="instrument[]">
+				                        <label class="form-check-label" for="bassoon"> Trumpet</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="tuba" value="tuba" name="instrument[]">
-				                        <label for="tuba"> Tuba</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="tuba" value="tuba" name="instrument[]">
+				                        <label class="form-check-label" for="tuba"> Tuba</label>
 				                    </div>
-				                    <div class="checkbox checkbox-success checkbox-inline">
-				                        <input type="checkbox" id="percussion" value="percussion" name="instrument[]">
-				                        <label for="percussion"> Percussion</label>
+				                    <div class="form-check form-check-inline">
+				                        <input type="checkbox" class="form-check-input" id="percussion" value="percussion" name="instrument[]">
+				                        <label class="form-check-label" for="percussion"> Percussion</label>
 				                    </div>
 								</div>
 							</div>

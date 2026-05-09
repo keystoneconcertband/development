@@ -30,7 +30,7 @@
 		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>Oops!</h2>
 				</div>
 				You need to be logged in to view this page. You will be redirected to the login page momentarily (or just <a href="../members.php">click here</a> to be taken there immediately).<br>

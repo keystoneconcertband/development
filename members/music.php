@@ -43,7 +43,7 @@ new ProtectedMusic();
 		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>Music</h2>
 							The number of plays starts with the first 2018 concert.
 				</div>
@@ -86,10 +86,10 @@ new ProtectedMusic();
 							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Concert</h5>
 						</div>
-						<div class="modal-body form-horizontal">
+						<div class="modal-body">
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="dpConcert" class="control-label">Date of concert*</label>
+									<label for="dpConcert" class="form-label">Date of concert*</label>
 									<div class="input-group date" id="dpConcert">
 										<input type="text" class="form-control" name="concert_date" id="concert_date" placeholder="Date of Concert" required="true" data-error="Date is required.">
 										<span class="input-group-text">
@@ -101,7 +101,7 @@ new ProtectedMusic();
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="concert_title" class="control-label">Title</label>
+									<label for="concert_title" class="form-label">Title</label>
 									<input type="text" class="form-control" name="concert_title" id="concert_title" placeholder="Title" value="" maxlength="255">
 									<div class="help-block with-errors"></div>
 								</div>
@@ -134,24 +134,24 @@ new ProtectedMusic();
 							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Add Music</h5>
 						</div>
-						<div class="modal-body form-horizontal">
+						<div class="modal-body">
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="title" class="control-label">Title*</label>
+									<label for="title" class="form-label">Title*</label>
 									<input type="text" class="form-control" name="title" id="title" placeholder="Title" value="" required="true" maxlength="255" data-error="Title is required.">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="notes" class="control-label">Notes</label>
+									<label for="notes" class="form-label">Notes</label>
 									<textarea class="form-control" id="notes" name="notes" placeholder="Notes" maxlength="2000" rows="3"></textarea>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="genre" class="control-label">Genre*</label>
+									<label for="genre" class="form-label">Genre*</label>
 									<select class="form-control" name="genre" id="genre" required="true">
 							            <option value="0" selected="Selected">Select type</option>
 							        </select>
@@ -160,14 +160,14 @@ new ProtectedMusic();
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="music_link" class="control-label">Link to music</label>
+									<label for="music_link" class="form-label">Link to music</label>
 									<input type="text" class="form-control" name="music_link" id="music_link" placeholder="Music Link" value="" maxlength="2000">
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-12">
-									<label for="dpLastPlayed" class="control-label">Last Played</label>
+									<label for="dpLastPlayed" class="form-label">Last Played</label>
 									<div class="input-group date" id="dpLastPlayed">
 										<input type="text" class="form-control" name="last_played" id="last_played" placeholder="Last Played" value="">
 										<span class="input-group-text">

@@ -39,7 +39,7 @@ new Member(true);
 		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>Welcome <?php echo $_SESSION["office"] . ' ' ?: "" ?><?php echo $_SESSION["firstName"] ?: 'Firstname'?> <?php echo $_SESSION["lastName"] ?: 'Lastname' ?>!</h2>
 				</div>
 				<div class='alert alert-info'><strong>Discord</strong><br />Please join us on Discord (a group chat platform) at <a href="https://discord.gg/Szux9TQ" target="_blank">https://discord.gg/Szux9TQ</a></div>
@@ -49,10 +49,10 @@ new Member(true);
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-4">
 				<a href="myInfo.php" class="kcb-a">
-					<div class="panel price panel-red">
-						<div class="panel-heading  text-center">
+					<div class="card price panel-red">
+						<div class="card-header  text-center">
 						<h3>My Info</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
@@ -62,10 +62,10 @@ new Member(true);
 				</a>
 			</div>
 			
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="members.php" class="kcb-a">
-					<div class="panel price panel-blue">
-						<div class="panel-heading arrow_box text-center">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="members.php">
+					<div class="card price panel-blue">
+						<div class="card-header arrow_box text-center">
 						<h3>Members</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
@@ -75,10 +75,10 @@ new Member(true);
 				</a>
 			</div>
 			
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="music.php" class="kcb-a">
-					<div class="panel price panel-green">
-						<div class="panel-heading arrow_box text-center">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="music.php">
+					<div class="card price panel-green">
+						<div class="card-header arrow_box text-center">
 						<h3>Music</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">
@@ -88,10 +88,10 @@ new Member(true);
 				</a>
 			</div>
 			
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="documents.php" class="kcb-a">
-					<div class="panel price panel-grey">
-						<div class="panel-heading arrow_box text-center">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-4">
+				<a href="documents.php">
+					<div class="card price panel-grey">
+						<div class="card-header arrow_box text-center">
 						<h3>Documents</h3>
 						</div>
 						<ul class="list-group list-group-flush text-center">

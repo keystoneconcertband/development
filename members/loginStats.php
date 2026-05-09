@@ -33,7 +33,7 @@ new protectedAdmin();
 		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>Login Satistics</h2>
 				</div>
 				<div class="row">
