@@ -14,8 +14,6 @@ new protectedAdmin();
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
   </head>
 
   <body>
@@ -34,7 +32,7 @@ new protectedAdmin();
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
 				<div class="mb-4 pb-2 border-bottom">
-					<h2>Login Satistics</h2>
+					<h2>Login Statistics</h2>
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
@@ -53,10 +51,10 @@ new protectedAdmin();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
+	<?php require '../includes/common_datatables.php'; ?>
 	<script type="text/javascript">
 		var accountType = "<?=$_SESSION['accountType']?>";
 	</script>
-	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
 	<script type="text/javascript" src="<?=asset('/kcb-js/loginStats.js')?>" ></script>
   </body>
 </html>
