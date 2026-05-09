@@ -109,9 +109,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Access to the member site requires that you be an active member with an email address.
-                            You can login to the site with the email address you have on file with us or use
-                            the Facebook Login button. <a href="privacy.php">Review the privacy page for what
-                                information we require from Facebook for authentication.</a>
+                            You can login to the site with the email address you have on file with us.
                             <br><br>
                             If you login with the email address and it's your first time, you'll be prompted to provide
                             additional authentication to access the site.
@@ -151,7 +149,7 @@
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script src="<?=asset('kcb-js/memberlogin.js')?>" ></script>
+    <script src="<?=asset('kcb-js/memberlogin.js')?>"></script>
 </body>
 
 </html>
