@@ -41,7 +41,7 @@ new Member(true);
                     platform) at <a href="https://discord.gg/Szux9TQ" target="_blank">https://discord.gg/Szux9TQ</a>
                 </div>
 				-->
-                The info on this little portal can help provide some additional information with the operation of the band.<br>
+                The info here can help provide some information with the operation of the band.<br>
             </div>
         </div>
         <div class="row">
