@@ -29,9 +29,10 @@
 			$validRequest = false;
 		}
 		else {
+			$emails = isset($_POST['email']) ? $_POST['email'] : [];
 			$emailExists = false;
 			// array_filter will filter out any "blank" entries.
-			foreach (array_filter($_POST['email']) as $vlu) {
+			foreach (array_filter($emails) as $vlu) {
 				if($vlu !== '') {
 					$emailExists = true;
 				}

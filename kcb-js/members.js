@@ -142,7 +142,10 @@ function addRecord() {
         }
     })
     .then(function (response) {
-        return response.text();
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        return response.json();
     })
     .then(function (text) {
         if (text === 'success') {
@@ -151,9 +154,9 @@ function addRecord() {
             formError(text);
         }
     })
-    .catch(function (xhr) {
+    .catch(function (error) {
+        console.log('Fetch error:', error);
         submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
-        console.log(xhr);
     });
 }
 
@@ -205,7 +208,10 @@ function editRecord() {
         }
     })
     .then(function (response) {
-        return response.text();
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        return response.json();
     })
     .then(function (text) {
         if (text === 'success') {
@@ -214,9 +220,9 @@ function editRecord() {
             formError(text);
         }
     })
-    .catch(function (xhr) {
+    .catch(function (error) {
+        console.log('Edit Fetch error:', error);
         submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
-        console.log(xhr);
     });
 }
 
@@ -233,7 +239,7 @@ function deleteRecord(title, uid) {
         }
     })
     .then(function (response) {
-        return response.text();
+        return response.json();
     })
     .then(function (text) {
         if (text === 'success') {
@@ -252,7 +258,7 @@ function formSuccess(text) {
     var pageAlert = document.getElementById('pageAlert');
     if (pageAlert) {
         pageAlert.className = 'alert alert-success alert-dismissible fade show';
-        pageAlert.innerHTML = 'Record saved<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        pageAlert.innerHTML = text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
         pageAlert.setAttribute('role', 'alert');
     }
     var table = $('#kcbMemberTable').DataTable();
