@@ -20,21 +20,12 @@ new ProtectedMember();
 
 	<?php require '../includes/nav.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1>Members</h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
 				<div class="mb-4 pb-2 border-bottom">
 					<h2>Inactive Members</h2>
 				</div>
-				<div class="row form-group row">
+				<div class="row mb-3">
 					<div class="col-sm-3">
 						<div class="bs-component">
 							<button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
@@ -44,7 +35,7 @@ new ProtectedMember();
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
 				</div>
-				<div class="row form-group row">
+				<div class="row mb-3">
 					<div class="col-sm-12">
 						<div id="msgMainHeader" class="h4 hidden"></div>
 					</div>
@@ -73,27 +64,27 @@ new ProtectedMember();
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Reinstate Member</h5>
+						<h5 class="modal-title">Reinstate Member</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<fieldset>
 							    <legend>Personal Information</legend>
-							    <div class="form-group row">
+							    <div class="row mb-3">
 							      <div class="col-sm-12">
 							        <label for="FirstName" class="form-label">First Name</label>
 							        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" value="" required="true" maxlength="50" data-error="First name is required.">
 									<div class="help-block with-errors"></div>
 							      </div>
 							    </div>
-							    <div class="form-group row">
+							    <div class="row mb-3">
 							      <div class="col-sm-12">
 							        <label for="LastName" class="form-label">Last Name</label>
 							        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" value="" required="true" maxlength="50" data-error="Last name is required.">
 									<div class="help-block with-errors"></div>
 							      </div>
 							    </div>
-							    <div class="form-group row">
+							    <div class="row mb-3">
 							      <div class="col-lg-12">
 					                    <div class="form-check form-check-inline">
 					                        <input type="checkbox" name="displayFullName" id="displayFullName" value="1">
@@ -101,42 +92,42 @@ new ProtectedMember();
 					                    </div>
 							      </div>
 							    </div>
-								<div class="form-group">
+								<div class="mb-3">
 							      <div class="col-sm-12">
 							        <label for="Address" class="form-label">Address</label>
 							        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" value="" required="true" maxlength="255" data-error="Address is required.">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group row">
+								<div class="row mb-3">
 							      <div class="col-sm-12">
 							        <label for="Address2" class="form-label">Address 2</label>
 							        <input type="text" class="form-control" name="address2" id="address2" placeholder="Address 2" value="" maxlength="255">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group row">
+								<div class="row mb-3">
 							      <div class="col-sm-12">
 							        <label for="City" class="form-label">City</label>
 							        <input type="text" class="form-control" name="city" id="city" placeholder="City" value="" required="true" maxlength="100">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group row">
+								<div class="row mb-3">
 							      <div class="col-sm-2">
 							        <label for="State" class="form-label">State</label>
 							        <input type="text" class="form-control" name="state" id="state" placeholder="State" value="PA" disabled="true" required="true" maxlength="2">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group row" id="zipContainer">
+								<div class="row mb-3" id="zipContainer">
 							      <div class="col-sm-4">
 							        <label for="Zip" class="form-label">Zip Code</label>
 							        <input type="tel" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="" required="true" data-minlength="5" maxlength="5">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-							    <div class="form-group row emailContainers" id="emailContainer1">
+							    <div class="row mb-3 emailContainers" id="emailContainer1">
 							      	<div class="col-sm-12">
 							        	<label for="Email" class="form-label">Email</label>
 							        	<div class="input-group">
@@ -147,26 +138,26 @@ new ProtectedMember();
 							        	</div>
 								    </div>
 							    </div>
-							    <div class="form-group row">
+							    <div class="row mb-3">
 									<div class="col-sm-12">
-										<button type="button" class="btn btn-light btn-xs" id="addRow">
+										<button type="button" class="btn btn-outline-secondary btn-sm" id="addRow">
 										  <span class="fa fa-plus" aria-hidden="true"></span> Add New Email
 										</button>
 									</div>
 							    </div>
 							</fieldset>
-							<div class="form-group row">
+							<div class="row mb-3">
 							</div>
 							<fieldset>
 							  <legend>Band Information</legend>
-								<div class="form-group row">
+								<div class="row mb-3">
 							      <div class="col-sm-12">
 							        <label for="CellPhoneNbr" class="form-label">Cell Phone / Texting Notification Nbr</label>
 							        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" value="" data-minlength="10" maxlength="13">
 									<div class="help-block with-errors"></div>
 							      </div>
 								</div>
-								<div class="form-group row">
+								<div class="row mb-3">
 									<div class="col-sm-12">
 										<label for="Instrument" class="form-label">Instrument(s)</label><br>
 										<div class="form-check form-check-inline" style="margin-left:10px;">

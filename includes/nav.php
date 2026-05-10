@@ -22,7 +22,7 @@
 	</nav>
 	<!-- secondary member nav -->
   <?php if(isset($_SESSION["email"]) && strpos($_SERVER['PHP_SELF'], '/members/') !== false) { ?>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="z-index:999;margin-bottom:0;">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom navbar-secondary">
 	  <div class="container-fluid">
 		<a class="navbar-brand" href="/members/index.php">Members</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#memberNavbar" aria-controls="memberNavbar" aria-expanded="false" aria-label="Toggle navigation">

@@ -21,15 +21,6 @@ new Member(true);
 
     <?php require '../includes/nav.php'; ?>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="bs-component">
-                    <div class="jumbotron">
-                        <h1>KCB Members</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row" style="margin-bottom: 20px;">
             <div class="col-lg-12">
                 <div class="mb-4 pb-2 border-bottom">
