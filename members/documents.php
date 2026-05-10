@@ -14,8 +14,6 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
   </head>
 
   <body>
@@ -26,7 +24,7 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 			<div class="col-lg-12">
 				<div class="bs-component">
 					<div class="jumbotron">
-						<h1>Members</h1>
+						<h1 class="card-title">Members</h1>
 					</div>
 				</div>
 			</div>
@@ -39,13 +37,13 @@ $membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 				<div class="row form-group row">
 					<div class="alert alert-info">
 					<span class="fa fa-info-circle"></span> <strong>Please review both the
-					  <a href="documents_perm/KCB_Bylaws_2021.pdf" target="_blank" style="text-decoration: underline; color: yellow">KCB By Laws</a>, and the 
-					  <a href="documents_perm/KCB_Policy_March_2023.pdf" target="_blank" style="text-decoration: underline; color: yellow">Band Policies</a>.
+					  <a href="documents_perm/KCB_Bylaws_2021.pdf" target="_blank">KCB By Laws</a>, and the 
+					  <a href="documents_perm/KCB_Policy_March_2023.pdf" target="_blank">Band Policies</a>.
 						</strong>
 					</div>
 				</div>
-				<div class="embed-responsive embed-responsive-16by9">
-				  <iframe class="embed-responsive-item" src="tinyfilemanager.php" allowfullscreen></iframe>
+				<div class="ratio ratio-16x9">
+				  <iframe src="tinyfilemanager.php" allowfullscreen></iframe>
 				</div>
 			</div>
 		</div>
