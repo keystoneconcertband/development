@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     var table = $('#kcbLogonTable').DataTable({
-        responsive: true,
         order: [2, 'desc'],
         ajax: {
             url: 'loginStatsServer.php',

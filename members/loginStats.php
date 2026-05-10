@@ -38,9 +38,11 @@ new protectedAdmin();
 					<div class="col-lg-12">
 						<table id="kcbLogonTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
-								<th>Login ID</th>
-								<th>Status</th>
-								<th>Date/Time</th>
+								<tr>
+									<th>Login ID</th>
+									<th>Status</th>
+									<th>Date/Time</th>
+								</tr>
 							</thead>
 						</table>
 					</div>
