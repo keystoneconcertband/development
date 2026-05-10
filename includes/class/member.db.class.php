@@ -78,7 +78,7 @@ class MemberDB
     // Gets all active members
     public function getActiveMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
+        return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
                                         a.address1, a.address2, a.city, a.state, a.zip, m.office,
                                         GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
@@ -97,7 +97,7 @@ class MemberDB
     // Gets all inactive members
     public function getInactiveMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
+        return $this->getDb()->query("SELECT m.uid, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
                                         a.address1, a.address2, a.city, 'PA' as state, a.zip,
                                         m.disabled_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
@@ -115,7 +115,7 @@ class MemberDB
     // Gets all pending members
     public function getPendingMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
+        return $this->getDb()->query("SELECT m.uid, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.estbd_dt_tm,
                                         GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
                                       FROM kcb_members m

@@ -14,8 +14,6 @@ new ProtectedMember();
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
   </head>
 
   <body>
@@ -61,13 +59,15 @@ new ProtectedMember();
 					<div class="col-lg-12">
 						<table id="kcbMemberTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
-								<th></th>
-								<th>Name</th>
-								<th>Email Address(es)</th>
-								<th>Instrument</th>
-								<th>Cell Phone</th>
-								<th>Address</th>
-								<th>Volunteer Position</th>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Email Address(es)</th>
+									<th>Instrument</th>
+									<th>Cell Phone</th>
+									<th>Address</th>
+									<th>Volunteer Position</th>
+								</tr>
 							</thead>
 						</table>
 					</div>
@@ -240,8 +240,7 @@ new ProtectedMember();
 	<script type="text/javascript">
 		var accountType = "<?=$_SESSION['accountType']?>";
 	</script>
-	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
-	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
+	<?php require '../includes/common_datatables.php'; ?>
 	<script type="text/javascript" src="<?=asset('/kcb-js/members.js')?>" ></script>
   </body>
 </html>
