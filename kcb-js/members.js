@@ -344,3 +344,22 @@ function populateInstrument(data) {
         }
     }
 }
+function printMembers() {
+	var win = window.open('membersPrint.php', "Print Members", "menubar=0,location=0,height=700,width=700");
+}
+
+// Get the phone input field
+const phoneInput = document.getElementById('text');
+
+// Listen for input changes
+phoneInput.addEventListener('input', function () {
+	try {
+	// Remove all non-digit characters (including dashes, spaces, parentheses)
+	const cleaned = this.value.replace(/\D/g, '');
+
+	// Update the field with cleaned value
+	this.value = cleaned;
+	} catch (err) {
+		console.error('Error cleaning phone number:', err);
+	}
+});
