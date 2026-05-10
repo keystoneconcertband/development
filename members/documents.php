@@ -1,7 +1,6 @@
 <?php
 include_once '../includes/class/protectedMember.class.php';
 new ProtectedMember();
-$membersPathURL = 'https://' . $_SERVER['HTTP_HOST'] . "/members"
 ?>
 
 <!DOCTYPE html>
