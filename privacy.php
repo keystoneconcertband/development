@@ -8,7 +8,6 @@
     <title>Privacy Policy - Keystone Concert Band</title>
 
 	<?php require_once 'includes/common_css.php'; ?>
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
 	
 	<style type="text/css">
 		.row .col-lg-12 ul li {
@@ -21,15 +20,6 @@
 
 	<?php require_once 'includes/nav.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1 class="display-5">Privacy</h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
@@ -76,7 +66,5 @@
 	</div> <!-- /container -->
 
 	<?php require_once 'includes/common_js.php'; ?>
-	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
-	<script type="text/javascript" src="<?=asset('kcb-js/join.js')?>" ></script>
   </body>
 </html>

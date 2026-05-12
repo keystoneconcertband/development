@@ -13,8 +13,6 @@ new protectedAdmin();
 
 	<?php require '../includes/common_css.php'; ?>
 	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
   </head>
 
   <body>
@@ -36,7 +34,5 @@ new protectedAdmin();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
-	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
-	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
   </body>
 </html>

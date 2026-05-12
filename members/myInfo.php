@@ -128,60 +128,60 @@ new ProtectedMember();
                             <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <label for="Instrument" class="form-label">Instrument(s)</label><br>
-                                    <div class="form-check form-check-inline" style="margin-left:10px;">
+                                    <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="baritone" value="baritone"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="baritone"> Baritone</label>
+                                        <label class="form-check-label" for="baritone">Baritone</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="bassClarinet"
                                             value="bassClarinet" name="instrument[]">
-                                        <label class="form-check-label" for="bassClarinet"> Bass Clarinet</label>
+                                        <label class="form-check-label" for="bassClarinet">Bass Clarinet</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="bassoon" value="bassoon"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="bassoon"> Bassoon</label>
+                                        <label class="form-check-label" for="bassoon">Bassoon</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="clarinet" value="clarinet"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="clarinet"> Clarinet</label>
+                                        <label class="form-check-label" for="clarinet">Clarinet</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="flute" value="flute"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="flute"> Flute</label>
+                                        <label class="form-check-label" for="flute">Flute</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="frenchHorn"
                                             value="frenchHorn" name="instrument[]">
-                                        <label class="form-check-label" for="frenchHorn"> French Horn</label>
+                                        <label class="form-check-label" for="frenchHorn">French Horn</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="saxophone" value="saxophone"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="saxophone"> Saxophone</label>
+                                        <label class="form-check-label" for="saxophone">Saxophone</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="trombone" value="trombone"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="trombone"> Trombone</label>
+                                        <label class="form-check-label" for="trombone">Trombone</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="trumpet" value="trumpet"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="bassoon"> Trumpet</label>
+                                        <label class="form-check-label" for="trumpet">Trumpet</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="tuba" value="tuba"
                                             name="instrument[]">
-                                        <label class="form-check-label" for="tuba"> Tuba</label>
+                                        <label class="form-check-label" for="tuba">Tuba</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="percussion"
                                             value="percussion" name="instrument[]">
-                                        <label class="form-check-label" for="percussion"> Percussion</label>
+                                        <label class="form-check-label" for="percussion">Percussion</label>
                                     </div>
                                 </div>
                             </div>
@@ -202,8 +202,6 @@ new ProtectedMember();
     </div> <!-- /container -->
 
     <?php require '../includes/common_js.php'; ?>
-    <script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js">
-    </script>
     <script type="text/javascript" src="<?=asset('/kcb-js/myInfo.js')?>"></script>
 </body>
 
