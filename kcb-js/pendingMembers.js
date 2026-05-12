@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var lastId = lastContainer.id.replace('emailContainer', '');
             var lastIdInt = parseInt(lastId, 10);
             var emailCount = lastIdInt + 1;
-            var html = '<div class="form-group row emailContainers" id="emailContainer' + emailCount + '" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value=""><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>';
+            var html = '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '" style="display:none"><div class="col-sm-12"><label for="Email" class="form-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value=""><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>';
             lastContainer.insertAdjacentHTML('afterend', html);
             var newContainer = document.getElementById('emailContainer' + emailCount);
             if (newContainer) {
@@ -95,7 +95,7 @@ if (modalEditDelete) {
         });
         var zipContainer = document.getElementById('zipContainer');
         if (zipContainer) {
-            zipContainer.insertAdjacentHTML('afterend', '<div class="form-group row emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="control-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-text"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
+            zipContainer.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="form-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-text"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
         }
     });
 }

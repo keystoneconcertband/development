@@ -1,23 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    $('#dpStartDt').datetimepicker({
-        format: 'L',
-        showTodayButton: true,
-        showClear: true,
-        showClose: true
-    });
-
-    $('#dpEndDt').datetimepicker({
-        format: 'L',
-        showTodayButton: true,
-        showClear: true,
-        showClose: true
-    });
-
-    $('#kcbMessageTable').validator();
     var table = $('#kcbMessageTable').DataTable({
         responsive: true,
-        stateSave: true,
-        order: [1, 'asc'],
+        order: [4, 'desc'],
         ajax: {
             url: 'homepageMessageServer.php',
             dataSrc: ''

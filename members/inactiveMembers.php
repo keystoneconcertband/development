@@ -27,17 +27,15 @@ new ProtectedMember();
 				</div>
 				<div class="row mb-3">
 					<div class="col-sm-3">
-						<div class="bs-component">
-							<button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
-						</div>
+						<button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
 					</div>
 					<div class="col-sm-9">
-						<div id="msgMainHeader" class="h4 hidden"></div>
+						<div id="msgMainHeader" class="h4 d-none"></div>
 					</div>
 				</div>
 				<div class="row mb-3">
 					<div class="col-sm-12">
-						<div id="msgMainHeader" class="h4 hidden"></div>
+						<div id="msgMainHeader" class="h4 d-none"></div>
 					</div>
 				</div>
 				<div class="row">
@@ -59,12 +57,12 @@ new ProtectedMember();
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modal_edit_delete" role="dialog">
-			<form id="form_member" data-bs-toggle="validator">
+		<div class="modal fade" id="modal_edit_delete" tabindex="-1" aria-labelledby="modalEditDeleteLabel" aria-hidden="true">
+			<form id="form_member" data-toggle="validator">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-						<h5 class="modal-title">Reinstate Member</h5>
+						<h5 class="modal-title" id="modalEditDeleteLabel">Reinstate Member</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -209,7 +207,7 @@ new ProtectedMember();
 							</fieldset>
 						</div>
 						<div class="modal-footer">
-							<div id="msgSubmit" class="h4 hidden"></div>
+							<div id="msgSubmit" class="h4 d-none"></div>
 							<input type="hidden" id="uid" name="uid" value="" />
 							<button type="submit" class="btn btn-primary">Save changes</button>
 							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

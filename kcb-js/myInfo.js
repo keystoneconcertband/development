@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var lastId = lastContainer.id.replace('emailContainer', '');
             var lastIdInt = parseInt(lastId, 10);
             var emailCount = lastIdInt + 1;
-            var html = '<div class="form-group row emailContainers" id="emailContainer' + emailCount + '" style="display:none"><div class="col-sm-12"><label for="Email" class="control-label">Email ' + emailCount + '</label><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value=""></div></div>';
+            var html = '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '" style="display:none"><div class="col-sm-12"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value=""></div></div>';
             lastContainer.insertAdjacentHTML('afterend', html);
             var newContainer = document.getElementById('emailContainer' + emailCount);
             if (newContainer) {
@@ -148,7 +148,7 @@ function populateEmail(data) {
                 } else {
                     var container = document.getElementById('emailContainer' + i);
                     if (container) {
-                        container.insertAdjacentHTML('afterend', '<div class="form-group row emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><label for="Email" class="control-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
+                        container.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
                     }
                 }
             }

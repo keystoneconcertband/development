@@ -1,45 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    $("#concert_title").autocomplete({
-        source: "musicTitleSearch.php",
-        minLength: 2,
-        select: function(event, ui) {
-            document.querySelectorAll('#concert_program_list #concert_program_empty').forEach(function(el) {
-                el.remove();
-            });
-
-            var concertUids = document.getElementById('concert_uids');
-            if (concertUids && concertUids.value.indexOf(ui.item.value) < 0) {
-                document.getElementById('concert_program_list').insertAdjacentHTML('beforeend', '<li>' + ui.item.label + '</li>');
-                if (concertUids.value === '') {
-                    concertUids.value = ui.item.value;
-                } else {
-                    concertUids.value = concertUids.value + ',' + ui.item.value;
-                }
-            }
-            document.getElementById('concert_title').value = '';
-            return false;
-        }
-    });
-
-    $('#dpLastPlayed').datetimepicker({
-        format: 'L',
-        minDate: '1/1/2000',
-        maxDate: moment().add(1, 'days'),
-        showTodayButton: true,
-        showClear: true,
-        showClose: true
-    });
-
-    $('#dpConcert').datetimepicker({
-        format: 'L',
-        minDate: '1/1/2000',
-        maxDate: moment().add(7, 'days'),
-        showTodayButton: true,
-        showClear: true,
-        showClose: true
-    });
-
-    $('#kcbMusicTable').validator();
     var table = $('#kcbMusicTable').DataTable({
         responsive: true,
         stateSave: true,
@@ -65,13 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return '<a href="http://www.youtube.com/results?search_query=' + data.title + '" target="_blank">http://www.youtube.com/results?search_query=' + data.title + '</a><br />';
             }},
             { data: 'genre' },
-            { data: 'last_played' },
-            { data: null, render: function (data) {
-                if (data.number_plays) {
-                    return data.number_plays;
-                }
-                return '0';
-            }}
         ]
     });
 

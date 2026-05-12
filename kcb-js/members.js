@@ -326,7 +326,7 @@ function populateEmail(data) {
                 } else {
                     var container = document.getElementById('emailContainer' + i);
                     if (container) {
-                        container.insertAdjacentHTML('afterend', '<div class="form-group row emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
+                        container.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
                     }
                 }
             }

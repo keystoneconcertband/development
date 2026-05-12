@@ -21,21 +21,12 @@ new protectedAdmin();
 
 	<?php require '../includes/nav.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1>Members</h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
 				<div class="mb-4 pb-2 border-bottom">
 					<h2>Text Message Members</h2>
 				</div>
-				<div class="well bs-component">
+				<div class="p-4 mb-4 bg-light rounded-3">
 					Messaging is now located at <a href="https://www.callmultiplier.com/login.php">Call Multiplier</a>.
 					Contact Jonathan if you require access.
 				</div>

@@ -20,15 +20,6 @@ new ProtectedAdmin();
 
 	<?php require '../includes/nav.php'; ?>
 	<div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="bs-component">
-                    <div class="jumbotron">
-                        <h1>Members</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
 				<div class="mb-4 pb-2 border-bottom">
@@ -52,12 +43,12 @@ new ProtectedAdmin();
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modal_edit_delete" role="dialog">
-			<form id="form_member" data-bs-toggle="validator">
+		<div class="modal fade" id="modal_edit_delete" tabindex="-1" aria-labelledby="modalEditDeleteLabel" aria-hidden="true">
+			<form id="form_member" data-toggle="validator">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-						<h5 class="modal-title">Add Member</h5>
+						<h5 class="modal-title" id="modalEditDeleteLabel">Add Member</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -202,7 +193,7 @@ new ProtectedAdmin();
 							</fieldset>
 						</div>
 						<div class="modal-footer">
-							<div id="msgSubmit" class="h4 hidden"></div>
+							<div id="msgSubmit" class="h4 d-none"></div>
 							<input type="hidden" id="uid" name="uid" value="" />
 							<button type="submit" class="btn btn-primary">Save changes</button>
 							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

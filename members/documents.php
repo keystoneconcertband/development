@@ -19,21 +19,12 @@ new ProtectedMember();
 
 	<?php require '../includes/nav.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1 class="card-title">Members</h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
 				<div class="mb-4 pb-2 border-bottom">
 					<h2>Documents</h2>
 				</div>
-				<div class="row form-group row">
+				<div class="row mb-3">
 					<div class="alert alert-info">
 					<span class="fa fa-info-circle"></span> <strong>Please review both the
 					  <a href="documents_perm/KCB_Bylaws_2021.pdf" target="_blank">KCB By Laws</a>, and the 
