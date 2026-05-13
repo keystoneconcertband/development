@@ -3,6 +3,10 @@
 
 name: Azure Deploy prod
 
+permissions:
+  contents: read
+  actions: read
+
 on:
   push:
     branches:
