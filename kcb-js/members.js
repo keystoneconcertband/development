@@ -123,6 +123,15 @@ if (formMember) {
 var modalEditDelete = document.getElementById("modal_edit_delete");
 if (modalEditDelete) {
   modalEditDelete.addEventListener("show.bs.modal", function () {
+    var firstName = document.getElementById("firstName");
+    var modalEditDeleteLabel = document.getElementById("modalEditDeleteLabel");
+    if(firstName.value !== "") {
+      modalEditDeleteLabel.textContent = "Edit Member";
+    }
+    else {
+      modalEditDeleteLabel.textContent = "Add Member";
+    }
+
     var formAlert = document.getElementById("formAlert");
     if (formAlert) {
       formAlert.className = "alert d-none alert-dismissible fade show";

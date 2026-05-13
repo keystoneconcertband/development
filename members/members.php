@@ -31,7 +31,7 @@ new ProtectedMember();
                     <div class="col-sm-3">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#modal_edit_delete">Add Member</button>
-                        <button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
+                        <button type="button" class="btn btn-light fa fa-print btn-lg" onclick="printMembers()"></button>
                     </div>
                     <div class="col-sm-9">
                     </div>
@@ -39,7 +39,7 @@ new ProtectedMember();
                 <?php } else { ?>
                 <div class="row mb-3">
                     <div class="col-sm-12">
-                        <button type="button" class="btn btn-info fa fa-print" onclick="printMembers()"></button>
+                        <button type="button" class="btn btn-light fa fa-print btn-lg" onclick="printMembers()"></button>
                     </div>
                 </div>
                 <?php } ?>
