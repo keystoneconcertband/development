@@ -136,8 +136,14 @@ new ProtectedMember();
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                        	</fieldset>
+							<div class="row mb-3">
+							</div>
+							<fieldset>
+								<legend>Contact Information</legend>
+                                <div class="row mb-3" id="textContainer">
                                     <div class="col-sm-12">
+						        	    <label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
                                         <input type="tel" class="form-control" name="text" id="text"
                                             placeholder="Cell Phone Number" value="" data-minlength="10" maxlength="13">
                                         <div class="help-block with-errors"></div>
@@ -145,6 +151,7 @@ new ProtectedMember();
                                 </div>
                                 <div class="row mb-3 emailContainers" id="emailContainer1">
                                     <div class="col-sm-12">
+    						        	<label for="email" class="form-label">Email Address(es)</label>
                                         <div class="input-group">
                                             <input type="email" class="form-control email1" name="email[]" id="email[]"
                                                 placeholder="Email Address" maxlength="100">

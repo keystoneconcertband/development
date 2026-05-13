@@ -32,6 +32,7 @@ new ProtectedMember();
                 <div class="mb-4 pb-2 border-bottom">
                     <h2>My Information</h2>
                 </div>
+                <div id="pageAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                 <div class="p-4 mb-4 bg-light rounded-3">
                     <form id="memberInfo" data-toggle="validator">
                         <fieldset>
@@ -54,7 +55,7 @@ new ProtectedMember();
                                         <input type="checkbox" class="form-check-input" id="displayFullName" value="1"
                                             name="displayFullName">Display your
                                                 <strong>full name</strong> on website. <em>If unselected your name
-                                                    will be displayed as <strong>Firstname L.</strong></em></label>
+                                                    will be displayed as <strong><span id="spanFirstname">Firstname</span> <span id="spanLastInitial">L</span>.</strong></em>
                                     </div>
                                 </div>
                             </div>
@@ -71,37 +72,37 @@ new ProtectedMember();
                                         placeholder="Address 2" maxlength="255">
                                 </div>
                             </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" name="city" id="city" placeholder="City"
-                                            value="" required="true" maxlength="100">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="state" id="state"
-                                            placeholder="State" value="PA" disabled="true" required="true"
-                                            maxlength="2">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <input type="tel" class="form-control" name="zip" id="zip"
-                                            placeholder="Zip Code" value="" required="true" data-minlength="5"
-                                            maxlength="5">
-                                    </div>
-                                </div>
-                        </fieldset>
+							<div class="row mb-3">
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="city" id="city" placeholder="City"
+										value="" required="true" maxlength="100">
+								</div>
+								<div class="col-sm-2">
+									<input type="text" class="form-control" name="state" id="state"
+										placeholder="State" value="PA" disabled="true" required="true"
+										maxlength="2">
+								</div>
+								<div class="col-sm-4">
+									<input type="tel" class="form-control" name="zip" id="zip"
+										placeholder="Zip Code" value="" required="true" data-minlength="5"
+										maxlength="5">
+								</div>
+							</div>
+						</fieldset>
                         <div class="row mb-3">
                         </div>
                         <fieldset>
                             <legend>Contact Information</legend>
                             <div class="row mb-3">
                                 <div class="col-sm-12">
-						        	<label for="txtCellPhoneNbr" class="form-label">Cell Phone / Texting Notification Nbr</label>
+						        	<label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
                                     <input type="tel" class="form-control" name="text" id="text"
                                         placeholder="Cell Phone Number" data-minlength="10" maxlength="13">
                                 </div>
                             </div>
                             <div class="row mb-3 emailContainers" id="emailContainer1">
                                 <div class="col-sm-12">
-						        	<label for="txtCellPhoneNbr" class="form-label">Email Address(es)</label>
+						        	<label for="email" class="form-label">Email Address(es)</label>
                                     <div class="input-group">
                                         <input type="email" class="form-control email1" name="email[]" id="email[]"
                                             placeholder="Email Address" maxlength="100">
