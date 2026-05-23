@@ -51,31 +51,6 @@ class ProtectedMusic
         }
     }
 
-    public function addConcert($concert)
-    {
-        if ($this->validAdmin()) {
-            $concert_uids = explode(",", $concert['concert_uids']);
-            if (!is_array($concert_uids)) {
-                return "Invalid concert UIDs format.";
-            }
-            $concert_date = $concert['concert_date'];
-
-            foreach ($concert_uids as $uid) {
-                // Verify that this concert value isn't already in the database
-                if ($this->getDb()->getLastPlayedDatesByDate($uid, $concert_date) === 0) {
-                    // Add concert to database
-                    if (!$this->getDb()->addConcert($uid, $concert_date, $_SESSION['email'])) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        } else {
-            return "Access Denied";
-        }
-    }
-
     public function deleteMusic($uid)
     {
         if ($this->validAdmin()) {
@@ -89,14 +64,14 @@ class ProtectedMusic
         }
     }
 
-    public function addMusic($title, $notes, $link, $genre, $last_played)
+    public function addMusic($title, $notes, $link, $genre)
     {
         if ($this->validAdmin()) {
             // TODO: need to handle reactivating deleted titles
             if ($this->getDb()->checkDupMusic($title) > 0) {
                 return "This title already exists.";
             } else {
-                $retValue = $this->getDb()->addMusic($title, $notes, $link, $genre, $last_played, $_SESSION['email']);
+                $retValue = $this->getDb()->addMusic($title, $notes, $link, $genre, $_SESSION['email']);
                 if ($retValue === 1) {
                     return "success";
                 } else {
@@ -106,8 +81,6 @@ class ProtectedMusic
                         return "Error adding music. Please try again later";
                     } elseif ($retValue == "insert_music_error") {
                         return "Error inserting values into the music table. Please try again later.";
-                    } elseif ($retValue == "insert_music_last_played_error") {
-                        return "Error inserting values into the music last played table. Please try again later.";
                     } else {
                         return "Unknown error.";
                     }
@@ -118,10 +91,10 @@ class ProtectedMusic
         }
     }
 
-    public function editMusic($uid, $title, $notes, $link, $genre, $last_played)
+    public function editMusic($uid, $title, $notes, $link, $genre)
     {
         if ($this->validAdmin()) {
-            $retValue = $this->getDb()->editMusic($uid, $title, $notes, $link, $genre, $last_played, $_SESSION['email']);
+            $retValue = $this->getDb()->editMusic($uid, $title, $notes, $link, $genre, $_SESSION['email']);
             if ($retValue === 1) {
                 return "success";
             } else {
@@ -131,8 +104,6 @@ class ProtectedMusic
                     return "Error adding music. Please try again later";
                 } elseif ($retValue == "insert_music_error") {
                     return "Error inserting values into the music table. Please try again later.";
-                } elseif ($retValue == "insert_music_last_played_error") {
-                    return "Error inserting values into the music last played table. Please try again later.";
                 } else {
                     return "Unknown error.";
                 }

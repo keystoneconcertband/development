@@ -34,17 +34,14 @@ new ProtectedMusic();
             <div class="col-lg-12">
                 <div class="mb-4 pb-2 border-bottom">
                     <h2>Music</h2>
-                    The number of plays starts with the first 2018 concert.
                 </div>
-
+                <div id="pageAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                 <?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
                 <div class="row mb-3">
                     <div class="col-sm-3">
                         <div>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#modal_add_edit">Add Music</button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modal_concert">Concert</button>
                         </div>
                     </div>
                     <div class="col-sm-9">
@@ -70,55 +67,6 @@ new ProtectedMusic();
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal_concert" tabindex="-1" aria-labelledby="modalConcertLabel" aria-hidden="true">
-            <form id="form_concert" class="needs-validation" novalidate>
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalConcertLabel">Concert</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row mb-3">
-                                <div class="col-sm-12">
-                                    <label for="dpConcert" class="form-label">Date of concert*</label>
-                                    <div class="input-group has-validation" id="dpConcert">
-                                        <input type="date" class="form-control" name="concert_date" id="concert_date"
-                                            placeholder="Date of Concert" required="true">
-                                        <span class="input-group-text">
-                                            <span class="fa fa-calendar"></span>
-                                        </span>
-                                        <div class="invalid-feedback">Please complete this field.</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-12">
-                                    <label for="concert_title" class="form-label">Title</label>
-                                    <input type="text" class="form-control" name="concert_title" id="concert_title"
-                                        placeholder="Title" value="" maxlength="255">
-                                    <div class="invalid-feedback">Please complete this field.</div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-12">
-                                    <h4>Concert Program:</h4>
-                                    <ul id="concert_program_list">
-                                        <li id="concert_program_empty">Empty</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="hidden" id="concert_uids" name="concert_uids" value="" />
-                            <div id="msgSubmit" class="h4 d-none"></div>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
         <div class="modal fade" id="modal_add_edit" tabindex="-1" aria-labelledby="modalAddEditLabel" aria-hidden="true">
             <form id="form_music" class="needs-validation" novalidate>
                 <div class="modal-dialog">
@@ -128,6 +76,7 @@ new ProtectedMusic();
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <div id="formAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                             <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <label for="title" class="form-label">Title*</label>
@@ -155,23 +104,10 @@ new ProtectedMusic();
                             </div>
                             <div class="row mb-3">
                                 <div class="col-sm-12">
-                                    <label for="music_link" class="form-label">Link to music</label>
+                                    <label for="music_link" class="form-label">Youtube link to music</label>
                                     <input type="text" class="form-control" name="music_link" id="music_link"
                                         placeholder="Music Link" value="" maxlength="2000">
                                     <div class="invalid-feedback">Please complete this field.</div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-12">
-                                    <label for="dpLastPlayed" class="form-label">Last Played</label>
-                                    <div class="input-group has-validation" id="dpLastPlayed">
-                                        <input type="date" class="form-control" name="last_played" id="last_played"
-                                            placeholder="Last Played" value="">
-                                        <span class="input-group-text">
-                                            <span class="fa fa-calendar"></span>
-                                        </span>
-                                        <div class="invalid-feedback">Please complete this field.</div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
