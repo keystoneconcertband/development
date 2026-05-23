@@ -25,6 +25,7 @@ new ProtectedMember();
 				<div class="mb-4 pb-2 border-bottom">
 					<h2>Inactive Members</h2>
 				</div>
+                <div id="pageAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
 				<div class="row">
 					<div class="col-lg-12">
 						<table id="kcbMemberTable" class="table table-striped table-bordered" cellspacing="0" width="100%">

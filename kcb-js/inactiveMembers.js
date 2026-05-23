@@ -158,48 +158,61 @@ function showEditRecord(uid) {
 }
 
 function submitForm() {
-    if (!formMember) return;
-    var formData = new URLSearchParams(new FormData(formMember));
-    formData.append('type', 'edit');
+  if (!formMember) return;
+  var formData = new URLSearchParams(new FormData(formMember));
+  formData.append("type", "edit");
 
-    fetch('inactiveMembersServer.php', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
+  fetch("inactiveMembersServer.php", {
+    method: "POST",
+    body: formData,
+    headers: {
+      Accept: "application/json",
+    },
+  })
     .then(function (response) {
-        return response.text();
+      if (!response.ok) {
+        throw new Error("HTTP error! status: " + response.status);
+      }
+      return response.json();
     })
     .then(function (text) {
-        if (text === 'success') {
-            formSuccess('User successfully re-activated.');
-        } else {
-            formError(text);
-        }
+      if (text === "success") {
+        formSuccess("User successfully reinstated.");
+      } else {
+        formError(text);
+      }
     })
-    .catch(function (xhr) {
-        submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
-        console.log(xhr);
+    .catch(function (error) {
+      console.log("Edit Fetch error:", error);
+      submitMSG(
+        false,
+        "Oops! An error occurred processing the form. Please try again later.",
+      );
     });
 }
 
 function formSuccess(text) {
-    submitMSG(true, text);
-    var table = $('#kcbMemberTable').DataTable();
-    if (table) {
-        table.ajax.reload();
-    }
-    if (formMember) {
-        formMember.reset();
-        formMember.classList.remove('was-validated');
-    }
-    var modal = document.getElementById('modal_edit_delete');
-    if (modal) {
-        var bsModal = bootstrap.Modal.getInstance(modal);
-        if (bsModal) bsModal.hide();
-    }
+  var pageAlert = document.getElementById("pageAlert");
+  if (pageAlert) {
+    pageAlert.className = "alert alert-success alert-dismissible fade show";
+    pageAlert.innerHTML =
+      text +
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+    pageAlert.setAttribute("role", "alert");
+  }
+  var table = $("#kcbMemberTable").DataTable();
+  if (table) {
+    table.ajax.reload();
+  }
+  if (formMember) {
+    formMember.reset();
+    formMember.classList.remove("was-validated");
+  }
+  var modal = document.getElementById("modal_edit_delete");
+  if (modal) {
+    var bsModal = bootstrap.Modal.getInstance(modal);
+    if (bsModal) bsModal.hide();
+  }
 }
 
 function formError(text) {
