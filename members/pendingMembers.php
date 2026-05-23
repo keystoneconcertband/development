@@ -25,6 +25,7 @@ new ProtectedAdmin();
 				<div class="mb-4 pb-2 border-bottom">
 					<h2>Pending Members</h2>
 				</div>
+                <div id="pageAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
 				<div class="row">
 					<div class="col-lg-12">
 						<table id="kcbMemberTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -44,84 +45,89 @@ new ProtectedAdmin();
 			</div>
 		</div>
 		<div class="modal fade" id="modal_edit_delete" tabindex="-1" aria-labelledby="modalEditDeleteLabel" aria-hidden="true">
-			<form id="form_member" data-toggle="validator">
+			<form id="form_member" class="needs-validation" novalidate>
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-						<h5 class="modal-title" id="modalEditDeleteLabel">Add Member</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="modalEditDeleteLabel">Add Member</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
+                            <div id="formAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
+                            <fieldset>
+                                <legend>Personal Information</legend>
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" name="firstName" id="firstName"
+                                            placeholder="First Name" value="" required="true" maxlength="50">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" name="lastName" id="lastName"
+                                            placeholder="Last Name" value="" required="true" maxlength="50">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" name="address1" id="address1"
+                                            placeholder="Address" value="" required="true" maxlength="255">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" name="address2" id="address2"
+                                            placeholder="Address 2" value="" maxlength="255">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" name="city" id="city" placeholder="City"
+                                            value="" required="true" maxlength="100">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" name="state" id="state"
+                                            placeholder="State" value="PA" disabled="true" required="true"
+                                            maxlength="2">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="tel" class="form-control" name="zip" id="zip"
+                                            placeholder="Zip Code" value="" required="true" minlength="5"
+                                            maxlength="5">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                </div>
+                        	</fieldset>
+							<div class="row mb-3">
+							</div>
 							<fieldset>
-							    <legend>Personal Information</legend>
-							    <div class="row mb-3">
-							      <div class="col-sm-12">
-							        <label for="FirstName" class="form-label">First Name</label>
-							        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" value="" required="true" maxlength="50" data-error="First name is required.">
-									<div class="help-block with-errors"></div>
-							      </div>
-							    </div>
-							    <div class="row mb-3">
-							      <div class="col-sm-12">
-							        <label for="LastName" class="form-label">Last Name</label>
-							        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" value="" required="true" maxlength="50" data-error="Last name is required.">
-									<div class="help-block with-errors"></div>
-							      </div>
-							    </div>
-							    <div class="row mb-3">
-							      <div class="col-lg-12">
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" name="displayFullName" id="displayFullName" value="1">
-					                        <label class="form-check-label" for="displayFullName"> Display <strong>full name</strong> on website. <em>If unselected your name will be displayed as <strong>Firstname L.</strong></em></label>
-					                    </div>
-							      </div>
-							    </div>
-								<div class="mb-3">
-							      <div class="col-sm-12">
-							        <label for="Address" class="form-label">Address</label>
-							        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address" value="" required="true" maxlength="255" data-error="Address is required.">
-									<div class="help-block with-errors"></div>
-							      </div>
-								</div>
-								<div class="row mb-3">
-							      <div class="col-sm-12">
-							        <label for="Address2" class="form-label">Address 2</label>
-							        <input type="text" class="form-control" name="address2" id="address2" placeholder="Address 2" value="" maxlength="255">
-									<div class="help-block with-errors"></div>
-							      </div>
-								</div>
-								<div class="row mb-3">
-							      <div class="col-sm-12">
-							        <label for="City" class="form-label">City</label>
-							        <input type="text" class="form-control" name="city" id="city" placeholder="City" value="" required="true" maxlength="100">
-									<div class="help-block with-errors"></div>
-							      </div>
-								</div>
-								<div class="row mb-3">
-							      <div class="col-sm-2">
-							        <label for="State" class="form-label">State</label>
-							        <input type="text" class="form-control" name="state" id="state" placeholder="State" value="PA" disabled="true" required="true" maxlength="2">
-									<div class="help-block with-errors"></div>
-							      </div>
-								</div>
-								<div class="row mb-3" id="zipContainer">
-							      <div class="col-sm-4">
-							        <label for="Zip" class="form-label">Zip Code</label>
-							        <input type="tel" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="" required="true" data-minlength="5" maxlength="5">
-									<div class="help-block with-errors"></div>
-							      </div>
-								</div>
-							    <div class="row mb-3 emailContainers" id="emailContainer1">
-							      	<div class="col-sm-12">
-							        	<label for="Email" class="form-label">Email</label>
-							        	<div class="input-group">
-											<input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100">
-											<span class="input-group-text">
-												<a href="#noscroll" id="email1" onclick="deleteEmail('emailContainer1');"><span class="fa fa-remove"></span></a>
-											</span>
-							        	</div>
-								    </div>
-							    </div>
+								<legend>Contact Information</legend>
+                                <div class="row mb-3" id="textContainer">
+                                    <div class="col-sm-12">
+						        	    <label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
+                                        <input type="tel" class="form-control" name="text" id="text"
+                                            placeholder="Cell Phone Number" value="" minlength="10" maxlength="13">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 emailContainers" id="emailContainer1">
+                                    <div class="col-sm-12">
+    						        	<label for="email" class="form-label">Email Address(es)</label>
+                                        <div class="input-group">
+                                            <input type="email" class="form-control email1" name="email[]" id="email[]"
+                                                placeholder="Email Address" maxlength="100">
+                                            <span class="input-group-text">
+                                                <a href="#noscroll" id="email1"
+                                                    onclick="deleteEmail('emailContainer1');"><span
+                                                        class="fa fa-remove"></span></a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 							    <div class="row mb-3">
 									<div class="col-sm-12">
 										<button type="button" class="btn btn-outline-secondary btn-sm" id="addRow">
@@ -134,61 +140,69 @@ new ProtectedAdmin();
 							</div>
 							<fieldset>
 							  <legend>Band Information</legend>
-								<div class="row mb-3">
-							      <div class="col-sm-12">
-							        <label for="CellPhoneNbr" class="form-label">Cell Phone / Texting Notification Nbr</label>
-							        <input type="tel" class="form-control" name="text" id="text" placeholder="Cell Phone Number" value="" data-minlength="10" maxlength="13">
-									<div class="help-block with-errors"></div>
-							      </div>
-								</div>
-								<div class="row mb-3">
-									<div class="col-sm-12">
-										<label for="Instrument" class="form-label">Instrument(s)</label><br>
-										<div class="form-check form-check-inline" style="margin-left:10px;">
-					                        <input type="checkbox" class="form-check-input" id="baritone" value="baritone" name="instrument[]">
-					                        <label class="form-check-label" for="baritone"> Baritone</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="bassClarinet" value="bassClarinet" name="instrument[]">
-					                        <label class="form-check-label" for="bassClarinet"> Bass Clarinet</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="bassoon" value="bassoon" name="instrument[]">
-					                        <label class="form-check-label" for="bassoon"> Bassoon</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="clarinet" value="clarinet" name="instrument[]">
-					                        <label class="form-check-label" for="clarinet"> Clarinet</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="flute" value="flute" name="instrument[]">
-					                        <label class="form-check-label" for="flute"> Flute</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="frenchHorn" value="frenchHorn" name="instrument[]">
-					                        <label class="form-check-label" for="frenchHorn"> French Horn</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="saxophone" value="saxophone" name="instrument[]">
-					                        <label class="form-check-label" for="saxophone"> Saxophone</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="trombone" value="trombone" name="instrument[]">
-					                        <label class="form-check-label" for="trombone"> Trombone</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="trumpet" value="trumpet" name="instrument[]">
-					                        <label class="form-check-label" for="bassoon"> Trumpet</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="tuba" value="tuba" name="instrument[]">
-					                        <label class="form-check-label" for="tuba"> Tuba</label>
-					                    </div>
-					                    <div class="form-check form-check-inline">
-					                        <input type="checkbox" class="form-check-input" id="percussion" value="percussion" name="instrument[]">
-					                        <label class="form-check-label" for="percussion"> Percussion</label>
-					                    </div>
-									</div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-12">
+                                        <label for="Instrument" class="form-label">Instrument(s)</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="baritone"
+                                                value="baritone" name="instrument[]">
+                                            <label class="form-check-label" for="baritone">Baritone</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="bassClarinet"
+                                                value="bassClarinet" name="instrument[]">
+                                            <label class="form-check-label" for="bassClarinet">Bass Clarinet</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="bassoon" value="bassoon"
+                                                name="instrument[]">
+                                            <label class="form-check-label" for="bassoon">Bassoon</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="clarinet"
+                                                value="clarinet" name="instrument[]">
+                                            <label class="form-check-label" for="clarinet">Clarinet</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="flute" value="flute"
+                                                name="instrument[]">
+                                            <label class="form-check-label" for="flute">Flute</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="frenchHorn"
+                                                value="frenchHorn" name="instrument[]">
+                                            <label class="form-check-label" for="frenchHorn">French Horn</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="saxophone"
+                                                value="saxophone" name="instrument[]">
+                                            <label class="form-check-label" for="saxophone">Saxophone</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="trombone"
+                                                value="trombone" name="instrument[]">
+                                            <label class="form-check-label" for="trombone">Trombone</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="trumpet" value="trumpet"
+                                                name="instrument[]">
+                                            <label class="form-check-label" for="trumpet">Trumpet</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="tuba" value="tuba"
+                                                name="instrument[]">
+                                            <label class="form-check-label" for="tuba">Tuba</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="percussion"
+                                                value="percussion" name="instrument[]">
+                                            <label class="form-check-label" for="percussion">Percussion</label>
+                                        </div>
+                                    </div>
 								</div>
 							</fieldset>
 						</div>

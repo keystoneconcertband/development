@@ -61,7 +61,7 @@
                     <div class="col-lg-6">
                         <div class="form-floating mb-3">
                             <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
-                                placeholder="Phone Number" data-minlength="10" maxlength="10" required="true">
+                                placeholder="Phone Number" minlength="10" maxlength="10" required="true">
                             <label for="floatingInput">* Phone Number</label>
                             <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid
                                 10-digit phone number.</div>

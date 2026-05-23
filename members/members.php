@@ -66,7 +66,7 @@ new ProtectedMember();
         </div>
         <div class="modal fade" id="modal_edit_delete" tabindex="-1" aria-labelledby="modalEditDeleteLabel"
             aria-hidden="true">
-            <form id="form_member" data-toggle="validator">
+            <form id="form_member" class="needs-validation" novalidate>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -80,15 +80,13 @@ new ProtectedMember();
                                 <div class="row mb-3">
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control" name="firstName" id="firstName"
-                                            placeholder="First Name" value="" required="true" maxlength="50"
-                                            data-error="First name is required.">
-                                        <div class="help-block with-errors"></div>
+                                            placeholder="First Name" value="" required="true" maxlength="50">
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control" name="lastName" id="lastName"
-                                            placeholder="Last Name" value="" required="true" maxlength="50"
-                                            data-error="Last name is required.">
-                                        <div class="help-block with-errors"></div>
+                                            placeholder="Last Name" value="" required="true" maxlength="50">
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -105,35 +103,34 @@ new ProtectedMember();
                                 <div class="row mb-3">
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" name="address1" id="address1"
-                                            placeholder="Address" value="" required="true" maxlength="255"
-                                            data-error="Address is required.">
-                                        <div class="help-block with-errors"></div>
+                                            placeholder="Address" value="" required="true" maxlength="255">
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" name="address2" id="address2"
                                             placeholder="Address 2" value="" maxlength="255">
-                                        <div class="help-block with-errors"></div>
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control" name="city" id="city" placeholder="City"
                                             value="" required="true" maxlength="100">
-                                        <div class="help-block with-errors"></div>
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control" name="state" id="state"
                                             placeholder="State" value="PA" disabled="true" required="true"
                                             maxlength="2">
-                                        <div class="help-block with-errors"></div>
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <input type="tel" class="form-control" name="zip" id="zip"
-                                            placeholder="Zip Code" value="" required="true" data-minlength="5"
+                                            placeholder="Zip Code" value="" required="true" minlength="5"
                                             maxlength="5">
-                                        <div class="help-block with-errors"></div>
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
                         	</fieldset>
@@ -145,8 +142,8 @@ new ProtectedMember();
                                     <div class="col-sm-12">
 						        	    <label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
                                         <input type="tel" class="form-control" name="text" id="text"
-                                            placeholder="Cell Phone Number" value="" data-minlength="10" maxlength="13">
-                                        <div class="help-block with-errors"></div>
+                                            placeholder="Cell Phone Number" value="" minlength="10" maxlength="13">
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
                                 <div class="row mb-3 emailContainers" id="emailContainer1">
@@ -238,6 +235,7 @@ new ProtectedMember();
                                             <label class="form-check-label" for="percussion">Percussion</label>
                                         </div>
                                     </div>
+                                </div>
                             </fieldset>
                         </div>
                         <div class="modal-footer">

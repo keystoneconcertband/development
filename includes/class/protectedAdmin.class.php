@@ -141,7 +141,7 @@ class ProtectedAdmin
                 }
             } else {
                 $this->getDb()->rollBackTransaction();
-                $retValue = "update_member_error";
+                $retValue = "activate_member_error";
             }
         } catch (Exception $e) {
             $this->getKcb()->logError($e->getMessage());

@@ -71,9 +71,8 @@
 								echo "  <button class='accordion-button' type='button' data-bs-toggle='collapse' data-bs-target='#collapse" . $rowNbr . "' aria-expanded='true' aria-controls='collapse" . $rowNbr . "'>" . $concert['Title'] . "</button>\n";
 							}
 							echo "    </h2>\n";
-							echo "    <div id='collapse" . $rowNbr . "' class='accordion-collapse collapse" . ($disabled ? '' : ' show') . "'>";
-							echo "      <div class='accordion-body'>";
-							echo "        <div class='panel-body'>\n";
+								echo "    <div id='collapse" . $rowNbr . "' class='accordion-collapse collapse" . ($disabled ? '' : ' show') . "'>";
+								echo "      <div class='accordion-body'>";
 							echo "		    <p class='" . $disabled . "'>\n";
 							echo "            <h3 style='margin-top:0px;'>" . $concert['Title'] . "</h3><h4> " . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . ".</h4>\n";
 							echo "              <a class='" . $disabled . "' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['address'] . "</a>\n";
@@ -95,14 +94,13 @@
 							echo "			    </ul>";
 							echo "		      </div>"; // end card-body
 							echo "		    </div>"; // end band-member-notice
-							echo "        </div>\n"; // end panel-body							
-							echo "      </div>\n"; // end accordion-body
+								echo "      </div>\n"; // end accordion-body
 							echo "    </div>\n"; // end collapse
 							echo "  </div>\n"; // end accordion-item
 							
 							$rowNbr++;
 						}
-						echo "</div>\n"; // end panel-group
+						echo "</div>\n"; // end accordion
 					}
 				?>
 			</div>

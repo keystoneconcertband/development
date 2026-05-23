@@ -34,19 +34,17 @@ new ProtectedMember();
                 </div>
                 <div id="pageAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                 <div class="p-4 mb-4 bg-light rounded-3">
-                    <form id="memberInfo" data-toggle="validator">
+                    <form id="memberInfo" class="needs-validation" novalidate>
                         <fieldset>
                             <legend>Personal Information</legend>
                             <div class="row mb-3">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" name="firstName" id="firstName"
-                                        placeholder="First Name" required="true" maxlength="50"
-                                        data-error="First name is required.">
+                                        placeholder="First Name" required="true" maxlength="50">
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" name="lastName" id="lastName"
-                                        placeholder="Last Name" required="true" maxlength="50"
-                                        data-error="Last name is required.">
+                                        placeholder="Last Name" required="true" maxlength="50">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -62,8 +60,7 @@ new ProtectedMember();
                             <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <input type="text" class="form-control" name="address1" id="address1"
-                                        placeholder="Address" required="true" maxlength="255"
-                                        data-error="Address is required.">
+                                        placeholder="Address" required="true" maxlength="255">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -84,7 +81,7 @@ new ProtectedMember();
 								</div>
 								<div class="col-sm-4">
 									<input type="tel" class="form-control" name="zip" id="zip"
-										placeholder="Zip Code" value="" required="true" data-minlength="5"
+										placeholder="Zip Code" value="" required="true" minlength="5"
 										maxlength="5">
 								</div>
 							</div>
@@ -97,7 +94,7 @@ new ProtectedMember();
                                 <div class="col-sm-12">
 						        	<label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
                                     <input type="tel" class="form-control" name="text" id="text"
-                                        placeholder="Cell Phone Number" data-minlength="10" maxlength="13">
+                                        placeholder="Cell Phone Number" minlength="10" maxlength="13">
                                 </div>
                             </div>
                             <div class="row mb-3 emailContainers" id="emailContainer1">

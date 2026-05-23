@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var formMember = document.getElementById("form_member");
 if (formMember) {
   formMember.addEventListener("submit", function (event) {
+    formMember.classList.add("was-validated");
     if (event.defaultPrevented || !formMember.checkValidity()) {
       event.preventDefault();
       formError("Check for errors in the form.");
@@ -142,6 +143,7 @@ if (modalEditDelete) {
   modalEditDelete.addEventListener("hidden.bs.modal", function () {
     if (formMember) {
       formMember.reset();
+      formMember.classList.remove("was-validated");
     }
     var uid = document.getElementById("uid");
     if (uid) uid.value = "";
@@ -339,6 +341,7 @@ function formSuccess(text) {
   }
   if (formMember) {
     formMember.reset();
+    formMember.classList.remove("was-validated");
   }
   var modal = document.getElementById("modal_edit_delete");
   if (modal) {

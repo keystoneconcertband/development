@@ -3,7 +3,7 @@ require_once "db.class.php";
 
 class MemberDB
 {
-    private $db;
+   private $db;
 
     /* PUBLIC FUNCTIONS */
     public function __construct()
@@ -324,21 +324,23 @@ class MemberDB
                                          SET accountType = 0, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
                                          WHERE UID = :uid");
 
-        if ($retVal) {
+        $pendingMemberActivated = $retVal > 0;
+
+        if ($pendingMemberActivated) {
             $retVal = $this->updateMember($uid, $mbrArray, $updateUser);
         }
 
         // Update email address, activate email and update who approved the user
-        if ($retVal) {
-            $retVale = $this->reactivateEmail($uid, $updateUser);
+        if ($pendingMemberActivated && $retVal !== false) {
+            $retVal = $this->activateEmail($uid, $updateUser);
         }
 
         // Update instruments with who approved the user
-        if ($retVal) {
+        if ($pendingMemberActivated && $retVal !== false) {
             $retVal = $this->updateLastUpdateOnInstrument($uid, $updateUser);
         }
 
-        return $retVal;
+        return $pendingMemberActivated && $retVal !== false;
     }
 
     public function updateMember($uid, $mbrArray, $updateUser)
@@ -353,7 +355,7 @@ class MemberDB
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
-        $this->getDb()->bind("updateUser", $updateUser);
+        $this->getDb()->bind('updateUser', $updateUser);
 
         if (array_key_exists('displayFullName', $mbrArray)) {
             $this->getDb()->bind('displayFullName', "1");
@@ -361,7 +363,12 @@ class MemberDB
             $this->getDb()->bind('displayFullName', "0");
         }
 
-        $retVal = $this->getDb()->query("UPDATE kcb_members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser, disabled= 0, disabled_dt_tm = NULL WHERE UID = :uid");
+        $retVal = $this->getDb()->query("UPDATE kcb_members 
+                                         SET firstName = :firstName, lastName = :lastName, 
+                                             displayFullName = :displayFullName, text = :text, 
+                                             lst_tran_dt_tm=now(), lst_updtd_by = :updateUser, 
+                                             disabled= 0, disabled_dt_tm = NULL 
+                                         WHERE UID = :uid");
 
         return $retVal;
     }
@@ -458,7 +465,7 @@ class MemberDB
         return $retVal;
     }
 
-    public function reactivateEmail($uid, $updateUser)
+    public function activateEmail($uid, $updateUser)
     {
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind("updateUser", $updateUser);

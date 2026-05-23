@@ -74,29 +74,6 @@ class Member
         return $response;
     }
 
-    // Facebook login process.
-    public function facebookLogin($email, $fbId)
-    {
-        $response = $this->validateFbAuth();
-
-        if ($response == "success") {
-            $response = $this->isValidUser($email);
-
-            if ($response == "valid") {
-                $response = "fb_valid";
-
-                // Update login count and last login date.
-                $this->getDb()->updateLastLogin($email);
-
-                // Save email address since user's session is now valid to continue.
-                $this->saveSession($email, $fbId);
-            }
-        }
-
-        $this->getDb()->logLogin($email, $response);
-        return $response;
-    }
-
     // Verify auth cd
     public function verifyAuthCd($email, $auth_cd, $auth_remember)
     {

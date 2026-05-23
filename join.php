@@ -57,7 +57,7 @@
                     <li><strong>Where do I park for rehearsal?</strong><br />
                         You may park behind the church in the parking lot off of Montour St. There is also
                         plenty of on street parking along Montour, Wilhelm and Rutherford Streets.<br />
-                        <img src="images/parking-good-shepherd.png" width="579" class="img-responsive" />
+                        <img src="images/parking-good-shepherd.png" width="579" class="img-fluid" />
                     </li>
                     <li><strong>What do I need to bring?</strong><br />
                         Your instrument, a music stand, and any other pieces of equipment that may be required, such as
@@ -112,7 +112,7 @@
                     <div class="col-lg-6">
                         <div class="form-floating mb-3">
                             <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
-                                placeholder="Phone Number" data-minlength="10" maxlength="10" required="true">
+                                placeholder="Phone Number" minlength="10" maxlength="10" required="true">
                             <label for="floatingInput">* Phone Number</label>
                             <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid
                                 10-digit phone number.</div>

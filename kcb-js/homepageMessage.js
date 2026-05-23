@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const formMessage = document.getElementById('form_message');
 if (formMessage) {
     formMessage.addEventListener('submit', function (event) {
+        formMessage.classList.add('was-validated');
         if (event.defaultPrevented || !formMessage.checkValidity()) {
             event.preventDefault();
             formError('Check for errors in the form.');
@@ -47,6 +48,7 @@ if (modalAddEdit) {
     modalAddEdit.addEventListener('hidden.bs.modal', function () {
         if (formMessage) {
             formMessage.reset();
+            formMessage.classList.remove('was-validated');
         }
         const uid = document.getElementById('uid');
         if (uid) uid.value = '';

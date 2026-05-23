@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var formConcert = document.getElementById('form_concert');
 if (formConcert) {
     formConcert.addEventListener('submit', function (event) {
+        formConcert.classList.add('was-validated');
         if (event.defaultPrevented || !formConcert.checkValidity()) {
             event.preventDefault();
             submitMSG(false, 'Check for errors in the form.');
@@ -47,6 +48,7 @@ if (formConcert) {
 var formMusic = document.getElementById('form_music');
 if (formMusic) {
     formMusic.addEventListener('submit', function (event) {
+        formMusic.classList.add('was-validated');
         if (event.defaultPrevented || !formMusic.checkValidity()) {
             event.preventDefault();
             formError();
@@ -75,6 +77,7 @@ if (modalConcert) {
     modalConcert.addEventListener('hidden.bs.modal', function () {
         if (formConcert) {
             formConcert.reset();
+            formConcert.classList.remove('was-validated');
         }
         var list = document.getElementById('concert_program_list');
         if (list) {
@@ -105,6 +108,7 @@ if (modalAddEdit) {
         }
         if (formMusic) {
             formMusic.reset();
+            formMusic.classList.remove('was-validated');
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';

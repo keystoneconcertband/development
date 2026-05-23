@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }},
             { data: null, render: function (data) {
                 if (data.email) {
-                    var email_arr = data.email.split(',');
-                    var email_out = '';
-                    for (var i = 0; i < email_arr.length; i++) {
-                        email_out += '<a href="mailto:' + email_arr[i] + '">' + email_arr[i] + '</a><br />';
+                    var emailArr = data.email.split(',');
+                    var emailOut = '';
+                    for (var i = 0; i < emailArr.length; i++) {
+                        emailOut += '<a href="mailto:' + emailArr[i] + '">' + emailArr[i] + '</a><br />';
                     }
-                    return email_out;
+                    return emailOut;
                 }
                 return '';
             }},
@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var formMember = document.getElementById('form_member');
 if (formMember) {
     formMember.addEventListener('submit', function (event) {
+        formMember.classList.add('was-validated');
         if (event.defaultPrevented || !formMember.checkValidity()) {
             event.preventDefault();
             formError('Check for errors in the form.');
@@ -87,15 +88,16 @@ if (modalEditDelete) {
     modalEditDelete.addEventListener('hidden.bs.modal', function () {
         if (formMember) {
             formMember.reset();
+            formMember.classList.remove('was-validated');
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';
         document.querySelectorAll('.emailContainers').forEach(function (el) {
             el.remove();
         });
-        var zipContainer = document.getElementById('zipContainer');
-        if (zipContainer) {
-            zipContainer.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="form-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-text"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
+        var textContainer = document.getElementById('textContainer');
+        if (textContainer) {
+            textContainer.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="form-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-text"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
         }
     });
 }
@@ -145,30 +147,36 @@ function showEditRecord(uid) {
 }
 
 function submitForm() {
-    if (!formMember) return;
-    var formData = new URLSearchParams(new FormData(formMember));
-    formData.append('type', 'edit');
+  if (!formMember) return;
+  var formData = new URLSearchParams(new FormData(formMember));
+  formData.append("type", "edit");
 
-    fetch('pendingMembersServer.php', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
+  fetch("pendingMembersServer.php", {
+    method: "POST",
+    body: formData,
+    headers: {
+      Accept: "application/json",
+    },
+  })
     .then(function (response) {
-        return response.text();
+      if (!response.ok) {
+        throw new Error("HTTP error! status: " + response.status);
+      }
+      return response.json();
     })
     .then(function (text) {
-        if (text === 'success') {
-            formSuccess('User successfully modified.');
-        } else {
-            formError(text);
-        }
+      if (text === "success") {
+        formSuccess("User successfully added to the band.");
+      } else {
+        formError(text);
+      }
     })
-    .catch(function (xhr) {
-        submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
-        console.log(xhr);
+    .catch(function (error) {
+      console.log("Edit Fetch error:", error);
+      submitMSG(
+        false,
+        "Oops! An error occurred processing the form. Please try again later.",
+      );
     });
 }
 
@@ -187,7 +195,7 @@ function deleteRecord(title, uid) {
             return response.text();
         })
         .then(function (text) {
-            if (text === 'success') {
+            if (text === "success") {
                 formSuccess('User successfully removed.');
             } else {
                 formError(text);
@@ -201,19 +209,27 @@ function deleteRecord(title, uid) {
 }
 
 function formSuccess(text) {
-    submitMSG(true, text);
-    var table = $('#kcbMemberTable').DataTable();
-    if (table) {
-        table.ajax.reload();
-    }
-    if (formMember) {
-        formMember.reset();
-    }
-    var modal = document.getElementById('modal_edit_delete');
-    if (modal) {
-        var bsModal = bootstrap.Modal.getInstance(modal);
-        if (bsModal) bsModal.hide();
-    }
+  var pageAlert = document.getElementById("pageAlert");
+  if (pageAlert) {
+    pageAlert.className = "alert alert-success alert-dismissible fade show";
+    pageAlert.innerHTML =
+      text +
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+    pageAlert.setAttribute("role", "alert");
+  }
+  var table = $("#kcbMemberTable").DataTable();
+  if (table) {
+    table.ajax.reload();
+  }
+  if (formMember) {
+    formMember.reset();
+    formMember.classList.remove("was-validated");
+  }
+  var modal = document.getElementById("modal_edit_delete");
+  if (modal) {
+    var bsModal = bootstrap.Modal.getInstance(modal);
+    if (bsModal) bsModal.hide();
+  }
 }
 
 function formError(text) {
@@ -236,17 +252,17 @@ function formError(text) {
 }
 
 function submitMSG(valid, msg) {
-    var msgMainHeader = document.getElementById('msgMainHeader');
-    var msgSubmit = document.getElementById('msgSubmit');
-    var msgClasses = valid ? 'h4 tada animated text-success' : 'h4 text-danger';
-    if (msgMainHeader) {
-        msgMainHeader.className = msgClasses;
-        msgMainHeader.textContent = msg;
-    }
-    if (msgSubmit) {
-        msgSubmit.className = msgClasses;
-        msgSubmit.textContent = msg;
-    }
+  var formAlert = document.getElementById("formAlert");
+  if (!formAlert) return;
+
+  var alertClasses = valid
+    ? "alert alert-success alert-dismissible fade show"
+    : "alert alert-danger alert-dismissible fade show";
+  formAlert.className = alertClasses;
+  formAlert.innerHTML =
+    msg +
+    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+  formAlert.setAttribute("role", "alert");
 }
 
 function populateForm(frm, data) {
@@ -273,7 +289,7 @@ function populateEmail(data) {
                 } else {
                     var container = document.getElementById('emailContainer' + i);
                     if (container) {
-                        container.insertAdjacentHTML('afterend', '<div class="form-group row emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><label for="Email" class="control-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
+                        container.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><label for="Email" class="form-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
                     }
                 }
             }
@@ -292,8 +308,4 @@ function populateInstrument(data) {
             if (checkbox) checkbox.checked = true;
         }
     }
-}
-
-function printMembers() {
-    window.open('pendingMembersPrint.php', 'Print Members', 'menubar=0,location=0,height=700,width=700');
 }

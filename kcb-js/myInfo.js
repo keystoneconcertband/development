@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var memberInfoForm = document.getElementById("memberInfo");
 if (memberInfoForm) {
   memberInfoForm.addEventListener("submit", function (event) {
+    memberInfoForm.classList.add("was-validated");
     if (event.defaultPrevented || !memberInfoForm.checkValidity()) {
       event.preventDefault();
       formError();
