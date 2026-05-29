@@ -27,7 +27,7 @@ class KcbBase
         }
     }
 
-    public function logError($message)
+    public function logMessage($message)
     {
         $this->log->write($message);
     }
@@ -64,7 +64,7 @@ class KcbBase
             $mail->send();
             return true;
         } catch (Exception $e) {
-            $this->logError("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            $this->logMessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
             return false;
         }
     }

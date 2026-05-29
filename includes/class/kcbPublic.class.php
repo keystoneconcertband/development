@@ -76,7 +76,7 @@ class KCBPublic
                         $this->processEmail($joinArray);
                     }
                 } catch (Exception $e) {
-                    $this->getKcb()->logError($e->getMessage());
+                    $this->getKcb()->logMessage($e->getMessage());
                     $this->getDb()->rollBackTransaction();
                     $response = "db_error";
                 }

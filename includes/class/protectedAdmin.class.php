@@ -186,7 +186,7 @@ class ProtectedAdmin
                 $retValue = "activate_member_error";
             }
         } catch (Exception $e) {
-            $this->getKcb()->logError($e->getMessage());
+            $this->getKcb()->logMessage($e->getMessage());
             $this->getDb()->rollBackTransaction();
             $retValue = "db_error";
         }
@@ -202,9 +202,7 @@ class ProtectedAdmin
 				$this->getDb()->beginTransaction();
 
 				if($this->getDb()->delAllEmails($uid)) {
-                    $this->log->write("Deleted all emails for member: " . $uid);
 					if($this->getDb()->deleteMember($uid, $updateUser)) {
-                        $this->log->write("Deleted member: " . $uid);
                         $this->getDb()->executeTransaction();
                         $retValue = "success";
 					}
@@ -219,7 +217,7 @@ class ProtectedAdmin
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -274,7 +272,7 @@ class ProtectedAdmin
                     $this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
                     $result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);
                 } catch (Exception $e) {
-                    $this->getKcb()->logError($e->getMessage());
+                    $this->getKcb()->logMessage($e->getMessage());
                     $result = false;
                 }
             }
@@ -292,7 +290,7 @@ class ProtectedAdmin
                             $result = $this->getDb()->deactivateEmail($value, $uid, $_SESSION["email"]);
                         }
                     } catch (Exception $e) {
-                        $this->getKcb()->logError($e->getMessage());
+                        $this->getKcb()->logMessage($e->getMessage());
                         $result = false;
                     }
                 }
@@ -331,7 +329,7 @@ class ProtectedAdmin
                 try {
                     $result = $this->getDb()->addInstrument($value, $uid, $_SESSION["email"]);
                 } catch (Exception $e) {
-                    $this->getKcb()->logError($e->getMessage());
+                    $this->getKcb()->logMessage($e->getMessage());
                     $result = false;
                 }
             }
@@ -344,7 +342,7 @@ class ProtectedAdmin
                     try {
                         $result = $this->getDb()->delInstrument($value, $uid);
                     } catch (Exception $e) {
-                        $this->getKcb()->logError($e->getMessage());
+                        $this->getKcb()->logMessage($e->getMessage());
                         $result = false;
                     }
                 }

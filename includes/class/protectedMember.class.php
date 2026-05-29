@@ -132,7 +132,7 @@ class ProtectedMember {
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -190,7 +190,7 @@ class ProtectedMember {
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -225,7 +225,7 @@ class ProtectedMember {
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -305,7 +305,7 @@ class ProtectedMember {
 						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email: " . $value, "KCB Email Update [Pending]");
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						return false;
 					}
 				}
@@ -328,7 +328,7 @@ class ProtectedMember {
 						$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						return false;
 					}
 				}
@@ -350,7 +350,7 @@ class ProtectedMember {
 						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email: " . $value, "KCB Email Update [Remove]");
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						return false;
 					}
 				}
@@ -389,7 +389,7 @@ class ProtectedMember {
 					$result = $this->getDb()->addInstrument($value, $uid, $_SESSION["email"]);						
 				}
 				catch(Exception $e) {
-					$this->getKcb()->logError($e->getMessage());
+					$this->getKcb()->logMessage($e->getMessage());
 					$result = false;
 				}
 			}
@@ -403,7 +403,7 @@ class ProtectedMember {
 						$result = $this->getDb()->delInstrument($value, $uid);	
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						$result = false;
 					}
 				}

@@ -184,6 +184,16 @@ class MemberDB
         return $retVal;
     }
 
+    // Get Auth Cd timestamp as epoch seconds using DB timezone
+    public function getAuthCdTimestamp($email)
+    {
+        $this->getDb()->bind("email", $email);
+        return $this->getDb()->single("SELECT UNIX_TIMESTAMP(lc.lst_tran_dt_tm)
+                                          FROM kcb_login_cd lc
+                                          INNER JOIN kcb_email_address e ON e.member_uid=lc.KCB_Members_UID
+                                          WHERE e.email_address = :email");
+    }
+
     // Get all the email addresses for the user
     public function getEmailAddresses($uid)
     {

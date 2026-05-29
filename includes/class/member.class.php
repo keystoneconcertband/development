@@ -7,7 +7,6 @@ class Member
 {
     const MAX_EXPIRE = 30;
     private $kcbCookie = "KCB_Cookie";
-    private $fbAuthCookie = "fbsr_129894350764";
     private $db;
     private $kcb;
 
@@ -20,6 +19,7 @@ class Member
         if ($authReq) {
             if (!$this->validSession()) {
                 header('Location: reauth.php');
+                exit;
             }
         }
     }
@@ -55,7 +55,8 @@ class Member
                 // Validate that the cookie auth code matches what is in the database
                 if (!$this->isValidAuthCookie($email)) {
                     // Send auth email, user's cookie is bad
-                    if ($this->sendAuthRequest($email) === 1) {
+                    $sendResponse = $this->sendAuthRequest($email);
+                    if ($sendResponse === "auth_required_no_cookie") {
                         $response = "auth_failed_invalid_cookie";
                     } else {
                         $response = "db_error";
@@ -80,51 +81,63 @@ class Member
         // Verify user is still valid
         $response = $this->isValidUser($email);
 
-        if ($response == "valid") {
-            $ipAddress = $this->getIpAddress();
-            $authCdDb = $this->getDb()->getAuthCd($email);
+        if ($response !== "valid") {
+            $this->getDb()->logLogin($email, $response);
+            return $response;
+        }
 
-            // See if auth_cd matches
-            if ($auth_cd == $authCdDb['auth_cd']) {
-                // See if code is from within the last MAX_EXPIRE mins
-                $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * self::MAX_EXPIRE;
+        $ipAddress = $this->getIpAddress();
+        $authCdDb = $this->getDb()->getAuthCd($email);
 
-                if (date(time()) > $authCdDtTm) {
-                    if ($this->sendAuthRequest($email)) {
-                        $response = "auth_old";
-                    } else {
-                        $response = "db_error";
-                    }
-                } else {
-                    // Create auth_cd_guid for cookie
-                    $guid = $this->guid();
-
-                    // Update user's account
-                    if (!$this->getDb()->setAuthCd($email, $guid)) {
-                        $response = "db_error";
-                    } else {
-                        // Update login count and last login date.
-                        if (!$this->getDb()->updateLastLogin($email)) {
-                            $response = "db_error";
-                        } else {
-                            // Save email address since user's session is now valid to continue.
-                            $this->saveSession($email, $guid);
-
-                            if ($auth_remember == "true") {
-                                $this->saveCookie($email, $guid);
-                            }
-
-                            $response = "valid";
-                        }
-                    }
-                }
+        // See if auth_cd matches
+        if ($auth_cd !== $authCdDb['auth_cd']) {
+            if ($this->upInvalidCdCount($email) == "db_error") {
+                $response = "db_error";
             } else {
-                if ($this->upInvalidCdCount($email) == "db_error") {
-                    $response = "db_error";
-                } else {
-                    $response = "auth_invalid";
-                }
+                $response = "auth_invalid";
             }
+
+            $this->getDb()->logLogin($email, $response);
+            return $response;
+        }
+
+        // See if code is from within the last MAX_EXPIRE mins
+        $authCdTimestamp = $this->getDb()->getAuthCdTimestamp($email);
+        if ($authCdTimestamp === false || $authCdTimestamp === null) {
+            $this->getKcb()->logMessage("Invalid auth timestamp for email: " . $email . " value: " . var_export($authCdDb['lst_tran_dt_tm'], true));
+            $response = "auth_old";
+            $this->getDb()->logLogin($email, $response);
+            return $response;
+        }
+
+        $authCdDtTm = $authCdTimestamp + 60 * self::MAX_EXPIRE;
+        $this->getKcb()->logMessage("AuthCdDtTm: " . date('Y-m-d h:i:sa', $authCdDtTm) . " (" . $authCdDtTm . ") Current Time: " . time() . " (" . date('Y-m-d h:i:sa', time()) . ") Email: " . $email);
+
+        if (time() > $authCdDtTm) {
+            if ($this->sendAuthRequest($email)) {
+                $response = "auth_old";
+            } else {
+                $response = "db_error";
+            }
+
+            $this->getDb()->logLogin($email, $response);
+            return $response;
+        }
+
+        // Create auth_cd_guid for cookie
+        $guid = $this->guid();
+
+        // Update user's account
+        if (!$this->getDb()->setAuthCd($email, $guid)) {
+            $response = "db_error";
+        } elseif (!$this->getDb()->updateLastLogin($email)) {
+            $response = "db_error";
+        } else {
+            $this->saveSession($email, $guid);
+            if ($auth_remember == "true") {
+                $this->saveCookie($email, $guid);
+            }
+            $response = "valid";
         }
 
         $this->getDb()->logLogin($email, $response);
@@ -169,20 +182,18 @@ class Member
         $response = "valid";
         $member = $this->getDb()->getMember($email);
 
-        // NOTE: 0 can only mean that the user is active. If false, the user doesn't exist or is disabled.
-        if ($member['disabled'] === 0) {
-            // Don't allow pending members to login
+        if (!$member || !isset($member['disabled']) || $member['disabled'] !== 0) {
+            $response = "invalid";
+        } else {
             if ($member['accountType'] === 3) {
                 $response = "invalid_pending";
-            }
-            // Validate account auth cd isn't locked out
-            $accountLocked = $this->getDb()->accountLockedStatus($email);
+            } else {
+                $accountLocked = $this->getDb()->accountLockedStatus($email);
 
-            if ($accountLocked != '') {
-                $response =  "over_max_requests__" . date('D, M j g:i A', strtotime($accountLocked) + 3600);
+                if ($accountLocked != '') {
+                    $response =  "over_max_requests__" . date('D, M j g:i A', strtotime($accountLocked) + 3600);
+                }
             }
-        } else {
-            $response = "invalid";
         }
 
         return $response;
@@ -237,13 +248,16 @@ class Member
         $authCdDb = $this->getDb()->getAuthCd($email);
 
         if ($authCdDb) {
-            $authCdDtTm = strtotime($authCdDb['lst_tran_dt_tm']) + 60 * self::MAX_EXPIRE;
-
-            // Don't send another email if its been less than MAX_EXPIRE mins
-            if (date(time()) <= $authCdDtTm) {
-                $response = "auth_cd_not_expired";
+            $authCdTimestamp = $this->getDb()->getAuthCdTimestamp($email);
+            if ($authCdTimestamp === false || $authCdTimestamp === null) {
+                $response = "db_error";
             } else {
-                if (!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
+                $authCdDtTm = $authCdTimestamp + 60 * self::MAX_EXPIRE;
+
+                // Don't send another email if its been less than MAX_EXPIRE mins
+                if (time() <= $authCdDtTm) {
+                    $response = "auth_cd_not_expired";
+                } elseif (!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
                     $response = "db_error";
                 }
             }
@@ -261,7 +275,20 @@ class Member
     private function saveCookie($email, $auth_cd)
     {
         // Set cookie with information and expiration of one year
-        setcookie($this->kcbCookie, $email . "," . $auth_cd, time() + (60*60*24*365), "/");
+        $secure = true;
+        if (isset($_SERVER['HTTP_HOST']) && preg_match('/^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i', $_SERVER['HTTP_HOST'])) {
+            $secure = false;
+        }
+
+        $cookieOptions = [
+            'expires' => time() + (60 * 60 * 24 * 365),
+            'path' => '/',
+            'secure' => $secure,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ];
+
+        setcookie($this->kcbCookie, $email . "," . $auth_cd, $cookieOptions);
     }
 
     // Determines whether or not the cookie passed in from the client contains the valid auth code
@@ -270,15 +297,17 @@ class Member
         $response = false;
 
         if (isset($_COOKIE[$this->kcbCookie])) {
-            $pieces = explode(",", $_COOKIE[$this->kcbCookie]);
-            $cookieEmail = $pieces[0];
-            $cookieAuthCd = $pieces[1];
+            $pieces = explode(",", $_COOKIE[$this->kcbCookie], 2);
+            if (count($pieces) === 2) {
+                $cookieEmail = $pieces[0];
+                $cookieAuthCd = $pieces[1];
 
-            // Email must match the cookieEmail
-            if ($email == $cookieEmail) {
-                // Only check if the cookie email matches the email the user is logging in from
-                $auth_cd_guid = $this->getDb()->getAuthCdGuid($email, $cookieAuthCd);
-                $response = $auth_cd_guid != null;
+                // Email must match the cookieEmail
+                if ($email == $cookieEmail) {
+                    // Only check if the cookie email matches the email the user is logging in from
+                    $auth_cd_guid = $this->getDb()->getAuthCdGuid($email, $cookieAuthCd);
+                    $response = $auth_cd_guid != null;
+                }
             }
         }
 
@@ -289,8 +318,10 @@ class Member
     {
         $authCd = "";
         if (isset($_COOKIE[$this->kcbCookie])) {
-            $pieces = explode(",", $_COOKIE[$this->kcbCookie]);
-            $authCd =  $pieces[1];
+            $pieces = explode(",", $_COOKIE[$this->kcbCookie], 2);
+            if (count($pieces) === 2) {
+                $authCd = $pieces[1];
+            }
         }
 
         return $authCd;
