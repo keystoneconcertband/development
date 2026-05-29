@@ -570,7 +570,7 @@ class MemberDB
     public function getScheduleRecord($uid)
     {
         $this->getDb()->bind("uid", $uid);
-        return $this->getDb()->row("SELECT Title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule WHERE UID = :uid");
+        return $this->getDb()->row("SELECT Title AS title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule WHERE UID = :uid");
     }
 
     public function addSchedule($title, $concertBegin, $pants, $chair, $address)
