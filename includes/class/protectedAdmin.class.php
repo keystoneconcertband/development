@@ -90,6 +90,46 @@ class ProtectedAdmin
         return $this->getDb()->homepageMessageDateConflictCheck($date);
     }
 
+    public function getSchedules()
+    {
+        if (!$this->validAdmin()) {
+            return "access denied.";
+        }
+
+        return $this->getDb()->getSchedules();
+    }
+
+    public function getScheduleRecord($uid)
+    {
+        if (!$this->validAdmin()) {
+            return "access denied.";
+        }
+
+        return $this->getDb()->getScheduleRecord($uid);
+    }
+
+    public function addSchedule($title, $concertBegin, $pants, $chair, $address)
+    {
+        if (!$this->validAdmin()) {
+            return "access denied.";
+        }
+
+        if ($this->getDb()->addSchedule($title, $concertBegin, $pants, $chair, $address)) {
+            return "success";
+        }
+    }
+
+    public function editSchedule($uid, $title, $concertBegin, $pants, $chair, $address)
+    {
+        if (!$this->validAdmin()) {
+            return "access denied.";
+        }
+
+        if ($this->getDb()->editSchedule($uid, $title, $concertBegin, $pants, $chair, $address)) {
+            return "success";
+        }
+    }
+
     // Gets the current active members
     public function getPendingMembers()
     {

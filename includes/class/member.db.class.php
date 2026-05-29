@@ -561,6 +561,44 @@ class MemberDB
         return $this->getDb()->resultCount("SELECT uid FROM kcb_homepage_messages WHERE :date1 > start_dt AND :date2 < end_dt");
     }
 
+    /* Schedule methods */
+    public function getSchedules()
+    {
+        return $this->getDb()->query("SELECT UID, Title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule ORDER BY concertBegin");
+    }
+
+    public function getScheduleRecord($uid)
+    {
+        $this->getDb()->bind("uid", $uid);
+        return $this->getDb()->row("SELECT Title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule WHERE UID = :uid");
+    }
+
+    public function addSchedule($title, $concertBegin, $pants, $chair, $address)
+    {
+        $this->getDb()->bind("title", $title);
+        $this->getDb()->bind("concertBegin", date("Y-m-d H:i:s", strtotime($concertBegin)));
+        $this->getDb()->bind("pants", $pants);
+        $this->getDb()->bind("chair", $chair);
+        $this->getDb()->bind("address", $address);
+        $this->getDb()->bind("updateUser1", isset($_SESSION['email']) ? $_SESSION['email'] : '');
+        $this->getDb()->bind("updateUser2", isset($_SESSION['email']) ? $_SESSION['email'] : '');
+
+        return $this->getDb()->query("INSERT INTO kcb_schedule(Title, concertBegin, pants, chair, address, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:title, :concertBegin, :pants, :chair, :address, now(), :updateUser1, now(), :updateUser2)");
+    }
+
+    public function editSchedule($uid, $title, $concertBegin, $pants, $chair, $address)
+    {
+        $this->getDb()->bind("uid", $uid);
+        $this->getDb()->bind("title", $title);
+        $this->getDb()->bind("concertBegin", date("Y-m-d H:i:s", strtotime($concertBegin)));
+        $this->getDb()->bind("pants", $pants);
+        $this->getDb()->bind("chair", $chair);
+        $this->getDb()->bind("address", $address);
+        $this->getDb()->bind("updateUser", isset($_SESSION['email']) ? $_SESSION['email'] : '');
+
+        return $this->getDb()->query("UPDATE kcb_schedule SET Title = :title, concertBegin = :concertBegin, pants = :pants, chair = :chair, address = :address, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE UID = :uid");
+    }
+
     /* PRIVATE FUNCTIONS */
     private function getDb()
     {

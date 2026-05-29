@@ -45,13 +45,13 @@
 			<?php } ?>
 			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo 'active'; } ?>" href="/members/documents.php">Documents</a></li>
 			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo 'active'; } ?>" href="/members/music.php">Music</a></li>
+			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>
 			<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
 			<li class="nav-item dropdown">
 			  <a class="nav-link dropdown-toggle <?php if (in_array($_SERVER['PHP_SELF'], ['/members/homepageMessage.php', '/members/loginStats.php', '/members/messageMembers.php'])) { echo 'active'; } ?>" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
 			  <ul class="dropdown-menu" aria-labelledby="adminDropdown">
 				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo 'active'; } ?>" href="/members/homepageMessage.php">Homepage Message</a></li>
 				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo 'active'; } ?>" href="/members/loginStats.php">Login Stats</a></li>
-				<!--<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/manageConcerts.php") { echo 'active'; } ?>" href="/members/manageConcerts.php">Manage Concerts</a></li>-->
 				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo 'active'; } ?>" href="/members/messageMembers.php">Message Members</a></li>
 			  </ul>
 			</li>
