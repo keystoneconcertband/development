@@ -46,7 +46,7 @@ if (memberInfoForm) {
     memberInfoForm.classList.add("was-validated");
     if (event.defaultPrevented || !memberInfoForm.checkValidity()) {
       event.preventDefault();
-      formError('Oops! Looks like you have a validation error. Check for errors in the form.');
+      showAlert('#pageAlert', false, "Oops! Looks like you have a validation error. Check for errors in the form.");
     } else {
       event.preventDefault();
       submitForm();
@@ -61,40 +61,22 @@ function submitForm() {
   postUrlEncoded('myInfoServer.php', formData)
     .then(function (text) {
       if (text === 'success') {
-        formSuccess();
+        showAlert('#pageAlert', true, 'Your information has been updated.');
       } else {
-        formError(text);
+        showAlert('#pageAlert', true, text);
       }
     })
     .catch(function (error) {
-      showAlert('#pageAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
+      showAlert('#pageAlert', false, "Oops! Looks like you have a validation error. Check for errors in the form.");
       console.log(error);
     });
-}
-
-function formSuccess() {
-  var pageAlert = document.getElementById("pageAlert");
-  if (pageAlert) {
-    pageAlert.className = "alert alert-success alert-dismissible fade show";
-    pageAlert.innerHTML =
-      'Your information has been updated!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-    pageAlert.setAttribute("role", "alert");
-    window.scrollTo(0, 0);
-  }
-}
-
-function formError(text) {
-  if (!memberInfoForm) return;
-  shakeForm(memberInfoForm);
-  showAlert('#pageAlert', false, text || 'An error occurred.');
-  window.scrollTo(0, 0);
 }
 
 function deleteEmail(emailContainer) {
   deleteEmailRow(emailContainer, {
     minRows: 2,
     errorHandler: function (errorText) {
-      formError(errorText);
+        showAlert('#pageAlert', true, errorText);
     },
   });
 }

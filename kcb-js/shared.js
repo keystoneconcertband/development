@@ -136,6 +136,7 @@ function showAlert(selector, valid, msg) {
       element._hideTimeout = null;
     }, 5000);
   }
+  window.scrollTo(0, 0);
 }
 
 function showMessage(selector, valid, msg, duplicateSelectors) {

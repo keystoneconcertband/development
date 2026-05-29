@@ -15,12 +15,6 @@ new ProtectedMember();
 
     <?php require '../includes/common_css.php'; ?>
     <link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
-    <link rel="stylesheet" href="/css/checkboxes.min.css" />
-    <style type="text/css">
-    .extraEmailTemplate {
-        display: none;
-    }
-    </style>
 </head>
 
 <body>
