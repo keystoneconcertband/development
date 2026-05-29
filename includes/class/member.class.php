@@ -338,43 +338,4 @@ class Member
         $_SESSION['firstName'] = $member['firstName'];
         $_SESSION['lastName'] = $member['lastName'];
     }
-
-    private function validateFbAuth()
-    {
-        if (isset($_COOKIE[$this->fbAuthCookie])) {
-            $fbCookie = $_COOKIE[$this->fbAuthCookie];
-            list($encoded_sig, $payload) = explode('.', $fbCookie, 2);
-
-            $this->settings = parse_ini_file("settings.ini.php");
-            $secret = $this->settings["fbSecret"];
-
-            // decode the data
-            $sig = $this->base64_url_decode($encoded_sig);
-
-            // Data: https://developers.facebook.com/docs/reference/login/signed-request
-            $data = json_decode($this->base64_url_decode($payload), true);
-
-            // confirm the signature
-            $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
-            if ($sig !== $expected_sig) {
-                return "sig_not_match";
-            } else {
-                // Verify that the issued_at + 10 mins is > now
-                $inTenMinutes = $data['issued_at'] + 10 * 60;
-
-                if ($inTenMinutes > time()) {
-                    return "success";
-                } else {
-                    return "fb_session_hijack";
-                }
-            }
-        } else {
-            return "no_fb_cookie";
-        }
-    }
-
-    public function base64_url_decode($input)
-    {
-        return base64_decode(strtr($input, '-_', '+/'));
-    }
 }

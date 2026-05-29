@@ -416,6 +416,15 @@ class MemberDB
         return $retVal;
     }
 
+    public function deleteMember($uid, $updateUser)
+    {
+        $this->getDb()->bind('uid', $uid);
+
+        $retVal = $this->getDb()->query("DELETE FROM kcb_members WHERE UID = :uid");
+
+        return $retVal;
+    }
+
     public function insertAddress($uid, $mbrArray, $updateUser)
     {
         $this->getDb()->bind('uid', $uid);
@@ -462,6 +471,14 @@ class MemberDB
         $this->getDb()->bind("email", $email);
         $this->getDb()->bind("uid", $uid);
         $retVal = $this->getDb()->query("DELETE FROM kcb_email_address WHERE member_uid=:uid AND email_address=:email");
+
+        return $retVal;
+    }
+
+    public function delAllEmails($uid)
+    {
+        $this->getDb()->bind("uid", $uid);
+        $retVal = $this->getDb()->query("DELETE FROM kcb_email_address WHERE member_uid=:uid");
 
         return $retVal;
     }

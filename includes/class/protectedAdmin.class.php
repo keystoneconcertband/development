@@ -8,6 +8,7 @@ class ProtectedAdmin
 {
     private $db;
     private $kcb;
+    private $log;
 
     /* PUBLIC FUNCTIONS */
     public function __construct()
@@ -15,6 +16,7 @@ class ProtectedAdmin
         new Member(true);
         $this->setKcb(new KcbBase());
         $this->setDB(new MemberDB());
+        $this->log = new Log();
 
         if (!$this->validAdmin()) {
             header('Location: adminAccess.php');
@@ -192,38 +194,43 @@ class ProtectedAdmin
         return $retValue;
     }
 
-    public function removeMember($uid, $deleteEmailAddress)
-    {
-        if (!$this->validAdmin()) {
-            return "access denied.";
-        }
+	public function deleteMember($uid, $deleteEmailAddress) {
+		if ($this->validAdmin()) {
+			$updateUser = $_SESSION["email"];
+			
+			try {
+				$this->getDb()->beginTransaction();
 
-        $retValue = "success";
-        $updateUser = $_SESSION["email"];
-
-        try {
-            $this->getDb()->beginTransaction();
-
-            if ($this->getDb()->removeMember($uid, $updateUser)) {
-                if ($this->updateEmails($uid, array(), $deleteEmailAddress)) {
-                    $this->getDb()->executeTransaction();
-                } else {
-                    $this->getDb()->rollBackTransaction();
-                    $retValue = "remove_email_error";
-                }
-            } else {
-                $this->getDb()->rollBackTransaction();
-                $retValue = "remove_member_error";
-            }
-        } catch (Exception $e) {
-            $this->getKcb()->logError($e->getMessage());
-            $this->getDb()->rollBackTransaction();
-            $retValue = "db_error";
-        }
-
-        return $retValue;
-    }
-
+				if($this->getDb()->delAllEmails($uid)) {
+                    $this->log->write("Deleted all emails for member: " . $uid);
+					if($this->getDb()->deleteMember($uid, $updateUser)) {
+                        $this->log->write("Deleted member: " . $uid);
+                        $this->getDb()->executeTransaction();
+                        $retValue = "success";
+					}
+					else {
+						$this->getDb()->rollBackTransaction();
+						$retValue = "delete_member_error";
+					}
+				}
+				else {
+					$this->getDb()->rollBackTransaction();
+					$retValue = "delete_email_error";
+				}
+			}
+			catch(Exception $e) {
+				$this->getKcb()->logError($e->getMessage());
+				$this->getDb()->rollBackTransaction();
+				$retValue = "db_error";
+			}
+			
+			return $retValue;
+		}
+		else {
+			return "Access Denied";
+		}
+	}
+	
     /* PRIVATE FUNCTIONS */
     private function validAdmin()
     {
@@ -263,10 +270,8 @@ class ProtectedAdmin
 
         foreach ($emailsToAdd as $value) {
             if ($value !== "") {
-                $header = 'From: '. $value . "\r\n" .
-                    'X-Mailer: PHP/' . phpversion();
                 try {
-                    mail('member-request@keystoneconcertband.com', '', 'subscribe nodigest address=' . $value, $header);
+                    $this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
                     $result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);
                 } catch (Exception $e) {
                     $this->getKcb()->logError($e->getMessage());
@@ -279,11 +284,8 @@ class ProtectedAdmin
         if ($result) {
             foreach ($emailsToDel as $value) {
                 if ($value !== "") {
-                    $header = 'From: ' . $value . "\r\n" .
-                        'X-Mailer: PHP/' . phpversion();
                     try {
-                        mail('member-request@keystoneconcertband.com', '', 'unsubscribe address=' . $value, $header);
-
+                        $this->kcb->sendEmail('webmaster@keystoneconcertband.com','Delete email: ' . $value, 'KCB Email Update [Delete]');
                         if ($delEmail) {
                             $result = $this->getDb()->delEmail($value, $uid);
                         } else {

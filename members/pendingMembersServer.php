@@ -68,7 +68,7 @@
 			echo json_encode('Unique Identifier is missing.');
 		}
 		else {			
-			echo json_encode($mbr->removeMember($_POST['uid'], true));
+			echo json_encode($mbr->deleteMember($_POST['uid'], true));
 		}
 	}
 	else {
