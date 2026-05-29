@@ -128,6 +128,7 @@ new ProtectedMusic();
     var accountType = "<?=$_SESSION['accountType']?>";
     </script>
     <?php require '../includes/common_js.php'; ?>
+    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js')?>"></script>
     <?php require '../includes/common_datatables.php'; ?>
     <script type="text/javascript" src="<?=asset('/kcb-js/music.js')?>"></script>
 </body>

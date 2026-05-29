@@ -37,8 +37,7 @@ if (formMusic) {
         formMusic.classList.add('was-validated');
         if (event.defaultPrevented || !formMusic.checkValidity()) {
             event.preventDefault();
-            formError();
-            submitMSG(false, 'Check for errors in the form.');
+            formError('Check for errors in the form.');
         } else {
             event.preventDefault();
             submitForm();
@@ -77,46 +76,24 @@ function addRecord() {
     var formData = new URLSearchParams(new FormData(formMusic));
     formData.append('type', 'add');
 
-    fetch("musicServer.php", {
-    method: "POST",
-    body: formData,
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then(function (response) {
-      return response.json();
-    })
+    postUrlEncoded('musicServer.php', formData)
     .then(function (text) {
-      console.log(text);
-      if (text === "success") {
-        formSuccess("Record Added.");
+      if (text === 'success') {
+        formSuccess('Record Added.');
       } else {
         formError(text);
       }
     })
-    .catch(function (xhr) {
-      submitMSG(
-        false,
-        "Oops! An error occurred processing the form. Please try again later.",
-      );
-      console.log(xhr);
+    .catch(function (error) {
+      showAlert('#formAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
+      console.log(error);
     });
 }
 
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMusicRecord', uid: uid.toString() });
 
-    fetch('musicServer.php', {
-        method: 'POST',
-        body: params,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(function (response) {
-        return response.json();
-    })
+    postUrlEncoded('musicServer.php', params)
     .then(function (data) {
         populateForm('#form_music', data);
         var uidField = document.getElementById('uid');
@@ -129,9 +106,9 @@ function showEditRecord(uid) {
             bsModal.show();
         }
     })
-    .catch(function (xhr) {
-        submitMSG(false, 'Oops! An error occurred opening the form. Please try again later.');
-        console.log(xhr);
+    .catch(function (error) {
+        showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
+        console.log(error);
     });
 }
 
@@ -140,32 +117,17 @@ function editRecord() {
     var formData = new URLSearchParams(new FormData(formMusic));
     formData.append('type', 'edit');
 
-  fetch("musicServer.php", {
-    method: "POST",
-    body: formData,
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("HTTP error! status: " + response.status);
-      }
-      return response.json();
-    })
+    postUrlEncoded('musicServer.php', formData)
     .then(function (text) {
-      if (text === "success") {
-        formSuccess("Record Saved.");
+      if (text === 'success') {
+        formSuccess('Record Saved.');
       } else {
         formError(text);
       }
     })
     .catch(function (error) {
-      console.log("Edit Fetch error:", error);
-      submitMSG(
-        false,
-        "Oops! An error occurred processing the form. Please try again later.",
-      );
+      console.log('Edit Fetch error:', error);
+      showAlert('#formAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
     });
 }
 
@@ -175,32 +137,17 @@ function deleteRecord(title, uid) {
     }
     var params = new URLSearchParams({ type: 'delete', uid: uid.toString() });
 
-  fetch("musicServer.php", {
-    method: "POST",
-    body: formData,
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("HTTP error! status: " + response.status);
-      }
-      return response.json();
-    })
+    postUrlEncoded('musicServer.php', params)
     .then(function (text) {
-      if (text === "success") {
-        formSuccess("Record removed.");
+      if (text === 'success') {
+        formSuccess('Record removed.');
       } else {
         formError(text);
       }
     })
     .catch(function (error) {
-      console.log("Edit Fetch error:", error);
-      submitMSG(
-        false,
-        "Oops! An error occurred processing the form. Please try again later.",
-      );
+      console.log('Delete Fetch error:', error);
+      showAlert('#formAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
     });
 }
 
@@ -230,44 +177,8 @@ function formSuccess(text) {
 
 function formError(text) {
     if (!formMusic) return;
-    formMusic.classList.add('shake', 'animated');
-    function removeClasses() {
-        formMusic.classList.remove('shake', 'animated');
-        formMusic.removeEventListener('animationend', removeClasses);
-        formMusic.removeEventListener('webkitAnimationEnd', removeClasses);
-        formMusic.removeEventListener('mozAnimationEnd', removeClasses);
-        formMusic.removeEventListener('MSAnimationEnd', removeClasses);
-        formMusic.removeEventListener('oanimationend', removeClasses);
-    }
-    formMusic.addEventListener('animationend', removeClasses);
-    formMusic.addEventListener('webkitAnimationEnd', removeClasses);
-    formMusic.addEventListener('mozAnimationEnd', removeClasses);
-    formMusic.addEventListener('MSAnimationEnd', removeClasses);
-    formMusic.addEventListener('oanimationend', removeClasses);
-    submitMSG(false, text);
-}
-
-function submitMSG(valid, msg) {
-  var formAlert = document.getElementById("formAlert");
-  if (!formAlert) return;
-
-  var alertClasses = valid
-    ? "alert alert-success alert-dismissible fade show"
-    : "alert alert-danger alert-dismissible fade show";
-  formAlert.className = alertClasses;
-  formAlert.innerHTML =
-    msg +
-    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-  formAlert.setAttribute("role", "alert");
-}
-
-function populateForm(frm, data) {
-    var form = document.querySelector(frm);
-    if (!form) return;
-    Object.keys(data).forEach(function (key) {
-        var field = form.querySelector('[name="' + key + '"]');
-        if (field) field.value = data[key];
-    });
+    shakeForm(formMusic);
+    showAlert('#formAlert', false, text);
 }
 
 function populateGenreDropdown() {
@@ -275,16 +186,7 @@ function populateGenreDropdown() {
     if (!genreSelect) return;
     if (genreSelect.options.length === 1) {
         var params = new URLSearchParams({ type: 'getMusicGenres' });
-        fetch('musicServer.php', {
-            method: 'POST',
-            body: params,
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(function (response) {
-            return response.json();
-        })
+        postUrlEncoded('musicServer.php', params)
         .then(function (data) {
             data.forEach(function (value) {
                 var option = document.createElement('option');
@@ -292,9 +194,9 @@ function populateGenreDropdown() {
                 genreSelect.appendChild(option);
             });
         })
-        .catch(function (xhr) {
-            submitMSG(false, 'Oops! An error occurred opening the form. Please try again later.');
-            console.log(xhr);
+        .catch(function (error) {
+            showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
+            console.log(error);
         });
     }
 }

@@ -231,6 +231,7 @@
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
+    <script type="text/javascript" src="<?=asset('kcb-js/shared.js')?>"></script>
     <script type="text/javascript" src="<?=asset('kcb-js/join.js')?>" ></script>
 </body>
 

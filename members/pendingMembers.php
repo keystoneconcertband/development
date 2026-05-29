@@ -220,7 +220,8 @@ new ProtectedAdmin();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
-	<?php require '../includes/common_datatables.php'; ?>
-	<script type="text/javascript" src="<?=asset('/kcb-js/pendingMembers.js')?>" ></script>
+    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js')?>"></script>
+    <?php require '../includes/common_datatables.php'; ?>
+	<script type="text/javascript" src="<?=asset('/kcb-js/pendingMembers.js')?>"></script>
   </body>
 </html>

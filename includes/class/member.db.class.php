@@ -343,6 +343,39 @@ class MemberDB
         return $pendingMemberActivated && $retVal !== false;
     }
 
+    public function reactivateMember($uid, $mbrArray, $updateUser)
+    {
+        $this->getDb()->bind('uid', $uid);
+        $this->getDb()->bind("updateUser", $updateUser);
+
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET accountType = 0, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
+                                         WHERE UID = :uid");
+
+        $inactiveMemberActivated = $retVal > 0;
+
+        if ($inactiveMemberActivated) {
+            $retVal = $this->updateMember($uid, $mbrArray, $updateUser);
+        }
+
+        // Update email address, activate email and update who approved the user
+        if ($inactiveMemberActivated && $retVal !== false) {
+			$emailCount = $this->getEmailAddresses($uid);
+
+			if($emailCount > 0) {
+				// Activate any emails the user might have
+				$this->activateEmail($uid, $updateUser);
+			}
+        }
+
+        // Update instruments with who approved the user
+        if ($inactiveMemberActivated && $retVal !== false) {
+            $retVal = $this->updateLastUpdateOnInstrument($uid, $updateUser);
+        }
+
+        return $inactiveMemberActivated && $retVal !== false;
+    }
+
     public function updateMember($uid, $mbrArray, $updateUser)
     {
         $text = null;

@@ -239,24 +239,14 @@ class ProtectedMember {
 	
 	public function reactivateMember($uid, $mbrArray) {
 		$updateUser = $_SESSION["email"];
-		$retVal = $this->updateMember($uid, $mbrArray);
+		$retVal = $this->getDb()->reactivateMember($uid, $mbrArray, $updateUser);
 		
-		if($retVal == "success") {
-			$emailCount = $this->getDb()->getEmailAddresses($uid);
-
-			if($emailCount > 0) {
-				// Activate any emails the user might have
-				$this->getDb()->activateEmail($uid, $updateUser);
-			}
-
-			// Add/remove any emails the user might have changed since last time.
-			$this->updateEmails($uid, $mbrArray['email'], false, false);
-
-			// If user had any instruments, update their timestamps
-			$this->getDb()->updateLastUpdateOnInstrument($uid, $updateUser);
+		if($retVal) {
+			return "success";
 		}
-		
-		return $retVal;			
+		else {
+			return "reactivate_member_error";
+		}
 	}
 	
 	/* PRIVATE FUNCTIONS */

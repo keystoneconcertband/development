@@ -46,7 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
             var lastId = lastContainer.id.replace('emailContainer', '');
             var lastIdInt = parseInt(lastId, 10);
             var emailCount = lastIdInt + 1;
-            var html = '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '" style="display:none"><div class="col-sm-12"><label for="Email" class="form-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value=""><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>';
+            var html = createEmailRow(emailCount, {
+                labelText: 'Email',
+                placeholderText: 'Email Address ' + emailCount,
+                rowClass: 'emailContainers'
+            });
             lastContainer.insertAdjacentHTML('afterend', html);
             var newContainer = document.getElementById('emailContainer' + emailCount);
             if (newContainer) {
@@ -97,7 +101,11 @@ if (modalEditDelete) {
         });
         var textContainer = document.getElementById('textContainer');
         if (textContainer) {
-            textContainer.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer1"><div class="col-sm-12"><label for="Email" class="form-label">Email</label><div class="input-group"><input type="email" class="form-control email1" name="email[]" id="email[]" placeholder="Email Address" maxlength="100"><span class="input-group-text"><a href="#noscroll" id="email1" onclick="deleteEmail(\'emailContainer1\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
+            textContainer.insertAdjacentHTML('afterend', createEmailRow(1, {
+                labelText: 'Email',
+                placeholderText: 'Email Address',
+                rowClass: 'emailContainers'
+            }));
         }
     });
 }
@@ -116,19 +124,16 @@ function deleteEmail(emailContainer) {
 
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMemberRecord', uid: uid.toString() });
-    fetch('pendingMembersServer.php', {
-        method: 'POST',
-        body: params,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(function (response) {
-        return response.json();
-    })
+
+    postUrlEncoded('pendingMembersServer.php', params)
     .then(function (data) {
         populateForm('#form_member', data);
-        populateEmail(data);
+        populateEmail(data, {
+            firstSelector: '.email1',
+            containerPrefix: 'emailContainer',
+            rowClass: 'emailContainers',
+            labelText: 'Email'
+        });
         populateInstrument(data);
         var state = document.getElementById('state');
         if (state) state.value = 'PA';
@@ -141,7 +146,7 @@ function showEditRecord(uid) {
         }
     })
     .catch(function (xhr) {
-        submitMSG(false, 'Oops! An error occurred opening the form. Please try again later.');
+        formError('Oops! An error occurred opening the form. Please try again later.');
         console.log(xhr);
     });
 }
@@ -149,34 +154,19 @@ function showEditRecord(uid) {
 function submitForm() {
   if (!formMember) return;
   var formData = new URLSearchParams(new FormData(formMember));
-  formData.append("type", "edit");
+  formData.append('type', 'edit');
 
-  fetch("pendingMembersServer.php", {
-    method: "POST",
-    body: formData,
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("HTTP error! status: " + response.status);
-      }
-      return response.json();
-    })
+  postUrlEncoded('pendingMembersServer.php', formData)
     .then(function (text) {
-      if (text === "success") {
-        formSuccess("User successfully added to the band.");
+      if (text === 'success') {
+        formSuccess('User successfully added to the band.');
       } else {
         formError(text);
       }
     })
     .catch(function (error) {
-      console.log("Edit Fetch error:", error);
-      submitMSG(
-        false,
-        "Oops! An error occurred processing the form. Please try again later.",
-      );
+      console.log('Edit Fetch error:', error);
+      formError('Oops! An error occurred processing the form. Please try again later.');
     });
 }
 
@@ -184,48 +174,32 @@ function deleteRecord(title, uid) {
     if (confirm('Do you want to remove ' + title + ' from the band roster and email list?')) {
         var params = new URLSearchParams({ type: 'delete', uid: uid.toString() });
 
-        fetch('pendingMembersServer.php', {
-            method: 'POST',
-            body: params,
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(function (response) {
-            return response.text();
-        })
+        postUrlEncoded('pendingMembersServer.php', params)
         .then(function (text) {
-            if (text === "success") {
+            if (text === 'success') {
                 formSuccess('User successfully removed.');
             } else {
                 formError(text);
             }
         })
         .catch(function (xhr) {
-            submitMSG(false, 'Oops! An error occurred processing the form. Please try again later.');
+            formError('Oops! An error occurred processing the form. Please try again later.');
             console.log(xhr);
         });
     }
 }
 
 function formSuccess(text) {
-  var pageAlert = document.getElementById("pageAlert");
-  if (pageAlert) {
-    pageAlert.className = "alert alert-success alert-dismissible fade show";
-    pageAlert.innerHTML =
-      text +
-      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-    pageAlert.setAttribute("role", "alert");
-  }
-  var table = $("#kcbMemberTable").DataTable();
+  showAlert('#pageAlert', true, text);
+  var table = $('#kcbMemberTable').DataTable();
   if (table) {
     table.ajax.reload();
   }
   if (formMember) {
     formMember.reset();
-    formMember.classList.remove("was-validated");
+    formMember.classList.remove('was-validated');
   }
-  var modal = document.getElementById("modal_edit_delete");
+  var modal = document.getElementById('modal_edit_delete');
   if (modal) {
     var bsModal = bootstrap.Modal.getInstance(modal);
     if (bsModal) bsModal.hide();
@@ -234,78 +208,6 @@ function formSuccess(text) {
 
 function formError(text) {
     if (!formMember) return;
-    formMember.classList.add('shake', 'animated');
-    function removeClasses() {
-        formMember.classList.remove('shake', 'animated');
-        formMember.removeEventListener('animationend', removeClasses);
-        formMember.removeEventListener('webkitAnimationEnd', removeClasses);
-        formMember.removeEventListener('mozAnimationEnd', removeClasses);
-        formMember.removeEventListener('MSAnimationEnd', removeClasses);
-        formMember.removeEventListener('oanimationend', removeClasses);
-    }
-    formMember.addEventListener('animationend', removeClasses);
-    formMember.addEventListener('webkitAnimationEnd', removeClasses);
-    formMember.addEventListener('mozAnimationEnd', removeClasses);
-    formMember.addEventListener('MSAnimationEnd', removeClasses);
-    formMember.addEventListener('oanimationend', removeClasses);
-    submitMSG(false, text);
-}
-
-function submitMSG(valid, msg) {
-  var formAlert = document.getElementById("formAlert");
-  if (!formAlert) return;
-
-  var alertClasses = valid
-    ? "alert alert-success alert-dismissible fade show"
-    : "alert alert-danger alert-dismissible fade show";
-  formAlert.className = alertClasses;
-  formAlert.innerHTML =
-    msg +
-    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-  formAlert.setAttribute("role", "alert");
-}
-
-function populateForm(frm, data) {
-    var form = document.querySelector(frm);
-    if (!form) return;
-    Object.keys(data).forEach(function (key) {
-        var field = form.querySelector('[name="' + key + '"]');
-        if (field) {
-            field.value = data[key];
-        }
-    });
-}
-
-function populateEmail(data) {
-    var email = data.email;
-    if (email !== null && email !== '') {
-        if (email.indexOf(',') !== -1) {
-            var arr = email.split(',');
-            for (var i = 0; i < arr.length; i++) {
-                var emailCount = i + 1;
-                if (i === 0) {
-                    var firstEmail = document.querySelector('.email1');
-                    if (firstEmail) firstEmail.value = arr[i];
-                } else {
-                    var container = document.getElementById('emailContainer' + i);
-                    if (container) {
-                        container.insertAdjacentHTML('afterend', '<div class="row mb-3 emailContainers" id="emailContainer' + emailCount + '"><div class="col-sm-12"><label for="Email" class="form-label">Email ' + emailCount + '</label><div class="input-group"><input type="email" class="form-control" name="email[]" id="email[]" placeholder="Email Address ' + emailCount + '" maxlength="100" value="' + arr[i] + '"><span class="input-group-text"><a href="#noscroll" id="email' + emailCount + '" onclick="deleteEmail(\'emailContainer' + emailCount + '\');"><span class="fa fa-remove"></span></a></span></div></div></div>');
-                    }
-                }
-            }
-        } else {
-            var email1 = document.querySelector('.email1');
-            if (email1) email1.value = email;
-        }
-    }
-}
-
-function populateInstrument(data) {
-    if (data.instrument) {
-        var arr = data.instrument.split(',');
-        for (var i = 0; i < arr.length; i++) {
-            var checkbox = document.getElementById(arr[i]);
-            if (checkbox) checkbox.checked = true;
-        }
-    }
+    shakeForm(formMember);
+    showAlert('#formAlert', false, text);
 }
