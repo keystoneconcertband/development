@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (event.defaultPrevented || !form.checkValidity()) {
       event.preventDefault();
       shakeForm(form);
-      showMessage('#msgSubmit', false, 'Oops! Looks like you have a validation error. Check for errors in the form.');
+      showAlert('#formAlert', false, 'Oops! Looks like you have a validation error. Check for errors in the form.');
     } else {
       event.preventDefault();
       submitForm();
@@ -24,11 +24,11 @@ function submitForm() {
         formSuccess();
       } else {
         shakeForm(form);
-        showMessage('#msgSubmit', false, text);
+        showAlert('#formAlert', false, text);
       }
     })
     .catch((xhr) => {
-      showMessage('#msgSubmit', false, 'Oops! An error occurred processing the form. Please try again later.');
+      showAlert('#formAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
       console.log(xhr);
     });
 }
@@ -38,5 +38,5 @@ function formSuccess() {
   if (form) {
     form.reset();
   }
-  showMessage('#msgSubmit', true, 'Thanks for submitting your information. We will reply back shortly.');
+    showAlert('#formAlert', true, "Thanks for submitting your information. We will reply back shortly.");
 }

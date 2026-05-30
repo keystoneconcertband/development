@@ -39,6 +39,7 @@
                     Please keep in mind that it is best to contact us at least 3-6 months before your event,
                     as we are filling dates as much as a year in advance.</p>
                 <h3 class="border-bottom">Contact Us</h3>
+                <div id="formAlert" class="alert d-none alert-dismissible fade show" role="alert"></div>
                 <form class="row g-3" id="frmBook">
                     <div class="d-none" aria-hidden="true">
                         <label for="honeypot">Leave this field blank</label>

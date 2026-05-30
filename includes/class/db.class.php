@@ -122,6 +122,9 @@ class DB
                     }
                     // Add type when binding the values to the column
                     $this->sQuery->bindValue($value[0], $value[1], $type);
+                }
+            }
+
             # Execute SQL 
             $this->sQuery->execute();
         }
