@@ -136,7 +136,24 @@ function showAlert(selector, valid, msg) {
       element._hideTimeout = null;
     }, 5000);
   }
-  window.scrollTo(0, 0);
+
+  function scrollToAlert() {
+    var modalBody = element.closest('.modal-body');
+    if (modalBody && modalBody.scrollHeight > modalBody.clientHeight) {
+      element.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'nearest' });
+      return;
+    }
+
+    var rect = element.getBoundingClientRect();
+    var offsetTop = Math.max(0, rect.top + window.pageYOffset - 90);
+    window.scrollTo({ top: offsetTop, behavior: 'auto' });
+  }
+
+  if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(scrollToAlert);
+  } else {
+    setTimeout(scrollToAlert, 0);
+  }
 }
 
 function showMessage(selector, valid, msg, duplicateSelectors) {
