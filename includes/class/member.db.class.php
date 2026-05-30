@@ -370,12 +370,12 @@ class MemberDB
 
         // Update email address, activate email and update who approved the user
         if ($inactiveMemberActivated && $retVal !== false) {
-			$emailCount = $this->getEmailAddresses($uid);
+            $emailCount = $this->getEmailAddresses($uid);
 
-			if($emailCount > 0) {
-				// Activate any emails the user might have
-				$this->activateEmail($uid, $updateUser);
-			}
+            if (count($emailCount) > 0) {
+                // Activate any emails the user might have
+                $this->activateEmail($uid, $updateUser);
+            }
         }
 
         // Update instruments with who approved the user
@@ -578,14 +578,12 @@ class MemberDB
         return $this->getDb()->query("SELECT uid, title, message, message_type, DATE(start_dt) as start_dt, DATE(end_dt) as end_dt FROM kcb_homepage_messages");
     }
 
-    /* This could be better. This will only get the values that conflict with a current date range, but will miss
-    anything outside it (e.g. if 1/10-1/12 exist, and the user now chooses 1/9-1/13, this won't find anything wrong with that */
+    /* Check whether the provided date falls inside any existing homepage message range. */
     public function homepageMessageDateConflictCheck($date)
     {
-        $this->getDb()->bind("date1", date("Y-m-d H:i:s", strtotime($date)));
-        $this->getDb()->bind("date2", date("Y-m-d H:i:s", strtotime($date)));
+        $this->getDb()->bind("date", date("Y-m-d H:i:s", strtotime($date)));
 
-        return $this->getDb()->resultCount("SELECT uid FROM kcb_homepage_messages WHERE :date1 > start_dt AND :date2 < end_dt");
+        return $this->getDb()->resultCount("SELECT uid FROM kcb_homepage_messages WHERE :date BETWEEN start_dt AND end_dt");
     }
 
     /* Schedule methods */
@@ -600,20 +598,20 @@ class MemberDB
         return $this->getDb()->row("SELECT Title AS title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule WHERE UID = :uid");
     }
 
-    public function addSchedule($title, $concertBegin, $pants, $chair, $address)
+    public function addSchedule($title, $concertBegin, $pants, $chair, $address, $updateUser)
     {
         $this->getDb()->bind("title", $title);
         $this->getDb()->bind("concertBegin", date("Y-m-d H:i:s", strtotime($concertBegin)));
         $this->getDb()->bind("pants", $pants);
         $this->getDb()->bind("chair", $chair);
         $this->getDb()->bind("address", $address);
-        $this->getDb()->bind("updateUser1", isset($_SESSION['email']) ? $_SESSION['email'] : '');
-        $this->getDb()->bind("updateUser2", isset($_SESSION['email']) ? $_SESSION['email'] : '');
+        $this->getDb()->bind("updateUser1", $updateUser);
+        $this->getDb()->bind("updateUser2", $updateUser);
 
         return $this->getDb()->query("INSERT INTO kcb_schedule(Title, concertBegin, pants, chair, address, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:title, :concertBegin, :pants, :chair, :address, now(), :updateUser1, now(), :updateUser2)");
     }
 
-    public function editSchedule($uid, $title, $concertBegin, $pants, $chair, $address)
+    public function editSchedule($uid, $title, $concertBegin, $pants, $chair, $address, $updateUser)
     {
         $this->getDb()->bind("uid", $uid);
         $this->getDb()->bind("title", $title);
@@ -621,7 +619,7 @@ class MemberDB
         $this->getDb()->bind("pants", $pants);
         $this->getDb()->bind("chair", $chair);
         $this->getDb()->bind("address", $address);
-        $this->getDb()->bind("updateUser", isset($_SESSION['email']) ? $_SESSION['email'] : '');
+        $this->getDb()->bind("updateUser", $updateUser);
 
         return $this->getDb()->query("UPDATE kcb_schedule SET Title = :title, concertBegin = :concertBegin, pants = :pants, chair = :chair, address = :address, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE UID = :uid");
     }

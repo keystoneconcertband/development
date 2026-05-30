@@ -116,7 +116,7 @@ class ProtectedAdmin
             return "access denied.";
         }
 
-        if ($this->getDb()->addSchedule($title, $concertBegin, $pants, $chair, $address)) {
+        if ($this->getDb()->addSchedule($title, $concertBegin, $pants, $chair, $address, $_SESSION['email'] ?? '')) {
             return "success";
         }
     }
@@ -127,7 +127,7 @@ class ProtectedAdmin
             return "access denied.";
         }
 
-        if ($this->getDb()->editSchedule($uid, $title, $concertBegin, $pants, $chair, $address)) {
+        if ($this->getDb()->editSchedule($uid, $title, $concertBegin, $pants, $chair, $address, $_SESSION['email'] ?? '')) {
             return "success";
         }
     }
