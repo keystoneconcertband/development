@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (empty($_SESSION['join_csrf_token'])) {
+    $_SESSION['join_csrf_token'] = bin2hex(random_bytes(32));
+}
+$joinCsrfToken = $_SESSION['join_csrf_token'];
+$formCreatedAt = time();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -96,6 +104,9 @@
                         <input type="text" class="form-control" id="honeypot" name="honeypot" autocomplete="off"
                             tabindex="-1">
                     </div>
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="<?= htmlentities($joinCsrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" id="formCreatedAt" name="formCreatedAt" value="<?= htmlentities($formCreatedAt, ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" id="jsCheck" name="jsCheck" value="">
                     <div class="col-lg-12">
                         If you are interested in joining the band, please fill out the form below with your
                         contact information so we can get back to you.<br />

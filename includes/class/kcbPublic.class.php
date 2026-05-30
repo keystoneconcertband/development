@@ -36,10 +36,14 @@ class KCBPublic
         $response = $this->validateJoin($joinArray);
 
         if (empty($response)) {
+            // Require JS and timing protections
+            $response = $this->validateSpamProtection($joinArray);
+        }
+
+        if (empty($response)) {
             // Check for spam
             $response = $this->processSpam($joinArray);
 
-            // If we successfully sent the email, add the user to the database as a pending user
             if (empty($response)) {
                 try {
                     $this->getDb()->beginTransaction();
@@ -51,11 +55,12 @@ class KCBPublic
                     // Add email
                     if ($uid > 0) {
                         if ($this->getDb()->addEmail($joinArray['txtEmail'], $uid, $webUser)) {
-                            // Loop through each instrument	and add
+                            // Loop through each instrument and add
                             foreach ($joinArray['chkInstrument'] as $instr) {
                                 if (!$this->getDb()->addInstrument($instr, $uid, $webUser)) {
                                     $this->getDb()->rollBackTransaction();
                                     $response = "instrument_add_error";
+                                    break;
                                 }
                             }
                         } else {
@@ -67,13 +72,17 @@ class KCBPublic
                         $response = "add_error";
                     }
 
-                    // Everything above was successful, save the transaction
+                    // Everything above was successful, save the transaction and send email notification
                     if (empty($response)) {
-                        $response = "success";
                         $this->getDb()->executeTransaction();
 
-                        // Send the email with the users request
-                        $this->processEmail($joinArray);
+                        $emailResponse = $this->processEmail($joinArray);
+                        if ($emailResponse === "success") {
+                            $response = "success";
+                        } else {
+                            $this->getKcb()->logMessage("Join request email failed: " . $emailResponse);
+                            $response = "Unable to send notification email. Your request was saved.";
+                        }
                     }
                 } catch (Exception $e) {
                     $this->getKcb()->logMessage($e->getMessage());
@@ -110,31 +119,75 @@ class KCBPublic
     {
         $response = "";
 
-        if (!isset($joinArray['txtName'])) {
+        $name = isset($joinArray['txtName']) ? trim($joinArray['txtName']) : '';
+        $phone = isset($joinArray['txtPhone']) ? trim($joinArray['txtPhone']) : '';
+        $email = isset($joinArray['txtEmail']) ? trim($joinArray['txtEmail']) : '';
+        $playLength = isset($joinArray['txtPlayLength']) ? trim($joinArray['txtPlayLength']) : '';
+        $instruments = isset($joinArray['chkInstrument']) ? $joinArray['chkInstrument'] : [];
+
+        if ($name === '') {
             $response = "Name is required.";
         } elseif (!empty($joinArray['honeypot'])) {
             $response = "Invalid request.";
-        } elseif (!empty($joinArray['txtPhone']) && strlen($joinArray['txtPhone']) < 10) {
-            $response = "Phone number must be 10 digits.";
-        } elseif (!isset($joinArray['txtEmail'])) {
+        } elseif ($phone !== '' && strlen(preg_replace('/\D/', '', $phone)) < 10) {
+            $response = "Phone number must be at least 10 digits.";
+        } elseif ($email === '') {
             $response = "Email is required.";
-        } elseif (!isset($joinArray['txtPlayLength'])) {
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $response = "Please enter a valid email address.";
+        } elseif ($playLength === '') {
             $response = "Length of time playing is required.";
-        } elseif (!isset($joinArray['chkInstrument'])) {
+        } elseif (!is_array($instruments) || empty($instruments)) {
             $response = "Please choose at least one instrument that you play.";
         }
 
         return $response;
     }
 
+    private function validateSpamProtection($joinArray)
+    {
+        if (empty($joinArray['jsCheck']) || $joinArray['jsCheck'] !== 'enabled') {
+            return "Please enable JavaScript to submit this form.";
+        }
+
+        if (empty($joinArray['formCreatedAt']) || !ctype_digit($joinArray['formCreatedAt'])) {
+            return "Invalid form submission.";
+        }
+
+        $formAge = time() - (int)$joinArray['formCreatedAt'];
+        if ($formAge < 3) {
+            return "Please take a moment to complete the form before submitting.";
+        }
+
+        if ($formAge > 3600) {
+            return "The form session has expired. Please refresh the page and try again.";
+        }
+
+        if (!empty($_SERVER['HTTP_REFERER'])) {
+            $refererHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
+            if ($refererHost && stripos($refererHost, $_SERVER['SERVER_NAME']) === false) {
+                return "Invalid form submission source.";
+            }
+        }
+
+        return null;
+    }
+
     private function processEmail($joinArray)
     {
         # Get server variables
-        $name = $joinArray["txtName"];
+        $name = isset($joinArray["txtName"]) ? $joinArray["txtName"] : 'Not Provided';
         $phone = empty($joinArray["txtPhone"]) ? "Not Provided" : $joinArray["txtPhone"];
-        $email = $joinArray["txtEmail"];
-        $instruments = implode(', ', $joinArray['chkInstrument']);
-        $playLength = $joinArray["txtPlayLength"];
+        $email = isset($joinArray["txtEmail"]) ? $joinArray["txtEmail"] : 'Not Provided';
+        $instruments = "Not Provided";
+        if (!empty($joinArray['chkInstrument'])) {
+            if (is_array($joinArray['chkInstrument'])) {
+                $instruments = implode(', ', $joinArray['chkInstrument']);
+            } else {
+                $instruments = (string)$joinArray['chkInstrument'];
+            }
+        }
+        $playLength = isset($joinArray["txtPlayLength"]) ? $joinArray["txtPlayLength"] : 'Not Provided';
         $comments = empty($joinArray["txtComments"]) ? "None provided" : $joinArray["txtComments"];
 
         $message = "KCB Join Request Submitted<br>";
@@ -160,34 +213,66 @@ class KCBPublic
         // We've not gotten a lot of SPAM sent, but the times we've gotten it,
         // it's filled up the database with a lot of junk and hit the email limit.
         // 1. Prevent dups of the user who just tried to submit
-        // 2. Check if request is from the same IP Address as was just entered
+        // 2. Check repeated submissions from the same IP or email
+        // 3. Detect disposable email addresses
         // Return nothing if no spam submission is detected
 
-        $email = $this->getDb()->checkDupPendingUser($joinArray['txtEmail']);
-
-        if($email) {
-            return "Looks like you already submitted a request to join.";
+        $email = isset($joinArray['txtEmail']) ? trim($joinArray['txtEmail']) : '';
+        if ($email !== '') {
+            if ($this->isDisposableEmail($email)) {
+                return "Please use a valid email address.";
+            }
+            if ($this->getDb()->checkDupPendingUser($email)) {
+                return "Looks like you already submitted a request to join.";
+            }
         }
 
-        // Recent request was submitted
         $ipAddress = $this->getUserIpAddr();
-        $recentRequests = $this->getDb()->checkRecentUser();
-
-        foreach ($recentRequests as $record) {
-            if($record["ip_address"] === $ipAddress) {
-                return "A recent request from this IP Address has already been submitted.";
+        if ($ipAddress !== '') {
+            $recentRequests = $this->getDb()->checkRecentUser();
+            foreach ($recentRequests as $record) {
+                if ($record["ip_address"] === $ipAddress) {
+                    return "A recent request from this IP address has already been submitted.";
+                }
             }
+
+            if ($this->getDb()->countRecentSubmissionsByIp($ipAddress, '1 HOUR') >= 4) {
+                return "Too many requests from this IP address. Please wait an hour and try again.";
+            }
+        }
+
+        if ($email !== '' && $this->getDb()->countRecentSubmissionsByEmail($email, '1 DAY') >= 2) {
+            return "Too many requests using this email address. Please try again later.";
         }
 
         return null;
     }
 
-    private function getUserIpAddr() {
+    private function isDisposableEmail($email)
+    {
+        $blockedDomains = [
+            'mailinator.com',
+            '10minutemail.com',
+            'trashmail.com',
+            'tempmail.com',
+            'guerrillamail.com',
+            'yopmail.com',
+            'fakeinbox.com',
+            'dispostable.com',
+            'maildrop.cc',
+        ];
+
+        $domain = strtolower(substr(strrchr($email, '@'), 1));
+        return $domain !== false && in_array($domain, $blockedDomains, true);
+    }
+
+    private function getUserIpAddr()
+    {
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ipAddresses = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             return trim($ipAddresses[0]);
-        } else {
-            return $_SERVER['REMOTE_ADDR'];
         }
+
+        return !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
     }
 }

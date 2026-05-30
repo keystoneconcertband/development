@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('frmJoin');
+    const jsCheck = document.getElementById('jsCheck');
+    if (jsCheck) {
+        jsCheck.value = 'enabled';
+    }
     if (!form) return;
 
     form.addEventListener('submit', function (event) {

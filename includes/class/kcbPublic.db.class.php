@@ -90,6 +90,24 @@ class KCBPublicDb
                                       WHERE estbd_dt_tm >= NOW() - INTERVAL 5 MINUTE");
     }
 
+    public function countRecentSubmissionsByIp($ipAddress, $interval = '1 HOUR')
+    {
+        $this->getDb()->bind("ipAddress", $ipAddress);
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_members
+                                           WHERE ip_address = :ipAddress
+                                             AND estbd_dt_tm >= NOW() - INTERVAL " . $interval);
+    }
+
+    public function countRecentSubmissionsByEmail($email, $interval = '1 DAY')
+    {
+        $this->getDb()->bind("email", $email);
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_email_address
+                                           WHERE email_address = :email
+                                             AND estbd_dt_tm >= NOW() - INTERVAL " . $interval);
+    }
+
     /* Update Queries */
     public function addPendingUser($joinArray, $updateUser, $ipAddress)
     {
