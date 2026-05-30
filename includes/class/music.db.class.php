@@ -58,9 +58,9 @@ class MusicDB
     {
         $this->getDb()->bind("title", $title);
 
-        return $this->getDb()->resultCount("SELECT title 
-                                            FROM kcb_music 
-                                            WHERE title=:title");
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_music
+                                           WHERE title = :title");
     }
 
     public function searchTitles($title)
@@ -99,7 +99,6 @@ class MusicDB
                 $retValue = "add_music_error";
             }
         } catch (Exception $e) {
-            $this->getDb()->ExceptionLog($e->getMessage());
             $this->rollBackTransaction();
             $retValue = "db_error";
         }
@@ -130,7 +129,6 @@ class MusicDB
                 $retValue = "edit_music_error";
             }
         } catch (Exception $e) {
-            $this->getDb()->ExceptionLog($e->getMessage());
             $this->rollBackTransaction();
             $retValue = "db_error";
         }
