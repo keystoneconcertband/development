@@ -125,47 +125,6 @@ function handleAuthResponse(msg) {
   focusElement(emailInput);
 }
 
-function handleFacebookLoginResponse(msg) {
-  if (msg === 'fb_valid') {
-    window.location = 'members/index.php';
-    return;
-  }
-
-  if (msg === 'valid') {
-    alert('Something terribly went wrong. This status is not valid. Please contact web@keystoneconcertband.com for help!');
-    return;
-  }
-
-  if (msg === 'sig_not_match') {
-    alert('Please retry. Validation of the facebook authentication failed.');
-    return;
-  }
-
-  if (msg === 'fb_session_hijack') {
-    alert('Please retry. Your facebook session cookie has expired.');
-    return;
-  }
-
-  if (msg === 'no_fb_cookie') {
-    alert('Please retry. You are missing the facebook cookie. Re-authenticating usually fixes it.');
-    return;
-  }
-
-  if (msg === 'invalid') {
-    alert('Sorry that email address is not in our system. You must be an active member to login.');
-    setInputValue(emailInput, '');
-    focusElement(emailInput);
-    return;
-  }
-
-  if (msg === 'db_error') {
-    alert('Oops! We had a problem communicating with the database. Please try again later.');
-    return;
-  }
-
-  alert(`Unable to validate facebook login. Msg: ${msg}`);
-}
-
 if (loginModal) {
   loginModal.addEventListener('shown.bs.modal', () => {
     focusElement(emailInput);
@@ -226,23 +185,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-
-function statusChangeCallback(response) {
-  if (response.status === 'connected') {
-    console.log('Connected!');
-    FB.api('/me', { fields: 'name, email' }, (fbResponse) => {
-      console.log(JSON.stringify(fbResponse));
-      noCacheGet('/membersServer.php', { email: fbResponse.email, fb_id: fbResponse.id })
-        .then(handleFacebookLoginResponse)
-        .catch(() => {
-          alert('Unable to validate facebook login. Please try again later.');
-        });
-    });
-  }
-}
-
-function checkLoginState() {
-  FB.getLoginStatus((response) => {
-    statusChangeCallback(response);
-  });
-}

@@ -2,8 +2,8 @@ var homepageMessageDateConflict = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     var table = $('#kcbMessageTable').DataTable({
-        responsive: true,
         order: [4, 'desc'],
+        responsive: true,
         ajax: {
             url: 'homepageMessageServer.php',
             dataSrc: ''
