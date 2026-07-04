@@ -37,6 +37,7 @@ new Member(true);
             </div>
         </div>
         <div class="row">
+            <?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
             <div class="col-lg-12">
                 <div class="card border-info bg-light mb-4">
                     <div class="card-body">
@@ -55,6 +56,7 @@ new Member(true);
                     </div>
                 </div>
             </div>
+            <?php } ?>
             <div class="col-lg-6">
                 <div class="card mb-4">
                     <div class="card-body">

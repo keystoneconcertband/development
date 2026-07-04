@@ -64,7 +64,8 @@ class MemberDB
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, 'PA' AS state,
                                         a.zip, m.office, m.displayFullName,
-                                        GROUP_CONCAT(DISTINCT li.instrument) AS `instrument`
+                                        GROUP_CONCAT(DISTINCT li.instrument) AS `instrument`,
+                                        m.emergency_contact_name, m.emergency_contact_phone
                                     FROM kcb_members m
                                     LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                     LEFT OUTER JOIN kcb_address a ON a.member_uid = m.uid
@@ -72,7 +73,8 @@ class MemberDB
                                     LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                     WHERE m.UID = :uid
                                     GROUP BY m.UID, lastName, firstName, m.`text`,
-                                        address1, address2, city, state, zip, office, displayFullName");
+                                        address1, address2, city, state, zip, office, displayFullName,
+                                        m.emergency_contact_name, m.emergency_contact_phone");
     }
 
     // Gets all active members
@@ -81,7 +83,8 @@ class MemberDB
         return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, a.state, a.zip, m.office,
-                                        GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
+                                        GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`,
+                                        m.emergency_contact_name, m.emergency_contact_phone
                                       FROM kcb_members m
                                       LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                       LEFT OUTER JOIN kcb_address a ON a.member_uid = m.uid
@@ -90,7 +93,8 @@ class MemberDB
                                       WHERE m.disabled = 0
                                         AND m.accountType <> 3
                                       GROUP BY m.UID, fullName, m.`text`,
-                                        address1, address2, city, state, zip, office
+                                        address1, address2, city, state, zip, office,
+                                        m.emergency_contact_name, m.emergency_contact_phone
                                       ORDER BY lastName, firstName");
     }
 
@@ -296,14 +300,26 @@ class MemberDB
     {
         $uid = 0;
         $text = null;
+        $emergency_contact_name = null;
+        $emergency_contact_phone = null;
 
         if (isset($mbrArray['text']) && $mbrArray['text'] !== '') {
             $text = $mbrArray['text'];
         }
 
+        if (isset($mbrArray['emergency_contact_name']) && $mbrArray['emergency_contact_name'] !== '') {
+            $emergency_contact_name = $mbrArray['emergency_contact_name'];
+        }
+
+        if (isset($mbrArray['emergency_contact_phone']) && $mbrArray['emergency_contact_phone'] !== '') {
+            $emergency_contact_phone = $mbrArray['emergency_contact_phone'];
+        }
+
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
+        $this->getDb()->bind('emergency_contact_name', $emergency_contact_name);
+        $this->getDb()->bind('emergency_contact_phone', $emergency_contact_phone);
         $this->getDb()->bind("updateUser", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
 
@@ -314,8 +330,10 @@ class MemberDB
         }
 
         $retVal = $this->getDb()->query("INSERT INTO kcb_members(firstName, lastName, displayFullName, `text`,
+                                            emergency_contact_name, emergency_contact_phone,
                                             estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by)
                                          VALUES (:firstName, :lastName, :displayFullName, :text,
+                                            :emergency_contact_name, :emergency_contact_phone,
                                             now(), :updateUser, now(), :updateUser2)");
 
         if ($retVal) {
@@ -394,15 +412,27 @@ class MemberDB
     public function updateMember($uid, $mbrArray, $updateUser)
     {
         $text = null;
+        $emergency_contact_name = null;
+        $emergency_contact_phone = null;
 
         if (isset($mbrArray['text']) && $mbrArray['text'] !== '') {
             $text = $mbrArray['text'];
+        }
+
+        if (isset($mbrArray['emergency_contact_name']) && $mbrArray['emergency_contact_name'] !== '') {
+            $emergency_contact_name = $mbrArray['emergency_contact_name'];
+        }
+
+        if (isset($mbrArray['emergency_contact_phone']) && $mbrArray['emergency_contact_phone'] !== '') {
+            $emergency_contact_phone = $mbrArray['emergency_contact_phone'];
         }
 
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
+        $this->getDb()->bind('emergency_contact_name', $emergency_contact_name);
+        $this->getDb()->bind('emergency_contact_phone', $emergency_contact_phone);
         $this->getDb()->bind('updateUser', $updateUser);
 
         if (array_key_exists('displayFullName', $mbrArray)) {
@@ -413,7 +443,9 @@ class MemberDB
 
         $retVal = $this->getDb()->query("UPDATE kcb_members 
                                          SET firstName = :firstName, lastName = :lastName, 
-                                             displayFullName = :displayFullName, `text` = :text, 
+                                             displayFullName = :displayFullName, `text` = :text,
+                                             emergency_contact_name = :emergency_contact_name,
+                                             emergency_contact_phone = :emergency_contact_phone,
                                              lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
                                          WHERE UID = :uid");
 

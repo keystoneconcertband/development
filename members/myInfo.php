@@ -112,6 +112,18 @@ new ProtectedMember();
                                     </button>
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
+                                    <input type="text" class="form-control" name="emergency_contact_name" id="emergency_contact_name"
+                                        placeholder="Emergency Contact Name" value="" maxlength="255">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
+                                    <input type="tel" class="form-control" name="emergency_contact_phone" id="emergency_contact_phone"
+                                        placeholder="Emergency Contact Phone" value="" minlength="10" maxlength="13">
+                                </div>
+                            </div>
 						</fieldset>
 							<div class="row mb-3">
                         </div>

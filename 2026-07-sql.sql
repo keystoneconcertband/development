@@ -1,0 +1,1 @@
+ALTER TABLE `kcb_members` ADD `emergency_contact_name` VARCHAR(255) NULL DEFAULT NULL AFTER `logonCount`, ADD `emergency_contact_phone` VARCHAR(10) NULL DEFAULT NULL AFTER `emergency_contact_name`;

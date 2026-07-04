@@ -50,13 +50,18 @@ new ProtectedMember();
                             width="100%">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
+                                    <th><i class="fa-solid fa-cogs"></i></th>
+                                    <?php } ?>
                                     <th>Name</th>
                                     <th>Email Address(es)</th>
                                     <th>Instrument</th>
                                     <th>Cell Phone</th>
                                     <th>Address</th>
                                     <th>Volunteer Position</th>
+                                    <?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
+                                    <th>Emergency Contact</th>
+                                    <?php } ?>
                                 </tr>
                             </thead>
                         </table>
@@ -165,6 +170,20 @@ new ProtectedMember();
                                         <button type="button" class="btn btn-outline-secondary btn-sm" id="addRow">
                                             <span class="fa fa-plus" aria-hidden="true"></span> Add New Email
                                         </button>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
+                                        <input type="text" class="form-control" name="emergency_contact_name" id="emergency_contact_name"
+                                            placeholder="Emergency Contact Name" value="" maxlength="255">
+                                        <div class="invalid-feedback">Please complete this field.</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
+                                        <input type="tel" class="form-control" name="emergency_contact_phone" id="emergency_contact_phone"
+                                            placeholder="Emergency Contact Phone" value="" minlength="10" maxlength="13">
+                                        <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
                             </fieldset>

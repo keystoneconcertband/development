@@ -1,74 +1,106 @@
 document.addEventListener("DOMContentLoaded", function () {
+  var columnsArray = [];
+
+  // Only add actions column for admin/board members
+  if (accountType === "1" || accountType === "2") {
+    columnsArray.push({
+      data: null,
+      render: function (data) {
+        return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+      },
+    });
+  }
+
+  columnsArray.push(
+    { data: "fullName" },
+    {
+      data: null,
+      render: function (data) {
+        if (data.email) {
+          var emailArr = data.email.split(",");
+          var emailOut = "";
+          for (var i = 0; i < emailArr.length; i++) {
+            emailOut +=
+              '<a href="mailto:' +
+              emailArr[i] +
+              '">' +
+              emailArr[i] +
+              "</a><br />";
+          }
+          return emailOut;
+        }
+        return "";
+      },
+    },
+    {
+      data: null,
+      render: function (data) {
+        if (data.instrument) {
+          return data.instrument.replace(/,/g, "<br/>");
+        }
+        return "";
+      },
+    },
+    {
+      data: null,
+      render: function (data) {
+        if (data.text) {
+          return data.text.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+        }
+        return "";
+      },
+    },
+    {
+      data: null,
+      render: function (data) {
+        if (data.address1) {
+          var addr = data.address1 + "<br />";
+          if (data.address2) {
+            addr += data.address2 + "<br />";
+          }
+          addr += data.city + ", " + data.state + " " + data.zip;
+          return addr;
+        }
+        return "";
+      },
+    },
+    {
+      data: null,
+      render: function (data) {
+        if (data.office) {
+          return data.office;
+        }
+        return "";
+      },
+    }
+  );
+
+  // Only add emergency contact column for admin/board members
+  if (accountType === "1" || accountType === "2") {
+    columnsArray.push({
+      data: null,
+      render: function (data) {
+        var contact = "";
+        if (data.emergency_contact_name) {
+          contact = data.emergency_contact_name;
+          if (data.emergency_contact_phone) {
+            contact += "<br />" + data.emergency_contact_phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+          }
+        } else if (data.emergency_contact_phone) {
+          contact = data.emergency_contact_phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+        }
+        return contact;
+      },
+    });
+  }
+
   var table = $("#kcbMemberTable").DataTable({
     order: [1, "asc"],
     ajax: {
       url: "membersServer.php",
       dataSrc: "",
     },
-    columns: [
-      {
-        data: null,
-        render: function (data) {
-          if (accountType === "1" || accountType === "2") {
-            return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
-          }
-          return "";
-        },
-      },
-      { data: "fullName" },
-      {
-        data: null,
-        render: function (data) {
-          if (data.email) {
-            var emailArr = data.email.split(",");
-            var emailOut = "";
-            for (var i = 0; i < emailArr.length; i++) {
-              emailOut +=
-                '<a href="mailto:' +
-                emailArr[i] +
-                '">' +
-                emailArr[i] +
-                "</a><br />";
-            }
-            return emailOut;
-          }
-          return "";
-        },
-      },
-      {
-        data: null,
-        render: function (data) {
-          if (data.instrument) {
-            return data.instrument.replace(/,/g, "<br/>");
-          }
-          return "";
-        },
-      },
-      {
-        data: null,
-        render: function (data) {
-          if (data.text) {
-            return data.text.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-          }
-          return "";
-        },
-      },
-      {
-        data: null,
-        render: function (data) {
-          if (data.address1) {
-            var addr = data.address1 + "<br />";
-            if (data.address2) {
-              addr += data.address2 + "<br />";
-            }
-            addr += data.city + ", " + data.state + " " + data.zip;
-            return addr;
-          }
-          return "";
-        },
-      },
-      { data: "office" },
-    ],
+    columns: columnsArray,
   });
 
   var addRowButton = document.getElementById("addRow");
