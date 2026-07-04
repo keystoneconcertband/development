@@ -25,81 +25,115 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
-            <div class="col-lg-12">
-                <div class="mb-4">
-                    <h2>Members</h2>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-sm-10 mb-3">
-                                All members of the band are volunteers and play for the love of playing! Interested in
-                                adding your name to this page and joining the band? Just
-                                contact us via the <a href="join.php">Join Us</a> page and we'll be sure to get back to
-                                you!
-                            </div>
-                            <div class="col-sm-2 mb-3">
-                                <a href="#" class="btn btn-primary" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#loginModal">KCB Member Login</a>
-                            </div>
-                        </div>
+            <div class="col-lg-10">
+                <p>All members of the band are volunteers and play for the love of playing! Interested in adding your name to this page and joining the band? Just contact us via the <a href="join.php">Join Us</a> page and we'll be sure to get back to you!</p>
+            </div>
+            <div class="col-lg-2 d-flex align-items-center">
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">KCB Member Login</a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5 mt-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3"><i class="fa-solid fa-music me-1"></i> Baritone</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('baritone'); ?></p>
                     </div>
-                    <div class="col-lg-12">
-                        <div class="list-group mb-3">
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Baritone</h3>
-                                <p class="mb-0"><?php getInstrument('baritone'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Bass Clarinet</h3>
-                                <p class="mb-0"><?php getInstrument('bassClarinet'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Bassoon</h3>
-                                <p class="mb-0"><?php getInstrument('bassoon'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Clarinet</h3>
-                                <p class="mb-0"><?php getInstrument('clarinet'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Flute</h3>
-                                <p class="mb-0"><?php getInstrument('flute'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">French Horn</h3>
-                                <p class="mb-0"><?php getInstrument('frenchHorn'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Oboe</h3>
-                                <p class="mb-0"><?php getInstrument('oboe'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Percussion</h3>
-                                <p class="mb-0"><?php getInstrument('percussion'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Saxophone</h3>
-                                <p class="mb-0"><?php getInstrument('saxophone'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Trombone</h3>
-                                <p class="mb-0"><?php getInstrument('trombone'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Trumpet</h3>
-                                <p class="mb-0"><?php getInstrument('trumpet'); ?></p>
-                            </div>
-                            <div class="list-group-item">
-                                <h3 class="h5 mb-2">Tuba</h3>
-                                <p class="mb-0"><?php getInstrument('tuba'); ?></p>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3"><i class="fa-solid fa-music me-1"></i> Bass Clarinet</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('bassClarinet'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3"><i class="fa-solid fa-music me-1"></i> Bassoon</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('bassoon'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3"><i class="fa-solid fa-music me-1"></i> Clarinet</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('clarinet'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3">🪈 Flute</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('flute'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3">📯 French Horn</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('frenchHorn'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3"><i class="fa-solid fa-music me-1"></i> Oboe</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('oboe'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3">🥁 Percussion</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('percussion'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3">🎷 Saxophone</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('saxophone'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3">🪊 Trombone</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('trombone'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3">🎺 Trumpet</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('trumpet'); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h3 class="card-title h5 text-primary mb-3"><i class="fa-solid fa-music me-1"></i> Tuba</h3>
+                        <p class="card-text text-muted small"><?php getInstrument('tuba'); ?></p>
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="loginModal" class="modal fade" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
