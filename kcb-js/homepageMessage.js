@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
             url: 'homepageMessageServer.php',
             dataSrc: ''
         },
+        columnDefs: [
+            { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+        ],
         columns: [
             { data: null, render: function (data) {
                 var title = data.title.replace(/'/g, '&#96;');

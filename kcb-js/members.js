@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (accountType === "1" || accountType === "2") {
     columnsArray.push({
       data: null,
+      width: '60px',
       render: function (data) {
-        return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+        return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
       },
     });
   }
@@ -102,6 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
       dataSrc: "",
     },
     columns: columnsArray,
+    columnDefs: [
+        { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+    ],
   });
 
   var addRowButton = document.getElementById("addRow");

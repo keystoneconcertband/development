@@ -6,9 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
             url: 'pendingMembersServer.php',
             dataSrc: ''
         },
+        columnDefs: [
+            { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+        ],
         columns: [
-            { data: null, render: function (data) {
-                return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+            { data: null, 
+              width: '60px',
+              render: function (data) {
+                return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
             }},
             { data: 'fullName' },
             { data: null, render: function (data) {

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         columns: [
             { data: null, render: function (data) {
                 if (accountType === '1' || accountType === '2') {
-                    return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteFile(\'' + data.name + '\', \\'' + data.deleteUrl + '\')"></span></a>';
+                    return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteFile(\'' + data.name + '\', \\'' + data.deleteUrl + '\')"></span></a>';
                 }
                 return '';
             }},

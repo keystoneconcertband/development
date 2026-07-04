@@ -6,8 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
             url: 'inactiveMembersServer.php',
             dataSrc: ''
         },
+        columnDefs: [
+            { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+        ],
         columns: [
-            { data: null, render: function (data) {
+            { data: null, 
+              width: '10px',
+              render: function (data) {
                 return '<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
             }},
             { data: 'fullName' },

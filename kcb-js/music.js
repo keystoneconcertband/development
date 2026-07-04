@@ -7,13 +7,19 @@ document.addEventListener('DOMContentLoaded', function() {
             url: 'musicServer.php',
             dataSrc: ''
         },
+        columnDefs: [
+            { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+        ],
         columns: [
-            { data: null, render: function (data) {
+            { data: null, 
+              width: '60px',
+              render: function (data) {
                 if (accountType === '1' || accountType === '2') {
                     var title = data.title.replace(/'/g, '&#96;');
-                    return '<a href="#nojump"><span class="fa fa-trash-o" onclick="deleteRecord(\'' + title + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+                    return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteRecord(\'' + title + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
                 }
                 return '';
+              width: '10px';
             }},
             { data: 'title' },
             { data: 'notes' },
