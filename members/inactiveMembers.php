@@ -31,7 +31,7 @@ new ProtectedMember();
 						<table id="kcbMemberTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th></th>
+                                    <th><i class="fa-solid fa-cogs"></i></th>
 									<th>Name</th>
 									<th>Email Address(es)</th>
 									<th>Instrument</th>

@@ -78,8 +78,7 @@ function formatPhone($number) {
 	</body>
 	<?php require '../includes/common_js.php'; ?>
 	<script>
-		$(document).ready(function() {
-			console.log("test");
+		window.addEventListener('load', function() {
 			window.print();
 			setTimeout(window.close, 0);
 		});

@@ -41,7 +41,7 @@ new ProtectedMusic();
                             width="100%">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th><i class="fa-solid fa-cogs"></i></th>
                                     <th>Title</th>
                                     <th>Message</th>
                                     <th>Importance</th>
