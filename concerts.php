@@ -78,7 +78,6 @@
 								echo "      <div class='accordion-body'>";
 							echo "		    <p class='" . $disabled . "'>\n";
 							echo "            <h3 style='margin-top:0px;'>" . $concert['Title'] . "</h3><h4> " . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . ".</h4>\n";
-							echo "              <a class='" . $disabled . "' href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['address'] . "</a>\n";
 							echo "          </p>\n";
 							echo "		    <div style='width: 100%'><iframe width='100%' height='340' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://maps.google.com/maps?width=100%25&amp;height=340&amp;hl=en&amp;q=" . urlencode($concert['address']) ."&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'></iframe></div>";
 							echo "          <div class='alert alert-light text-start mx-auto d-inline-block fs-6' role='alert' style='max-width:340px;'>";

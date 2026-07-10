@@ -3,6 +3,11 @@
 	include_once('../includes/class/protectedMember.class.php');
 	header('Content-Type: application/json');
 
+	function isValidEmailAddress($email) {
+		$email = trim((string)$email);
+		return $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+	}
+
 	$mbr = new ProtectedMember();
 	if(isset($_POST['type']) && ($_POST['type'] === "add" || $_POST['type'] === "edit")) {
 		$validRequest = true;
@@ -29,16 +34,24 @@
 			$validRequest = false;
 		}
 		else {
-			$emails = isset($_POST['email']) ? $_POST['email'] : [];
+			$emails = isset($_POST['email']) ? (array)$_POST['email'] : [];
 			$emailExists = false;
+			$invalidEmailFound = false;
+
 			// array_filter will filter out any "blank" entries.
-			foreach (array_filter($emails) as $vlu) {
-				if($vlu !== '') {
-					$emailExists = true;
+			foreach (array_filter($emails, function($value) {
+				return trim((string)$value) !== '';
+			}) as $vlu) {
+				$emailExists = true;
+				if (!isValidEmailAddress($vlu)) {
+					$response = 'Please enter a valid email address.';
+					$validRequest = false;
+					$invalidEmailFound = true;
+					break;
 				}
 			}
 			
-			if(!$emailExists) {
+			if(!$invalidEmailFound && !$emailExists) {
 				$response = "At least one email address is required.";
 				$validRequest = false;
 			}			

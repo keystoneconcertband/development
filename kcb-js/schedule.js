@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
             url: 'scheduleServer.php',
             dataSrc: ''
         },
+        columnDefs: [
+            { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+        ],
         columns: [
             { data: null, render: function (data) {
                 return '<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.UID + ')"></span></a>';

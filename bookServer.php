@@ -3,6 +3,11 @@
  	include_once("includes/class/kcbBase.class.php");
 	$response = "";
 
+	function isValidEmailAddress($email) {
+		$email = trim((string)$email);
+		return $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+	}
+
 	// Only allow POST requests
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
 		if(!isset($_REQUEST['txtName'])) {
@@ -13,6 +18,9 @@
 		}
 		else if(!isset($_REQUEST['txtEmail'])) {
 			$response = "Email is required.";
+		}
+		else if(!isValidEmailAddress($_REQUEST['txtEmail'])) {
+			$response = "Please enter a valid email address.";
 		}
 		else if(!isset($_REQUEST['txtComments'])) {
 			$response = "Comments are required.";
