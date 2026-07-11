@@ -151,12 +151,15 @@
                     <h2>Facebook</h2>
                     <p>Join our <a href="https://www.facebook.com/keystoneconcertband">Facebook page</a> for the latest
                         information and upcoming concerts.</p>
-                    <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband" data-tabs="timeline"
-                        data-width="" data-height="500" data-small-header="true" data-adapt-container-width="true"
-                        data-hide-cover="true" data-show-facepile="true">
-                        <blockquote cite="https://www.facebook.com/keystoneconcertband" class="fb-xfbml-parse-ignore">
-                            <a href="https://www.facebook.com/keystoneconcertband">Keystone Concert Band</a>
-                        </blockquote>
+                    <div class="facebook-plugin-frame">
+                        <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband"
+                            data-tabs="timeline" data-width="320" data-height="500" data-small-header="true"
+                            data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true">
+                            <blockquote cite="https://www.facebook.com/keystoneconcertband"
+                                class="fb-xfbml-parse-ignore">
+                                <a href="https://www.facebook.com/keystoneconcertband">Keystone Concert Band</a>
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
             </div><!-- /.col-lg-4 -->

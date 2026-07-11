@@ -65,6 +65,14 @@
 	border-radius: 0.5rem;
 }
 
+.homepage-feature .facebook-plugin-frame {
+	width: 100%;
+	max-width: 320px;
+	margin-right: auto;
+	margin-left: auto;
+	overflow: hidden;
+}
+
 .homepage-feature .fb-page,
 .homepage-feature .fb-page span,
 .homepage-feature .fb-page iframe {
