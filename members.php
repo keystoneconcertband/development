@@ -163,9 +163,7 @@
                                         public computers)</label>
                                 </div>
                                 <p class="form-text">This is the first time this account is being accessed from this
-                                    computer (or your
-                                    cookies have been deleted since the last time you logged in.) You have received
-                                    a text (or email if you don't have texting enabled) with a 6-digit code.
+                                    computer. You will receive an email with a 6-digit code shortly.
                                     <strong>Please enter this code in the text box above</strong>.
                                 </p>
                             </div>
