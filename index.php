@@ -82,8 +82,8 @@
 	?>
     <div class="container text-center">
         <!-- Three columns of text below the carousel -->
-        <div class="row">
-            <div class="col-lg-4">
+        <div class="row g-4 align-items-stretch homepage-feature-row">
+            <div class="col-lg-4 homepage-feature">
                 <img class="rounded-pill" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140"
                     height="140">
                 <h2>Upcoming Concert</h2>
@@ -144,7 +144,7 @@
                 </div>
                 <?php } //End if concert ?>
             </div><!-- /.col-lg- -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 homepage-feature">
                 <div class="text-center">
                     <img class="rounded-pill" src="images/logo_facebook.png" alt="Facebook Image" width="140"
                         height="140">
@@ -152,7 +152,7 @@
                     <p>Join our <a href="https://www.facebook.com/keystoneconcertband">Facebook page</a> for the latest
                         information and upcoming concerts.</p>
                     <div class="fb-page" data-href="https://www.facebook.com/keystoneconcertband" data-tabs="timeline"
-                        data-width="" data-height="" data-small-header="true" data-adapt-container-width="true"
+                        data-width="" data-height="500" data-small-header="true" data-adapt-container-width="true"
                         data-hide-cover="true" data-show-facepile="true">
                         <blockquote cite="https://www.facebook.com/keystoneconcertband" class="fb-xfbml-parse-ignore">
                             <a href="https://www.facebook.com/keystoneconcertband">Keystone Concert Band</a>
@@ -160,7 +160,7 @@
                     </div>
                 </div>
             </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 homepage-feature">
                 <img class="img-fluid" src="images/donate-2023.png" alt="Donate" width="140" height="140">
                 <h2>Donate</h2>
                 <p>As a 501(c)3 organization, we rely on donations to perform!

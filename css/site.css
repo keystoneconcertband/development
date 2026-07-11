@@ -25,6 +25,55 @@
 	font-size: clamp(1.1rem, 3vw, 2rem);
 }
 
+.homepage-feature-row {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.homepage-feature {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.homepage-feature > .text-center {
+	width: 100%;
+}
+
+.homepage-feature > img,
+.homepage-feature .text-center > img {
+	margin-bottom: 1rem;
+}
+
+.homepage-feature h2 {
+	margin-bottom: 0.75rem;
+}
+
+.homepage-feature p {
+	max-width: 24rem;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.homepage-feature iframe {
+	max-width: 100%;
+	border-radius: 0.5rem;
+}
+
+.homepage-feature .fb-page,
+.homepage-feature .fb-page span,
+.homepage-feature .fb-page iframe {
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+.homepage-feature .fb-page span,
+.homepage-feature .fb-page iframe {
+	max-height: 500px !important;
+}
+
 @media (max-width: 575.98px) {
 	.navbar.fixed-top + #myCarousel {
 		margin-top: 68px;
@@ -39,6 +88,37 @@
 	#myCarousel .carousel-caption {
 		right: 12%;
 		left: 12%;
+	}
+
+	.homepage-feature-row {
+		margin-top: 1.5rem;
+		row-gap: 1.25rem;
+	}
+
+	.homepage-feature {
+		max-width: calc(100% - 1.5rem);
+		margin-right: auto;
+		margin-left: auto;
+		padding: 1.5rem 1rem;
+		border: 1px solid var(--bs-border-color);
+		border-radius: 0.5rem;
+		background: var(--bs-body-bg);
+		box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.06);
+	}
+
+	.homepage-feature > img,
+	.homepage-feature .text-center > img {
+		width: 120px;
+		height: 120px;
+		object-fit: contain;
+	}
+
+	.homepage-feature h2 {
+		font-size: 1.7rem;
+	}
+
+	.homepage-feature .btn {
+		margin-top: 0.25rem;
 	}
 }
 
