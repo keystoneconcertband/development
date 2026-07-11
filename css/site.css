@@ -1,3 +1,47 @@
+.navbar.fixed-top + #myCarousel {
+	margin-top: 74px;
+}
+
+#myCarousel .carousel-item {
+	min-height: 350px;
+}
+
+#myCarousel .carousel-item img {
+	height: 350px;
+	object-fit: cover;
+}
+
+#myCarousel .carousel-caption {
+	top: 50%;
+	bottom: auto;
+	transform: translateY(-50%);
+}
+
+#myCarousel .carousel-caption h1 {
+	font-size: clamp(2rem, 5vw, 4rem);
+}
+
+#myCarousel .carousel-caption p {
+	font-size: clamp(1.1rem, 3vw, 2rem);
+}
+
+@media (max-width: 575.98px) {
+	.navbar.fixed-top + #myCarousel {
+		margin-top: 68px;
+	}
+
+	#myCarousel .carousel-item,
+	#myCarousel .carousel-item img {
+		height: 420px;
+		min-height: 420px;
+	}
+
+	#myCarousel .carousel-caption {
+		right: 12%;
+		left: 12%;
+	}
+}
+
 .jumbotron {
 	padding: 4rem 2rem;
 	margin-bottom: 2rem;
