@@ -13,7 +13,7 @@
 			echo json_encode('Genre is required.');
 		}
 		else {
-			echo json_encode($music->addMusic($_POST['title'], $_POST['notes'], $_POST['music_link'], $_POST['genre'], $_POST['last_played']));
+			echo json_encode($music->addMusic($_POST['title'], $_POST['notes'], $_POST['music_link'], $_POST['genre']));
 		}
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "edit") {
@@ -27,7 +27,7 @@
 			echo json_encode('Genre is required.');
 		}
 		else {			
-			echo json_encode($music->editMusic($_POST['uid'], $_POST['title'], $_POST['notes'], $_POST['music_link'], $_POST['genre'], $_POST['last_played']));
+			echo json_encode($music->editMusic($_POST['uid'], $_POST['title'], $_POST['notes'], $_POST['music_link'], $_POST['genre']));
 		}
 	}
 	elseif(isset($_POST['type']) && $_POST['type'] === "delete") {

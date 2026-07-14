@@ -1,189 +1,178 @@
-$(document).ready(function() {
-	$('#dpStartDt').datetimepicker({
-		format: 'L',
-		showTodayButton: true,
-		showClear: true,
-		showClose: true
-	});
-	
-	$('#dpEndDt').datetimepicker({
-		format: 'L',
-		showTodayButton: true,
-		showClear: true,
-		showClose: true
-	});
-	
-	$("#kcbMessageTable").validator();
-    var table = $('#kcbMessageTable').DataTable( {
-	    responsive: true,
-		stateSave: true,
-		"order": [1, "asc" ],
-	    "ajax": {
-		    "url":"homepageMessageServer.php",
-			"dataSrc": ""
-		},
-		"columns": [
-			{ data: null, render: function ( data, type, row ) {
-				var title = data.title.replace(/'/g, '&#96;')
-				return '<a href="#nojump"><span class="glyphicon glyphicon-edit" onclick="showEditRecord('+data.uid+')"></span></a>';
-              } 
-            },
-            { "data": "title" },
-            { "data": "message" },
-            { "data": "message_type" },
-            { "data": "start_dt" },
-            { "data": "end_dt" }
+var homepageMessageDateConflict = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    var table = $('#kcbMessageTable').DataTable({
+        order: [4, 'desc'],
+        responsive: true,
+        ajax: {
+            url: 'homepageMessageServer.php',
+            dataSrc: ''
+        },
+        columnDefs: [
+            { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
+        ],
+        columns: [
+            { data: null, render: function (data) {
+                var title = data.title.replace(/'/g, '&#96;');
+                return '<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+            }},
+            { data: 'title' },
+            { data: 'message' },
+            { data: 'message_type' },
+            { data: 'start_dt' },
+            { data: 'end_dt' }
         ]
     });
 });
 
-$("#form_message").validator().on("submit", function (event) {
-    if (event.isDefaultPrevented()) {
-        formError();
-        submitMSG(false, "Check for errors in the form.");
-    } else {
-        event.preventDefault();
-        submitForm();
-    }
-});
+const formMessage = document.getElementById('form_message');
+if (formMessage) {
+    formMessage.addEventListener('submit', function (event) {
+        formMessage.classList.add('was-validated');
+        if (event.defaultPrevented || !formMessage.checkValidity()) {
+            event.preventDefault();
+            formError('Check for errors in the form.');
+        } else {
+            event.preventDefault();
+            submitForm();
+        }
+    });
+}
 
-// On load
-$('#modal_add_edit').on('show.bs.modal', function () {
-    // Clear messages
-    $("#msgMainHeader").removeClass().text("");
-    $("#msgSubmit").removeClass().text("");
-});
-
-
-// On close
-$('#modal_add_edit').on('hidden.bs.modal', function () {
-    // Clear form each time
-   	$("#form_message").trigger('reset');
-
-   	// Reset UID
-    $("#uid").val("");    
-});
+const modalAddEdit = document.getElementById('modal_add_edit');
+if (modalAddEdit) {
+    modalAddEdit.addEventListener('hidden.bs.modal', function () {
+        if (formMessage) {
+            formMessage.reset();
+            formMessage.classList.remove('was-validated');
+        }
+        var uid = document.getElementById('uid');
+        if (uid) uid.value = '';
+    });
+}
 
 function submitForm() {
-	// Determine whether we are adding or editing record
-	if($("#uid").val() !== "") {
-		editRecord($("#uid").val());
-	}
-	else {
-		addRecord();
-	}
+    var uid = document.getElementById('uid');
+    if (uid && uid.value !== '') {
+        editRecord();
+    } else {
+        addRecord();
+    }
 }
 
 function addRecord() {
-	$.ajax(
-	{
-        url: "homepageMessageServer.php",
-        type: "POST",
-		dataType : 'json', 
-        data: $("#form_message").serialize() + '&type=add',
-        success: function(text){
-            if (text === "success"){
-                formSuccess("Item successfully added.");
-            } else {
-                formError(text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
+    if (!formMessage) return;
+
+    if (homepageMessageDateConflict) {
+        formError('Date conflicts with another message.');
+        return;
+    }
+
+    var formData = new URLSearchParams(new FormData(formMessage));
+    formData.append('type', 'add');
+
+    postUrlEncoded('homepageMessageServer.php', formData)
+    .then(function (text) {
+        if (text === 'success') {
+            formSuccess('Item successfully added.');
+        } else {
+            formError(text);
         }
+    })
+    .catch(function (xhr) {
+        showAlert('#formAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
+        console.log(xhr);
     });
 }
 
 function showEditRecord(uid) {
-	$.ajax({
-        cache: false,
-        type: 'POST',
-        url: 'homepageMessageServer.php',
-        data: JSON.parse('{"type":"getHomepageMessageRecord","uid":"'+uid+'"}'),
-        success: function(data) {	        
-            populateForm('#form_message', data);
-            $("#uid").val(uid);
-			$('#modal_add_edit').modal('show');
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
-            console.log(xhr, resp, text);
+    var params = new URLSearchParams({ type: 'getHomepageMessageRecord', uid: uid.toString() });
+
+    postUrlEncoded('homepageMessageServer.php', params)
+    .then(function (data) {
+        populateForm('#form_message', data);
+        var uidField = document.getElementById('uid');
+        if (uidField) uidField.value = uid;
+        var modal = document.getElementById('modal_add_edit');
+        if (modal) {
+            var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+            bsModal.show();
         }
-    });	
+    })
+    .catch(function (xhr) {
+        showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
+        console.log(xhr);
+    });
 }
 
 function editRecord() {
-	$.ajax({
-        cache: false,
-        type: 'POST',
-        url: 'homepageMessageServer.php',
-        data: $("#form_message").serialize() + '&type=edit',
-        success: function(text) {
-            if (text === "success"){
-                formSuccess("Item successfully modified.");
-            } else {
-                formError(text);
-            }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred processing the form. Please try again later.");
-            console.log(xhr, resp, text);
+    if (!formMessage) return;
+    if (homepageMessageDateConflict) {
+        formError('Date conflicts with another message.');
+        return;
+    }
+    var formData = new URLSearchParams(new FormData(formMessage));
+    formData.append('type', 'edit');
+
+    postUrlEncoded('homepageMessageServer.php', formData)
+    .then(function (text) {
+        if (text === 'success') {
+            formSuccess('Item successfully modified.');
+        } else {
+            formError(text);
         }
-    });	
+    })
+    .catch(function (xhr) {
+        showAlert('#formAlert', false, 'Oops! An error occurred processing the form. Please try again later.');
+        console.log(xhr);
+    });
 }
 
 function checkDates(date) {
-	$.ajax({
-        cache: false,
-        type: 'POST',
-        url: 'homepageMessageServer.php',
-        data: JSON.parse('{"type":"homepageMessageDateConflictCheck","date":"'+date+'"}'),
-        success: function(data) {
-	        if(data !== 0) {
-		        console.log("conflict");
-		        formError("Date conflicts with message already in system.");
-		    }
-		    else {
-			    console.log("here");
-			    $("#msgMainHeader").removeClass().text("");
-			    $("#msgSubmit").removeClass().text("");
-		    }
-        },
-		error: function(xhr, resp, text) {
-			submitMSG(false, "Oops! An error occurred opening the form. Please try again later.");
-            console.log(xhr, resp, text);
+    var params = new URLSearchParams({ type: 'homepageMessageDateConflictCheck', date: date });
+
+    postUrlEncoded('homepageMessageServer.php', params)
+    .then(function (data) {
+        if (data !== 0) {
+            homepageMessageDateConflict = true;
+            formError('Date conflicts with another message.');
+        } else {
+            homepageMessageDateConflict = false;
+            var formAlert = document.querySelector('#formAlert');
+            if (formAlert) {
+                formAlert.classList.remove('alert', 'alert-danger', 'alert-success', 'alert-dismissible', 'fade', 'show');
+                formAlert.classList.add('d-none');
+                formAlert.innerHTML = '';
+                formAlert.removeAttribute('role');
+            }
         }
-    });	
+    })
+    .catch(function (xhr) {
+        showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
+        console.log(xhr);
+    });
 }
 
-
 function formSuccess(text) {
-    submitMSG(true, text);
-
-	$('#kcbMessageTable').DataTable().ajax.reload();
-    $('#modal_add_edit').modal('hide');
+  showAlert('#pageAlert', true, text);
+  var table = $("#kcbMessageTable").DataTable();
+  if (table) {
+    table.ajax.reload();
+  }
+  if (formMessage) {
+    formMessage.reset();
+    formMessage.classList.remove("was-validated");
+  }
+  var modal = document.getElementById("modal_add_edit");
+  if (modal) {
+    var bsModal = bootstrap.Modal.getInstance(modal);
+    if (bsModal) bsModal.hide();
+  }
+    window.scrollTo(0, 0);
 }
 
 function formError(text) {
-    $("#form_message").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-        $(this).removeClass();
-    });
-    submitMSG(false,text);
-}
-
-function submitMSG(valid, msg) {
-    if(valid) {
-        var msgClasses = "h4 tada animated text-success";
-    } else {
-        var msgClasses = "h4 text-danger";
-    }
-    $("#msgMainHeader").removeClass().addClass(msgClasses).text(msg);
-    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
-}
-
-function populateForm(frm, data) {
-	$.each(data, function(key, value) {
-		$('[name='+key+']', frm).val(value);
-	});
+  if (!formMessage) return;
+  shakeForm(formMessage);
+  showAlert('#formAlert', false, text);
 }

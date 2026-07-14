@@ -40,7 +40,7 @@ function formatPhone($number) {
 <html>
 	<head>
 		<title>KCB Members</title>
-		<link href="/3rd-party/bootswatch-3.4.1/yeti/bootstrap.min.css" rel="stylesheet">
+		<link href="/3rd-party/bootswatch-5.3.7/yeti/bootstrap.min.css" rel="stylesheet">
 		<style type="text/css" media="print,screen" >
 		thead {
 		   display:table-header-group;
@@ -78,8 +78,7 @@ function formatPhone($number) {
 	</body>
 	<?php require '../includes/common_js.php'; ?>
 	<script>
-		$(document).ready(function() {
-			console.log("test");
+		window.addEventListener('load', function() {
 			window.print();
 			setTimeout(window.close, 0);
 		});

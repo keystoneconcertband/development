@@ -12,30 +12,19 @@ new protectedAdmin();
     <title>KCB Members - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link rel="stylesheet" href="/css/member.css">
-    <link rel="stylesheet" href="/css/checkboxes.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/3rd-party/datatables-1.10.21/datatables.min.css"/>
+	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
   </head>
 
   <body>
 
 	<?php require '../includes/nav.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1>Members</h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>Text Message Members</h2>
 				</div>
-				<div class="well bs-component">
+				<div class="p-4 mb-4 bg-light rounded-3">
 					Messaging is now located at <a href="https://www.callmultiplier.com/login.php">Call Multiplier</a>.
 					Contact Jonathan if you require access.
 				</div>
@@ -45,7 +34,5 @@ new protectedAdmin();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
-	<script type="text/javascript" src="/3rd-party/datatables-1.10.21/datatables.min.js"></script>
-	<script type="text/javascript" src="/3rd-party/bootstrap-validator-0.11.9/js/bootstrap-validator-0.11.9.min.js"></script>
   </body>
 </html>

@@ -132,7 +132,7 @@ class ProtectedMember {
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -190,7 +190,7 @@ class ProtectedMember {
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -201,64 +201,7 @@ class ProtectedMember {
 			return "Access Denied";
 		}
 	}
-	
-	public function addPendingMember($uid, $mbrArray) {
-		if ($this->validAdmin()) {
-			$retValue = "success";
-			$updateUser = $_SESSION["email"];
-			$instrument = "";
-			$email = "";
-			
-			if(isset($_POST['instrument'])) {
-				$instrument = $mbrArray['instrument'];
-			}
-			
-			if(isset($_POST['email'])) {
-				$email = $mbrArray['email'];
-			}
-			
-			try {
-				$this->getDb()->beginTransaction();
-								
-				if($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
-					if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email, false, true)) {
-							if($this->updateInstruments($uid, $instrument)) {
-								$this->getDb()->executeTransaction();							
-							}
-							else {
-								$this->getDb()->rollBackTransaction();
-								$retValue = "update_instrument_error";								
-							}
-						}
-						else {
-							$this->getDb()->rollBackTransaction();
-							$retValue = "update_email_error";
-						}
-					}
-					else {
-						$this->getDb()->rollBackTransaction();
-						$retValue = "update_address_error";
-					}
-				}
-				else {
-					$this->getDb()->rollBackTransaction();
-					$retValue = "update_member_error";
-				}
-			}
-			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
-				$this->getDb()->rollBackTransaction();
-				$retValue = "db_error";
-			}
-			
-			return $retValue;
-		}
-		else {
-			return "Access Denied";
-		}
-	}
-	
+		
 	public function removeMember($uid, $deleteEmailAddress) {
 		if ($this->validAdmin()) {
 			$retValue = "success";
@@ -282,7 +225,7 @@ class ProtectedMember {
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logError($e->getMessage());
+				$this->getKcb()->logMessage($e->getMessage());
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -296,24 +239,14 @@ class ProtectedMember {
 	
 	public function reactivateMember($uid, $mbrArray) {
 		$updateUser = $_SESSION["email"];
-		$retVal = $this->updateMember($uid, $mbrArray);
+		$retVal = $this->getDb()->reactivateMember($uid, $mbrArray, $updateUser);
 		
-		if($retVal == "success") {
-			$emailCount = $this->getDb()->getEmailAddresses($uid);
-
-			if($emailCount > 0) {
-				// Reactivate any emails the user might have
-				$this->getDb()->reactivateEmail($uid, $updateUser);
-			}
-
-			// Add/remove any emails the user might have changed since last time.
-			$this->updateEmails($uid, $mbrArray['email'], false, false);
-
-			// If user had any instruments, update their timestamps
-			$this->getDb()->updateLastUpdateOnInstrument($uid, $updateUser);
+		if($retVal) {
+			return "success";
 		}
-		
-		return $retVal;			
+		else {
+			return "reactivate_member_error";
+		}
 	}
 	
 	/* PRIVATE FUNCTIONS */
@@ -372,7 +305,7 @@ class ProtectedMember {
 						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email: " . $value, "KCB Email Update [Pending]");
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						return false;
 					}
 				}
@@ -395,7 +328,7 @@ class ProtectedMember {
 						$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						return false;
 					}
 				}
@@ -417,7 +350,7 @@ class ProtectedMember {
 						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email: " . $value, "KCB Email Update [Remove]");
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						return false;
 					}
 				}
@@ -456,7 +389,7 @@ class ProtectedMember {
 					$result = $this->getDb()->addInstrument($value, $uid, $_SESSION["email"]);						
 				}
 				catch(Exception $e) {
-					$this->getKcb()->logError($e->getMessage());
+					$this->getKcb()->logMessage($e->getMessage());
 					$result = false;
 				}
 			}
@@ -470,7 +403,7 @@ class ProtectedMember {
 						$result = $this->getDb()->delInstrument($value, $uid);	
 					}
 					catch(Exception $e) {
-						$this->getKcb()->logError($e->getMessage());
+						$this->getKcb()->logMessage($e->getMessage());
 						$result = false;
 					}
 				}

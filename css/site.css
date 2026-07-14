@@ -1,88 +1,147 @@
-/* NOTES
-	- bootstrap.css : updated all references from 768 to 808 because the menu would wrap around to a new line at 807. To prevent this, just switch to the mobile view at 808 instead.	
-*/
+.navbar.fixed-top + #myCarousel {
+	margin-top: 56px;
+}
 
-/* http://stackoverflow.com/questions/609273/convert-an-image-to-grayscale-in-html-css */
-img.text-muted{
-    filter: grayscale(100%); /* Current draft standard */
-    -webkit-filter: grayscale(100%); /* New WebKit */
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%); 
-    -o-filter: grayscale(100%); /* Not yet supported in Gecko, Opera or IE */ 
-    filter: url(resources.svg#desaturate); /* Gecko */
-    filter: gray; /* IE */
-    -webkit-filter: grayscale(1); /* Old WebKit */
+#myCarousel .carousel-item {
+	min-height: 350px;
 }
-/* http://jsfiddle.net/KyleMit/Wc4xt/ */
-.panel-heading a:after {
-    font-family: 'Glyphicons Halflings';
-    content: "\e114";    
-    float: right; 
-    color: grey; 
+
+#myCarousel .carousel-item img {
+	height: 350px;
+	object-fit: cover;
 }
-.panel-heading a.collapsed:after {
-    content: "\e080";
+
+#myCarousel .carousel-caption {
+	top: 50%;
+	bottom: auto;
+	transform: translateY(-50%);
+}
+
+#myCarousel .carousel-caption h1 {
+	font-size: clamp(2rem, 5vw, 4rem);
+}
+
+#myCarousel .carousel-caption p {
+	font-size: clamp(1.1rem, 3vw, 2rem);
+}
+
+.homepage-feature-row {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.homepage-feature {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1.5rem 1rem;
+	border: 1px solid var(--bs-border-color);
+	border-radius: 0.5rem;
+	background: var(--bs-body-bg);
+	box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.06);
+}
+
+.homepage-feature > .text-center {
+	width: 100%;
+}
+
+.homepage-feature > img,
+.homepage-feature .text-center > img {
+	margin-bottom: 1rem;
+}
+
+.homepage-feature h2 {
+	margin-bottom: 0.75rem;
+}
+
+.homepage-feature p {
+	max-width: 24rem;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.homepage-feature iframe {
+	max-width: 100%;
+	border-radius: 0.5rem;
+}
+
+.homepage-feature .facebook-plugin-frame {
+	width: 100%;
+	max-width: 320px;
+	margin-right: auto;
+	margin-left: auto;
+	overflow: hidden;
+}
+
+.homepage-feature .fb-page,
+.homepage-feature .fb-page span,
+.homepage-feature .fb-page iframe {
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+.homepage-feature .fb-page span,
+.homepage-feature .fb-page iframe {
+	max-height: 500px !important;
+}
+
+@media (min-width: 992px) {
+	.homepage-feature {
+		width: calc(33.333333% - 1rem);
+		margin-right: 0.5rem;
+		margin-left: 0.5rem;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.navbar.fixed-top + #myCarousel {
+		margin-top: 68px;
+	}
+
+	#myCarousel .carousel-item,
+	#myCarousel .carousel-item img {
+		height: 420px;
+		min-height: 420px;
+	}
+
+	#myCarousel .carousel-caption {
+		right: 12%;
+		left: 12%;
+	}
+
+	.homepage-feature-row {
+		margin-top: 1.5rem;
+		row-gap: 1.25rem;
+	}
+
+	.homepage-feature {
+		max-width: calc(100% - 1.5rem);
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.homepage-feature > img,
+	.homepage-feature .text-center > img {
+		width: 120px;
+		height: 120px;
+		object-fit: contain;
+	}
+
+	.homepage-feature h2 {
+		font-size: 1.7rem;
+	}
+
+	.homepage-feature .btn {
+		margin-top: 0.25rem;
+	}
 }
 
 .jumbotron {
+	padding: 4rem 2rem;
+	margin-bottom: 2rem;
+	background-color: var(--bs-light);
+	border-radius: .3rem;
 	background-image:url('/images/headerPublic.png'); 
 	color:white; 
 	min-height: 295px;
-}
-
-.page-header {
-	margin-top: 0px;
-}
-
-.page-header h2 {
-	margin-top: 0px;
-}
-
-@media (min-width: 1200px) {
-	img.bigMap {
-		float:right;
-	}
-	img.medMap {
-		display:none;
-	}
-	img.smallMap {
-		display:none;
-	}
-	.band-member-notice {
-		padding-top:0px;
-	}
-}
-
-@media (max-width: 1199px) and (min-width: 992px) {
-	.band-member-notice {
-		float:right;
-	}
-}
-
-@media (max-width: 1199px) and (min-width: 808px) {
-	img.bigMap {
-		display: none;
-	}
-	img.medMap {
-	}
-	img.smallMap {
-		display:none;
-	}
-	.band-member-notice {
-		margin-top:25px;
-	}
-}
-
-@media (max-width: 807px) {
-	img.bigMap {
-		display: none;
-	}
-	img.medMap {
-		display: none;
-	}
-	img.smallMap {
-	}
-	.band-member-notice {
-		margin-top:25px;
-	}
 }

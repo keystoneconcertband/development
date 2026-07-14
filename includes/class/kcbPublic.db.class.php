@@ -78,9 +78,10 @@ class KCBPublicDb
     public function checkDupPendingUser($email)
     {
         $this->getDb()->bind("email", $email);
-        return $this->getDb()->query("SELECT email_address
+        $result = $this->getDb()->query("SELECT email_address
                                       FROM kcb_email_address
                                       WHERE email_address = :email");
+        return !empty($result);
     }
 
     public function checkRecentUser()
@@ -88,6 +89,45 @@ class KCBPublicDb
         return $this->getDb()->query("SELECT ip_address
                                       FROM kcb_members
                                       WHERE estbd_dt_tm >= NOW() - INTERVAL 5 MINUTE");
+    }
+
+    private function sanitizeInterval($interval, $default = '1 HOUR')
+    {
+        $allowed = [
+            '1 MINUTE',
+            '5 MINUTE',
+            '15 MINUTE',
+            '30 MINUTE',
+            '1 HOUR',
+            '2 HOUR',
+            '4 HOUR',
+            '12 HOUR',
+            '1 DAY',
+            '7 DAY',
+            '30 DAY',
+        ];
+        $interval = strtoupper(trim($interval));
+        return in_array($interval, $allowed, true) ? $interval : $default;
+    }
+
+    public function countRecentSubmissionsByIp($ipAddress, $interval = '1 HOUR')
+    {
+        $this->getDb()->bind("ipAddress", $ipAddress);
+        $interval = $this->sanitizeInterval($interval, '1 HOUR');
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_members
+                                           WHERE ip_address = :ipAddress
+                                             AND estbd_dt_tm >= NOW() - INTERVAL " . $interval);
+    }
+
+    public function countRecentSubmissionsByEmail($email, $interval = '1 DAY')
+    {
+        $this->getDb()->bind("email", $email);
+        $interval = $this->sanitizeInterval($interval, '1 DAY');
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_email_address
+                                           WHERE email_address = :email
+                                             AND estbd_dt_tm >= NOW() - INTERVAL " . $interval);
     }
 
     /* Update Queries */
@@ -99,7 +139,7 @@ class KCBPublicDb
         $this->getDb()->bind("updateUser1", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
         $this->getDb()->bind("ipAddress", $ipAddress);
-        $retVal = $this->getDb()->query("INSERT INTO kcb_members(accountType, firstName, lastName, text,
+        $retVal = $this->getDb()->query("INSERT INTO kcb_members(accountType, firstName, lastName, `text`,
                                             estbd_by, estbd_dt_tm, lst_updtd_by, lst_tran_dt_tm, disabled, ip_address)
                                          VALUES(3, :firstName, :lastName, :phone,
                                             :updateUser1, now(), :updateUser2, now(), 0, :ipAddress)");

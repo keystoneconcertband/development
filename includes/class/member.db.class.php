@@ -3,7 +3,7 @@ require_once "db.class.php";
 
 class MemberDB
 {
-    private $db;
+   private $db;
 
     /* PUBLIC FUNCTIONS */
     public function __construct()
@@ -47,7 +47,7 @@ class MemberDB
     {
         $this->getDb()->bind("email", $email);
         return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName,
-                                           m.text, m.displayFullName,
+                                           m.`text`, m.displayFullName,
                                            m.lastLogon, m.logonCount, m.disabled_dt_tm, m.disabled,
                                            a.address1, a.address2, a.city, a.state, a.zip
                                     FROM kcb_members m
@@ -61,27 +61,30 @@ class MemberDB
     {
         $this->getDb()->bind("uid", $uid);
         return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, 'PA' AS state,
                                         a.zip, m.office, m.displayFullName,
-                                        GROUP_CONCAT(DISTINCT li.instrument) AS `instrument`
+                                        GROUP_CONCAT(DISTINCT li.instrument) AS `instrument`,
+                                        m.emergency_contact_name, m.emergency_contact_phone
                                     FROM kcb_members m
                                     LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                     LEFT OUTER JOIN kcb_address a ON a.member_uid = m.uid
                                     LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                     LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                     WHERE m.UID = :uid
-                                    GROUP BY m.UID, lastName, firstName, m.text,
-                                        address1, address2, city, state, zip, office, displayFullName");
+                                    GROUP BY m.UID, lastName, firstName, m.`text`,
+                                        address1, address2, city, state, zip, office, displayFullName,
+                                        m.emergency_contact_name, m.emergency_contact_phone");
     }
 
     // Gets all active members
     public function getActiveMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
+        return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, a.state, a.zip, m.office,
-                                        GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
+                                        GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`,
+                                        m.emergency_contact_name, m.emergency_contact_phone
                                       FROM kcb_members m
                                       LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                       LEFT OUTER JOIN kcb_address a ON a.member_uid = m.uid
@@ -89,16 +92,17 @@ class MemberDB
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                       WHERE m.disabled = 0
                                         AND m.accountType <> 3
-                                      GROUP BY m.UID, fullName, m.text,
-                                        address1, address2, city, state, zip, office
+                                      GROUP BY m.UID, fullName, m.`text`,
+                                        address1, address2, city, state, zip, office,
+                                        m.emergency_contact_name, m.emergency_contact_phone
                                       ORDER BY lastName, firstName");
     }
 
     // Gets all inactive members
     public function getInactiveMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text,
+        return $this->getDb()->query("SELECT m.uid, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, 'PA' as state, a.zip,
                                         m.disabled_dt_tm, GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
                                       FROM kcb_members m
@@ -107,7 +111,7 @@ class MemberDB
                                       LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                       WHERE m.disabled = 1
-                                      GROUP BY m.UID, fullName, m.text,
+                                      GROUP BY m.UID, fullName, m.`text`,
                                         address1, address2, city, state, zip, disabled_dt_tm
                                       ORDER BY lastName, firstName");
     }
@@ -115,15 +119,15 @@ class MemberDB
     // Gets all pending members
     public function getPendingMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, CONCAT(m.lastName, ', ', m.firstName) AS fullName,
-                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.text, m.estbd_dt_tm,
+        return $this->getDb()->query("SELECT m.uid, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`, m.estbd_dt_tm,
                                         GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
                                       FROM kcb_members m
                                       LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                       LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                       WHERE m.accountType = 3 and disabled = 0
-                                      GROUP BY m.UID, fullName, m.text, estbd_dt_tm
+                                      GROUP BY m.UID, fullName, m.`text`, estbd_dt_tm
                                       ORDER BY lastName, firstName");
     }
 
@@ -160,11 +164,11 @@ class MemberDB
                                        WHERE e.email_address = :email");
     }
 
-    // Gets whether or not user accout has an address record
+    // Gets whether or not user account has an address record
     public function getMemberAddressCount($uid)
     {
         $this->getDb()->bind("uid", $uid);
-        return $this->getDb()->resultCount("SELECT member_uid
+        return (int)$this->getDb()->single("SELECT COUNT(*)
                                             FROM kcb_address
                                             WHERE member_uid = :uid");
     }
@@ -182,6 +186,16 @@ class MemberDB
                                             AND a.auth_cd_guid = :cookieAuthCd");
 
         return $retVal;
+    }
+
+    // Get Auth Cd timestamp as epoch seconds using DB timezone
+    public function getAuthCdTimestamp($email)
+    {
+        $this->getDb()->bind("email", $email);
+        return $this->getDb()->single("SELECT UNIX_TIMESTAMP(lc.lst_tran_dt_tm)
+                                          FROM kcb_login_cd lc
+                                          INNER JOIN kcb_email_address e ON e.member_uid=lc.KCB_Members_UID
+                                          WHERE e.email_address = :email");
     }
 
     // Get all the email addresses for the user
@@ -286,14 +300,26 @@ class MemberDB
     {
         $uid = 0;
         $text = null;
+        $emergency_contact_name = null;
+        $emergency_contact_phone = null;
 
-        if ($mbrArray['text'] !== '') {
+        if (isset($mbrArray['text']) && $mbrArray['text'] !== '') {
             $text = $mbrArray['text'];
+        }
+
+        if (isset($mbrArray['emergency_contact_name']) && $mbrArray['emergency_contact_name'] !== '') {
+            $emergency_contact_name = $mbrArray['emergency_contact_name'];
+        }
+
+        if (isset($mbrArray['emergency_contact_phone']) && $mbrArray['emergency_contact_phone'] !== '') {
+            $emergency_contact_phone = $mbrArray['emergency_contact_phone'];
         }
 
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
+        $this->getDb()->bind('emergency_contact_name', $emergency_contact_name);
+        $this->getDb()->bind('emergency_contact_phone', $emergency_contact_phone);
         $this->getDb()->bind("updateUser", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
 
@@ -303,9 +329,11 @@ class MemberDB
             $this->getDb()->bind('displayFullName', "0");
         }
 
-        $retVal = $this->getDb()->query("INSERT INTO kcb_members(firstName, lastName, displayFullName, text,
+        $retVal = $this->getDb()->query("INSERT INTO kcb_members(firstName, lastName, displayFullName, `text`,
+                                            emergency_contact_name, emergency_contact_phone,
                                             estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by)
                                          VALUES (:firstName, :lastName, :displayFullName, :text,
+                                            :emergency_contact_name, :emergency_contact_phone,
                                             now(), :updateUser, now(), :updateUser2)");
 
         if ($retVal) {
@@ -324,36 +352,88 @@ class MemberDB
                                          SET accountType = 0, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
                                          WHERE UID = :uid");
 
-        if ($retVal) {
+        $pendingMemberActivated = $retVal > 0;
+
+        if ($pendingMemberActivated) {
             $retVal = $this->updateMember($uid, $mbrArray, $updateUser);
         }
 
         // Update email address, activate email and update who approved the user
-        if ($retVal) {
-            $retVale = $this->reactivateEmail($uid, $updateUser);
+        if ($pendingMemberActivated && $retVal !== false) {
+            $retVal = $this->activateEmail($uid, $updateUser);
         }
 
         // Update instruments with who approved the user
-        if ($retVal) {
+        if ($pendingMemberActivated && $retVal !== false) {
             $retVal = $this->updateLastUpdateOnInstrument($uid, $updateUser);
         }
 
-        return $retVal;
+        return $pendingMemberActivated && $retVal !== false;
+    }
+
+    public function reactivateMember($uid, $mbrArray, $updateUser)
+    {
+        $this->getDb()->bind('uid', $uid);
+        $this->getDb()->bind("updateUser", $updateUser);
+
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET accountType = 0, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
+                                         WHERE UID = :uid");
+
+        $inactiveMemberActivated = $retVal > 0;
+
+        if ($inactiveMemberActivated) {
+            $this->getDb()->bind('uid', $uid);
+            $this->getDb()->bind("updateUser", $updateUser);
+            $this->getDb()->query("UPDATE kcb_members
+                                     SET disabled = 0, disabled_dt_tm = NULL, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser
+                                     WHERE UID = :uid");
+            $retVal = $this->updateMember($uid, $mbrArray, $updateUser);
+        }
+
+        // Update email address, activate email and update who approved the user
+        if ($inactiveMemberActivated && $retVal !== false) {
+            $emailCount = $this->getEmailAddresses($uid);
+
+            if (count($emailCount) > 0) {
+                // Activate any emails the user might have
+                $this->activateEmail($uid, $updateUser);
+            }
+        }
+
+        // Update instruments with who approved the user
+        if ($inactiveMemberActivated && $retVal !== false) {
+            $retVal = $this->updateLastUpdateOnInstrument($uid, $updateUser);
+        }
+
+        return $inactiveMemberActivated && $retVal !== false;
     }
 
     public function updateMember($uid, $mbrArray, $updateUser)
     {
         $text = null;
+        $emergency_contact_name = null;
+        $emergency_contact_phone = null;
 
-        if ($mbrArray['text'] !== '') {
+        if (isset($mbrArray['text']) && $mbrArray['text'] !== '') {
             $text = $mbrArray['text'];
+        }
+
+        if (isset($mbrArray['emergency_contact_name']) && $mbrArray['emergency_contact_name'] !== '') {
+            $emergency_contact_name = $mbrArray['emergency_contact_name'];
+        }
+
+        if (isset($mbrArray['emergency_contact_phone']) && $mbrArray['emergency_contact_phone'] !== '') {
+            $emergency_contact_phone = $mbrArray['emergency_contact_phone'];
         }
 
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('firstName', $mbrArray['firstName']);
         $this->getDb()->bind('lastName', $mbrArray['lastName']);
         $this->getDb()->bind('text', $text);
-        $this->getDb()->bind("updateUser", $updateUser);
+        $this->getDb()->bind('emergency_contact_name', $emergency_contact_name);
+        $this->getDb()->bind('emergency_contact_phone', $emergency_contact_phone);
+        $this->getDb()->bind('updateUser', $updateUser);
 
         if (array_key_exists('displayFullName', $mbrArray)) {
             $this->getDb()->bind('displayFullName', "1");
@@ -361,7 +441,13 @@ class MemberDB
             $this->getDb()->bind('displayFullName', "0");
         }
 
-        $retVal = $this->getDb()->query("UPDATE kcb_members SET firstName = :firstName, lastName = :lastName, displayFullName = :displayFullName, text = :text, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser, disabled= 0, disabled_dt_tm = NULL WHERE UID = :uid");
+        $retVal = $this->getDb()->query("UPDATE kcb_members 
+                                         SET firstName = :firstName, lastName = :lastName, 
+                                             displayFullName = :displayFullName, `text` = :text,
+                                             emergency_contact_name = :emergency_contact_name,
+                                             emergency_contact_phone = :emergency_contact_phone,
+                                             lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
+                                         WHERE UID = :uid");
 
         return $retVal;
     }
@@ -372,6 +458,15 @@ class MemberDB
         $this->getDb()->bind("updateUser", $updateUser);
 
         $retVal = $this->getDb()->query("UPDATE kcb_members SET disabled = 1, disabled_dt_tm = now(), lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE UID = :uid");
+
+        return $retVal;
+    }
+
+    public function deleteMember($uid, $updateUser)
+    {
+        $this->getDb()->bind('uid', $uid);
+
+        $retVal = $this->getDb()->query("DELETE FROM kcb_members WHERE UID = :uid");
 
         return $retVal;
     }
@@ -426,6 +521,14 @@ class MemberDB
         return $retVal;
     }
 
+    public function delAllEmails($uid)
+    {
+        $this->getDb()->bind("uid", $uid);
+        $retVal = $this->getDb()->query("DELETE FROM kcb_email_address WHERE member_uid=:uid");
+
+        return $retVal;
+    }
+
     // If the user is being "deleted", deactivate the emails from the system, but leave them in case they come back we
     // have a copy of their email addresses and don't need to re-enter them
     public function deactivateEmail($email, $uid, $updateUser)
@@ -458,7 +561,7 @@ class MemberDB
         return $retVal;
     }
 
-    public function reactivateEmail($uid, $updateUser)
+    public function activateEmail($uid, $updateUser)
     {
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind("updateUser", $updateUser);
@@ -511,14 +614,54 @@ class MemberDB
         return $this->getDb()->query("SELECT uid, title, message, message_type, DATE(start_dt) as start_dt, DATE(end_dt) as end_dt FROM kcb_homepage_messages");
     }
 
-    /* This could be better. This will only get the values that conflict with a current date range, but will miss
-    anything outside it (e.g. if 1/10-1/12 exist, and the user now chooses 1/9-1/13, this won't find anything wrong with that */
+    /* Check whether the provided date falls inside any existing homepage message range. */
     public function homepageMessageDateConflictCheck($date)
     {
-        $this->getDb()->bind("date1", date("Y-m-d H:i:s", strtotime($date)));
-        $this->getDb()->bind("date2", date("Y-m-d H:i:s", strtotime($date)));
+        $timestamp = strtotime($date);
+        if ($timestamp === false) {
+            return 0;
+        }
 
-        return $this->getDb()->resultCount("SELECT uid FROM kcb_homepage_messages WHERE :date1 > start_dt AND :date2 < end_dt");
+        $this->getDb()->bind("date", date("Y-m-d H:i:s", $timestamp));
+        return (int)$this->getDb()->single("SELECT COUNT(uid) FROM kcb_homepage_messages WHERE :date BETWEEN start_dt AND end_dt");
+    }
+
+    /* Schedule methods */
+    public function getSchedules()
+    {
+        return $this->getDb()->query("SELECT UID, Title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule ORDER BY concertBegin");
+    }
+
+    public function getScheduleRecord($uid)
+    {
+        $this->getDb()->bind("uid", $uid);
+        return $this->getDb()->row("SELECT Title AS title, DATE_FORMAT(concertBegin, '%Y-%m-%dT%H:%i') as concertBegin, pants, chair, address FROM kcb_schedule WHERE UID = :uid");
+    }
+
+    public function addSchedule($title, $concertBegin, $pants, $chair, $address, $updateUser)
+    {
+        $this->getDb()->bind("title", $title);
+        $this->getDb()->bind("concertBegin", date("Y-m-d H:i:s", strtotime($concertBegin)));
+        $this->getDb()->bind("pants", $pants);
+        $this->getDb()->bind("chair", $chair);
+        $this->getDb()->bind("address", $address);
+        $this->getDb()->bind("updateUser1", $updateUser);
+        $this->getDb()->bind("updateUser2", $updateUser);
+
+        return $this->getDb()->query("INSERT INTO kcb_schedule(Title, concertBegin, pants, chair, address, estbd_dt_tm, estbd_by, lst_tran_dt_tm, lst_updtd_by) VALUES(:title, :concertBegin, :pants, :chair, :address, now(), :updateUser1, now(), :updateUser2)");
+    }
+
+    public function editSchedule($uid, $title, $concertBegin, $pants, $chair, $address, $updateUser)
+    {
+        $this->getDb()->bind("uid", $uid);
+        $this->getDb()->bind("title", $title);
+        $this->getDb()->bind("concertBegin", date("Y-m-d H:i:s", strtotime($concertBegin)));
+        $this->getDb()->bind("pants", $pants);
+        $this->getDb()->bind("chair", $chair);
+        $this->getDb()->bind("address", $address);
+        $this->getDb()->bind("updateUser", $updateUser);
+
+        return $this->getDb()->query("UPDATE kcb_schedule SET Title = :title, concertBegin = :concertBegin, pants = :pants, chair = :chair, address = :address, lst_tran_dt_tm = now(), lst_updtd_by = :updateUser WHERE UID = :uid");
     }
 
     /* PRIVATE FUNCTIONS */

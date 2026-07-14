@@ -5,105 +5,95 @@ new Member(true);
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-	<?php require '../includes/common_meta.php'; ?>
+
+<head>
+    <?php require '../includes/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
     <title>Member Area - Keystone Concert Band</title>
 
-	<?php require '../includes/common_css.php'; ?>
-	<link href="/css/member.css" rel="stylesheet">
+    <?php require '../includes/common_css.php'; ?>
+    <link href="<?= asset('/css/member.css') ?>" rel="stylesheet">
 
-	<style type="text/css">
-		a.kcb-a:hover {
-			text-decoration: none;
-		}
-		.caption h3 {
-			margin-top:0px;
-		}
-	</style>
-  </head>
+</head>
 
-  <body>
+<body>
 
-	<?php require '../includes/nav.php'; ?>
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1>KCB Members</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row" style="margin-bottom: 20px;">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h2>Welcome <?php echo $_SESSION["office"] . ' ' ?: "" ?><?php echo $_SESSION["firstName"] ?: 'Firstname'?> <?php echo $_SESSION["lastName"] ?: 'Lastname' ?>!</h2>
-				</div>
-				<div class='alert alert-info'><strong>Discord</strong><br />Please join us on Discord (a group chat platform) at <a href="https://discord.gg/Szux9TQ" target="_blank">https://discord.gg/Szux9TQ</a></div>
+    <?php require '../includes/nav.php'; ?>
+    <div class="container">
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-lg-12">
+                <div class="mb-4 pb-2 border-bottom">
+                    <h2>Hey there
+                        <?php echo $_SESSION["office"] . ' ' ?: "" ?><?php echo $_SESSION["firstName"] ?: 'Firstname'?>
+                    </h2>
+                </div>
+                <!--
+                <div class='alert alert-info'><strong>Discord</strong><br />Please join us on Discord (a group chat
+                    platform) at <a href="https://discord.gg/Szux9TQ" target="_blank">https://discord.gg/Szux9TQ</a>
+                </div>
+				-->
+                The info here can help provide some information with the operation of the band.<br>
+            </div>
+        </div>
+        <div class="row">
+            <?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
+            <div class="col-lg-12">
+                <div class="card border-info bg-light mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="fa fa-shield me-2" aria-hidden="true"></i>Administrative</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">Administrative functions for managing the band. Only
+                            visible to officers and administrators.
+                        </h6>
+                        <i class="fa fa-info-circle me-2" aria-hidden="true"></i><a href="loginStats.php"
+                            class="card-link">Login Statistics</a> |
+                        <i class="fa fa-exclamation me-2" aria-hidden="true"></i><a href="homepageMessage.php"
+                            class="card-link">Homepage Message</a> |
+                        <i class="fa fa-user-plus me-2" aria-hidden="true"></i><a href="pendingMembers.php"
+                            class="card-link">Pending Members</a> |
+                        <i class="fa fa-user-times me-2" aria-hidden="true"></i><a href="inactiveMembers.php"
+                            class="card-link">Inactive Members</a>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="fa fa-user me-2" aria-hidden="true"></i>My Info</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">View or update your information.
+                        </h6>
+                        <a href="myInfo.php" class="card-link">Go to My Info</a>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="fa fa-users me-2" aria-hidden="true"></i>Roster</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">View the current list of band members.</h6>
+                        <a href="members.php" class="card-link">Go to Roster</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="fa fa-music me-2" aria-hidden="true"></i>Music</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">List of music we have in the library.</h6>
+                        <a href="music.php" class="card-link">Go to Music</a>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="fa fa-file-text me-2" aria-hidden="true"></i>Documents</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">View and download band documents.</h6>
+                        <a href="documents.php" class="card-link">Go to Documents</a>
+                    </div>
+                </div>
+            </div>
+            <?php require '../includes/footer.php'; ?>
+        </div> <!-- /container -->
 
-				Welcome to the KCB Member section! With this site you can update your information, view the other band member's
-				information, and find all the music the band has to play.<br>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="myInfo.php" class="kcb-a">
-					<div class="panel price panel-red">
-						<div class="panel-heading  text-center">
-						<h3>My Info</h3>
-						</div>
-						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-danger"></i> Update your personal information</li>
-						</ul>
-					</div>
-				</a>
-			</div>
-			
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="members.php" class="kcb-a">
-					<div class="panel price panel-blue">
-						<div class="panel-heading arrow_box text-center">
-						<h3>Members</h3>
-						</div>
-						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-info"></i> View all the band member's information</li>
-						</ul>
-					</div>
-				</a>
-			</div>
-			
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="music.php" class="kcb-a">
-					<div class="panel price panel-green">
-						<div class="panel-heading arrow_box text-center">
-						<h3>Music</h3>
-						</div>
-						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-success"></i> View the music of the band</li>
-						</ul>
-					</div>
-				</a>
-			</div>
-			
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-				<a href="documents.php" class="kcb-a">
-					<div class="panel price panel-grey">
-						<div class="panel-heading arrow_box text-center">
-						<h3>Documents</h3>
-						</div>
-						<ul class="list-group list-group-flush text-center">
-							<li class="list-group-item"><i class="icon-ok text-muted"></i> View all the documents related to the operations of the band</li>
-						</ul>
-					</div>
-				</a>
-			</div>
-		</div>
-		<?php require '../includes/footer.php'; ?>
-	</div> <!-- /container -->
+        <?php require '../includes/common_js.php'; ?>
+</body>
 
-	<?php require '../includes/common_js.php'; ?>
-  </body>
 </html>

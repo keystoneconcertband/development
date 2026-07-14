@@ -1330,10 +1330,10 @@ if (isset($_GET['upload']) && !FM_READONLY) {
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#fileUploader" data-target="#fileUploader"><i class="fa fa-arrow-circle-o-up"></i> <?php echo lng('UploadingFiles') ?></a>
+                        <a class="nav-link active" href="#fileUploader" data-bs-target="#fileUploader"><i class="fa fa-arrow-circle-o-up"></i> <?php echo lng('UploadingFiles') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#urlUploader" class="js-url-upload" data-target="#urlUploader"><i class="fa fa-link"></i> <?php echo lng('Upload from URL') ?></a>
+                        <a class="nav-link" href="#urlUploader" class="js-url-upload" data-bs-target="#urlUploader"><i class="fa fa-link"></i> <?php echo lng('Upload from URL') ?></a>
                     </li>
                 </ul>
             </div>
@@ -1352,7 +1352,7 @@ if (isset($_GET['upload']) && !FM_READONLY) {
                     </div>
                 </form>
 
-                <div class="upload-url-wrapper card-tabs-container hidden" id="urlUploader">
+                <div class="upload-url-wrapper card-tabs-container d-none" id="urlUploader">
                     <form id="js-form-url-upload" class="row row-cols-lg-auto g-3 align-items-center" onsubmit="return upload_from_url(this);" method="POST" action="">
                         <input type="hidden" name="type" value="upload" aria-label="hidden" aria-hidden="true">
                         <input type="url" placeholder="URL" name="uploadurl" required class="form-control" style="width: 80%">
@@ -1520,7 +1520,7 @@ if (isset($_GET['settings']) && !FM_READONLY) {
             <div class="card-body">
                 <form id="js-settings-form" action="" method="post" data-type="ajax" onsubmit="return save_settings(this)">
                     <input type="hidden" name="type" value="settings" aria-label="hidden" aria-hidden="true">
-                    <div class="form-group row">
+                <div class="row">
                         <label for="js-language" class="col-sm-3 col-form-label"><?php echo lng('Language') ?></label>
                         <div class="col-sm-5">
                             <select class="form-select" id="js-language" name="js-language">
@@ -1612,14 +1612,14 @@ if (isset($_GET['help'])) {
             </h6>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-12 col-sm-6">
                         <p>
                         <h3><a href="https://github.com/prasathmani/tinyfilemanager" target="_blank" class="app-v-title"> Tiny File Manager <?php echo VERSION; ?></a></h3>
                         </p>
                         <p>Author: PRAŚATH MANİ</p>
                         <p>Mail Us: <a href="mailto:ccpprogrammers@gmail.com">ccpprogrammers [at] gmail [dot] com</a> </p>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-12 col-sm-6">
                         <div class="card">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><a href="https://github.com/prasathmani/tinyfilemanager/wiki" target="_blank"><i class="fa fa-question-circle"></i> <?php echo lng('Help Documents') ?> </a> </li>
@@ -1631,14 +1631,14 @@ if (isset($_GET['help'])) {
                         </div>
                     </div>
                 </div>
-                <div class="row js-new-pwd hidden mt-2">
+                <div class="row js-new-pwd d-none mt-2">
                     <div class="col-12">
                         <form class="form-inline" onsubmit="return new_password_hash(this)" method="POST" action="">
                             <input type="hidden" name="type" value="pwdhash" aria-label="hidden" aria-hidden="true">
-                            <div class="form-group mb-2">
+                            <div class="row mb-2">
                                 <label for="staticEmail2"><?php echo lng('Generate new password hash') ?></label>
                             </div>
-                            <div class="form-group mx-sm-3 mb-2">
+                            <div class="row mx-sm-3 mb-2">
                                 <label for="inputPassword2" class="sr-only"><?php echo lng('Password') ?></label>
                                 <input type="text" class="form-control btn-sm" id="inputPassword2" name="inputPassword2" placeholder="<?php echo lng('Password') ?>" required>
                             </div>
@@ -1909,7 +1909,7 @@ if (isset($_GET['edit']) && !FM_READONLY) {
 ?>
     <div class="path">
         <div class="row">
-            <div class="col-xs-12 col-sm-5 col-lg-6 pt-1">
+            <div class="col-12 col-sm-5 col-lg-6 pt-1">
                 <div class="btn-toolbar" role="toolbar">
                     <?php if (!$isNormalEditor) { ?>
                         <div class="btn-group js-ace-toolbar">
@@ -1931,7 +1931,7 @@ if (isset($_GET['edit']) && !FM_READONLY) {
                     <?php } ?>
                 </div>
             </div>
-            <div class="edit-file-actions col-xs-12 col-sm-7 col-lg-6 text-end pt-1">
+            <div class="edit-file-actions col-12 col-sm-7 col-lg-6 text-end pt-1">
                 <div class="btn-group">
                     <a title=" <?php echo lng('Back') ?>" class="btn btn-sm btn-outline-primary" href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;view=<?php echo urlencode($file) ?>"><i class="fa fa-reply-all"></i> <?php echo lng('Back') ?></a>
                     <a title="<?php echo lng('BackUp') ?>" class="btn btn-sm btn-outline-primary" href="javascript:void(0);" onclick="backup('<?php echo urlencode(trim(FM_PATH)) ?>','<?php echo urlencode($file) ?>')"><i class="fa fa-database"></i> <?php echo lng('BackUp') ?></a>
@@ -2251,18 +2251,18 @@ $all_files_size = 0;
 
     <div class="row">
         <?php if (!FM_READONLY): ?>
-            <div class="col-xs-12 col-sm-9">
-                <div class="btn-group flex-wrap" data-toggle="buttons" role="toolbar">
+            <div class="col-12 col-sm-9">
+                <div class="btn-group flex-wrap" data-bs-toggle="buttons" role="toolbar">
                     <a href="#/select-all" class="btn btn-small btn-outline-primary btn-2" onclick="select_all();return false;"><i class="fa fa-check-square"></i> <?php echo lng('SelectAll') ?> </a>
                     <a href="#/unselect-all" class="btn btn-small btn-outline-primary btn-2" onclick="unselect_all();return false;"><i class="fa fa-window-close"></i> <?php echo lng('UnSelectAll') ?> </a>
                     <a href="#/invert-all" class="btn btn-small btn-outline-primary btn-2" onclick="invert_all();return false;"><i class="fa fa-th-list"></i> <?php echo lng('InvertSelection') ?> </a>
-                    <input type="submit" class="hidden" name="delete" id="a-delete" value="Delete" onclick="return confirm('<?php echo lng('Delete selected files and folders?'); ?>')">
+                    <input type="submit" class="d-none" name="delete" id="a-delete" value="Delete" onclick="return confirm('<?php echo lng('Delete selected files and folders?'); ?>')">
                     <a href="javascript:document.getElementById('a-delete').click();" class="btn btn-small btn-outline-primary btn-2"><i class="fa fa-trash"></i> <?php echo lng('Delete') ?> </a>
-                    <input type="submit" class="hidden" name="zip" id="a-zip" value="zip" onclick="return confirm('<?php echo lng('Create archive?'); ?>')">
+                    <input type="submit" class="d-none" name="zip" id="a-zip" value="zip" onclick="return confirm('<?php echo lng('Create archive?'); ?>')">
                     <a href="javascript:document.getElementById('a-zip').click();" class="btn btn-small btn-outline-primary btn-2"><i class="fa fa-file-archive-o"></i> <?php echo lng('Zip') ?> </a>
-                    <input type="submit" class="hidden" name="tar" id="a-tar" value="tar" onclick="return confirm('<?php echo lng('Create archive?'); ?>')">
+                    <input type="submit" class="d-none" name="tar" id="a-tar" value="tar" onclick="return confirm('<?php echo lng('Create archive?'); ?>')">
                     <a href="javascript:document.getElementById('a-tar').click();" class="btn btn-small btn-outline-primary btn-2"><i class="fa fa-file-archive-o"></i> <?php echo lng('Tar') ?> </a>
-                    <input type="submit" class="hidden" name="copy" id="a-copy" value="Copy">
+                    <input type="submit" class="d-none" name="copy" id="a-copy" value="Copy">
                     <a href="javascript:document.getElementById('a-copy').click();" class="btn btn-small btn-outline-primary btn-2"><i class="fa fa-files-o"></i> <?php echo lng('Copy') ?> </a>
                 </div>
             </div>
@@ -3797,7 +3797,7 @@ function fm_show_header_login()
                 border-width: 2.3px
             }
 
-            .fm-login-page .form-group label {
+            .fm-login-page .form-group row label {
                 width: 100%
             }
 

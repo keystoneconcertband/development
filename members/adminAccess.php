@@ -19,18 +19,9 @@
 
 	<?php require '../includes/nav.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="bs-component">
-					<div class="jumbotron">
-						<h1>KCB Members</h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
-				<div class="page-header">
+				<div class="mb-4 pb-2 border-bottom">
 					<h2>Oops!</h2>
 				</div>
 				You need to be an officer to view this page. You will be redirected to the member home page momentarily (or just <a href="index.php">click here</a> to be taken there immediately).<br>

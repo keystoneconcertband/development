@@ -2,3 +2,4 @@
 includes/class/settings.ini.php
 .vscode
 .DS_Store
+pma/tmp/**
