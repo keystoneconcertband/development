@@ -229,6 +229,11 @@ new ProtectedMember();
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="oboe"
+                                                value="oboe" name="instrument[]">
+                                            <label class="form-check-label" for="oboe">Oboe</label>
+                                        </div>
+                                        <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="saxophone"
                                                 value="saxophone" name="instrument[]">
                                             <label class="form-check-label" for="saxophone">Saxophone</label>
