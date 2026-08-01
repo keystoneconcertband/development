@@ -53,12 +53,7 @@
 				All transmission over the internet with the website is always encrypted and transmitted to us in a secure way. You can verify this by looking for a lock icon in the address bar and looking for "https" at the beginning of the address of the Web page.
 				<br><br>
 				While we use encryption to protect sensitive information transmitted online, we also protect your information offline. As a member, you are each entitled to see information about the other members in the band, including address, email and phone number. Officers of the band have additional access to be able to view and modify all members at will.				
-				<h3>Facebook Authentication</h3>
-				To authenticate via Facebook, we request from Facebook your name and email address. No other information
-				is provided to us from Facebook. We cannot see your account, anything you post, messages you send or any
-				other information from your Facebook account. 
-				<br><br>
-				If you feel that we are not abiding by this privacy policy, you should contact us immediately via email at <a href="mailto:webmaster@keystoneconcertband.com">webmaster@keystoneconcertband.com</a>.
+If you feel that we are not abiding by this privacy policy, you should contact us immediately via email at <a href="mailto:webmaster@keystoneconcertband.com">webmaster@keystoneconcertband.com</a>.
 				
 			</div>
 		</div>
