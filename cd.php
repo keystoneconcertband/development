@@ -7,7 +7,6 @@
     <title>CD - Keystone Concert Band</title>
 
 	<?php require_once 'includes/common_css.php'; ?>
-    <link rel="stylesheet" type="text/css" href="/3rd-party/jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.css?_v=1.8.3" title="style" media="screen"/>
   </head>
 
   <body>
@@ -58,8 +57,13 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-12">
+				<div style="margin: 20px 0; padding: 12px 15px; border: 1px solid #ddd; background: #f8f8f8;">
+					<strong>Listen to a sample:</strong>
+					<audio id="cd-audio" controls preload="none" style="width:100%; max-width:420px; display:block; margin-top:8px;"></audio>
+					<div id="cd-audio-status" style="margin-top:6px; color:#666;">Select a track title to start listening.</div>
+				</div>
 				<ol>
-					<li><h3>The Klaxon <a id="m1" class="audio" href="media/01.mp3">The Klaxon</a></h3>
+					<li><h3>The Klaxon <a id="m1" class="audio btn btn-outline-primary btn-sm ms-2" href="media/01.mp3" data-title="The Klaxon" title="Play The Klaxon" aria-label="Play The Klaxon"><i class="fa-solid fa-play"></i></a></h3>
 					Composer Henry Fillmore's career spanned more than 50 years, 
 						and he probably wrote and arranged more band music than anyone 
 						in the history of the art. It is estimated that he wrote 250 
@@ -69,7 +73,7 @@
 						conductor who is widely regarded as the leader of the wind ensemble 
 						movement in this country.
 					</li>
-					<li><h3>Emperata Overture <a id="m2" class="audio" href="media/02.mp3">Emperata Overture</a></h3>
+					<li><h3>Emperata Overture <a id="m2" class="audio btn btn-outline-primary btn-sm ms-2" href="media/02.mp3" data-title="Emperata Overture" title="Play Emperata Overture" aria-label="Play Emperata Overture"><i class="fa-solid fa-play"></i></a></h3>
 						"Emperata Overture" was Claude Smith's first composition, published 
 						in 1964. Smith, a Missouri native, composed instrumental and 
 						choral music extensively, and his works have been performed 
@@ -85,7 +89,7 @@
 						the official march of the National Air and Space Museum in Washington, 
 						DC.
 					</li>
-					<li><h3>The Conqueror <a id="m3" class="audio" href="media/03.mp3">The Conqueror</a></h3>
+					<li><h3>The Conqueror <a id="m3" class="audio btn btn-outline-primary btn-sm ms-2" href="media/03.mp3" data-title="The Conqueror" title="Play The Conqueror" aria-label="Play The Conqueror"><i class="fa-solid fa-play"></i></a></h3>
 						Carl Teike was the fourth child of 14 born to a blacksmith. 
 						He began his musical education at the age of 14 and played many 
 						instruments, including French horn, bass violin, and percussion. 
@@ -102,7 +106,7 @@
 						monument in his memory. Teike wrote more than 100 marches and 
 						at least 20 concert works.
 					</li>
-					<li><h3>Malague <a id="m4" class="audio" href="media/04.mp3">Malague&#241;a</a></h3>
+					<li><h3>Malague <a id="m4" class="audio btn btn-outline-primary btn-sm ms-2" href="media/04.mp3" data-title="Malagueña" title="Play Malagueña" aria-label="Play Malagueña"><i class="fa-solid fa-play"></i></a></h3>
 						Composer Ernesto Lecuona is a major, if not well-known, figure 
 						in popular music of this century. He brought the first successful 
 						Latin orchestra to the United States, fostered the careers of 
@@ -115,7 +119,7 @@
 						Roxy Theatre in 1927.					
 					</li>
 					<li><h3>March of the Belgian Paratroopers  (Marche des Parachutistes Belges)
-						<a id="m5" class="audio" href="media/05.mp3">March of the Belgian Paratroopers</a></h3>
+						<a id="m5" class="audio btn btn-outline-primary btn-sm ms-2" href="media/05.mp3" data-title="March of the Belgian Paratroopers" title="Play March of the Belgian Paratroopers" aria-label="Play March of the Belgian Paratroopers"><i class="fa-solid fa-play"></i></a></h3>
 						Born in Schaarbeek, Belgium, in 1897, Pierre Leemans studied 
 						piano, harmony, orchestration, and composition and began his 
 						teaching career in 1917 at the Etterbeek Music Academy. At 22, 
@@ -145,7 +149,7 @@
 						at the request of his Lamar (Texas) University Band students 
 						for the first U.S. performance of the march.
 					</li>
-					<li><h3>Gillette Look Sharp March <a id="m6" class="audio" href="media/06.mp3">Gillette Look Sharp March</a></h3>
+					<li><h3>Gillette Look Sharp March <a id="m6" class="audio btn btn-outline-primary btn-sm ms-2" href="media/06.mp3" data-title="Gillette Look Sharp March" title="Play Gillette Look Sharp March" aria-label="Play Gillette Look Sharp March"><i class="fa-solid fa-play"></i></a></h3>
 						Hailing from Centralia, Washington, Mahlon Merrick was graduated 
 						from Washington State University in 1923 with bachelors' degrees 
 						in both education and music. After a brief teaching experience 
@@ -172,7 +176,7 @@
 						song and the main theme to a boxing video game called "Punch 
 						Out!!"
 					</li>
-					<li><h3>The Light Eternal/Amazing Grace <a id="m7" class="audio" href="media/07.mp3">The Light Eternal/Amazing Grace</a></h3>
+					<li><h3>The Light Eternal/Amazing Grace <a id="m7" class="audio btn btn-outline-primary btn-sm ms-2" href="media/07.mp3" data-title="The Light Eternal/Amazing Grace" title="Play The Light Eternal/Amazing Grace" aria-label="Play The Light Eternal/Amazing Grace"><i class="fa-solid fa-play"></i></a></h3>
 						One of James Swearingen's best-known works is "The Light Eternal." 
 						Based on the hymn "God Of Our Fathers," this moving piece tells 
 						the story of the S.S. Dorchester that sank off the coast of 
@@ -215,7 +219,7 @@
 						<a href="http://www.immortalchaplains.org/home.htm">The Immortal 
 						Chaplains</a>
 					</li>
-					<li><h3>Fanfare, Hymn, and Dedication <a id="m8" class="audio" href="media/08.mp3">Fanfare, Hymn, and Dedication</a></h3>
+					<li><h3>Fanfare, Hymn, and Dedication <a id="m8" class="audio btn btn-outline-primary btn-sm ms-2" href="media/08.mp3" data-title="Fanfare, Hymn, and Dedication" title="Play Fanfare, Hymn, and Dedication" aria-label="Play Fanfare, Hymn, and Dedication"><i class="fa-solid fa-play"></i></a></h3>
 						Critics say that "Fanfare, Hymn, and Dedication," a dynamic 
 						concert piece by composer Ed Huckeby, is destined to become 
 						a staple for leading concert bands and wind ensembles. The three 
@@ -232,7 +236,7 @@
 						internationally as an outstanding music educator and composer 
 						of nearly 100 published works for concert and marching bands.
 					</li>
-					<li><h3>Amparito Roca <a id="m9" class="audio" href="media/09.mp3">Amparito Roca</a></h3>
+					<li><h3>Amparito Roca <a id="m9" class="audio btn btn-outline-primary btn-sm ms-2" href="media/09.mp3" data-title="Amparito Roca" title="Play Amparito Roca" aria-label="Play Amparito Roca"><i class="fa-solid fa-play"></i></a></h3>
 						Jaime Texidor Dalmau was a composer, conductor, and publisher 
 						who lived most of his life in Baracaldo, a city in northern 
 						Spain. He was born in Barcelona in 1885, and it is said that 
@@ -254,7 +258,7 @@
 						and Texidor rearranged the piece for Spanish bands and reissued 
 						it under copyright as his composition.
 					</li>
-					<li><h3>New York: 1927 <a id="m10" class="audio" href="media/10.mp3">New York: 1927</a></h3>
+					<li><h3>New York: 1927 <a id="m10" class="audio btn btn-outline-primary btn-sm ms-2" href="media/10.mp3" data-title="New York: 1927" title="Play New York: 1927" aria-label="Play New York: 1927"><i class="fa-solid fa-play"></i></a></h3>
 						It's 1927 in New York City. The Holland Tunnel has just opened, 
 						connecting Manhattan with Jersey City, New Jersey, allowing 
 						cars to travel under the Hudson River instead of relying solely 
@@ -275,20 +279,20 @@
 						Columbia, and Metro-Goldwyn-Mayer studios as composer/conductor 
 						for motion pictures and television.
 					</li>
-					<li><h3>Themes Like Old Times <a id="m11" class="audio" href="media/11.mp3">Themes Like Old Times</a></h3>
+					<li><h3>Themes Like Old Times <a id="m11" class="audio btn btn-outline-primary btn-sm ms-2" href="media/11.mp3" data-title="Themes Like Old Times" title="Play Themes Like Old Times" aria-label="Play Themes Like Old Times"><i class="fa-solid fa-play"></i></a></h3>
 						Another piece by Warren Barker, this one is an arrangement of 
 						several old-time tunes in a medley he calls "Themes Like Old 
 						Times." You'll hear "Alexander's Ragtime Band," "Peg O' My Heart," 
 						"I Want A Girl," "By the Light of the Silvery Moon," and "12th 
 						Street Rag."
 					</li>
-					<li><h3>National Emblem <a id="m12" class="audio" href="media/12.mp3">National Emblem</a></h3>
+					<li><h3>National Emblem <a id="m12" class="audio btn btn-outline-primary btn-sm ms-2" href="media/12.mp3" data-title="National Emblem" title="Play National Emblem" aria-label="Play National Emblem"><i class="fa-solid fa-play"></i></a></h3>
 						Famed bandmaster Frederick Fennell said "National Emblem" is 
 						as perfect as a march can be. It was written in the early 1900s 
 						by E. E. Bagley, an obscure New England composer of patriotic 
 						tunes, and has been a standard American march ever since.
 					</li>
-					<li><h3>America, the Beautiful <a id="m13" class="audio" href="media/13.mp3">America, the Beautiful</a></h3>
+					<li><h3>America, the Beautiful <a id="m13" class="audio btn btn-outline-primary btn-sm ms-2" href="media/13.mp3" data-title="America, the Beautiful" title="Play America, the Beautiful" aria-label="Play America, the Beautiful"><i class="fa-solid fa-play"></i></a></h3>
 						Teacher Katherine Bates wrote the original words to "America, 
 						the Beautiful" in 1893 after a trip to 14,000-foot-high Pikes 
 						Peak. She revised the words twice. More than 60 different musical 
@@ -298,7 +302,7 @@
 						and orchestrator known for his rich, lush arrangements that 
 						convey the emotion of the music to audiences.
 					</li>
-					<li><h3>American Patrol <a id="m14" class="audio" href="media/14.mp3">American Patrol</a></h3>
+					<li><h3>American Patrol <a id="m14" class="audio btn btn-outline-primary btn-sm ms-2" href="media/14.mp3" data-title="American Patrol" title="Play American Patrol" aria-label="Play American Patrol"><i class="fa-solid fa-play"></i></a></h3>
 						F. W. Meachem usually worked as an arranger, rather than a composer, 
 						producing arrangements for Victor Herbert musicals and Stephen 
 						Foster songs. Written in 1885, "American Patrol" was very popular 
@@ -307,7 +311,7 @@
 						world wars. In World War II, the arrangement by dance band leader 
 						Glenn Miller was especially significant.
 					</li>
-					<li><h3>Stars and Stripes Forever <a id="m15" class="audio" href="media/15.mp3">Stars and Stripes Forever</a></h3>
+					<li><h3>Stars and Stripes Forever <a id="m15" class="audio btn btn-outline-primary btn-sm ms-2" href="media/15.mp3" data-title="Stars and Stripes Forever" title="Play Stars and Stripes Forever" aria-label="Play Stars and Stripes Forever"><i class="fa-solid fa-play"></i></a></h3>
 						This John Philip Sousa classic has been designated America's 
 						official march by the Congress of the United States. Sousa believed 
 						that the piece was divinely inspired. It came to him as he sailed 
@@ -328,22 +332,34 @@
 	</div> <!-- /container -->
 
 	<?php require_once 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="/3rd-party/jquery.mb.miniAudioPlayer-1.8.3/jQuery.mb.miniAudioPlayer.min.js?_v=1.8.3"></script>
 	<script type="text/javascript">
-		$(function(){
-			$(".audio").mb_miniPlayer({
-			width:100,
-			skin:"gray", // available: black, blue, orange, red, gray
-			volume:.5,
-			autoPlay:false,
-			playAlone:true,
-			inLine:true,
-			volumeLevels:8,
-			showVolumeLevel:false,
-			showTime:false,
-			showRew:false,
-			addShadow:true,
-			swfPath:"ext/"
+		document.addEventListener('DOMContentLoaded', function () {
+			var audio = document.getElementById('cd-audio');
+			var status = document.getElementById('cd-audio-status');
+			var links = document.querySelectorAll('a.audio');
+
+			if (!audio || !status || !links.length) {
+				return;
+			}
+
+			links.forEach(function (link) {
+				link.addEventListener('click', function (event) {
+					event.preventDefault();
+					var src = this.getAttribute('href');
+					if (!src) {
+						return;
+					}
+
+					audio.src = src;
+					audio.load();
+					audio.play().catch(function () {});
+					var title = this.getAttribute('data-title') || this.getAttribute('title') || this.textContent.trim();
+					status.textContent = 'Now playing: ' + title;
+				});
+			});
+
+			audio.addEventListener('ended', function () {
+				status.textContent = 'Playback finished.';
 			});
 		});
   </script>
