@@ -40,7 +40,7 @@ function formatPhone($number) {
 <html>
 	<head>
 		<title>KCB Members</title>
-		<link href="/3rd-party/bootswatch-5.3.7/yeti/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.7/dist/yeti/bootstrap.min.css" rel="stylesheet">
 		<style type="text/css" media="print,screen" >
 		thead {
 		   display:table-header-group;

@@ -4,9 +4,7 @@
 */
 
 require_once "log.class.php";
-require_once __DIR__ . '/../../3rd-party/PHPMailer-6.10/Exception.php';
-require_once __DIR__ . '/../../3rd-party/PHPMailer-6.10/PHPMailer.php';
-require_once __DIR__ . '/../../3rd-party/PHPMailer-6.10/SMTP.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
