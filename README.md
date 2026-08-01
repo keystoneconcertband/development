@@ -1,22 +1,31 @@
 # Keystone Concert Band
-Development Repo for KCB Website
+Development repository for the KCB website.
 
-This repository contains the main website for the Keystone Concert Band. The project has been updated to use Composer for dependency management in the root project.
+This project uses Composer for dependency management at the site root. The main website code remains in the repository, while third-party PHP libraries are installed from Composer into the `vendor/` directory.
 
-## Composer Setup
+## Setup
 
-The application now installs dependencies from Composer and loads `PHPMailer` through `vendor/autoload.php`.
-
-phpMyAdmin should also be installed as a Composer dependency rather than copied into the website source tree. The preferred setup is to serve it from a dedicated path or subdomain (for example `/phpmyadmin` or `pma.example.com`) and point that web location at the Composer-installed package under `vendor/phpmyadmin/phpmyadmin`.
-
-To install dependencies locally:
+Install dependencies locally with:
 
     composer install
 
 The `vendor/` directory is ignored by Git and should not be committed.
 
+## Composer-managed dependencies
+
+The site currently uses Composer for:
+
+- `phpmailer/phpmailer` for outbound email support
+- `phpmyadmin/phpmyadmin` for database administration access
+
+## phpMyAdmin integration
+
+phpMyAdmin should be installed as a Composer dependency rather than copied into the website source tree. The preferred deployment approach is to serve it from a dedicated path or subdomain, such as `/phpmyadmin` or `pma.example.com`, and point that web location to the Composer-installed package under `vendor/phpmyadmin/phpmyadmin`.
+
+This keeps phpMyAdmin easier to update, reduces maintenance overhead, and avoids keeping a second copy of the application in the repository.
+
 ## Notes
 
 - PHPMailer is now managed via Composer.
-- Bootstrap/Bootswatch assets have been migrated away from local bundled copies where possible.
+- Bootstrap and related assets have been migrated away from local bundled copies where possible.
 - The application still uses some remaining local assets such as `jquery.mb.miniAudioPlayer` until those are migrated.
