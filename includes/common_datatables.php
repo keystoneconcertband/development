@@ -1,3 +1,3 @@
 	<link href="https://cdn.datatables.net/v/bs5/moment-2.29.4/dt-2.3.8/b-3.2.6/b-html5-3.2.6/b-print-3.2.6/date-1.6.3/r-3.0.8/sp-2.3.5/datatables.min.css" rel="stylesheet" integrity="sha384-tilDWUrCujx+umq37DqB7TPYPqf3MlqMp9fcP9bvPGzAwucfyNabQfAxm564ycQm" crossorigin="anonymous">
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script> 
 	<script src="https://cdn.datatables.net/v/bs5/moment-2.29.4/dt-2.3.8/b-3.2.6/b-html5-3.2.6/b-print-3.2.6/date-1.6.3/r-3.0.8/sp-2.3.5/datatables.min.js" integrity="sha384-wlAWCUJs/1yGZV68P/LXmZ95UeRyeVqNP8TIRHvyIVz3AlNaeQg4dDthElIjax3d" crossorigin="anonymous"></script>
