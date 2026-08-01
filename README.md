@@ -7,6 +7,8 @@ This repository contains the main website for the Keystone Concert Band. The pro
 
 The application now installs dependencies from Composer and loads `PHPMailer` through `vendor/autoload.php`.
 
+phpMyAdmin should also be installed as a Composer dependency rather than copied into the website source tree. The preferred setup is to serve it from a dedicated path or subdomain (for example `/phpmyadmin` or `pma.example.com`) and point that web location at the Composer-installed package under `vendor/phpmyadmin/phpmyadmin`.
+
 To install dependencies locally:
 
     composer install
