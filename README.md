@@ -28,4 +28,3 @@ This keeps phpMyAdmin easier to update, reduces maintenance overhead, and avoids
 
 - PHPMailer is now managed via Composer.
 - Bootstrap and related assets have been migrated away from local bundled copies where possible.
-- The application still uses some remaining local assets such as `jquery.mb.miniAudioPlayer` until those are migrated.
