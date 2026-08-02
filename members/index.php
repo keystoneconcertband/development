@@ -45,14 +45,16 @@ new Member(true);
                         <h6 class="card-subtitle mb-2 text-muted">Administrative functions for managing the band. Only
                             visible to officers and administrators.
                         </h6>
-                        <i class="fa fa-info-circle me-2" aria-hidden="true"></i><a href="loginStats.php"
-                            class="card-link">Login Statistics</a> |
-                        <i class="fa fa-exclamation me-2" aria-hidden="true"></i><a href="homepageMessage.php"
+                        <i class="fa fa-calendar-days me-2" aria-hidden="true"></i><a href="schedule.php"
+                            class="card-link">Schedule</a> |
+                        <i class="fa fa-bullhorn me-2" aria-hidden="true"></i><a href="homepageMessage.php"
                             class="card-link">Homepage Message</a> |
                         <i class="fa fa-user-plus me-2" aria-hidden="true"></i><a href="pendingMembers.php"
                             class="card-link">Pending Members</a> |
                         <i class="fa fa-user-times me-2" aria-hidden="true"></i><a href="inactiveMembers.php"
-                            class="card-link">Inactive Members</a>
+                            class="card-link">Inactive Members</a> |
+                        <i class="fa fa-info-circle me-2" aria-hidden="true"></i><a href="loginStats.php"
+                            class="card-link">Login Statistics</a>
                     </div>
                 </div>
             </div>
@@ -86,7 +88,9 @@ new Member(true);
                     <div class="card-body">
                         <h4 class="card-title"><i class="fa fa-file-text me-2" aria-hidden="true"></i>Documents</h4>
                         <h6 class="card-subtitle mb-2 text-muted">View and download band documents.</h6>
-                        <a href="documents.php" class="card-link">Go to Documents</a>
+                        <a href="documents.php" class="card-link">All Documents</a>
+                        <a href="documents_perm/KCB_Bylaws_2021.pdf" class="card-link" target="_blank">Bylaws</a>
+                        <a href="documents_perm/KCB_Policy_March_2023.pdf" class="card-link" target="_blank">Policies</a>
                     </div>
                 </div>
             </div>

@@ -17,9 +17,9 @@
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductor</a></li>
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php" && strpos($_SERVER['PHP_SELF'], '/members/') === false) { ?>active<?php } ?>" href="/music.php">Music</a></li>
 					<?php $isMemberAreaActive = (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false); ?>
+					<?php if(isset($_SESSION["email"])) { ?>
 					<li class="nav-item dropdown">
-						<?php $memberMenuLabel = isset($_SESSION["email"]) ? "Member Area" : "Members"; ?>
-						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $memberMenuLabel; ?></a>
+						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Member Area</a>
 						<ul class="dropdown-menu shadow-sm" aria-labelledby="membersDropdown">
 							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Overview</a></li>
 							<?php if(isset($_SESSION["email"])) { ?>
@@ -35,6 +35,7 @@
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo 'active'; } ?>" href="/members/documents.php">Documents</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo 'active'; } ?>" href="/members/music.php">Music</a></li>
 								<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
+									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo 'active'; } ?>" href="/members/homepageMessage.php">Homepage Message</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo 'active'; } ?>" href="/members/loginStats.php">Login Stats</a></li>
@@ -45,6 +46,11 @@
 							<?php } ?>
 						</ul>
 					</li>
+					<?php } else { ?>
+					<li class="nav-item">
+						<a class="nav-link <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="/members.php">Members</a>
+					</li>
+					<?php } ?>
 				</ul>
 			</div>
 		</div>
