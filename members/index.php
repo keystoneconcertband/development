@@ -72,7 +72,7 @@ new Member(true);
                     <div class="card-body">
                         <h4 class="card-title"><i class="fa fa-users me-2" aria-hidden="true"></i>Roster</h4>
                         <h6 class="card-subtitle mb-2 text-muted">View the current list of band members.</h6>
-                        <a href="members.php" class="card-link">Go to Roster</a>
+                        <a href="currentMembers.php" class="card-link">Go to Roster</a>
                     </div>
                 </div>
             </div>
