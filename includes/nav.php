@@ -21,23 +21,20 @@
 					<li class="nav-item dropdown<?php if ($isMemberAreaActive) { ?> show<?php } ?>">
 						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="<?php echo $isMemberAreaActive ? 'true' : 'false'; ?>">Member Area</a>
 						<ul class="dropdown-menu shadow-sm<?php if ($isMemberAreaActive) { ?> show<?php } ?>" aria-labelledby="membersDropdown">
-							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Overview</a></li>
+							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Public Member Page</a></li>
 							<?php if(isset($_SESSION["email"])) { ?>
-								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php" || $_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
-								<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
-									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/currentMembers.php') { echo 'active'; } ?>" href="/members/currentMembers.php">Current Members</a></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive Members</a></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending Members</a></li>
-								<?php } else { ?>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo 'active'; } ?>" href="/members/members.php">Members</a></li>
-								<?php } ?>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/index.php">Overview</a></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/currentMembers.php') { echo 'active'; } ?>" href="/members/currentMembers.php">Current Members</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo 'active'; } ?>" href="/members/documents.php">Documents</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo 'active'; } ?>" href="/members/music.php">Music</a></li>
-								<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
+								<?php if($_SESSION['accountType'] !== 0) { ?>
 									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo 'active'; } ?>" href="/members/homepageMessage.php">Homepage Message</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive Members</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending Members</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo 'active'; } ?>" href="/members/loginStats.php">Login Stats</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo 'active'; } ?>" href="/members/messageMembers.php">Message Members</a></li>
 								<?php } ?>
