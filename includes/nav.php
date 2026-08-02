@@ -1,7 +1,7 @@
 <!-- Static navbar -->
 	<nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">Keystone Concert Band</a>
+			<a class="navbar-brand" href="/index.php">Keystone Concert Band</a>
 			<div class="navbar-brand">
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -9,57 +9,46 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="navbar-nav me-auto">
-				<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/index.php") { ?>active<?php } ?>" href="/index.php">Home</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "concerts.php") { ?>active<?php } ?>" href="/concerts.php">Concerts</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "donate.php") { ?>active<?php } ?>" href="/donate.php">Donate</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "join.php") { ?>active<?php } ?>" href="/join.php">Join</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "book.php") { ?>active<?php } ?>" href="/book.php">Book</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductor</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php") { ?>active<?php } ?>" href="/music.php">Music</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false) { ?>active<?php } ?>" href="/members.php">Members</a></li>
+					<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/index.php") { ?>active<?php } ?>" href="/index.php">Home</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "concerts.php") { ?>active<?php } ?>" href="/concerts.php">Concerts</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "donate.php") { ?>active<?php } ?>" href="/donate.php">Donate</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "join.php") { ?>active<?php } ?>" href="/join.php">Join</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "book.php") { ?>active<?php } ?>" href="/book.php">Book</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductor</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php" && strpos($_SERVER['PHP_SELF'], '/members/') === false) { ?>active<?php } ?>" href="/music.php">Music</a></li>
+					<?php $isMemberAreaActive = (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false); ?>
+					<?php if(isset($_SESSION["email"])) { ?>
+					<li class="nav-item dropdown<?php if ($isMemberAreaActive) { ?> show<?php } ?>">
+						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="<?php echo $isMemberAreaActive ? 'true' : 'false'; ?>">Member Area</a>
+						<ul class="dropdown-menu shadow-sm<?php if ($isMemberAreaActive) { ?> show<?php } ?>" aria-labelledby="membersDropdown">
+							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Public Member Page</a></li>
+							<?php if(isset($_SESSION["email"])) { ?>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/index.php">Overview</a></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/currentMembers.php') { echo 'active'; } ?>" href="/members/currentMembers.php">Current Members</a></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo 'active'; } ?>" href="/members/documents.php">Documents</a></li>
+								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo 'active'; } ?>" href="/members/music.php">Music</a></li>
+								<?php if($_SESSION['accountType'] !== 0) { ?>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo 'active'; } ?>" href="/members/homepageMessage.php">Homepage Message</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive Members</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending Members</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo 'active'; } ?>" href="/members/loginStats.php">Login Stats</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo 'active'; } ?>" href="/members/messageMembers.php">Message Members</a></li>
+								<?php } ?>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" href="/members/logoff.php">Logoff</a></li>
+							<?php } ?>
+						</ul>
+					</li>
+					<?php } else { ?>
+					<li class="nav-item">
+						<a class="nav-link <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="/members.php">Members</a>
+					</li>
+					<?php } ?>
 				</ul>
 			</div>
 		</div>
 	</nav>
-	<!-- secondary member nav -->
-  <?php if(isset($_SESSION["email"]) && strpos($_SERVER['PHP_SELF'], '/members/') !== false) { ?>
-	<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light" style="margin-top: 56px;" data-bs-theme="light">
-	  <div class="container-fluid">
-		<a class="navbar-brand" href="/members/index.php">Members</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#memberNavbar" aria-controls="memberNavbar" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="memberNavbar">
-		  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
-			<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
-			<li class="nav-item dropdown">
-			  <a class="nav-link dropdown-toggle <?php if (in_array($_SERVER['PHP_SELF'], ['/members/members.php', '/members/inactiveMembers.php', '/members/pendingMembers.php'])) { echo 'active'; } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Members</a>
-			  <ul class="dropdown-menu" aria-labelledby="membersDropdown">
-				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo 'active'; } ?>" href="/members/members.php">Current</a></li>
-				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive</a></li>
-				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending</a></li>
-			  </ul>
-			</li>
-			<?php } else { ?>
-			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo 'active'; } ?>" href="/members/members.php">Members</a></li>
-			<?php } ?>
-			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo 'active'; } ?>" href="/members/documents.php">Documents</a></li>
-			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo 'active'; } ?>" href="/members/music.php">Music</a></li>
-			<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
-			<li class="nav-item"><a class="nav-link <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>
-			<li class="nav-item dropdown">
-			  <a class="nav-link dropdown-toggle <?php if (in_array($_SERVER['PHP_SELF'], ['/members/homepageMessage.php', '/members/loginStats.php', '/members/messageMembers.php'])) { echo 'active'; } ?>" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
-			  <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo 'active'; } ?>" href="/members/homepageMessage.php">Homepage Message</a></li>
-				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo 'active'; } ?>" href="/members/loginStats.php">Login Stats</a></li>
-				<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo 'active'; } ?>" href="/members/messageMembers.php">Message Members</a></li>
-			  </ul>
-			</li>
-			<?php } ?>
-			<li class="nav-item"><a class="nav-link" href="/members/logoff.php">Logoff</a></li>
-		  </ul>
-		</div>
-	  </div>
-	</nav>
-<?php } ?>
