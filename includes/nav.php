@@ -18,9 +18,9 @@
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php" && strpos($_SERVER['PHP_SELF'], '/members/') === false) { ?>active<?php } ?>" href="/music.php">Music</a></li>
 					<?php $isMemberAreaActive = (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false); ?>
 					<?php if(isset($_SESSION["email"])) { ?>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Member Area</a>
-						<ul class="dropdown-menu shadow-sm" aria-labelledby="membersDropdown">
+					<li class="nav-item dropdown<?php if ($isMemberAreaActive) { ?> show<?php } ?>">
+						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="<?php echo $isMemberAreaActive ? 'true' : 'false'; ?>">Member Area</a>
+						<ul class="dropdown-menu shadow-sm<?php if ($isMemberAreaActive) { ?> show<?php } ?>" aria-labelledby="membersDropdown">
 							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Overview</a></li>
 							<?php if(isset($_SESSION["email"])) { ?>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php" || $_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
