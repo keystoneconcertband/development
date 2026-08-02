@@ -14,7 +14,8 @@
 				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "donate.php") { ?>active<?php } ?>" href="/donate.php">Donate</a></li>
 				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "join.php") { ?>active<?php } ?>" href="/join.php">Join</a></li>
 				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "book.php") { ?>active<?php } ?>" href="/book.php">Book</a></li>
-				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductors</a></li>
+				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductor</a></li>
+				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php") { ?>active<?php } ?>" href="/music.php">Music</a></li>
 				<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false) { ?>active<?php } ?>" href="/members.php">Members</a></li>
 				</ul>
 			</div>
