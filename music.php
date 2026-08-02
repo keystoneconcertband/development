@@ -40,8 +40,8 @@
 					to see and hear a sampling of the variety of tunes on the recording.
 					<br />
 					<br />
-					You can make a $20 online donation through our secure link to Pay Pal using the
-					<strong>Pay Now</strong> button.
+					If you are interested in a copy of the CD, you can make a $20 online donation 
+					through our secure link to Pay Pal using the <strong>Pay Now</strong> button.
 					<br />
 				</div>
 				<div style="margin-top: 20px;">
@@ -59,7 +59,7 @@
 				<div style="margin: 20px 0; padding: 12px 15px; border: 1px solid #ddd; background: #f8f8f8;">
 					<strong>Listen to a sample:</strong>
 					<audio id="cd-audio" controls preload="none" style="width:100%; max-width:420px; display:block; margin-top:8px;"></audio>
-					<div id="cd-audio-status" style="margin-top:6px; color:#666;">Select a track title to start listening.</div>
+					<div id="cd-audio-status" style="margin-top:6px; color:#666;">Select the play button next to the track title to start listening.</div>
 				</div>
 				<ol style="padding-left:0; list-style:none;">
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
