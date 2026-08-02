@@ -95,7 +95,7 @@
 
 @media (max-width: 575.98px) {
 	.navbar.fixed-top + #myCarousel {
-		margin-top: 68px;
+		margin-top: 56px;
 	}
 
 	#myCarousel .carousel-item,

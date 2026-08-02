@@ -17,4 +17,3 @@ The `vendor/` directory is ignored by Git and should not be committed.
 
 - PHPMailer is now managed via Composer.
 - Bootstrap/Bootswatch assets have been migrated away from local bundled copies where possible.
-- The application still uses some remaining local assets such as `jquery.mb.miniAudioPlayer` until those are migrated.
