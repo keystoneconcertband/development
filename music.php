@@ -31,7 +31,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-12">
-				<div><img alt="CD Image" src="images/cd.png" style="float:left; padding-right:10px;"></div>
+				<div><img alt="KCB Compact Disk 'And the Band Played On'" src="images/cd.png" style="float:left; padding-right:10px;"></div>
 				<div>
 					Early in the 2000's, the Keystone Concert Band released the CD
 					"...And The Band Played On..." With 15 numbers, the 
