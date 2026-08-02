@@ -15,20 +15,20 @@
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "join.php") { ?>active<?php } ?>" href="/join.php">Join</a></li>
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "book.php") { ?>active<?php } ?>" href="/book.php">Book</a></li>
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductor</a></li>
-					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php") { ?>active<?php } ?>" href="/music.php">Music</a></li>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php" && strpos($_SERVER['PHP_SELF'], '/members/') === false) { ?>active<?php } ?>" href="/music.php">Music</a></li>
 					<?php $isMemberAreaActive = (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false); ?>
-					<li class="nav-item dropdown<?php if ($isMemberAreaActive) { echo ' show'; } ?>">
+					<li class="nav-item dropdown">
 						<?php $memberMenuLabel = isset($_SESSION["email"]) ? "Member Area" : "Members"; ?>
-						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="<?php echo $isMemberAreaActive ? 'true' : 'false'; ?>"><?php echo $memberMenuLabel; ?></a>
-						<ul class="dropdown-menu shadow-sm<?php if ($isMemberAreaActive) { echo ' show'; } ?>" aria-labelledby="membersDropdown">
+						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $memberMenuLabel; ?></a>
+						<ul class="dropdown-menu shadow-sm" aria-labelledby="membersDropdown">
 							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Overview</a></li>
 							<?php if(isset($_SESSION["email"])) { ?>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php" || $_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
 								<?php if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) { ?>
 									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/members.php') { echo 'active'; } ?>" href="/members/members.php">Members</a></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive</a></li>
-									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/currentMembers.php') { echo 'active'; } ?>" href="/members/currentMembers.php">Current Members</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive Members</a></li>
+									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending Members</a></li>
 								<?php } else { ?>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/members.php") { echo 'active'; } ?>" href="/members/members.php">Members</a></li>
 								<?php } ?>
