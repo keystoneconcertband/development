@@ -37,8 +37,8 @@ class KCBPublic
         $response = $this->validateJoin($joinArray);
 
         if (empty($response)) {
-            // Require JS and timing protections
-            $response = $this->validateSpamProtection($joinArray);
+            // Require the shared form security protections.
+            $response = $this->validateFormSubmission($joinArray, 'join_csrf_token');
         }
 
         if (empty($response)) {
@@ -95,6 +95,16 @@ class KCBPublic
         return $response;
     }
 
+    public function validateFormSubmission($formArray, $csrfSessionKey)
+    {
+        if (empty($formArray['csrf_token']) || empty($_SESSION[$csrfSessionKey]) ||
+            !hash_equals($_SESSION[$csrfSessionKey], $formArray['csrf_token'])) {
+            return "Invalid form submission.";
+        }
+
+        return $this->validateSpamProtection($formArray);
+    }
+
     /* PRIVATE FUNCTIONS */
     private function getDb()
     {
@@ -145,17 +155,21 @@ class KCBPublic
         return $response;
     }
 
-    private function validateSpamProtection($joinArray)
+    private function validateSpamProtection($formArray)
     {
-        if (empty($joinArray['jsCheck']) || $joinArray['jsCheck'] !== 'enabled') {
+        if (!empty($formArray['honeypot'])) {
+            return "Invalid request.";
+        }
+
+        if (empty($formArray['jsCheck']) || $formArray['jsCheck'] !== 'enabled') {
             return "Please enable JavaScript to submit this form.";
         }
 
-        if (empty($joinArray['formCreatedAt']) || !ctype_digit($joinArray['formCreatedAt'])) {
+        if (empty($formArray['formCreatedAt']) || !ctype_digit($formArray['formCreatedAt'])) {
             return "Invalid form submission.";
         }
 
-        $formAge = time() - (int)$joinArray['formCreatedAt'];
+        $formAge = time() - (int)$formArray['formCreatedAt'];
         if ($formAge < 3) {
             return "Please take a moment to complete the form before submitting.";
         }
