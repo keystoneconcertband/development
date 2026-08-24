@@ -10,5 +10,5 @@ if (session_status() === PHP_SESSION_ACTIVE) {
     return;
 }
 
-header('Cache-Control: public, max-age=300, stale-while-revalidate=3600');
+header('Cache-Control: public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
 header('Vary: Cookie');
