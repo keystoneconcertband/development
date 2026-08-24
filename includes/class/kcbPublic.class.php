@@ -9,7 +9,8 @@ class KCBPublic
 
     public function __construct()
     {
-        $this->setKcb(new KcbBase());
+        // Anonymous read-only pages should not create a session, allowing HTTP caching.
+        $this->setKcb(new KcbBase(false));
         $this->setDB(new KCBPublicDb());
     }
 
