@@ -14,13 +14,13 @@ class KcbBase
 {
     private $log;
 
-    public function __construct()
+    public function __construct($startSession = true)
     {
         // Show errors if dev environment
         $this->defaultSettings($this->isDevEnv());
         $this->log = new Log();
 
-        if (session_status() == PHP_SESSION_NONE) {
+        if ($startSession && session_status() == PHP_SESSION_NONE) {
             session_start();
         }
     }

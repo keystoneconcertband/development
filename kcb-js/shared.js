@@ -183,6 +183,11 @@ function populateForm(frm, data) {
   Object.keys(data).forEach(function (key) {
     var field = form.querySelector('[name="' + key + '"]');
     if (field) {
+      if (field.type === 'checkbox') {
+        field.checked = data[key] == 1 || data[key] === true || data[key] === field.value;
+        return;
+      }
+
       field.value = data[key];
     }
   });
