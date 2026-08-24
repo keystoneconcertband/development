@@ -37,8 +37,8 @@ class KCBPublic
         $response = $this->validateJoin($joinArray);
 
         if (empty($response)) {
-            // Require JS and timing protections
-            $response = $this->validateSpamProtection($joinArray);
+            // Require the shared form security protections.
+            $response = $this->validateFormSubmission($joinArray, 'join_csrf_token');
         }
 
         if (empty($response)) {
@@ -95,6 +95,16 @@ class KCBPublic
         return $response;
     }
 
+    public function validateFormSubmission($formArray, $csrfSessionKey)
+    {
+        if (empty($formArray['csrf_token']) || empty($_SESSION[$csrfSessionKey]) ||
+            !hash_equals($_SESSION[$csrfSessionKey], $formArray['csrf_token'])) {
+            return "Invalid form submission.";
+        }
+
+        return $this->validateSpamProtection($formArray);
+    }
+
     /* PRIVATE FUNCTIONS */
     private function getDb()
     {
@@ -145,17 +155,21 @@ class KCBPublic
         return $response;
     }
 
-    private function validateSpamProtection($joinArray)
+    private function validateSpamProtection($formArray)
     {
-        if (empty($joinArray['jsCheck']) || $joinArray['jsCheck'] !== 'enabled') {
+        if (!empty($formArray['honeypot'])) {
+            return "Invalid request.";
+        }
+
+        if (empty($formArray['jsCheck']) || $formArray['jsCheck'] !== 'enabled') {
             return "Please enable JavaScript to submit this form.";
         }
 
-        if (empty($joinArray['formCreatedAt']) || !ctype_digit($joinArray['formCreatedAt'])) {
+        if (empty($formArray['formCreatedAt']) || !ctype_digit($formArray['formCreatedAt'])) {
             return "Invalid form submission.";
         }
 
-        $formAge = time() - (int)$joinArray['formCreatedAt'];
+        $formAge = time() - (int)$formArray['formCreatedAt'];
         if ($formAge < 3) {
             return "Please take a moment to complete the form before submitting.";
         }
@@ -165,13 +179,40 @@ class KCBPublic
         }
 
         if (!empty($_SERVER['HTTP_REFERER'])) {
-            $refererHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
-            if ($refererHost && stripos($refererHost, $_SERVER['SERVER_NAME']) === false) {
+            $refererHost = $this->normalizeHost(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
+            $requestHost = $this->normalizeHost(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+
+            if ($refererHost && $requestHost && !$this->hostsMatch($refererHost, $requestHost)) {
                 return "Invalid form submission source.";
             }
         }
 
         return null;
+    }
+
+    private function normalizeHost($host)
+    {
+        $host = strtolower(trim((string)$host));
+        if ($host === '') {
+            return '';
+        }
+
+        $host = preg_replace('/:\d+$/', '', $host);
+        return $host;
+    }
+
+    private function hostsMatch($refererHost, $requestHost)
+    {
+        if ($refererHost === $requestHost) {
+            return true;
+        }
+
+        // Allow the same site to be served from or redirected through a subdomain
+        // such as dev.example.com vs example.com, or www.example.com vs example.com.
+        return (
+            substr($refererHost, -strlen('.' . $requestHost)) === '.' . $requestHost ||
+            substr($requestHost, -strlen('.' . $refererHost)) === '.' . $refererHost
+        );
     }
 
     private function processEmail($joinArray)
