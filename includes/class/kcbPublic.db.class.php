@@ -52,27 +52,68 @@ class KCBPublicDb
     /* Select Queries */
     public function getCurrentConcert()
     {
-        return $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address
-                                    FROM kcb_schedule
-                                    WHERE concertBegin >= CURRENT_TIMESTAMP
-                                    ORDER BY concertBegin");
+        $cacheKey = 'kcb_public_current_concert';
+        $cached = $this->getCached($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
+        $concert = $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address
+                                        FROM kcb_schedule
+                                        WHERE concertBegin >= CURRENT_TIMESTAMP
+                                        ORDER BY concertBegin");
+        $this->setCached($cacheKey, $concert, 60);
+        return $concert;
     }
 
     public function getConcertSchedule()
     {
-        return $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address
-                                      FROM kcb_schedule
-                                      WHERE year(concertBegin) = year(CURRENT_TIMESTAMP)
-                                      ORDER BY concertBegin");
+        $cacheKey = 'kcb_public_concert_schedule';
+        $cached = $this->getCached($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
+        $schedule = $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address
+                                          FROM kcb_schedule
+                                          WHERE year(concertBegin) = year(CURRENT_TIMESTAMP)
+                                          ORDER BY concertBegin");
+        $this->setCached($cacheKey, $schedule, 300);
+        return $schedule;
     }
 
     public function getHomepageMessages()
     {
-        return $this->getDb()->query("SELECT title, message, message_type
-                                      FROM kcb_homepage_messages
-                                      WHERE start_dt <= CURRENT_TIMESTAMP
-                                        AND end_dt >= CURRENT_TIMESTAMP
-                                      ORDER BY start_dt");
+        $cacheKey = 'kcb_public_homepage_messages';
+        $cached = $this->getCached($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
+        $messages = $this->getDb()->query("SELECT title, message, message_type
+                                          FROM kcb_homepage_messages
+                                          WHERE start_dt <= CURRENT_TIMESTAMP
+                                            AND end_dt >= CURRENT_TIMESTAMP
+                                          ORDER BY start_dt");
+        $this->setCached($cacheKey, $messages, 300);
+        return $messages;
+    }
+
+    private function getCached($key, &$cacheHit)
+    {
+        $cacheHit = false;
+        if (!function_exists('apcu_fetch') || !apcu_enabled()) {
+            return null;
+        }
+
+        return apcu_fetch($key, $cacheHit);
+    }
+
+    private function setCached($key, $value, $ttl)
+    {
+        if (function_exists('apcu_store') && apcu_enabled()) {
+            apcu_store($key, $value, $ttl);
+        }
     }
 
     public function checkDupPendingUser($email)
