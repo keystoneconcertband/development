@@ -11,9 +11,9 @@ class Member
     private $kcb;
 
     /* PUBLIC FUNCTIONS */
-    public function __construct($authReq)
+    public function __construct($authReq, $startSession = true)
     {
-        $this->setKcb(new KcbBase());
+        $this->setKcb(new KcbBase($startSession));
         $this->setDB(new MemberDB());
 
         if ($authReq) {

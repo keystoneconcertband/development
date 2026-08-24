@@ -2,7 +2,7 @@
 // This class is for methods which must be protected, so use must have a valid session to run these queries
 // member is its parent
 require_once "member.class.php";
-require_once "member.db.class.php";
+require_once "kcbPublic.db.class.php";
 
 class ProtectedAdmin
 {
@@ -50,6 +50,7 @@ class ProtectedAdmin
         }
 
         if ($this->getDb()->addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt, $_SESSION["email"])) {
+            KCBPublicDb::clearHomepageMessagesCache();
             return "success";
         }
     }
@@ -61,6 +62,7 @@ class ProtectedAdmin
         }
 
         if ($this->getDb()->editHomepageMessage($uid, $title, $message, $message_type, $start_dt, $end_dt, $_SESSION["email"])) {
+            KCBPublicDb::clearHomepageMessagesCache();
             return "success";
         }
     }
@@ -117,6 +119,7 @@ class ProtectedAdmin
         }
 
         if ($this->getDb()->addSchedule($title, $concertBegin, $pants, $chair, $address, $_SESSION['email'] ?? '')) {
+            KCBPublicDb::clearScheduleCache();
             return "success";
         }
     }
@@ -128,6 +131,7 @@ class ProtectedAdmin
         }
 
         if ($this->getDb()->editSchedule($uid, $title, $concertBegin, $pants, $chair, $address, $_SESSION['email'] ?? '')) {
+            KCBPublicDb::clearScheduleCache();
             return "success";
         }
     }
@@ -169,6 +173,7 @@ class ProtectedAdmin
                     if ($this->updateEmails($uid, $email, true)) {
                         if ($this->updateInstruments($uid, $instrument)) {
                             $this->getDb()->executeTransaction();
+                            MemberDB::clearPublicMembersCache();
                         } else {
                             $this->getDb()->rollBackTransaction();
                             $retValue = "update_instrument_error";
@@ -202,8 +207,9 @@ class ProtectedAdmin
 				$this->getDb()->beginTransaction();
 
 				if($this->getDb()->delAllEmails($uid)) {
-					if($this->getDb()->deleteMember($uid, $updateUser)) {
+                    if($this->getDb()->deleteMember($uid, $updateUser)) {
                         $this->getDb()->executeTransaction();
+                        MemberDB::clearPublicMembersCache();
                         $retValue = "success";
 					}
 					else {

@@ -2,7 +2,6 @@
 // This class is for methods which must be protected, so use must have a valid session to run these queries
 // member is its parent
 require_once "member.class.php";
-require_once "member.db.class.php";
 	
 class ProtectedMember {
 	private $db;
@@ -109,7 +108,8 @@ class ProtectedMember {
 					if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
 						if($this->updateEmails($uid, $email, true, false)) {
 							if($this->updateInstruments($uid, $instrument)) {
-								$this->getDb()->executeTransaction();							
+								$this->getDb()->executeTransaction();
+								MemberDB::clearPublicMembersCache();
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
@@ -167,7 +167,8 @@ class ProtectedMember {
 					if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
 						if($this->updateEmails($uid, $email, true, false)) {
 							if($this->updateInstruments($uid, $instrument)) {
-								$this->getDb()->executeTransaction();							
+								$this->getDb()->executeTransaction();
+								MemberDB::clearPublicMembersCache();
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
@@ -212,7 +213,8 @@ class ProtectedMember {
 				
 				if($this->getDb()->removeMember($uid, $updateUser)) {
 					if($this->updateEmails($uid, array(), $deleteEmailAddress, false)) {
-						$this->getDb()->executeTransaction();							
+						$this->getDb()->executeTransaction();
+						MemberDB::clearPublicMembersCache();
 					}
 					else {
 						$this->getDb()->rollBackTransaction();

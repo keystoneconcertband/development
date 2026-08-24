@@ -1,7 +1,7 @@
 <?php
 session_start();
 # This is the public page for booking
-include_once("includes/class/kcbPublic.class.php");
+require_once 'includes/class/kcbPublic.class.php';
 $response = "";
 
 function isValidEmailAddress($email) {
@@ -11,15 +11,14 @@ function isValidEmailAddress($email) {
 
 // Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($_POST['csrf_token']) || empty($_SESSION['join_csrf_token']) ||
-        !hash_equals($_SESSION['join_csrf_token'], $_POST['csrf_token'])) {
-        $response = "Invalid form submission.";
-    } else {
+    $join = new KCBPublic();
+    $response = $join->validateFormSubmission($_REQUEST, 'join_csrf_token');
+
+    if ($response === "") {
         $email = isset($_REQUEST['txtEmail']) ? $_REQUEST['txtEmail'] : '';
         if ($email !== '' && !isValidEmailAddress($email)) {
             $response = "Please enter a valid email address.";
         } else {
-            $join = new KCBPublic();
             $response = $join->joinSubmit($_REQUEST);
         }
     }

@@ -3,6 +3,10 @@ require_once "db.class.php";
 
 class KCBPublicDb
 {
+    private const CURRENT_CONCERT_CACHE_KEY = 'kcb_public_current_concert';
+    private const CONCERT_SCHEDULE_CACHE_KEY = 'kcb_public_concert_schedule';
+    private const HOMEPAGE_MESSAGES_CACHE_KEY = 'kcb_public_homepage_messages';
+
     private $db;
 
     public function __construct()
@@ -52,27 +56,86 @@ class KCBPublicDb
     /* Select Queries */
     public function getCurrentConcert()
     {
-        return $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address
-                                    FROM kcb_schedule
-                                    WHERE concertBegin >= CURRENT_TIMESTAMP
-                                    ORDER BY concertBegin");
+        $cacheKey = self::CURRENT_CONCERT_CACHE_KEY;
+        $cached = $this->getCached($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
+        $concert = $this->getDb()->row("SELECT concertBegin, Title, pants, chair, address
+                                        FROM kcb_schedule
+                                        WHERE concertBegin >= CURRENT_TIMESTAMP
+                                        ORDER BY concertBegin");
+        $this->setCached($cacheKey, $concert, 60);
+        return $concert;
     }
 
     public function getConcertSchedule()
     {
-        return $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address
-                                      FROM kcb_schedule
-                                      WHERE year(concertBegin) = year(CURRENT_TIMESTAMP)
-                                      ORDER BY concertBegin");
+        $cacheKey = self::CONCERT_SCHEDULE_CACHE_KEY;
+        $cached = $this->getCached($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
+        $schedule = $this->getDb()->query("SELECT concertBegin, Title, pants, chair, address
+                                          FROM kcb_schedule
+                                          WHERE year(concertBegin) = year(CURRENT_TIMESTAMP)
+                                          ORDER BY concertBegin");
+        $this->setCached($cacheKey, $schedule, 3600);
+        return $schedule;
     }
 
     public function getHomepageMessages()
     {
-        return $this->getDb()->query("SELECT title, message, message_type
-                                      FROM kcb_homepage_messages
-                                      WHERE start_dt <= CURRENT_TIMESTAMP
-                                        AND end_dt >= CURRENT_TIMESTAMP
-                                      ORDER BY start_dt");
+        $cacheKey = self::HOMEPAGE_MESSAGES_CACHE_KEY;
+        $cached = $this->getCached($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
+        $messages = $this->getDb()->query("SELECT title, message, message_type
+                                          FROM kcb_homepage_messages
+                                          WHERE start_dt <= CURRENT_TIMESTAMP
+                                            AND end_dt >= CURRENT_TIMESTAMP
+                                          ORDER BY start_dt");
+        $this->setCached($cacheKey, $messages, 300);
+        return $messages;
+    }
+
+    public static function clearScheduleCache()
+    {
+        self::clearCached(self::CURRENT_CONCERT_CACHE_KEY);
+        self::clearCached(self::CONCERT_SCHEDULE_CACHE_KEY);
+    }
+
+    public static function clearHomepageMessagesCache()
+    {
+        self::clearCached(self::HOMEPAGE_MESSAGES_CACHE_KEY);
+    }
+
+    private function getCached($key, &$cacheHit)
+    {
+        $cacheHit = false;
+        if (!function_exists('apcu_fetch') || !apcu_enabled()) {
+            return null;
+        }
+
+        return apcu_fetch($key, $cacheHit);
+    }
+
+    private function setCached($key, $value, $ttl)
+    {
+        if (function_exists('apcu_store') && apcu_enabled()) {
+            apcu_store($key, $value, $ttl);
+        }
+    }
+
+    private static function clearCached($key)
+    {
+        if (function_exists('apcu_delete') && apcu_enabled()) {
+            apcu_delete($key);
+        }
     }
 
     public function checkDupPendingUser($email)

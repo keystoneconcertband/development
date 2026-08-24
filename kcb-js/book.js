@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('frmBook');
   if (!form) return;
 
+  const jsCheck = document.getElementById('jsCheck');
+  if (jsCheck) {
+    jsCheck.value = 'enabled';
+  }
+
   form.addEventListener('submit', function (event) {
     if (event.defaultPrevented || !form.checkValidity()) {
       event.preventDefault();

@@ -1,6 +1,7 @@
 <?php 
+	session_start();
 	# This is the public page for booking
- 	include_once("includes/class/kcbBase.class.php");
+	require_once 'includes/class/kcbPublic.class.php';
 	$response = "";
 
 	function isValidEmailAddress($email) {
@@ -10,20 +11,25 @@
 
 	// Only allow POST requests
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
-		if(!isset($_REQUEST['txtName'])) {
-			$response = "Name is required.";
-		}
-		else if(isset($_REQUEST['txtPhone']) && $_REQUEST['txtPhone'] !== "" && strlen($_REQUEST['txtPhone']) < 10) {
-			$response = "Phone number must be 10 digits.";
-		}
-		else if(!isset($_REQUEST['txtEmail'])) {
-			$response = "Email is required.";
-		}
-		else if(!isValidEmailAddress($_REQUEST['txtEmail'])) {
-			$response = "Please enter a valid email address.";
-		}
-		else if(!isset($_REQUEST['txtComments'])) {
-			$response = "Comments are required.";
+		$book = new KCBPublic();
+		$response = $book->validateFormSubmission($_REQUEST, 'book_csrf_token');
+
+		if($response === "") {
+			if(!isset($_REQUEST['txtName'])) {
+				$response = "Name is required.";
+			}
+			else if(isset($_REQUEST['txtPhone']) && $_REQUEST['txtPhone'] !== "" && strlen($_REQUEST['txtPhone']) < 10) {
+				$response = "Phone number must be 10 digits.";
+			}
+			else if(!isset($_REQUEST['txtEmail'])) {
+				$response = "Email is required.";
+			}
+			else if(!isValidEmailAddress($_REQUEST['txtEmail'])) {
+				$response = "Please enter a valid email address.";
+			}
+			else if(!isset($_REQUEST['txtComments'])) {
+				$response = "Comments are required.";
+			}
 		}
 		
 		if($response === "") {
