@@ -165,13 +165,40 @@ class KCBPublic
         }
 
         if (!empty($_SERVER['HTTP_REFERER'])) {
-            $refererHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
-            if ($refererHost && stripos($refererHost, $_SERVER['SERVER_NAME']) === false) {
+            $refererHost = $this->normalizeHost(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
+            $requestHost = $this->normalizeHost(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+
+            if ($refererHost && $requestHost && !$this->hostsMatch($refererHost, $requestHost)) {
                 return "Invalid form submission source.";
             }
         }
 
         return null;
+    }
+
+    private function normalizeHost($host)
+    {
+        $host = strtolower(trim((string)$host));
+        if ($host === '') {
+            return '';
+        }
+
+        $host = preg_replace('/:\d+$/', '', $host);
+        return $host;
+    }
+
+    private function hostsMatch($refererHost, $requestHost)
+    {
+        if ($refererHost === $requestHost) {
+            return true;
+        }
+
+        // Allow the same site to be served from or redirected through a subdomain
+        // such as dev.example.com vs example.com, or www.example.com vs example.com.
+        return (
+            substr($refererHost, -strlen('.' . $requestHost)) === '.' . $requestHost ||
+            substr($requestHost, -strlen('.' . $refererHost)) === '.' . $refererHost
+        );
     }
 
     private function processEmail($joinArray)
