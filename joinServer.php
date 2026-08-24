@@ -11,12 +11,16 @@ function isValidEmailAddress($email) {
 
 // Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = isset($_REQUEST['txtEmail']) ? $_REQUEST['txtEmail'] : '';
-    if ($email !== '' && !isValidEmailAddress($email)) {
-        $response = "Please enter a valid email address.";
-    } else {
-        $join = new KCBPublic();
-        $response = $join->joinSubmit($_REQUEST);
+    $join = new KCBPublic();
+    $response = $join->validateFormSubmission($_REQUEST, 'join_csrf_token');
+
+    if ($response === "") {
+        $email = isset($_REQUEST['txtEmail']) ? $_REQUEST['txtEmail'] : '';
+        if ($email !== '' && !isValidEmailAddress($email)) {
+            $response = "Please enter a valid email address.";
+        } else {
+            $response = $join->joinSubmit($_REQUEST);
+        }
     }
 } else {
     $response = "invalid_request";

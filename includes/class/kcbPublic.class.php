@@ -37,11 +37,6 @@ class KCBPublic
         $response = $this->validateJoin($joinArray);
 
         if (empty($response)) {
-            // Require the shared form security protections.
-            $response = $this->validateFormSubmission($joinArray, 'join_csrf_token');
-        }
-
-        if (empty($response)) {
             // Check for spam
             $response = $this->processSpam($joinArray);
 
@@ -102,7 +97,8 @@ class KCBPublic
             return "Invalid form submission.";
         }
 
-        return $this->validateSpamProtection($formArray);
+        $response = $this->validateSpamProtection($formArray);
+        return $response === null ? "" : $response;
     }
 
     /* PRIVATE FUNCTIONS */
