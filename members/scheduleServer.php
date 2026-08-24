@@ -1,5 +1,5 @@
 <?php
-    include_once('../includes/class/protectedAdmin.class.php');
+    require_once '../includes/class/protectedAdmin.class.php';
     header('Content-Type: application/json');
 
     $admin = new ProtectedAdmin();

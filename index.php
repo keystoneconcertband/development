@@ -1,5 +1,5 @@
 <?php
-	include_once('includes/class/kcbPublic.class.php');
+	require_once 'includes/class/kcbPublic.class.php';
 	global $homepage;
 	$homepage = new KCBPublic();
 ?>

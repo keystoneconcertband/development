@@ -1,7 +1,7 @@
 <?php
 session_start();
 # This is the public page for booking
-include_once("includes/class/kcbPublic.class.php");
+require_once 'includes/class/kcbPublic.class.php';
 $response = "";
 
 function isValidEmailAddress($email) {

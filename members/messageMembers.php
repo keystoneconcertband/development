@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/class/protectedAdmin.class.php';
+require_once '../includes/class/protectedAdmin.class.php';
 new protectedAdmin();
 ?>
 

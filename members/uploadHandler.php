@@ -10,7 +10,7 @@
  * https://opensource.org/licenses/MIT
  */
  
-include_once('../includes/class/kcbBase.class.php');
+require_once '../includes/class/kcbBase.class.php';
 
 class UploadHandler
 {

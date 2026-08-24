@@ -2,7 +2,6 @@
 // This class is for methods which must be protected, so use must have a valid session to run these queries
 // member is its parent
 require_once "member.class.php";
-require_once "member.db.class.php";
 require_once "kcbPublic.db.class.php";
 
 class ProtectedAdmin
