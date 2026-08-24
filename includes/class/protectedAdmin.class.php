@@ -174,6 +174,7 @@ class ProtectedAdmin
                     if ($this->updateEmails($uid, $email, true)) {
                         if ($this->updateInstruments($uid, $instrument)) {
                             $this->getDb()->executeTransaction();
+                            MemberDB::clearPublicMembersCache();
                         } else {
                             $this->getDb()->rollBackTransaction();
                             $retValue = "update_instrument_error";
@@ -207,8 +208,9 @@ class ProtectedAdmin
 				$this->getDb()->beginTransaction();
 
 				if($this->getDb()->delAllEmails($uid)) {
-					if($this->getDb()->deleteMember($uid, $updateUser)) {
+                    if($this->getDb()->deleteMember($uid, $updateUser)) {
                         $this->getDb()->executeTransaction();
+                        MemberDB::clearPublicMembersCache();
                         $retValue = "success";
 					}
 					else {

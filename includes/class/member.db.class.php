@@ -32,14 +32,49 @@ class MemberDB
     // Gets the members by instrument
     public function getMembers($instrument)
     {
+        $cacheKey = 'kcb_public_members_' . rawurlencode($instrument);
+        $cached = self::getPublicCache($cacheKey, $cacheHit);
+        if ($cacheHit) {
+            return $cached;
+        }
+
         $this->getDb()->bind("instrument", $instrument);
-        return $this->getDb()->query("SELECT firstName, lastName, displayFullName
-                                      FROM kcb_members m
-                                      JOIN kcb_instrument i ON m.UID = i.member_uid
-                                      WHERE i.instrument = :instrument
-                                        AND disabled = 0
-                                        AND accountType <> 3
-                                      ORDER BY lastName, firstName");
+        $members = $this->getDb()->query("SELECT firstName, lastName, displayFullName
+                                          FROM kcb_members m
+                                          JOIN kcb_instrument i ON m.UID = i.member_uid
+                                          WHERE i.instrument = :instrument
+                                            AND disabled = 0
+                                            AND accountType <> 3
+                                          ORDER BY lastName, firstName");
+        self::setPublicCache($cacheKey, $members, 3600);
+        return $members;
+    }
+
+    public static function clearPublicMembersCache()
+    {
+        foreach (array('baritone', 'bassClarinet', 'bassoon', 'clarinet', 'flute', 'frenchHorn', 'oboe', 'percussion', 'saxophone', 'trombone', 'trumpet', 'tuba') as $instrument) {
+            $key = 'kcb_public_members_' . rawurlencode($instrument);
+            if (function_exists('apcu_delete') && apcu_enabled()) {
+                apcu_delete($key);
+            }
+        }
+    }
+
+    private static function getPublicCache($key, &$cacheHit)
+    {
+        $cacheHit = false;
+        if (!function_exists('apcu_fetch') || !apcu_enabled()) {
+            return null;
+        }
+
+        return apcu_fetch($key, $cacheHit);
+    }
+
+    private static function setPublicCache($key, $value, $ttl)
+    {
+        if (function_exists('apcu_store') && apcu_enabled()) {
+            apcu_store($key, $value, $ttl);
+        }
     }
 
     // Gets the member information by email address
