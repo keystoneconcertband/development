@@ -1,5 +1,2 @@
 <?php
-	error_reporting(E_ALL | E_STRICT);
-	require_once 'uploadHandler.php';
-	$upload_handler = new UploadHandler();
-?>
+require_once __DIR__ . '/../src/Members/Handlers/documentsServer.php';
