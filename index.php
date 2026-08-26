@@ -7,18 +7,18 @@
 <html lang="en">
 
 <head>
-    <?php require_once 'includes/common_meta.php';	?>
+    <?php require_once 'templates/partials/common_meta.php';	?>
     <meta name="description"
         content="Keystone Concert Band is an organization to foster, promote, and increase the musical knowledge and appreciation of the general public by operating and maintaining a concert band and by presenting performances of music.">
     <title>Keystone Concert Band</title>
-    <?php require_once 'includes/common_css.php'; ?>
+    <?php require_once 'templates/partials/common_css.php'; ?>
 </head>
 
 <body>
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous"
         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0&appId=183258391082442"></script>
-    <?php require_once 'includes/nav.php'; ?>
+    <?php require_once 'templates/partials/nav.php'; ?>
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <!-- Indicators -->
         <div class="carousel-indicators">
@@ -171,10 +171,10 @@
                 <p><a class="btn btn-light" href="donate.php" role="button">View details &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
-        <?php require_once 'includes/footer.php'; ?>
+        <?php require_once 'templates/partials/footer.php'; ?>
     </div><!-- /.container -->
 
-    <?php require_once 'includes/common_js.php'; ?>
+    <?php require_once 'templates/partials/common_js.php'; ?>
     <script>
     function showAlerts() {
         var el = document.getElementById('bandRequirements');

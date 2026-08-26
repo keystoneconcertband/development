@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <?php require_once 'includes/common_meta.php'; ?>
+    <?php require_once 'templates/partials/common_meta.php'; ?>
     <meta name="description"
         content="The leaders of the Keystone Concert Band. Our Conductors, Donna Deaven and John Hope.">
 
     <title>Conductors - Keystone Concert Band</title>
 
-    <?php require_once 'includes/common_css.php'; ?>
+    <?php require_once 'templates/partials/common_css.php'; ?>
 
     <style type="text/css">
     .row .col-lg-12 ul li {
@@ -21,7 +21,7 @@
 
 <body>
 
-    <?php require_once 'includes/nav.php'; ?>
+    <?php require_once 'templates/partials/nav.php'; ?>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -79,10 +79,10 @@
                 </div>
             </div>
         </div>
-        <?php require_once 'includes/footer.php'; ?>
+        <?php require_once 'templates/partials/footer.php'; ?>
     </div> <!-- /container -->
 
-    <?php require_once 'includes/common_js.php'; ?>
+    <?php require_once 'templates/partials/common_js.php'; ?>
 </body>
 
 </html>

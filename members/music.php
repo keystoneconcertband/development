@@ -1,6 +1,6 @@
 <?php
 require_once '../src/Shared/Classes/protectedMusic.class.php';
-require_once '../includes/asset.php';
+require_once '../src/Shared/asset.php';
 new ProtectedMusic();
 ?>
 
@@ -8,13 +8,13 @@ new ProtectedMusic();
 <html lang="en">
 
 <head>
-    <?php require '../includes/common_meta.php'; ?>
+    <?php require '../templates/partials/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
     <title>Music - Keystone Concert Band</title>
 
-    <?php require '../includes/common_css.php'; ?>
-    <link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
+    <?php require '../templates/partials/common_css.php'; ?>
+    <link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
     <style>
     .ui-autocomplete-loading {
         background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
@@ -28,7 +28,7 @@ new ProtectedMusic();
 
 <body>
 
-    <?php require '../includes/nav.php'; ?>
+    <?php require '../templates/partials/nav.php'; ?>
     <div class="container">
         <div class="row" style="margin-bottom: 20px;">
             <div class="col-lg-12">
@@ -121,16 +121,16 @@ new ProtectedMusic();
                 </div>
             </form>
         </div>
-        <?php require '../includes/footer.php'; ?>
+        <?php require '../templates/partials/footer.php'; ?>
     </div> <!-- /container -->
 
     <script type="text/javascript">
     var accountType = "<?=$_SESSION['accountType']?>";
     </script>
-    <?php require '../includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js')?>"></script>
-    <?php require '../includes/common_datatables.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/music.js')?>"></script>
+    <?php require '../templates/partials/common_js.php'; ?>
+    <script type="text/javascript" src="<?=asset('/assets/js/shared.js')?>"></script>
+    <?php require '../templates/partials/common_datatables.php'; ?>
+    <script type="text/javascript" src="<?=asset('/assets/js/music.js')?>"></script>
 </body>
 
 </html>

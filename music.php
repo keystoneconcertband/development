@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require_once 'includes/common_meta.php'; ?>
+	<?php require_once 'templates/partials/common_meta.php'; ?>
     <meta name="description" content="Listen to the Keystone Concert Band anywhere you go!">
 
     <title>Music - Keystone Concert Band</title>
 
-	<?php require_once 'includes/common_css.php'; ?>
+	<?php require_once 'templates/partials/common_css.php'; ?>
   </head>
 
   <body>
 
-	<?php require_once 'includes/nav.php'; ?>
+	<?php require_once 'templates/partials/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col">
@@ -386,10 +386,10 @@
 				</blockquote>
 			</div>
 		</div>
-		<?php require_once 'includes/footer.php'; ?>
+		<?php require_once 'templates/partials/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require_once 'includes/common_js.php'; ?>
+	<?php require_once 'templates/partials/common_js.php'; ?>
 	<script type="text/javascript">
 		document.addEventListener('DOMContentLoaded', function () {
 			var audio = document.getElementById('cd-audio');

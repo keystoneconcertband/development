@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require_once 'includes/asset.php'; ?>
-	<?php require_once 'includes/common_meta.php'; ?>
+	<?php require_once 'src/Shared/asset.php'; ?>
+	<?php require_once 'templates/partials/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new members! Will you join us?">
 
     <title>Privacy Policy - Keystone Concert Band</title>
 
-	<?php require_once 'includes/common_css.php'; ?>
+	<?php require_once 'templates/partials/common_css.php'; ?>
 	
 	<style type="text/css">
 		.row .col-lg-12 ul li {
@@ -18,7 +18,7 @@
 
   <body>
 
-	<?php require_once 'includes/nav.php'; ?>
+	<?php require_once 'templates/partials/nav.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -57,9 +57,9 @@ If you feel that we are not abiding by this privacy policy, you should contact u
 				
 			</div>
 		</div>
-		<?php require_once 'includes/footer.php'; ?>
+		<?php require_once 'templates/partials/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require_once 'includes/common_js.php'; ?>
+	<?php require_once 'templates/partials/common_js.php'; ?>
   </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 require_once '../src/Shared/Classes/protectedMusic.class.php';
-require_once '../includes/asset.php';
+require_once '../src/Shared/asset.php';
 new ProtectedMusic();
 ?>
 
@@ -8,18 +8,18 @@ new ProtectedMusic();
 <html lang="en">
 
 <head>
-    <?php require '../includes/common_meta.php'; ?>
+    <?php require '../templates/partials/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
     <title>Homepage Messages - Keystone Concert Band</title>
 
-    <?php require '../includes/common_css.php'; ?>
-    <link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
+    <?php require '../templates/partials/common_css.php'; ?>
+    <link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
 </head>
 
 <body>
 
-    <?php require '../includes/nav.php'; ?>
+    <?php require '../templates/partials/nav.php'; ?>
     <div class="container">
         <div class="row" style="margin-bottom: 20px;">
             <div class="col-lg-12">
@@ -130,13 +130,13 @@ new ProtectedMusic();
                 </div>
             </form>
         </div>
-        <?php require '../includes/footer.php'; ?>
+        <?php require '../templates/partials/footer.php'; ?>
     </div> <!-- /container -->
 
-    <?php require '../includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js')?>"></script>
-    <?php require '../includes/common_datatables.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/homepageMessage.js')?>"></script>
+    <?php require '../templates/partials/common_js.php'; ?>
+    <script type="text/javascript" src="<?=asset('/assets/js/shared.js')?>"></script>
+    <?php require '../templates/partials/common_datatables.php'; ?>
+    <script type="text/javascript" src="<?=asset('/assets/js/homepageMessage.js')?>"></script>
 </body>
 
 </html>

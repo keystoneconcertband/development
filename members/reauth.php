@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<?php require '../includes/common_meta.php'; ?>
+	<?php require '../templates/partials/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
     <title>Member Area - Keystone Concert Band</title>
 
-	<?php require '../includes/common_css.php'; ?>
+	<?php require '../templates/partials/common_css.php'; ?>
 	
 	<style type="text/css">
 		.row .col-lg-12 ul li {
@@ -17,7 +17,7 @@
 
   <body>
 
-	<?php require '../includes/nav.php'; ?>
+	<?php require '../templates/partials/nav.php'; ?>
 	<div class="container">
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-lg-12">
@@ -27,10 +27,10 @@
 				You need to be logged in to view this page. You will be redirected to the login page momentarily (or just <a href="../members.php">click here</a> to be taken there immediately).<br>
 			</div>
 		</div>
-		<?php require '../includes/footer.php'; ?>
+		<?php require '../templates/partials/footer.php'; ?>
 	</div> <!-- /container -->
 
-	<?php require '../includes/common_js.php'; ?>
+	<?php require '../templates/partials/common_js.php'; ?>
 	<script type="text/javascript">
 		var redirectTimeoutId = window.setTimeout(redirectToHomepage, 10000);
 		

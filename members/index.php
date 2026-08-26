@@ -7,19 +7,19 @@ new Member(true);
 <html lang="en">
 
 <head>
-    <?php require '../includes/common_meta.php'; ?>
+    <?php require '../templates/partials/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band member area">
 
     <title>Member Area - Keystone Concert Band</title>
 
-    <?php require '../includes/common_css.php'; ?>
-    <link href="<?= asset('/css/member.css') ?>" rel="stylesheet">
+    <?php require '../templates/partials/common_css.php'; ?>
+    <link href="<?= asset('/assets/css/member.css') ?>" rel="stylesheet">
 
 </head>
 
 <body>
 
-    <?php require '../includes/nav.php'; ?>
+    <?php require '../templates/partials/nav.php'; ?>
     <div class="container">
         <div class="row" style="margin-bottom: 20px;">
             <div class="col-lg-12">
@@ -94,10 +94,10 @@ new Member(true);
                     </div>
                 </div>
             </div>
-            <?php require '../includes/footer.php'; ?>
+            <?php require '../templates/partials/footer.php'; ?>
         </div> <!-- /container -->
 
-        <?php require '../includes/common_js.php'; ?>
+        <?php require '../templates/partials/common_js.php'; ?>
 </body>
 
 </html>

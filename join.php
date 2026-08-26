@@ -10,17 +10,17 @@ $formCreatedAt = time();
 <html lang="en">
 
 <head>
-    <?php require_once 'includes/asset.php'; ?>
-    <?php require_once 'includes/common_meta.php'; ?>
+    <?php require_once 'src/Shared/asset.php'; ?>
+    <?php require_once 'templates/partials/common_meta.php'; ?>
     <meta name="description" content="The Keystone Concert Band is always looking for new members! Will you join us?">
 
     <title>Join the band - Keystone Concert Band</title>
 
-    <?php require_once 'includes/common_css.php'; ?>
+    <?php require_once 'templates/partials/common_css.php'; ?>
 </head>
 
 <body>
-    <?php require_once 'includes/nav.php'; ?>
+    <?php require_once 'templates/partials/nav.php'; ?>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -238,12 +238,12 @@ $formCreatedAt = time();
                 </form>
             </div>
         </div>
-        <?php require_once 'includes/footer.php'; ?>
+        <?php require_once 'templates/partials/footer.php'; ?>
     </div> <!-- /container -->
 
-    <?php require_once 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('kcb-js/shared.js')?>"></script>
-    <script type="text/javascript" src="<?=asset('kcb-js/join.js')?>" ></script>
+    <?php require_once 'templates/partials/common_js.php'; ?>
+    <script type="text/javascript" src="<?=asset('assets/js/shared.js')?>"></script>
+    <script type="text/javascript" src="<?=asset('assets/js/join.js')?>" ></script>
 </body>
 
 </html>

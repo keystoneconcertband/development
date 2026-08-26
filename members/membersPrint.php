@@ -39,7 +39,7 @@ function formatPhone($number) {
 <html>
 	<head>
 		<title>KCB Members</title>
-	    <?php require_once '../includes/common_css.php'; ?>
+	    <?php require_once '../templates/partials/common_css.php'; ?>
 		<style type="text/css" media="print,screen" >
 		thead {
 		   display:table-header-group;
@@ -75,7 +75,7 @@ function formatPhone($number) {
 			?>
 			</tbody>
 	</body>
-	<?php require '../includes/common_js.php'; ?>
+	<?php require '../templates/partials/common_js.php'; ?>
 	<script>
 		window.addEventListener('load', function() {
 			window.print();
