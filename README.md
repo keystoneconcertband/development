@@ -27,4 +27,5 @@ The application uses a feature-oriented structure while preserving the existing 
 - `src/Members/` contains member pages grouped by feature, plus shared handlers.
 - `templates/partials/` contains reusable page fragments.
 - `assets/` contains local CSS and JavaScript.
+- `tools/` contains isolated third-party utilities such as Tiny File Manager.
 - Root-level and `members/` PHP files are URL-preserving entry points. New implementation code should be added under `src/` rather than directly in those folders.
