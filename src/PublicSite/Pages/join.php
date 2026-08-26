@@ -65,7 +65,7 @@ $formCreatedAt = time();
                     <li><strong>Where do I park for rehearsal?</strong><br />
                         You may park behind the church in the parking lot off of Montour St. There is also
                         plenty of on street parking along Montour, Wilhelm and Rutherford Streets.<br />
-                        <img src="images/parking-good-shepherd.png" width="579" class="img-fluid" />
+                        <img src="assets/images/parking-good-shepherd.png" width="579" class="img-fluid" />
                     </li>
                     <li><strong>What do I need to bring?</strong><br />
                         Your instrument, a music stand, and any other pieces of equipment that may be required, such as

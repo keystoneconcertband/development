@@ -38,8 +38,8 @@
                     <h2>Conductor</h2>
                     <div class="row">
                         <div class="col-md-4">
-                            <img alt="KCB Conductors - Donna Deaven" src="images/conductors-1x.png"
-                                srcset="images/conductors-2021.png" class="img-fluid">
+                            <img alt="KCB Conductors - Donna Deaven" src="assets/images/conductors-2021.png"
+                                srcset="assets/images/conductors-2021.png" class="img-fluid">
                             <p><small>Donna Deaven</small></p>
                         </div>
                         <div class="col-md-8">

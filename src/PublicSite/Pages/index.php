@@ -29,7 +29,7 @@
         </div>
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-                <img src='images/slide6.png' class="d-block w-100" alt="...">
+                <img src='assets/images/slide6.png' class="d-block w-100" alt="...">
                 <div class="carousel-caption d-block">
                     <h1>We need you</h1>
                     <p>As a 501(c)3 organization, we rely on donations to continue performing</p>
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src='images/slide9.png' class="d-block w-100" alt="...">
+                <img src='assets/images/slide9.png' class="d-block w-100" alt="...">
                 <div class="carousel-caption d-block">
                     <h1>Play with us</h1>
                     <p>Been a few years since you picked up your instrument? Play once again</p>
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src='images/slide8.png' class="d-block w-100" alt="...">
+                <img src='assets/images/slide8.png' class="d-block w-100" alt="...">
                 <div class="carousel-caption d-block">
                     <h1>We can play for you</h1>
                     <p>We can play your event, big or small. Just give us a call</p>
@@ -84,7 +84,7 @@
         <!-- Three columns of text below the carousel -->
         <div class="row g-4 align-items-stretch homepage-feature-row">
             <div class="col-lg-4 homepage-feature">
-                <img class="rounded-pill" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140"
+                <img class="rounded-pill" src="assets/images/logo_concert.jpg" alt="Upcoming Concert Image" width="140"
                     height="140">
                 <h2>Upcoming Concert</h2>
                 <?php
@@ -146,7 +146,7 @@
             </div><!-- /.col-lg- -->
             <div class="col-lg-4 homepage-feature">
                 <div class="text-center">
-                    <img class="rounded-pill" src="images/logo_facebook.png" alt="Facebook Image" width="140"
+                    <img class="rounded-pill" src="assets/images/logo_facebook.png" alt="Facebook Image" width="140"
                         height="140">
                     <h2>Facebook</h2>
                     <p>Join our <a href="https://www.facebook.com/keystoneconcertband">Facebook page</a> for the latest
@@ -164,7 +164,7 @@
                 </div>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-4 homepage-feature">
-                <img class="img-fluid" src="images/donate-2023.png" alt="Donate" width="140" height="140">
+                <img class="img-fluid" src="assets/images/donate-2023.png" alt="Donate" width="140" height="140">
                 <h2>Donate</h2>
                 <p>As a 501(c)3 organization, we rely on donations to perform!
                 </p>

@@ -17,7 +17,7 @@ new ProtectedMusic();
     <link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
     <style>
     .ui-autocomplete-loading {
-        background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
+        background: white url("/assets/images/ui-anim_basic_16x16.gif") right center no-repeat;
     }
 
     .ui-autocomplete {

@@ -31,7 +31,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-12">
-				<div><img alt="KCB Compact Disk 'And the Band Played On'" src="images/cd.png" style="float:left; padding-right:10px;"></div>
+				<div><img alt="KCB Compact Disk 'And the Band Played On'" src="assets/images/cd.png" style="float:left; padding-right:10px;"></div>
 				<div>
 					Early in the 2000's, the Keystone Concert Band released the CD
 					"...And The Band Played On..." With 15 numbers, the 
@@ -65,7 +65,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>The Klaxon</span>
-							<a id="m1" class="audio btn btn-outline-primary btn-sm" href="media/01.mp3" data-title="The Klaxon" title="Play The Klaxon" aria-label="Play The Klaxon"><i class="fa-solid fa-play"></i></a>
+							<a id="m1" class="audio btn btn-outline-primary btn-sm" href="assets/media/01.mp3" data-title="The Klaxon" title="Play The Klaxon" aria-label="Play The Klaxon"><i class="fa-solid fa-play"></i></a>
 						</h3>
 					Composer Henry Fillmore's career spanned more than 50 years, 
 						and he probably wrote and arranged more band music than anyone 
@@ -79,7 +79,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Emperata Overture</span>
-							<a id="m2" class="audio btn btn-outline-primary btn-sm" href="media/02.mp3" data-title="Emperata Overture" title="Play Emperata Overture" aria-label="Play Emperata Overture"><i class="fa-solid fa-play"></i></a>
+							<a id="m2" class="audio btn btn-outline-primary btn-sm" href="assets/media/02.mp3" data-title="Emperata Overture" title="Play Emperata Overture" aria-label="Play Emperata Overture"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						"Emperata Overture" was Claude Smith's first composition, published 
 						in 1964. Smith, a Missouri native, composed instrumental and 
@@ -99,7 +99,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>The Conqueror</span>
-							<a id="m3" class="audio btn btn-outline-primary btn-sm" href="media/03.mp3" data-title="The Conqueror" title="Play The Conqueror" aria-label="Play The Conqueror"><i class="fa-solid fa-play"></i></a>
+							<a id="m3" class="audio btn btn-outline-primary btn-sm" href="assets/media/03.mp3" data-title="The Conqueror" title="Play The Conqueror" aria-label="Play The Conqueror"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Carl Teike was the fourth child of 14 born to a blacksmith. 
 						He began his musical education at the age of 14 and played many 
@@ -120,7 +120,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Malague</span>
-							<a id="m4" class="audio btn btn-outline-primary btn-sm" href="media/04.mp3" data-title="Malagueña" title="Play Malagueña" aria-label="Play Malagueña"><i class="fa-solid fa-play"></i></a>
+							<a id="m4" class="audio btn btn-outline-primary btn-sm" href="assets/media/04.mp3" data-title="Malagueña" title="Play Malagueña" aria-label="Play Malagueña"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Composer Ernesto Lecuona is a major, if not well-known, figure 
 						in popular music of this century. He brought the first successful 
@@ -136,7 +136,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>March of the Belgian Paratroopers (Marche des Parachutistes Belges)</span>
-							<a id="m5" class="audio btn btn-outline-primary btn-sm" href="media/05.mp3" data-title="March of the Belgian Paratroopers" title="Play March of the Belgian Paratroopers" aria-label="Play March of the Belgian Paratroopers"><i class="fa-solid fa-play"></i></a>
+							<a id="m5" class="audio btn btn-outline-primary btn-sm" href="assets/media/05.mp3" data-title="March of the Belgian Paratroopers" title="Play March of the Belgian Paratroopers" aria-label="Play March of the Belgian Paratroopers"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Born in Schaarbeek, Belgium, in 1897, Pierre Leemans studied 
 						piano, harmony, orchestration, and composition and began his 
@@ -170,7 +170,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Gillette Look Sharp March</span>
-							<a id="m6" class="audio btn btn-outline-primary btn-sm" href="media/06.mp3" data-title="Gillette Look Sharp March" title="Play Gillette Look Sharp March" aria-label="Play Gillette Look Sharp March"><i class="fa-solid fa-play"></i></a>
+							<a id="m6" class="audio btn btn-outline-primary btn-sm" href="assets/media/06.mp3" data-title="Gillette Look Sharp March" title="Play Gillette Look Sharp March" aria-label="Play Gillette Look Sharp March"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Hailing from Centralia, Washington, Mahlon Merrick was graduated 
 						from Washington State University in 1923 with bachelors' degrees 
@@ -201,7 +201,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>The Light Eternal/Amazing Grace</span>
-							<a id="m7" class="audio btn btn-outline-primary btn-sm" href="media/07.mp3" data-title="The Light Eternal/Amazing Grace" title="Play The Light Eternal/Amazing Grace" aria-label="Play The Light Eternal/Amazing Grace"><i class="fa-solid fa-play"></i></a>
+							<a id="m7" class="audio btn btn-outline-primary btn-sm" href="assets/media/07.mp3" data-title="The Light Eternal/Amazing Grace" title="Play The Light Eternal/Amazing Grace" aria-label="Play The Light Eternal/Amazing Grace"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						One of James Swearingen's best-known works is "The Light Eternal." 
 						Based on the hymn "God Of Our Fathers," this moving piece tells 
@@ -248,7 +248,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Fanfare, Hymn, and Dedication</span>
-							<a id="m8" class="audio btn btn-outline-primary btn-sm" href="media/08.mp3" data-title="Fanfare, Hymn, and Dedication" title="Play Fanfare, Hymn, and Dedication" aria-label="Play Fanfare, Hymn, and Dedication"><i class="fa-solid fa-play"></i></a>
+							<a id="m8" class="audio btn btn-outline-primary btn-sm" href="assets/media/08.mp3" data-title="Fanfare, Hymn, and Dedication" title="Play Fanfare, Hymn, and Dedication" aria-label="Play Fanfare, Hymn, and Dedication"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Critics say that "Fanfare, Hymn, and Dedication," a dynamic 
 						concert piece by composer Ed Huckeby, is destined to become 
@@ -269,7 +269,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Amparito Roca</span>
-							<a id="m9" class="audio btn btn-outline-primary btn-sm" href="media/09.mp3" data-title="Amparito Roca" title="Play Amparito Roca" aria-label="Play Amparito Roca"><i class="fa-solid fa-play"></i></a>
+							<a id="m9" class="audio btn btn-outline-primary btn-sm" href="assets/media/09.mp3" data-title="Amparito Roca" title="Play Amparito Roca" aria-label="Play Amparito Roca"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Jaime Texidor Dalmau was a composer, conductor, and publisher 
 						who lived most of his life in Baracaldo, a city in northern 
@@ -295,7 +295,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>New York: 1927</span>
-							<a id="m10" class="audio btn btn-outline-primary btn-sm" href="media/10.mp3" data-title="New York: 1927" title="Play New York: 1927" aria-label="Play New York: 1927"><i class="fa-solid fa-play"></i></a>
+							<a id="m10" class="audio btn btn-outline-primary btn-sm" href="assets/media/10.mp3" data-title="New York: 1927" title="Play New York: 1927" aria-label="Play New York: 1927"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						It's 1927 in New York City. The Holland Tunnel has just opened, 
 						connecting Manhattan with Jersey City, New Jersey, allowing 
@@ -320,7 +320,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Themes Like Old Times</span>
-							<a id="m11" class="audio btn btn-outline-primary btn-sm" href="media/11.mp3" data-title="Themes Like Old Times" title="Play Themes Like Old Times" aria-label="Play Themes Like Old Times"><i class="fa-solid fa-play"></i></a>
+							<a id="m11" class="audio btn btn-outline-primary btn-sm" href="assets/media/11.mp3" data-title="Themes Like Old Times" title="Play Themes Like Old Times" aria-label="Play Themes Like Old Times"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Another piece by Warren Barker, this one is an arrangement of 
 						several old-time tunes in a medley he calls "Themes Like Old 
@@ -331,7 +331,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>National Emblem</span>
-							<a id="m12" class="audio btn btn-outline-primary btn-sm" href="media/12.mp3" data-title="National Emblem" title="Play National Emblem" aria-label="Play National Emblem"><i class="fa-solid fa-play"></i></a>
+							<a id="m12" class="audio btn btn-outline-primary btn-sm" href="assets/media/12.mp3" data-title="National Emblem" title="Play National Emblem" aria-label="Play National Emblem"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Famed bandmaster Frederick Fennell said "National Emblem" is 
 						as perfect as a march can be. It was written in the early 1900s 
@@ -341,7 +341,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>America, the Beautiful</span>
-							<a id="m13" class="audio btn btn-outline-primary btn-sm" href="media/13.mp3" data-title="America, the Beautiful" title="Play America, the Beautiful" aria-label="Play America, the Beautiful"><i class="fa-solid fa-play"></i></a>
+							<a id="m13" class="audio btn btn-outline-primary btn-sm" href="assets/media/13.mp3" data-title="America, the Beautiful" title="Play America, the Beautiful" aria-label="Play America, the Beautiful"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						Teacher Katherine Bates wrote the original words to "America, 
 						the Beautiful" in 1893 after a trip to 14,000-foot-high Pikes 
@@ -355,7 +355,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>American Patrol</span>
-							<a id="m14" class="audio btn btn-outline-primary btn-sm" href="media/14.mp3" data-title="American Patrol" title="Play American Patrol" aria-label="Play American Patrol"><i class="fa-solid fa-play"></i></a>
+							<a id="m14" class="audio btn btn-outline-primary btn-sm" href="assets/media/14.mp3" data-title="American Patrol" title="Play American Patrol" aria-label="Play American Patrol"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						F. W. Meachem usually worked as an arranger, rather than a composer, 
 						producing arrangements for Victor Herbert musicals and Stephen 
@@ -368,7 +368,7 @@
 					<li style="margin-bottom:18px; padding:16px 18px; border:1px solid #e5e5e5; border-radius:8px; background:#fafafa; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 						<h3 style="margin:0 0 10px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 							<span>Stars and Stripes Forever</span>
-							<a id="m15" class="audio btn btn-outline-primary btn-sm" href="media/15.mp3" data-title="Stars and Stripes Forever" title="Play Stars and Stripes Forever" aria-label="Play Stars and Stripes Forever"><i class="fa-solid fa-play"></i></a>
+							<a id="m15" class="audio btn btn-outline-primary btn-sm" href="assets/media/15.mp3" data-title="Stars and Stripes Forever" title="Play Stars and Stripes Forever" aria-label="Play Stars and Stripes Forever"><i class="fa-solid fa-play"></i></a>
 						</h3>
 						This John Philip Sousa classic has been designated America's 
 						official march by the Congress of the United States. Sousa believed 
