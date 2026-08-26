@@ -45,7 +45,7 @@
 		}
 		
 		if($validRequest) {
-			require_once '../includes/class/protectedMember.class.php';
+			require_once '../src/Shared/Classes/protectedMember.class.php';
 			$myInfo = new ProtectedMember();
 			
 			$response = $myInfo->updateMember($_SESSION["uid"], $_POST);

@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/class/member.class.php';
+require_once '../src/Shared/Classes/member.class.php';
 new Member(true);
 ?>
 

@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/class/protectedMusic.class.php';
+require_once '../src/Shared/Classes/protectedMusic.class.php';
 require_once '../includes/asset.php';
 new ProtectedMusic();
 ?>

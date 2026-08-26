@@ -1,6 +1,6 @@
 <?php 
 	# This is the public page for music which the ajax requests call.
-	require_once '../includes/class/protectedMusic.class.php';
+	require_once '../src/Shared/Classes/protectedMusic.class.php';
 	header('Content-Type: application/json');
 
 	$music = new ProtectedMusic();

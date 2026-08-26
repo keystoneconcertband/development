@@ -1,5 +1,5 @@
 <?php 	
-	require_once 'includes/class/kcbPublic.class.php';
+	require_once 'src/Shared/Classes/kcbPublic.class.php';
 	global $cncrts;
 	$cncrts = new KCBPublic();
 ?>

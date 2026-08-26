@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/class/protectedMember.class.php';
+require_once '../src/Shared/Classes/protectedMember.class.php';
 
 if(strtolower(getenv('SEND_ATTESTATION_EMAILS')) !== 'true') {
     http_response_code(403);

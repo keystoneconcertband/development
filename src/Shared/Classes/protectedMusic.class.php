@@ -1,8 +1,8 @@
 <?php
 // This class is for methods which must be protected, so use must have a valid session to run these queries
 // member is its parent
-require_once "member.class.php";
-require_once "music.db.class.php";
+require_once __DIR__ . '/member.class.php';
+require_once __DIR__ . '/music.db.class.php';
 
 class ProtectedMusic
 {

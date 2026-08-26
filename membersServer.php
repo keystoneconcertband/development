@@ -1,6 +1,6 @@
 <?php 
 	# This is the public page for memberLogin which the ajax requests call.
-	require_once 'includes/class/member.class.php';
+	require_once 'src/Shared/Classes/member.class.php';
 
 	$email = isset($_REQUEST["email"]) ? $_REQUEST["email"] : null;
 	$auth_cd = isset($_REQUEST["auth_cd"]) ? $_REQUEST["auth_cd"] : null;
