@@ -24,7 +24,7 @@ The application uses a feature-oriented structure while preserving the existing 
 
 - `src/Shared/` contains reusable classes and helpers.
 - `src/Public/Handlers/` contains public form and authentication handlers.
-- `src/PublicSite/` contains public page implementations.
+- `src/Public/Pages/` contains public page implementations.
 - `src/Members/` contains member pages grouped by feature, plus shared handlers.
 - `templates/partials/` contains reusable page fragments.
 - `assets/` contains local CSS and JavaScript.

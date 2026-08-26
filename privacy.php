@@ -1,2 +1,2 @@
 <?php
-require_once __DIR__ . '/src/PublicSite/Pages/privacy.php';
+require_once __DIR__ . '/src/Public/Pages/privacy.php';

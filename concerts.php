@@ -1,2 +1,2 @@
 <?php
-require_once __DIR__ . '/src/PublicSite/Pages/concerts.php';
+require_once __DIR__ . '/src/Public/Pages/concerts.php';
