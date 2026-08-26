@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Local Apache fallback while Azure serves public/ as its document root.
+DirectoryIndex public/index.php
+
+RewriteRule ^(?:assets|members)(?:/.*)?$ public/$0 [L]
+RewriteRule ^(?:index|concerts|conductors|donate|join|book|music|privacy|members)\.php$ public/$0 [L]
+RewriteRule ^(?:bookServer|joinServer|membersServer)\.php$ public/$0 [L]
+RewriteRule ^(?:favicon\.ico|robots\.txt|google26f661b121a06ea6\.html)$ public/$0 [L]

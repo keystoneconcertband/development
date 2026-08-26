@@ -27,6 +27,14 @@ The application uses a feature-oriented structure while preserving the existing 
 - `src/Public/Pages/` contains public page implementations.
 - `src/Members/` contains member pages grouped by feature, plus shared handlers.
 - `templates/partials/` contains reusable page fragments.
-- `assets/` contains local CSS and JavaScript.
+- `public/assets/` contains browser-served CSS, images, JavaScript, and media.
 - `tools/` contains isolated third-party utilities such as Tiny File Manager.
-- Root-level and `members/` PHP files are URL-preserving entry points. New implementation code should be added under `src/` rather than directly in those folders.
+- `public/` contains browser-facing entry points and static files. New implementation code should be added under `src/` rather than directly in `public/`.
+
+## Azure App Service
+
+The web root is `public/`. For the Linux PHP App Service container, set the Startup Command to:
+
+    cp /home/site/wwwroot/default /etc/nginx/sites-available/default && service nginx reload
+
+The committed `default` Nginx configuration points the site root at `/home/site/wwwroot/public`. This keeps application code, templates, Composer dependencies, and tools outside the web root.
