@@ -3,6 +3,11 @@ RewriteEngine On
 # Local Apache fallback while Azure serves public/ as its document root.
 DirectoryIndex public/index.php
 
+# Keep the local phpMyAdmin checkout on its own entry point. Azure does not
+# expose this repository-level directory because its document root is public/.
+RewriteRule ^pma/?$ pma/index.php [L]
+RewriteRule ^pma(?:/.*)?$ - [L]
+
 RewriteRule ^(?:assets|members)(?:/.*)?$ public/$0 [L]
 RewriteRule ^(?:index|concerts|conductors|donate|join|book|music|privacy|members)\.php$ public/$0 [L]
 RewriteRule ^(?:bookServer|joinServer|membersServer)\.php$ public/$0 [L]

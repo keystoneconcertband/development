@@ -61,9 +61,13 @@ $edit_files = false;
 // Doc - http://php.net/manual/en/timezones.php
 $default_timezone = 'America/New_York'; // UTC
 
-// Root path for file manager
-// use absolute path of directory i.e: '/var/www/folder' or $_SERVER['DOCUMENT_ROOT'].'/folder'
-$root_path = $_SERVER['DOCUMENT_ROOT'] .'/members/documents';
+// Root path for file manager. Local Apache serves the repository root and
+// rewrites into public/, while Azure uses public/ as DOCUMENT_ROOT.
+$document_root = $_SERVER['DOCUMENT_ROOT'];
+$root_path = $document_root . '/members/documents';
+if (!is_dir($root_path)) {
+    $root_path = $document_root . '/public/members/documents';
+}
 
 // Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
 // Will not working if $root_path will be outside of server document root
