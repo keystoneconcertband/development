@@ -17,3 +17,14 @@ The `vendor/` directory is ignored by Git and should not be committed.
 
 - PHPMailer is now managed via Composer.
 - Bootstrap/Bootswatch assets have been migrated away from local bundled copies where possible.
+
+## Application Layout
+
+The application uses a feature-oriented structure while preserving the existing public URLs:
+
+- `src/Shared/` contains reusable classes and helpers.
+- `src/Public/Handlers/` contains public form and authentication handlers.
+- `src/Members/` contains member pages grouped by feature, plus shared handlers.
+- `templates/partials/` contains reusable page fragments.
+- `assets/` contains local CSS and JavaScript.
+- Root-level and `members/` PHP files are URL-preserving entry points. New implementation code should be added under `src/` rather than directly in those folders.
