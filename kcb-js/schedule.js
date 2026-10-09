@@ -1,5 +1,7 @@
+var dataTable;
+
 document.addEventListener('DOMContentLoaded', function() {
-    var table = $('#kcbScheduleTable').DataTable({
+    dataTable = new DataTable('#kcbScheduleTable', {
         responsive: true,
         order: [2, 'desc'],
         ajax: {
@@ -23,6 +25,29 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 const formSchedule = document.getElementById('form_schedule');
+const concertDate = document.getElementById('concertDate');
+const concertHour = document.getElementById('concertHour');
+const concertMinute = document.getElementById('concertMinute');
+const concertBegin = document.getElementById('concertBegin');
+
+function updateConcertBegin() {
+    concertBegin.value = concertDate.value && concertHour.value && concertMinute.value
+        ? `${concertDate.value}T${concertHour.value}:${concertMinute.value}`
+        : '';
+}
+
+[concertDate, concertHour, concertMinute].forEach(input => {
+    input.addEventListener('change', updateConcertBegin);
+});
+
+function setConcertBegin(value) {
+    const [date, time] = (value || '').split('T');
+    const [hour, minute] = (time || '').split(':');
+    concertDate.value = date || '';
+    concertHour.value = hour || '';
+    concertMinute.value = ['00', '15', '30', '45'].includes(minute) ? minute : '';
+    updateConcertBegin();
+}
 if (formSchedule) {
     formSchedule.addEventListener('submit', function (event) {
         formSchedule.classList.add('was-validated');
@@ -72,6 +97,7 @@ function showEditRecord(uid) {
     postUrlEncoded('scheduleServer.php', params)
     .then(function (data) {
         populateForm('#form_schedule', data);
+        setConcertBegin(data.concertBegin);
         // checkboxes come back as 1/0
         var pants = document.getElementById('pants');
         var chair = document.getElementById('chair');
@@ -112,12 +138,13 @@ function editRecord() {
 
 function formSuccess(text) {
   showAlert('#pageAlert', true, text);
-  var table = $("#kcbScheduleTable").DataTable();
+  var table = dataTable;
   if (table) {
     table.ajax.reload();
   }
   if (formSchedule) {
     formSchedule.reset();
+    setConcertBegin('');
     formSchedule.classList.remove("was-validated");
   }
   var modal = document.getElementById("modal_add_edit");
@@ -146,6 +173,7 @@ if (modal) {
         } else {
             if (formSchedule) {
                 formSchedule.reset();
+                setConcertBegin('');
                 formSchedule.classList.remove('was-validated');
             }
             if (modalTitle) modalTitle.textContent = 'Add Schedule';
@@ -161,6 +189,7 @@ if (modal) {
     modal.addEventListener('hidden.bs.modal', function () {
         if (formSchedule) {
             formSchedule.reset();
+            setConcertBegin('');
             formSchedule.classList.remove('was-validated');
         }
         var uid = document.getElementById('uid');

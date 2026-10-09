@@ -1,5 +1,7 @@
+var dataTable;
+
 document.addEventListener('DOMContentLoaded', function() {
-    var table = $('#kcbMemberTable').DataTable({
+    dataTable = new DataTable('#kcbMemberTable', {
         order: [1, 'asc'],
         responsive: true,
         ajax: {
@@ -179,7 +181,7 @@ function submitForm() {
 
 function formSuccess(text) {
   showAlert('#pageAlert', true, text);
-  var table = $('#kcbMemberTable').DataTable();
+  var table = dataTable;
   if (table) {
     table.ajax.reload();
   }

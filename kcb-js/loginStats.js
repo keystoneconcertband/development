@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var table = $('#kcbLogonTable').DataTable({
+    var table = new DataTable('#kcbLogonTable', {
         order: [2, 'desc'],
         responsive: true,
         ajax: {
