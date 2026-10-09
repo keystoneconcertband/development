@@ -1,5 +1,7 @@
+var dataTable;
+
 document.addEventListener('DOMContentLoaded', function() {
-    var table = $('#kcbDocumentTable').DataTable({
+    dataTable = new DataTable('#kcbDocumentTable', {
         responsive: true,
         order: [sort, 'desc'],
         ajax: {
@@ -29,16 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     });
 
-    var column = table.column(0);
+    var column = dataTable.column(0);
     column.visible(accountType === '1' || accountType === '2');
 
-    $('#fileupload').fileupload();
 });
 
 var modalUpload = document.getElementById('modal_upload');
 if (modalUpload) {
     modalUpload.addEventListener('hidden.bs.modal', function () {
-        var table = $('#kcbDocumentTable').DataTable();
+        var table = dataTable;
         if (table) {
             table.ajax.reload();
         }
@@ -49,7 +50,7 @@ function deleteFile(name, url) {
     if (confirm('Do you want to remove the file ' + name + '?')) {
         kcbFetchJson(url, { method: 'POST' })
         .then(function () {
-            var table = $('#kcbDocumentTable').DataTable();
+            var table = dataTable;
             if (table) {
                 table.ajax.reload();
             }

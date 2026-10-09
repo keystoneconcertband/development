@@ -77,8 +77,27 @@ new ProtectedAdmin();
                             <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <label for="concertBegin" class="form-label">Concert Date/Time</label>
-                                    <input type="datetime-local" class="form-control" name="concertBegin" id="concertBegin"
-                                        placeholder="YYYY-MM-DD HH:MM" required>
+                                    <input type="date" class="form-control" id="concertDate" required>
+                                    <div class="row g-2 mt-1">
+                                        <div class="col-6">
+                                            <select class="form-select" id="concertHour" aria-label="Concert hour" required>
+                                                <option value="">Hour</option>
+                                                <?php for ($hour = 0; $hour < 24; $hour++): ?>
+                                                    <option value="<?= sprintf('%02d', $hour) ?>"><?= sprintf('%02d', $hour) ?></option>
+                                                <?php endfor; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" id="concertMinute" aria-label="Concert minute" required>
+                                                <option value="">Minute</option>
+                                                <option value="00">00</option>
+                                                <option value="15">15</option>
+                                                <option value="30">30</option>
+                                                <option value="45">45</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="concertBegin" id="concertBegin" required>
                                     <div class="invalid-feedback">Please complete this field.</div>
                                 </div>
                             </div>
@@ -102,7 +121,7 @@ new ProtectedAdmin();
                                 <div class="col-sm-12">
                                     <label for="address" class="form-label">Address</label>
                                     <input type="text" class="form-control" name="address" id="address"
-                                        placeholder="Address" maxlength="255">
+                                        placeholder="Address" maxlength="255" required>
                                     <div class="invalid-feedback">Please complete this field.</div>
                                 </div>
                             </div>
