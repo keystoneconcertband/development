@@ -103,8 +103,8 @@ $formCreatedAt = time();
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('kcb-js/shared.js')?>"></script>
-    <script type="text/javascript" src="<?=asset('kcb-js/book.js')?>" ></script>
+    <script type="text/javascript" src="<?=asset('kcb-js/shared.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="<?=asset('kcb-js/book.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous" ></script>
 </body>
 
 </html>
