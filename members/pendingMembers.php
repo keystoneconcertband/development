@@ -225,8 +225,8 @@ new ProtectedAdmin();
 	</div> <!-- /container -->
 
 	<?php require '../includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js')?>"></script>
+    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
     <?php require '../includes/common_datatables.php'; ?>
-	<script type="text/javascript" src="<?=asset('/kcb-js/pendingMembers.js')?>"></script>
+	<script type="text/javascript" src="<?=asset('/kcb-js/pendingMembers.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
   </body>
 </html>

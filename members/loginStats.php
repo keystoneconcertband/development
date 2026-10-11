@@ -48,6 +48,6 @@ new protectedAdmin();
 	<script type="text/javascript">
 		var accountType = "<?=$_SESSION['accountType']?>";
 	</script>
-	<script type="text/javascript" src="<?=asset('/kcb-js/loginStats.js')?>" ></script>
+	<script type="text/javascript" src="<?=asset('/kcb-js/loginStats.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous" ></script>
   </body>
 </html>
