@@ -162,7 +162,7 @@ $external = array(
     'js-bootstrap' => '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>',
     'js-dropzone' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>',
     'js-jquery' => '<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>',
-    'js-jquery-datatables' => '<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" crossorigin="anonymous" defer></script>',
+    'js-jquery-datatables' => '<script src="https://cdn.datatables.net/3.1.3/js/dataTables.min.js" crossorigin="anonymous"></script>', // was 1.13.1
     'js-highlightjs' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>',
     'pre-jsdelivr' => '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"/>',
     'pre-cloudflare' => '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin/><link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>'
@@ -1565,7 +1565,7 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="js-3-1" class="col-sm-3 col-form-label"><?php echo lng('Theme') ?></label>
+                        <label for="js-3-0" class="col-sm-3 col-form-label"><?php echo lng('Theme') ?></label>
                         <div class="col-sm-5">
                             <select class="form-select w-100 text-capitalize" id="js-3-0" name="js-theme-3">
                                 <option value='light' <?php if ($theme == "light") {
@@ -1636,7 +1636,7 @@ if (isset($_GET['help'])) {
                         <form class="form-inline" onsubmit="return new_password_hash(this)" method="POST" action="">
                             <input type="hidden" name="type" value="pwdhash" aria-label="hidden" aria-hidden="true">
                             <div class="row mb-2">
-                                <label for="staticEmail2"><?php echo lng('Generate new password hash') ?></label>
+                                <span><?php echo lng('Generate new password hash') ?></span>
                             </div>
                             <div class="row mx-sm-3 mb-2">
                                 <label for="inputPassword2" class="sr-only"><?php echo lng('Password') ?></label>
@@ -4638,7 +4638,7 @@ function fm_show_header_login()
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p><label for="newfile"><?php echo lng('ItemType') ?> </label></p>
+                            <p><span><?php echo lng('ItemType') ?> </span></p>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="newfile" id="customRadioInline1" name="newfile" value="file">
                                 <label class="form-check-label" for="customRadioInline1"><?php echo lng('File') ?></label>
