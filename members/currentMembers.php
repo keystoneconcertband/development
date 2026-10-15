@@ -173,16 +173,15 @@ new ProtectedMember();
                                     </div>
                                 </div>
                                 <div class="row mb-3">
+                                    <label for="emergency_contact_name" class="form-label">Emergency Contact Information</label>
                                     <div class="col-sm-6">
-                                        <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
                                         <input type="text" class="form-control" name="emergency_contact_name" id="emergency_contact_name"
-                                            placeholder="Emergency Contact Name" value="" maxlength="255">
+                                            placeholder="Name" value="" maxlength="255">
                                         <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
                                         <input type="tel" class="form-control" name="emergency_contact_phone" id="emergency_contact_phone"
-                                            placeholder="Emergency Contact Phone" value="" minlength="10" maxlength="13">
+                                            placeholder="Phone" value="" minlength="10" maxlength="13">
                                         <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
