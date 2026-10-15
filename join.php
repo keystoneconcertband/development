@@ -116,7 +116,7 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name"
                                 required="true">
-                            <label for="floatingInput">* Name</label>
+                            <label for="txtName">* Name</label>
                             <div class="invalid-feedback">Please enter a name</div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
                                 placeholder="Phone Number" minlength="10" maxlength="10" required="true">
-                            <label for="floatingInput">* Phone Number</label>
+                            <label for="txtPhone">* Phone Number</label>
                             <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid
                                 10-digit phone number.</div>
                         </div>
@@ -133,7 +133,7 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="txtEmail" name="txtEmail"
                                 placeholder="Email Address" required="true">
-                            <label for="floatingInput">* Email Address</label>
+                            <label for="txtEmail">* Email Address</label>
                             <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid
                                 email address.</div>
                         </div>
@@ -142,12 +142,12 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="txtPlayLength" name="txtPlayLength"
                                 placeholder="How long have you been playing?" required="true">
-                            <label for="floatingInput">* How long have you been playing?</label>
+                            <label for="txtPlayLength">* How long have you been playing?</label>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div>
-                            <label class="form-label mt-4" for="chkInstrument">Instrument(s) played</label>
+                            <span class="form-label mt-4">Instrument(s) played</span>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="baritone" value="baritone"
@@ -228,7 +228,7 @@ $formCreatedAt = time();
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <label for="exampleTextarea" class="form-label mt-4">Additional Comments/Questions</label>
+                        <label for="txtComments" class="form-label mt-4">Additional Comments/Questions</label>
                         <textarea class="form-control" id="txtComments" name="txtComments" rows="3"></textarea>
                     </div>
                     <br />
@@ -242,8 +242,8 @@ $formCreatedAt = time();
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('kcb-js/shared.js')?>"></script>
-    <script type="text/javascript" src="<?=asset('kcb-js/join.js')?>" ></script>
+    <script type="text/javascript" src="<?=asset('kcb-js/shared.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="<?=asset('kcb-js/join.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous" ></script>
 </body>
 
 </html>

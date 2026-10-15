@@ -1,5 +1,7 @@
+var dataTable;
+
 document.addEventListener('DOMContentLoaded', function() {
-    var table = $('#kcbMusicTable').DataTable({
+    dataTable = new DataTable('#kcbMusicTable', {
         responsive: true,
         stateSave: true,
         order: [1, 'asc'],
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     });
 
-    var column = table.column(0);
+    var column = dataTable.column(0);
     column.visible(accountType === '1' || accountType === '2');
 });
 
@@ -166,7 +168,7 @@ function formSuccess(text) {
       '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
     pageAlert.setAttribute("role", "alert");
   }
-  var table = $("#kcbMusicTable").DataTable();
+  var table = dataTable;
   if (table) {
     table.ajax.reload();
   }

@@ -181,7 +181,7 @@
     </div> <!-- /container -->
 
     <?php require_once 'includes/common_js.php'; ?>
-    <script src="<?=asset('kcb-js/memberlogin.js')?>"></script>
+    <script src="<?=asset('kcb-js/memberlogin.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
 </body>
 
 </html>
