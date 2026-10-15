@@ -86,14 +86,14 @@ new ProtectedMember();
                             <legend>Contact Information</legend>
                             <div class="row mb-3">
                                 <div class="col-sm-12">
-						        	<label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
+                                    <label for="text" class="form-label">Cell Phone / Text Notification Nbr</label>
                                     <input type="tel" class="form-control" name="text" id="text"
                                         placeholder="Cell Phone Number" minlength="10" maxlength="13">
                                 </div>
                             </div>
                             <div class="row mb-3 emailContainers" id="emailContainer1">
                                 <div class="col-sm-12">
-						        	<label for="email" class="form-label">Email Address(es)</label>
+                                    <label for="email[]" class="form-label">Email Address(es)</label>
                                     <div class="input-group">
                                         <input type="email" class="form-control email1" name="email[]" id="email[]"
                                             placeholder="Email Address" maxlength="100">
@@ -131,7 +131,7 @@ new ProtectedMember();
                             <legend>Band Information</legend>
                             <div class="row mb-3">
                                 <div class="col-sm-12">
-                                    <label for="Instrument" class="form-label">Instrument(s)</label><br>
+                                    <span class="form-label">Instrument(s)</span><br>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="baritone" value="baritone"
                                             name="instrument[]">

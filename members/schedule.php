@@ -76,7 +76,7 @@ new ProtectedAdmin();
 
                             <div class="row mb-3">
                                 <div class="col-sm-12">
-                                    <label for="concertBegin" class="form-label">Concert Date/Time</label>
+                                    <label for="concertDate" class="form-label">Concert Date/Time</label>
                                     <input type="date" class="form-control" id="concertDate" required>
                                     <div class="row g-2 mt-1">
                                         <div class="col-6">
