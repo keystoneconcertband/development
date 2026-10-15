@@ -66,7 +66,7 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Name"
                                 required="true">
-                            <label for="floatingInput">* Name</label>
+                            <label for="txtName">* Name</label>
                             <div class="invalid-feedback">Please enter a name</div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="tel" class="form-control" id="txtPhone" name="txtPhone"
                                 placeholder="Phone Number" minlength="10" maxlength="10" required="true">
-                            <label for="floatingInput">* Phone Number</label>
+                            <label for="txtPhone">* Phone Number</label>
                             <div class="invalid-feedback">Sorry, that phone number is invalid. Please enter a valid
                                 10-digit phone number.</div>
                         </div>
@@ -83,13 +83,13 @@ $formCreatedAt = time();
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="txtEmail" name="txtEmail"
                                 placeholder="Email Address" required="true">
-                            <label for="floatingInput">* Email Address</label>
+                            <label for="txtEmail">* Email Address</label>
                             <div class="invalid-feedback">Sorry, that email address is invalid. Please enter a valid
                                 email address.</div>
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <label for="exampleTextarea" class="form-label mt-4">* Booking Information</label>
+                        <label for="txtComments" class="form-label mt-4">* Booking Information</label>
                         <textarea class="form-control" id="txtComments" name="txtComments" rows="3"
                             required="true"></textarea>
                     </div>

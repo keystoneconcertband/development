@@ -108,7 +108,7 @@ new ProtectedAdmin();
 								<legend>Contact Information</legend>
                                 <div class="row mb-3" id="textContainer">
                                     <div class="col-sm-12">
-						        	    <label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
+                                        <label for="text" class="form-label">Cell Phone / Text Notification Nbr</label>
                                         <input type="tel" class="form-control" name="text" id="text"
                                             placeholder="Cell Phone Number" value="" minlength="10" maxlength="13">
                                         <div class="invalid-feedback">Please complete this field.</div>
@@ -116,7 +116,7 @@ new ProtectedAdmin();
                                 </div>
                                 <div class="row mb-3 emailContainers" id="emailContainer1">
                                     <div class="col-sm-12">
-    						        	<label for="email" class="form-label">Email Address(es)</label>
+                                        <label for="email[]" class="form-label">Email Address(es)</label>
                                         <div class="input-group">
                                             <input type="email" class="form-control email1" name="email[]" id="email[]"
                                                 placeholder="Email Address" maxlength="100">
@@ -142,7 +142,7 @@ new ProtectedAdmin();
 							  <legend>Band Information</legend>
                                 <div class="row mb-3">
                                     <div class="col-sm-12">
-                                        <label for="Instrument" class="form-label">Instrument(s)</label>
+                                        <span class="form-label">Instrument(s)</span>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-check">
