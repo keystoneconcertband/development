@@ -1,5 +1,7 @@
+var dataTable;
+
 document.addEventListener('DOMContentLoaded', function () {
-    new DataTable('#kcbLogonTable', {
+    dataTable = new DataTable('#kcbLogonTable', {
         order: [2, 'desc'],
         responsive: true,
         ajax: {
