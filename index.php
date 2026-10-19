@@ -22,8 +22,8 @@
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <!-- Indicators -->
         <div class="carousel-indicators">
-            <button data-bs-target="#myCarousel" data-bs-slide-to="0" aria-label="Slide 1"></button>
-            <button data-bs-target="#myCarousel" data-bs-slide-to="1" class="active" aria-current="true"
+            <button data-bs-target="#myCarousel" data-bs-slide-to="0" aria-label="Slide 1" class="active" ></button>
+            <button data-bs-target="#myCarousel" data-bs-slide-to="1" aria-current="true"
                 aria-label="Slide 2"></button>
             <button data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
