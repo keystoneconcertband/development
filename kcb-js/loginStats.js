@@ -1,4 +1,4 @@
-var dataTable;
+let dataTable;
 
 document.addEventListener('DOMContentLoaded', function () {
     dataTable = new DataTable('#kcbLogonTable', {
