@@ -1,7 +1,9 @@
+var dataTable;
+
 var homepageMessageDateConflict = false;
 
 document.addEventListener('DOMContentLoaded', function() {
-    var table = $('#kcbMessageTable').DataTable({
+    dataTable = new DataTable('#kcbMessageTable', {
         order: [4, 'desc'],
         responsive: true,
         ajax: {
@@ -155,7 +157,7 @@ function checkDates(date) {
 
 function formSuccess(text) {
   showAlert('#pageAlert', true, text);
-  var table = $("#kcbMessageTable").DataTable();
+  var table = dataTable;
   if (table) {
     table.ajax.reload();
   }

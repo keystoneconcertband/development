@@ -218,7 +218,7 @@ function createEmailRow(emailCount, options) {
   var placeholderText = options.placeholderText || 'Email Address ' + emailCount;
   var rowClass = options.rowClass || 'emailContainers';
   var containerPrefix = options.containerPrefix || 'emailContainer';
-  var labelHtml = labelText ? '<label for="email" class="form-label">' + labelText + '</label>' : '';
+  var labelHtml = labelText ? '<label for="email[]" class="form-label">' + labelText + '</label>' : '';
   var inputClass = 'form-control';
   if (emailCount === 1) {
     inputClass += ' email1';
@@ -293,7 +293,7 @@ function populateEmail(data, options) {
     var labelTextValue = labelText ? labelText + ' ' + emailCount : '';
 
     var labelHtml = labelTextValue
-      ? '<label for="email" class="form-label">' + labelTextValue + '</label>'
+      ? '<label for="email[]" class="form-label">' + labelTextValue + '</label>'
       : '';
 
     var html =

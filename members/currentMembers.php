@@ -145,7 +145,7 @@ new ProtectedMember();
 								<legend>Contact Information</legend>
                                 <div class="row mb-3" id="textContainer">
                                     <div class="col-sm-12">
-						        	    <label for="txtCellPhoneNbr" class="form-label">Cell Phone / Text Notification Nbr</label>
+                                        <label for="text" class="form-label">Cell Phone / Text Notification Nbr</label>
                                         <input type="tel" class="form-control" name="text" id="text"
                                             placeholder="Cell Phone Number" value="" minlength="10" maxlength="13">
                                         <div class="invalid-feedback">Please complete this field.</div>
@@ -153,7 +153,7 @@ new ProtectedMember();
                                 </div>
                                 <div class="row mb-3 emailContainers" id="emailContainer1">
                                     <div class="col-sm-12">
-    						        	<label for="email" class="form-label">Email Address(es)</label>
+                                        <label for="email[]" class="form-label">Email Address(es)</label>
                                         <div class="input-group">
                                             <input type="email" class="form-control email1" name="email[]" id="email[]"
                                                 placeholder="Email Address" maxlength="100">
@@ -173,16 +173,15 @@ new ProtectedMember();
                                     </div>
                                 </div>
                                 <div class="row mb-3">
+                                    <label for="emergency_contact_name" class="form-label">Emergency Contact Information</label>
                                     <div class="col-sm-6">
-                                        <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
                                         <input type="text" class="form-control" name="emergency_contact_name" id="emergency_contact_name"
-                                            placeholder="Emergency Contact Name" value="" maxlength="255">
+                                            placeholder="Name" value="" maxlength="255">
                                         <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
                                         <input type="tel" class="form-control" name="emergency_contact_phone" id="emergency_contact_phone"
-                                            placeholder="Emergency Contact Phone" value="" minlength="10" maxlength="13">
+                                            placeholder="Phone" value="" minlength="10" maxlength="13">
                                         <div class="invalid-feedback">Please complete this field.</div>
                                     </div>
                                 </div>
@@ -193,7 +192,7 @@ new ProtectedMember();
                                 <legend>Band Information</legend>
                                 <div class="row mb-3">
                                     <div class="col-sm-12">
-                                        <label for="Instrument" class="form-label">Instrument(s)</label>
+                                        <span class="form-label">Instrument(s)</span>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-check">
@@ -275,12 +274,12 @@ new ProtectedMember();
     </div> <!-- /container -->
 
     <?php require '../includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js')?>"></script>
+    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
     <script type="text/javascript">
     var accountType = "<?=$_SESSION['accountType']?>";
     </script>
     <?php require '../includes/common_datatables.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/members.js')?>"></script>
+    <script type="text/javascript" src="<?=asset('/kcb-js/members.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
 </body>
 
 </html>
