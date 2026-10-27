@@ -16,12 +16,13 @@
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "book.php") { ?>active<?php } ?>" href="/book.php">Book</a></li>
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "conductors.php") { ?>active<?php } ?>" href="/conductors.php">Conductor</a></li>
 					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "music.php" && strpos($_SERVER['PHP_SELF'], '/members/') === false) { ?>active<?php } ?>" href="/music.php">Music</a></li>
-					<?php $isMemberAreaActive = (basename($_SERVER['PHP_SELF']) == "members.php" || strpos($_SERVER['PHP_SELF'], '/members/') !== false); ?>
+					<li class="nav-item"><a class="nav-link <?php if (basename($_SERVER['PHP_SELF']) == "roster.php" || basename($_SERVER['PHP_SELF']) == "members.php") { ?>active<?php } ?>" href="/roster.php">Roster</a></li>
+					<?php $isMemberAreaActive = (strpos($_SERVER['PHP_SELF'], '/members/') !== false); ?>
 					<?php if(isset($_SESSION["email"])) { ?>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="<?php echo $isMemberAreaActive ? 'true' : 'false'; ?>">Member Area</a>
 						<ul class="dropdown-menu shadow-sm" aria-labelledby="membersDropdown">
-							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "members.php") { echo 'active'; } ?>" href="/members.php">Public Member Page</a></li>
+							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "roster.php") { echo 'active'; } ?>" href="/roster.php">Public Roster</a></li>
 							<?php if(isset($_SESSION["email"])) { ?>
 								<li><hr class="dropdown-divider"></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/index.php">Overview</a></li>
@@ -42,10 +43,6 @@
 								<li><a class="dropdown-item" href="/members/logoff.php">Logoff</a></li>
 							<?php } ?>
 						</ul>
-					</li>
-					<?php } else { ?>
-					<li class="nav-item">
-						<a class="nav-link <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="/members.php">Members</a>
 					</li>
 					<?php } ?>
 				</ul>

@@ -22,7 +22,7 @@ function submitForm() {
     const form = document.getElementById('frmJoin');
     if (!form) return;
 
-    postFormData('joinServer.php', form)
+    postFormData('/api/join.php', form)
     .then(function (text) {
         if (text === "success") {
             formSuccess();

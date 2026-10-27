@@ -1,9 +1,11 @@
+let dataTable;
+
 document.addEventListener('DOMContentLoaded', function () {
-    var table = new DataTable('#kcbLogonTable', {
+    dataTable = new DataTable('#kcbLogonTable', {
         order: [2, 'desc'],
         responsive: true,
         ajax: {
-            url: 'loginStatsServer.php',
+            url: 'api/loginStats.php',
             dataSrc: ''
         },
         columns: [

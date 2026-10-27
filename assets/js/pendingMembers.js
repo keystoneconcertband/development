@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         order: [5, 'desc'],
         responsive: true,
         ajax: {
-            url: 'pendingMembersServer.php',
+            url: 'api/pendingMembers.php',
             dataSrc: ''
         },
         columnDefs: [
@@ -133,7 +133,7 @@ function deleteEmail(emailContainer) {
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMemberRecord', uid: uid.toString() });
 
-    postUrlEncoded('pendingMembersServer.php', params)
+    postUrlEncoded('api/pendingMembers.php', params)
     .then(function (data) {
         populateForm('#form_member', data);
         populateEmail(data, {
@@ -164,7 +164,7 @@ function submitForm() {
   var formData = new URLSearchParams(new FormData(formMember));
   formData.append('type', 'edit');
 
-  postUrlEncoded('pendingMembersServer.php', formData)
+  postUrlEncoded('api/pendingMembers.php', formData)
     .then(function (text) {
       if (text === 'success') {
         formSuccess('User successfully added to the band.');
@@ -182,7 +182,7 @@ function deleteRecord(title, uid) {
     if (confirm('Do you want to remove ' + title + ' from the band roster and email list?')) {
         var params = new URLSearchParams({ type: 'delete', uid: uid.toString() });
 
-        postUrlEncoded('pendingMembersServer.php', params)
+        postUrlEncoded('api/pendingMembers.php', params)
         .then(function (text) {
             if (text === 'success') {
                 formSuccess('User successfully removed.');

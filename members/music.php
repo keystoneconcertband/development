@@ -14,10 +14,10 @@ new ProtectedMusic();
     <title>Music - Keystone Concert Band</title>
 
     <?php require '../includes/common_css.php'; ?>
-    <link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
+    <link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
     <style>
     .ui-autocomplete-loading {
-        background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
+        background: white url("/assets/images/ui-anim_basic_16x16.gif") right center no-repeat;
     }
 
     .ui-autocomplete {
@@ -128,9 +128,9 @@ new ProtectedMusic();
     var accountType = "<?=$_SESSION['accountType']?>";
     </script>
     <?php require '../includes/common_js.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/shared.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="<?=asset('/assets/js/shared.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
     <?php require '../includes/common_datatables.php'; ?>
-    <script type="text/javascript" src="<?=asset('/kcb-js/music.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="<?=asset('/assets/js/music.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous"></script>
 </body>
 
 </html>

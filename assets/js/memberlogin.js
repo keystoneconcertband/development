@@ -149,7 +149,7 @@ if (memberLoginButton) {
     }
 
     if (!authCd) {
-      noCacheGet('/membersServer.php', { email })
+      noCacheGet('/api/auth.php', { email })
         .then(handleLoginResponse)
         .catch(() => {
           alert('Unable to login. Please try again later.');
@@ -159,7 +159,7 @@ if (memberLoginButton) {
 
     const authRemember = authRememberInput ? authRememberInput.checked : false;
 
-    noCacheGet('/membersServer.php', {
+    noCacheGet('/api/auth.php', {
       email,
       auth_cd: authCd,
       auth_remember: authRemember,
