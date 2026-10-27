@@ -35,7 +35,7 @@ foreach($members as $mbr) {
     $text .= "To ensure we have the most up to date information, please review the information below to ensure it is accurate. ";
     $text .= "If anything is incorrect, or you no longer are apart of the band, please reply to this email with the correct information. ";
     $text .= "You may also log in to the ";
-    $text .= "<a href='https://www.keystoneconcertband.com/members.php'>member portal</a> to update your information.<br /><br />";
+    $text .= "<a href='https://www.keystoneconcertband.com/roster.php'>member portal</a> to update your information.<br /><br />";
     $text .= "<b>Name:</b> " . $mbr['fullName'] . "<br />";
     $text .= "<b>Email:</b> " . $mbr['email'] . "<br />";
     $text .= "<b>Instrument:</b> " . $mbr['instrument'] . "<br />";

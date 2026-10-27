@@ -24,7 +24,7 @@
 				<div class="mb-4 pb-2 border-bottom">
 					<h2>Oops!</h2>
 				</div>
-				You need to be logged in to view this page. You will be redirected to the login page momentarily (or just <a href="../members.php">click here</a> to be taken there immediately).<br>
+				You need to be logged in to view this page. You will be redirected to the login page momentarily (or just <a href="../roster.php">click here</a> to be taken there immediately).<br>
 			</div>
 		</div>
 		<?php require '../includes/footer.php'; ?>
@@ -35,7 +35,7 @@
 		var redirectTimeoutId = window.setTimeout(redirectToHomepage, 10000);
 		
 		function redirectToHomepage() {
-			window.location.href = '../members.php';
+			window.location.href = '../roster.php';
 		}
 	</script>
   </body>
