@@ -62,4 +62,3 @@
 	else {
 		echo json_encode($admin->getHomepageMessages());	
 	}
-?>

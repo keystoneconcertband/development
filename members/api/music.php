@@ -60,4 +60,3 @@
 	else {
 		echo json_encode($music->getMusic());	
 	}
-?>

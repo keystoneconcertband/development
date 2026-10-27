@@ -73,4 +73,3 @@
 		$mbmrs = $mbr->getInactiveMembers();
 		echo json_encode($mbmrs);	
 	}
-?>

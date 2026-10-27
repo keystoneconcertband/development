@@ -95,4 +95,3 @@
 		$mbmrs = $mbr->getActiveMembers();
 		echo json_encode($mbmrs);	
 	}
-?>

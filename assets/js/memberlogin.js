@@ -35,12 +35,16 @@ function hideAuthSection() {
 
 function noCacheGet(url, params) {
   const queryString = new URLSearchParams(params).toString();
-  return fetch(`${url}?${queryString}`, { cache: 'no-cache' }).then((response) => response.text());
+  return fetch(`${url}?${queryString}`, { cache: 'no-cache' })
+    .then((response) => response.text())
+    .then((text) => (typeof text === 'string' ? text.trim() : text));
 }
 
 function handleLoginResponse(msg) {
+  msg = typeof msg === 'string' ? msg.trim() : '';
+
   if (msg === 'valid') {
-    window.location = 'members/index.php';
+    window.location = '/members/index.php';
     return;
   }
 
@@ -84,8 +88,10 @@ function handleLoginResponse(msg) {
 }
 
 function handleAuthResponse(msg) {
+  msg = typeof msg === 'string' ? msg.trim() : '';
+
   if (msg === 'valid') {
-    window.location = 'members/index.php';
+    window.location = '/members/index.php';
     return;
   }
 

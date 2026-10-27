@@ -4,5 +4,4 @@
 	header('Content-Type: application/json');
 
 	$stats = new protectedAdmin();
-	echo json_encode($stats->getLoginStats());	
-?>
+	echo json_encode($stats->getLoginStats());

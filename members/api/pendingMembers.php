@@ -75,4 +75,3 @@
 		$mbmrs = $mbr->getPendingMembers();
 		echo json_encode($mbmrs);	
 	}
-?>
