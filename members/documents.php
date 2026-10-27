@@ -12,7 +12,7 @@ new ProtectedMember();
     <title>KCB Members - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
+	<link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
   </head>
 
   <body>
