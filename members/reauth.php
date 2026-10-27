@@ -7,7 +7,7 @@
     <title>Member Area - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	
+
 	<style type="text/css">
 		.row .col-lg-12 ul li {
 			margin-bottom: 10px;
@@ -33,7 +33,7 @@
 	<?php require '../includes/common_js.php'; ?>
 	<script type="text/javascript">
 		var redirectTimeoutId = window.setTimeout(redirectToHomepage, 10000);
-		
+
 		function redirectToHomepage() {
 			window.location.href = '../roster.php';
 		}

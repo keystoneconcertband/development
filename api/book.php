@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 # Booking form submission handler
 require_once __DIR__ . '/../includes/class/kcbPublic.class.php';
@@ -10,7 +10,7 @@ function isValidEmailAddress($email) {
 }
 
 // Only allow POST requests
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {	
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$book = new KCBPublic();
 	$response = $book->validateFormSubmission($_REQUEST, 'book_csrf_token');
 
@@ -18,20 +18,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if(!isset($_REQUEST['txtName'])) {
 			$response = "Name is required.";
 		}
-		else if(isset($_REQUEST['txtPhone']) && $_REQUEST['txtPhone'] !== "" && strlen($_REQUEST['txtPhone']) < 10) {
+		elseif(isset($_REQUEST['txtPhone']) && $_REQUEST['txtPhone'] !== "" && strlen($_REQUEST['txtPhone']) < 10) {
 			$response = "Phone number must be 10 digits.";
 		}
-		else if(!isset($_REQUEST['txtEmail'])) {
+		elseif(!isset($_REQUEST['txtEmail'])) {
 			$response = "Email is required.";
 		}
-		else if(!isValidEmailAddress($_REQUEST['txtEmail'])) {
+		elseif(!isValidEmailAddress($_REQUEST['txtEmail'])) {
 			$response = "Please enter a valid email address.";
 		}
-		else if(!isset($_REQUEST['txtComments'])) {
+		elseif(!isset($_REQUEST['txtComments'])) {
 			$response = "Comments are required.";
 		}
 	}
-	
+
 	if($response === "") {
 		# Get server variables
 		$kcb = new KcbBase();
@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$phone = isset($_REQUEST["txtPhone"]) ? $_REQUEST["txtPhone"] : "Not Provided";
 		$email = isset($_REQUEST["txtEmail"]) ? $_REQUEST["txtEmail"] : "";
 		$comments = isset($_REQUEST["txtComments"]) ? $_REQUEST["txtComments"] : "";
-	
+
 		$message = "Booking Request Submitted<br>";
 		$message .= "<b>Name</b> " . $name . "<br>";
 		$message .= "<b>Phone</b> " . $phone . "<br>";
 		$message .= "<b>Email</b> " . $email . "<br>";
 		$message .= "<b>Comments</b> " . $comments;
-		
+
 		# Send email
 		if($kcb->sendEmail("webmaster@keystoneconcertband.com", $message, "KCB Booking Request")) {
 			$response = "success";
