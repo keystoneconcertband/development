@@ -39,4 +39,3 @@
     else {
         echo json_encode($admin->getSchedules());
     }
-?>
