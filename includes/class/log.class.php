@@ -14,8 +14,8 @@ class Log
     # @void, Default constructor
     public function __construct()
     {
-        $docRoot = $_SERVER['DOCUMENT_ROOT'];
-        $this->path = $docRoot . '/_logs/';
+        $baseDir = !empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : dirname(__DIR__, 2);
+        $this->path = rtrim($baseDir, '/') . '/logs/';
     }
 
    /**

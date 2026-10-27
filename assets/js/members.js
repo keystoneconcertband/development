@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
     order: [1, "asc"],
     responsive: true,
     ajax: {
-      url: "membersServer.php",
+      url: "api/members.php",
       dataSrc: "",
     },
     columns: columnsArray,
@@ -202,7 +202,7 @@ function addRecord() {
   var formData = new URLSearchParams(new FormData(formMember));
   formData.append("type", "add");
 
-  postUrlEncoded("membersServer.php", formData)
+  postUrlEncoded("api/members.php", formData)
     .then(function (text) {
       if (text === "success") {
         formSuccess("User successfully added.");
@@ -222,7 +222,7 @@ function showEditRecord(uid) {
     uid: uid.toString(),
   });
 
-  postUrlEncoded("membersServer.php", params)
+  postUrlEncoded("api/members.php", params)
     .then(function (data) {
       populateForm("#form_member", data);
       populateEmail(data, {
@@ -256,7 +256,7 @@ function editRecord() {
   var formData = new URLSearchParams(new FormData(formMember));
   formData.append("type", "edit");
 
-  postUrlEncoded("membersServer.php", formData)
+  postUrlEncoded("api/members.php", formData)
     .then(function (text) {
       if (text === "success") {
         formSuccess("User successfully modified.");
@@ -283,7 +283,7 @@ function deleteRecord(title, uid) {
 
   var params = new URLSearchParams({ type: "delete", uid: uid.toString() });
 
-  postUrlEncoded("membersServer.php", params)
+  postUrlEncoded("api/members.php", params)
     .then(function (text) {
       if (text === "success") {
         formSuccess("User successfully removed.");

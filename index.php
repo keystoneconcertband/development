@@ -28,7 +28,7 @@
         </div>
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-                <img src='images/slide10.jpg' class="d-block w-100" alt="...">
+                <img src='/assets/images/slide10.jpg' class="d-block w-100" alt="...">
                 <div class="carousel-caption d-block">
                     <h1>We need you</h1>
                     <p>As a 501(c)3 organization, we rely on donations to continue performing</p>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src='images/slide9.png' class="d-block w-100" alt="...">
+                <img src='/assets/images/slide9.png' class="d-block w-100" alt="...">
                 <div class="carousel-caption d-block">
                     <h1>Play with us</h1>
                     <p>Been a few years since you picked up your instrument? Play once again</p>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src='images/slide8.png' class="d-block w-100" alt="...">
+                <img src='/assets/images/slide8.png' class="d-block w-100" alt="...">
                 <div class="carousel-caption d-block">
                     <h1>We can play for you</h1>
                     <p>We can play your event, big or small. Just give us a call</p>
@@ -63,19 +63,19 @@
     </div>
     <?php
 		$messages = $homepage->getHomepageMessages();
-		
+
 		foreach($messages as $msg) {
 			if($msg['message_type'] == "Regular") {
-				echo('<div class="alert alert-warning alert-dismissible fade show" role="alert">'
+				echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">'
 					. '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
 					. '<h4><i class="fa-solid fa-circle-exclamation me-2 mt-1" aria-hidden="true"></i>' . $msg['title'] . '</h4>'
-					. $msg['message'] . '</div>');
+					. $msg['message'] . '</div>';
 			}
 			else {
-				echo('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+				echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
 					. '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
 					. '<h4><i class="fa-solid fa-bullhorn me-2 mt-1" aria-hidden="true"></i>' . $msg['title'] . '</h4>'
-					. $msg['message'] . '</div>');
+					. $msg['message'] . '</div>';
 			}
 		}
 	?>
@@ -83,27 +83,27 @@
         <!-- Three columns of text below the carousel -->
         <div class="row g-4 align-items-stretch homepage-feature-row">
             <div class="col-lg-4 homepage-feature">
-                <img class="rounded-pill" src="images/logo_concert.jpg" alt="Upcoming Concert Image" width="140"
+                <img class="rounded-pill" src="/assets/images/logo_concert.jpg" alt="Upcoming Concert Image" width="140"
                     height="140">
                 <h2>Upcoming Concert</h2>
                 <?php
 					$concert = $homepage->getCurrentConcert();
-									
+
 					if(!$concert) {
 						echo "<h4>There are no upcoming concerts.</h4>Our concert series is done for the season. Please check back again in early Spring to see our new concert schedule!";
 					}
 					else {
 						$today = date("Y-m-d");
 						$begin = date('Y-m-d', strtotime($concert['concertBegin']));
-					
+
 						if ($today == $begin) {
 							$begin = "Today";
 						}
 						else {
 							$begin = date('D, M d', strtotime($concert['concertBegin']));
 						}
-		
-						echo "<h4>" . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . "</h4>";			
+
+						echo "<h4>" . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . "</h4>";
 						echo "<h4><a href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
 						echo "<div style='width: 100%'><iframe width='100%' height='340' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://maps.google.com/maps?width=100%25&amp;height=340&amp;hl=en&amp;q=" . urlencode($concert['address']) ."&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'></iframe></div>";
 					}
@@ -145,7 +145,7 @@
             </div><!-- /.col-lg- -->
             <div class="col-lg-4 homepage-feature">
                 <div class="text-center">
-                    <img class="rounded-pill" src="images/logo_facebook.png" alt="Facebook Image" width="140"
+                    <img class="rounded-pill" src="/assets/images/logo_facebook.png" alt="Facebook Image" width="140"
                         height="140">
                     <h2>Facebook</h2>
                     <p>Join our <a href="https://www.facebook.com/keystoneconcertband">Facebook page</a> for the latest
@@ -163,7 +163,7 @@
                 </div>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-4 homepage-feature">
-                <img class="img-fluid" src="images/donate-2023.png" alt="Donate" width="140" height="140">
+                <img class="img-fluid" src="/assets/images/donate-2023.png" alt="Donate" width="140" height="140">
                 <h2>Donate</h2>
                 <p>As a 501(c)3 organization, we rely on donations to perform!
                 </p>

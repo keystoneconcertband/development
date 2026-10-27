@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         responsive: true,
         order: [2, 'desc'],
         ajax: {
-            url: 'scheduleServer.php',
+            url: 'api/schedule.php',
             dataSrc: ''
         },
         columnDefs: [
@@ -77,7 +77,7 @@ function addRecord() {
     var formData = new URLSearchParams(new FormData(formSchedule));
     formData.append('type', 'add');
 
-    postUrlEncoded('scheduleServer.php', formData)
+    postUrlEncoded('api/schedule.php', formData)
     .then(function (text) {
         if (text === 'success') {
             formSuccess('Item successfully added.');
@@ -94,7 +94,7 @@ function addRecord() {
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getScheduleRecord', uid: uid.toString() });
 
-    postUrlEncoded('scheduleServer.php', params)
+    postUrlEncoded('api/schedule.php', params)
     .then(function (data) {
         populateForm('#form_schedule', data);
         setConcertBegin(data.concertBegin);
@@ -122,7 +122,7 @@ function editRecord() {
     var formData = new URLSearchParams(new FormData(formSchedule));
     formData.append('type', 'edit');
 
-    postUrlEncoded('scheduleServer.php', formData)
+    postUrlEncoded('api/schedule.php', formData)
     .then(function (text) {
         if (text === 'success') {
             formSuccess('Item successfully modified.');

@@ -12,7 +12,7 @@ new ProtectedMember();
     <title>KCB Members - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
+	<link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
   </head>
 
   <body>
@@ -27,8 +27,8 @@ new ProtectedMember();
 				<div class="row mb-3">
 					<div class="alert alert-info">
 					<span class="fa fa-info-circle"></span> <strong>Please review both the
-					  <a href="documents_perm/KCB_Bylaws_2021.pdf" target="_blank">KCB By Laws</a>, and the 
-					  <a href="documents_perm/KCB_Policy_March_2023.pdf" target="_blank">Band Policies</a>.
+					  <a href="/assets/docs/KCB_Bylaws_2021.pdf" target="_blank">KCB By Laws</a>, and the
+					  <a href="/assets/docs/KCB_Policy_March_2023.pdf" target="_blank">Band Policies</a>.
 						</strong>
 					</div>
 				</div>

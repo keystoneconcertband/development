@@ -2,20 +2,20 @@ var dataTable;
 
 document.addEventListener('DOMContentLoaded', function() {
     dataTable = new DataTable('#kcbMemberTable', {
-        order: [5, 'desc'],
+        order: [1, 'asc'],
         responsive: true,
         ajax: {
-            url: 'pendingMembersServer.php',
+            url: 'api/inactiveMembers.php',
             dataSrc: ''
         },
         columnDefs: [
             { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
         ],
         columns: [
-            { data: null, 
-              width: '60px',
+            { data: null,
+              width: '10px',
               render: function (data) {
-                return '<a href="#nojump"><span class="fa fa-trash" onclick="deleteRecord(\'' + data.fullName + '\', ' + data.uid + ')"></span></a>&nbsp;&nbsp;&nbsp;<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
+                return '<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';
             }},
             { data: 'fullName' },
             { data: null, render: function (data) {
@@ -41,7 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 return '';
             }},
-            { data: 'estbd_dt_tm' }
+            { data: null, render: function (data) {
+                if (data.address1) {
+                    var addr = data.address1 + '<br />';
+                    if (data.address2) {
+                        addr += data.address2 + '<br />';
+                    }
+                    addr += data.city + ', ' + data.state + ' ' + data.zip;
+                    return addr;
+                }
+                return '';
+            }},
+            { data: 'disabled_dt_tm' }
         ]
     });
 
@@ -107,9 +118,9 @@ if (modalEditDelete) {
         document.querySelectorAll('.emailContainers').forEach(function (el) {
             el.remove();
         });
-        var textContainer = document.getElementById('textContainer');
-        if (textContainer) {
-            textContainer.insertAdjacentHTML('afterend', createEmailRow(1, {
+        var zipContainer = document.getElementById('textContainer');
+        if (zipContainer) {
+            zipContainer.insertAdjacentHTML('afterend', createEmailRow(1, {
                 labelText: 'Email',
                 placeholderText: 'Email Address',
                 rowClass: 'emailContainers'
@@ -118,22 +129,10 @@ if (modalEditDelete) {
     });
 }
 
-function deleteEmail(emailContainer) {
-    var numItems = document.querySelectorAll('.emailContainers').length;
-    if (numItems < 2) {
-        formError('You must keep at least one email address.');
-    } else {
-        var emailElement = document.getElementById(emailContainer);
-        if (emailElement) {
-            emailElement.remove();
-        }
-    }
-}
-
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMemberRecord', uid: uid.toString() });
 
-    postUrlEncoded('pendingMembersServer.php', params)
+    postUrlEncoded('api/inactiveMembers.php', params)
     .then(function (data) {
         populateForm('#form_member', data);
         populateEmail(data, {
@@ -143,8 +142,10 @@ function showEditRecord(uid) {
             labelText: 'Email'
         });
         populateInstrument(data);
-        var state = document.getElementById('state');
-        if (state) state.value = 'PA';
+        if (data.displayFullName === 1) {
+            var displayFullName = document.getElementById('displayFullName');
+            if (displayFullName) displayFullName.checked = true;
+        }
         var uidField = document.getElementById('uid');
         if (uidField) uidField.value = uid;
         var modal = document.getElementById('modal_edit_delete');
@@ -154,7 +155,7 @@ function showEditRecord(uid) {
         }
     })
     .catch(function (xhr) {
-        formError('Oops! An error occurred opening the form. Please try again later.');
+        showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
         console.log(xhr);
     });
 }
@@ -164,10 +165,10 @@ function submitForm() {
   var formData = new URLSearchParams(new FormData(formMember));
   formData.append('type', 'edit');
 
-  postUrlEncoded('pendingMembersServer.php', formData)
+  postUrlEncoded('api/inactiveMembers.php', formData)
     .then(function (text) {
       if (text === 'success') {
-        formSuccess('User successfully added to the band.');
+        formSuccess('User successfully reinstated.');
       } else {
         formError(text);
       }
@@ -176,25 +177,6 @@ function submitForm() {
       console.log('Edit Fetch error:', error);
       formError('Oops! An error occurred processing the form. Please try again later.');
     });
-}
-
-function deleteRecord(title, uid) {
-    if (confirm('Do you want to remove ' + title + ' from the band roster and email list?')) {
-        var params = new URLSearchParams({ type: 'delete', uid: uid.toString() });
-
-        postUrlEncoded('pendingMembersServer.php', params)
-        .then(function (text) {
-            if (text === 'success') {
-                formSuccess('User successfully removed.');
-            } else {
-                formError(text);
-            }
-        })
-        .catch(function (xhr) {
-            formError('Oops! An error occurred processing the form. Please try again later.');
-            console.log(xhr);
-        });
-    }
 }
 
 function formSuccess(text) {

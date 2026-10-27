@@ -13,7 +13,7 @@ new protectedAdmin();
     <title>KCB Members - Keystone Concert Band</title>
 
 	<?php require '../includes/common_css.php'; ?>
-	<link rel="stylesheet" href="<?= asset('/css/member.css') ?>">
+	<link rel="stylesheet" href="<?= asset('/assets/css/member.css') ?>">
   </head>
 
   <body>
@@ -48,6 +48,6 @@ new protectedAdmin();
 	<script type="text/javascript">
 		var accountType = "<?=$_SESSION['accountType']?>";
 	</script>
-	<script type="text/javascript" src="<?=asset('/kcb-js/loginStats.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous" ></script>
+	<script type="text/javascript" src="<?=asset('/assets/js/loginStats.js', $integrity)?>" integrity="<?= $integrity ?>" crossorigin="anonymous" ></script>
   </body>
 </html>

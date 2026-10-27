@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
         stateSave: true,
         order: [1, 'asc'],
         ajax: {
-            url: 'musicServer.php',
+            url: 'api/music.php',
             dataSrc: ''
         },
         columnDefs: [
             { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
         ],
         columns: [
-            { data: null, 
+            { data: null,
               width: '60px',
               render: function (data) {
                 if (accountType === '1' || accountType === '2') {
@@ -84,7 +84,7 @@ function addRecord() {
     var formData = new URLSearchParams(new FormData(formMusic));
     formData.append('type', 'add');
 
-    postUrlEncoded('musicServer.php', formData)
+    postUrlEncoded('api/music.php', formData)
     .then(function (text) {
       if (text === 'success') {
         formSuccess('Record Added.');
@@ -101,7 +101,7 @@ function addRecord() {
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMusicRecord', uid: uid.toString() });
 
-    postUrlEncoded('musicServer.php', params)
+    postUrlEncoded('api/music.php', params)
     .then(function (data) {
         populateForm('#form_music', data);
         var uidField = document.getElementById('uid');
@@ -125,7 +125,7 @@ function editRecord() {
     var formData = new URLSearchParams(new FormData(formMusic));
     formData.append('type', 'edit');
 
-    postUrlEncoded('musicServer.php', formData)
+    postUrlEncoded('api/music.php', formData)
     .then(function (text) {
       if (text === 'success') {
         formSuccess('Record Saved.');
@@ -145,7 +145,7 @@ function deleteRecord(title, uid) {
     }
     var params = new URLSearchParams({ type: 'delete', uid: uid.toString() });
 
-    postUrlEncoded('musicServer.php', params)
+    postUrlEncoded('api/music.php', params)
     .then(function (text) {
       if (text === 'success') {
         formSuccess('Record removed.');
@@ -194,7 +194,7 @@ function populateGenreDropdown() {
     if (!genreSelect) return;
     if (genreSelect.options.length === 1) {
         var params = new URLSearchParams({ type: 'getMusicGenres' });
-        postUrlEncoded('musicServer.php', params)
+        postUrlEncoded('api/music.php', params)
         .then(function (data) {
             data.forEach(function (value) {
                 var option = document.createElement('option');
