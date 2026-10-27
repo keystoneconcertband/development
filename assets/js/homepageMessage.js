@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         order: [4, 'desc'],
         responsive: true,
         ajax: {
-            url: 'homepageMessageServer.php',
+            url: 'api/homepageMessage.php',
             dataSrc: ''
         },
         columnDefs: [
@@ -73,7 +73,7 @@ function addRecord() {
     var formData = new URLSearchParams(new FormData(formMessage));
     formData.append('type', 'add');
 
-    postUrlEncoded('homepageMessageServer.php', formData)
+    postUrlEncoded('api/homepageMessage.php', formData)
     .then(function (text) {
         if (text === 'success') {
             formSuccess('Item successfully added.');
@@ -90,7 +90,7 @@ function addRecord() {
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getHomepageMessageRecord', uid: uid.toString() });
 
-    postUrlEncoded('homepageMessageServer.php', params)
+    postUrlEncoded('api/homepageMessage.php', params)
     .then(function (data) {
         populateForm('#form_message', data);
         var uidField = document.getElementById('uid');
@@ -116,7 +116,7 @@ function editRecord() {
     var formData = new URLSearchParams(new FormData(formMessage));
     formData.append('type', 'edit');
 
-    postUrlEncoded('homepageMessageServer.php', formData)
+    postUrlEncoded('api/homepageMessage.php', formData)
     .then(function (text) {
         if (text === 'success') {
             formSuccess('Item successfully modified.');
@@ -133,7 +133,7 @@ function editRecord() {
 function checkDates(date) {
     var params = new URLSearchParams({ type: 'homepageMessageDateConflictCheck', date: date });
 
-    postUrlEncoded('homepageMessageServer.php', params)
+    postUrlEncoded('api/homepageMessage.php', params)
     .then(function (data) {
         if (data !== 0) {
             homepageMessageDateConflict = true;

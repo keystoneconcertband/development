@@ -20,6 +20,10 @@ function asset($path, &$integrity = null) {
             $cleanPath = '/assets' . $cleanPath;
         } elseif (strpos($cleanPath, '/media/') === 0) {
             $cleanPath = '/assets' . $cleanPath;
+        } elseif (strpos($cleanPath, '/documents_perm/') === 0) {
+            $cleanPath = '/assets/docs/' . substr($cleanPath, 16);
+        } elseif (strpos($cleanPath, '/docs/') === 0) {
+            $cleanPath = '/assets' . $cleanPath;
         }
         $file = $docRoot . $cleanPath;
     }

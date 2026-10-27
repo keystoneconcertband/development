@@ -89,8 +89,8 @@ new Member(true);
                         <h4 class="card-title"><i class="fa fa-file-text me-2" aria-hidden="true"></i>Documents</h4>
                         <h6 class="card-subtitle mb-2 text-muted">View and download band documents.</h6>
                         <a href="documents.php" class="card-link">All Documents</a>
-                        <a href="documents_perm/KCB_Bylaws_2021.pdf" class="card-link" target="_blank">Bylaws</a>
-                        <a href="documents_perm/KCB_Policy_March_2023.pdf" class="card-link" target="_blank">Policies</a>
+                        <a href="/assets/docs/KCB_Bylaws_2021.pdf" class="card-link" target="_blank">Bylaws</a>
+                        <a href="/assets/docs/KCB_Policy_March_2023.pdf" class="card-link" target="_blank">Policies</a>
                     </div>
                 </div>
             </div>

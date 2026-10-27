@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         order: [2, 'desc'],
         responsive: true,
         ajax: {
-            url: 'loginStatsServer.php',
+            url: 'api/loginStats.php',
             dataSrc: ''
         },
         columns: [

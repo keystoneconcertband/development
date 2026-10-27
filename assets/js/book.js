@@ -23,7 +23,7 @@ function submitForm() {
   const form = document.getElementById('frmBook');
   if (!form) return;
 
-  postFormData('bookServer.php', form)
+  postFormData('/api/book.php', form)
     .then((text) => {
       if (text === 'success') {
         formSuccess();

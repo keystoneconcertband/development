@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         order: [1, 'asc'],
         responsive: true,
         ajax: {
-            url: 'inactiveMembersServer.php',
+            url: 'api/inactiveMembers.php',
             dataSrc: ''
         },
         columnDefs: [
@@ -132,7 +132,7 @@ if (modalEditDelete) {
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMemberRecord', uid: uid.toString() });
 
-    postUrlEncoded('inactiveMembersServer.php', params)
+    postUrlEncoded('api/inactiveMembers.php', params)
     .then(function (data) {
         populateForm('#form_member', data);
         populateEmail(data, {
@@ -165,7 +165,7 @@ function submitForm() {
   var formData = new URLSearchParams(new FormData(formMember));
   formData.append('type', 'edit');
 
-  postUrlEncoded('inactiveMembersServer.php', formData)
+  postUrlEncoded('api/inactiveMembers.php', formData)
     .then(function (text) {
       if (text === 'success') {
         formSuccess('User successfully reinstated.');

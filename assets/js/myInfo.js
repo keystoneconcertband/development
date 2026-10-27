@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   var params = new URLSearchParams({ type: "getCurrentMemberRecord" });
 
-  postUrlEncoded("membersServer.php", params)
+  postUrlEncoded("api/members.php", params)
     .then(function (data) {
       populateForm("#memberInfo", data);
       updateNameDisplay();
@@ -58,7 +58,7 @@ function submitForm() {
   if (!memberInfoForm) return;
   var formData = new URLSearchParams(new FormData(memberInfoForm));
 
-  postUrlEncoded('myInfoServer.php', formData)
+  postUrlEncoded('api/myInfo.php', formData)
     .then(function (text) {
       if (text === 'success') {
         showAlert('#pageAlert', true, 'Your information has been updated.');
