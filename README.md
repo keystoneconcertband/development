@@ -59,9 +59,33 @@ All local assets are referenced through the `asset()` helper function in `includ
 
 ---
 
+## Local Development & Docker Testing
+
+The application runs locally in a Docker LAMP container exposing Apache and MySQL:
+
+- **Web Access**: Navigate to `http://localhost` in your browser.
+- **Testing the Daily Log Summary**:
+  - In a browser or via `curl`:
+    ```bash
+    # View summary with dry-run output in plain text
+    curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
+
+    # Run and send issue alert email if issues occurred
+    curl "http://localhost/scripts/daily_log_summary.php"
+
+    # Test the cron API endpoint
+    curl "http://localhost/api/cron/daily_log_summary.php?key=kcb-daily-summary-token"
+    ```
+  - Via Docker CLI:
+    ```bash
+    docker exec -it <container_name> php /app/scripts/daily_log_summary.php --dry-run
+    ```
+
+---
+
 ## Composer Setup
 
-The project uses Composer for third-party libraries (e.g. `PHPMailer`) and class autoloading.
+The project uses Composer for third-party libraries (e.g. `PHPMailer`, `Monolog`) and class autoloading.
 
 To install dependencies locally:
 
@@ -70,6 +94,30 @@ composer install
 ```
 
 The `vendor/` directory is managed by Composer and should not be committed to Git.
+
+---
+
+## Logging & Daily Issue Alerting
+
+The application uses **Monolog** with PSR-3 compliance via `KcbLogger` (`includes/class/kcbLogger.class.php`) and a backward-compatible `Log` facade:
+- **Daily Rotating Logs**: Stored as `logs/kcb-YYYY-MM-DD.log` using atomic thread-safe append locks (`LOCK_EX`).
+- **Retention**: Older log files beyond 30 days are purged automatically.
+- **Global Error Handling**: Uncaught exceptions, PHP warnings/notices, and fatal script terminations are captured automatically.
+- **Daily Issue Digest**: A GitHub Actions workflow (`.github/workflows/daily-log-summary.yml`) runs daily at 7:00 AM Eastern Time to trigger `api/cron/daily_log_summary.php`. If issues (`WARNING`, `ERROR`, `CRITICAL`) occurred that day, a categorized HTML alert digest is dispatched to `webmaster@keystoneconcertband.com` (or `ALERT_EMAIL_RECIPIENT`). If zero issues occurred, no email is sent.
+- **Abuse Prevention & Security**:
+  - **Single Email Per Day Lock**: Enforces a daily lock (`logs/.sent_YYYY-MM-DD.lock`) so subsequent executions on the same day skip email dispatch, preventing duplicate emails or quota exhaustion from repeated hits. Use `--force` (or `&force=1` with valid key) to explicitly override.
+  - **Public Web Access Blocking**: `scripts/.htaccess` blocks all public internet access to the `scripts/` directory at the Apache layer (allowing only local/private subnets).
+  - **Token & Role Verification**: `api/cron/daily_log_summary.php` requires a valid authentication key (`?key=...` or `Authorization: Bearer <key>`) matching `APPSETTING_CRON_KEY`. In `scripts/daily_log_summary.php`, non-CLI web execution requires an active admin session, a valid key, or local development environment.
+  - **Rate Limiting**: Limits requests to 10 per hour per IP to guard against brute-force or denial-of-service attempts.
+  - **Security Auditing**: Unauthorized access attempts are recorded to the daily log as `WARNING` events with client IP and request details.
+- **CLI & Web Execution**: The summary script can be triggered via CLI inside the container or directly over HTTP:
+  ```bash
+  # Inside Docker container:
+  php /app/scripts/daily_log_summary.php [--date=YYYY-MM-DD] [--force] [--dry-run]
+
+  # Or via HTTP:
+  curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
+  ```
 
 ---
 

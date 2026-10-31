@@ -1,101 +1,51 @@
 <?php
-       /* *
-	* Log 			A logger class which creates logs when an exception is thrown.
-	* @author		Author: Vivek Wicky Aswal. (https://twitter.com/#!/VivekWickyAswal)
-	* @git 			https://github.com/indieteq/PHP-MySQL-PDO-Database-Class
-	* @version      0.1a
-	*/
+/**
+ * Log
+ *
+ * Backward-compatible facade for the modern KcbLogger engine.
+ * Preserves legacy write() calls while routing all logging through PSR-3
+ * daily rotating log files and atomic file operations.
+ */
+
+require_once __DIR__ . '/kcbLogger.class.php';
+
 class Log
 {
+    /** @var KcbLogger */
+    private $logger;
 
-    # @string, Log directory name
-    private $path = "";
-
-    # @void, Default constructor
     public function __construct()
     {
-        $baseDir = !empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : dirname(__DIR__, 2);
-        $this->path = rtrim($baseDir, '/') . '/logs/';
-    }
-
-   /**
-            *   @void
-            *   Creates the log
-            *
-            *   @param string $message the message which is written into the log.
-            *   @description:
-            *    1. Checks if directory exists, if not, create one and call this method again.
-            *    2. Checks if log already exists.
-            *    3. If not, new log gets created. Log is written into the logs folder.
-            *    4. Logname is current date(Year - Month - Day).
-            *    5. If log exists, edit method called.
-            *    6. Edit method modifies the current log.
-            */
-    public function write($message)
-    {
-        $date = new DateTime();
-        $log = $this->path . $date->format('Y-m-d').".txt";
-
-        if (is_dir($this->path)) {
-            if (!file_exists($log)) {
-                $fh  = fopen($log, 'a+') or die("Fatal Error !");
-                $logContent = "Time : " . $date->format('H:i:s')."\r\n" . $message ."\r\n";
-                fwrite($fh, $logContent);
-                fclose($fh);
-            } else {
-                $this->edit($log, $date, $message);
-            }
-        } else {
-            if (mkdir($this->path, 0777) === true) {
-                 $this->write($message);
-            }
-        }
+        $this->logger = KcbLogger::getInstance();
     }
 
     /**
-             *  @void
-             *  Gets called if log exists.
-             *  Modifies current log and adds the message to the log.
-             *
-             * @param string $log
-             * @param DateTimeObject $date
-             * @param string $message
-             */
-    private function edit($log, $date, $message)
+     * Backward-compatible write method
+     *
+     * @param string $message
+     */
+    public function write($message)
     {
-        $logContent = "Time : " . $date->format('H:i:s')."\r\n" . $message ."\r\n\r\n";
-        $logContent = $logContent . file_get_contents($log);
-        file_put_contents($log, $logContent);
+        $this->logger->write($message);
     }
 
+    /**
+     * PSR-3 convenience delegation methods
+     */
+    public function debug($message, array $context = [])    { $this->logger->debug($message, $context); }
+    public function info($message, array $context = [])     { $this->logger->info($message, $context); }
+    public function notice($message, array $context = [])   { $this->logger->notice($message, $context); }
+    public function warning($message, array $context = [])  { $this->logger->warning($message, $context); }
+    public function error($message, array $context = [])    { $this->logger->error($message, $context); }
+    public function critical($message, array $context = []) { $this->logger->critical($message, $context); }
+    public function alert($message, array $context = [])    { $this->logger->alert($message, $context); }
+    public function emergency($message, array $context = []) { $this->logger->emergency($message, $context); }
+
+    /**
+     * Backward-compatible helper retained for legacy callers
+     */
     private function getServerVars()
     {
-        $output = "";
-
-        $indicesServer = array('PHP_SELF','argv', 'argc', 'GATEWAY_INTERFACE',
-        'SERVER_ADDR', 'SERVER_NAME', 'SERVER_SOFTWARE', 'SERVER_PROTOCOL',
-        'REQUEST_METHOD', 'REQUEST_TIME', 'REQUEST_TIME_FLOAT', 'QUERY_STRING',
-        'DOCUMENT_ROOT', 'HTTP_ACCEPT', 'HTTP_ACCEPT_CHARSET', 'HTTP_ACCEPT_ENCODING',
-        'HTTP_ACCEPT_LANGUAGE', 'HTTP_CONNECTION', 'HTTP_HOST', 'HTTP_REFERER',
-        'HTTP_USER_AGENT', 'HTTPS', 'REMOTE_ADDR', 'REMOTE_HOST', 'REMOTE_PORT',
-        'REMOTE_USER', 'REDIRECT_REMOTE_USER', 'SCRIPT_FILENAME', 'SERVER_ADMIN',
-        'SERVER_PORT', 'SERVER_SIGNATURE', 'PATH_TRANSLATED', 'SCRIPT_NAME',
-        'REQUEST_URI', 'PHP_AUTH_DIGEST', 'PHP_AUTH_USER', 'PHP_AUTH_PW',
-        'AUTH_TYPE', 'PATH_INFO', 'ORIG_PATH_INFO') ;
-
-        $output .= '<table cellpadding="10">';
-        foreach ($indicesServer as $arg) {
-            if (isset($_SERVER[$arg])) {
-                if (is_array($_SERVER[$arg])) {
-                    // ignore subarrays for now...
-                } else {
-                    $output .= '<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';
-                }
-            } else {
-                $output .= '<tr><td>'.$arg.'</td><td>-</td></tr>';
-            }
-        }
-        $output .= '</table>';
-        return $output;
+        return '';
     }
 }

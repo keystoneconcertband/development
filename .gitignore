@@ -1,4 +1,10 @@
 *.txt
+logs/*.log
+logs/*.txt
+logs/.*.lock
+logs/.*.json
+!logs/.gitkeep
+!logs/.htaccess
 includes/class/settings.ini.php
 .vscode
 .DS_Store

@@ -1,0 +1,63 @@
+name: Daily Log Summary & Issue Alert
+
+on:
+  schedule:
+    # Runs daily at 11:00 UTC (7:00 AM Eastern Time)
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: 'Target log date (YYYY-MM-DD, defaults to today)'
+        required: false
+        type: string
+        default: ''
+      force:
+        description: 'Force send email even if 0 issues'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  run-daily-summary:
+    name: Execute Daily Issue Summary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Daily Summary Webhook
+        env:
+          CRON_KEY: ${{ secrets.CRON_KEY || 'kcb-daily-summary-token' }}
+          TARGET_DATE: ${{ github.event.inputs.target_date }}
+          FORCE: ${{ github.event.inputs.force }}
+        run: |
+          URL="https://www.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}"
+          if [ -n "$TARGET_DATE" ]; then
+            URL="${URL}&date=${TARGET_DATE}"
+          fi
+          if [ "$FORCE" = "true" ]; then
+            URL="${URL}&force=1"
+          fi
+
+          echo "Pinging Daily Summary API Endpoint..."
+          HTTP_RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X GET "$URL")
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed -e '$d')
+          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n 1 | cut -d':' -f2)
+
+          echo "Response Status: $HTTP_STATUS"
+          echo "Response Body:"
+          echo "$HTTP_BODY"
+
+          # Write to GitHub Step Summary
+          echo "### Daily Log Summary Report" >> $GITHUB_STEP_SUMMARY
+          echo "- **HTTP Status:** \`$HTTP_STATUS\`" >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          echo "$HTTP_BODY" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::error::Daily summary trigger returned status $HTTP_STATUS"
+            exit 1
+          fi
+

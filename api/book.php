@@ -48,9 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		# Send email
 		if($kcb->sendEmail("webmaster@keystoneconcertband.com", $message, "KCB Booking Request")) {
+			$kcb->logInfo("Public booking request submitted successfully", ['name' => $name, 'email' => $email]);
 			$response = "success";
 		}
 		else {
+			$kcb->logError("Public booking request email failed to send", ['name' => $name, 'email' => $email]);
 			$response = "Unable to send email. Please try again later.";
 		}
 	}

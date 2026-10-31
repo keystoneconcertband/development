@@ -56,32 +56,40 @@ class KCBPublic
                                 if (!$this->getDb()->addInstrument($instr, $uid, $webUser)) {
                                     $this->getDb()->rollBackTransaction();
                                     $response = "instrument_add_error";
+                                    $this->getKcb()->logError("Failed to add instrument for join request", ['uid' => $uid, 'instrument' => $instr]);
                                     break;
                                 }
                             }
                         } else {
                             $this->getDb()->rollBackTransaction();
                             $response = "email_add_error";
+                            $this->getKcb()->logError("Failed to add email for join request", ['uid' => $uid, 'email' => $joinArray['txtEmail'] ?? '']);
                         }
                     } else {
                         $this->getDb()->rollBackTransaction();
                         $response = "add_error";
+                        $this->getKcb()->logError("Failed to insert pending member record for join request");
                     }
 
                     // Everything above was successful, save the transaction and send email notification
                     if (empty($response)) {
                         $this->getDb()->executeTransaction();
+                        $this->getKcb()->logInfo("Band join application submitted successfully", [
+                            'name'  => $joinArray['txtName'] ?? '',
+                            'email' => $joinArray['txtEmail'] ?? '',
+                            'uid'   => $uid,
+                        ]);
 
                         $emailResponse = $this->processEmail($joinArray);
                         if ($emailResponse === "success") {
                             $response = "success";
                         } else {
-                            $this->getKcb()->logMessage("Join request email failed: " . $emailResponse);
+                            $this->getKcb()->logError("Join request notification email failed: " . $emailResponse);
                             $response = "Unable to send notification email. Your request was saved.";
                         }
                     }
                 } catch (Exception $e) {
-                    $this->getKcb()->logMessage($e->getMessage());
+                    $this->getKcb()->logError("Database exception during join submission", ['exception' => $e]);
                     $this->getDb()->rollBackTransaction();
                     $response = "db_error";
                 }
@@ -94,6 +102,9 @@ class KCBPublic
     {
         if (empty($formArray['csrf_token']) || empty($_SESSION[$csrfSessionKey]) ||
             !hash_equals($_SESSION[$csrfSessionKey], $formArray['csrf_token'])) {
+            $this->getKcb()->logWarning("Form submission rejected: CSRF token invalid or missing", [
+                'session_key' => $csrfSessionKey,
+            ]);
             return "Invalid form submission.";
         }
 
@@ -154,23 +165,40 @@ class KCBPublic
     private function validateSpamProtection($formArray)
     {
         if (!empty($formArray['honeypot'])) {
+            $this->getKcb()->logWarning("Spam honeypot field triggered on public form submission", [
+                'ip' => $this->getUserIpAddr(),
+            ]);
             return "Invalid request.";
         }
 
         if (empty($formArray['jsCheck']) || $formArray['jsCheck'] !== 'enabled') {
+            $this->getKcb()->logWarning("Public form submission rejected: jsCheck disabled or missing", [
+                'ip' => $this->getUserIpAddr(),
+            ]);
             return "Please enable JavaScript to submit this form.";
         }
 
         if (empty($formArray['formCreatedAt']) || !ctype_digit($formArray['formCreatedAt'])) {
+            $this->getKcb()->logWarning("Public form submission rejected: invalid timestamp token", [
+                'ip' => $this->getUserIpAddr(),
+            ]);
             return "Invalid form submission.";
         }
 
         $formAge = time() - (int)$formArray['formCreatedAt'];
         if ($formAge < 3) {
+            $this->getKcb()->logNotice("Public form submission rejected: completed in < 3s (bot speedrun)", [
+                'form_age' => $formAge,
+                'ip'       => $this->getUserIpAddr(),
+            ]);
             return "Please take a moment to complete the form before submitting.";
         }
 
         if ($formAge > 3600) {
+            $this->getKcb()->logNotice("Public form submission rejected: token expired (> 1 hour)", [
+                'form_age' => $formAge,
+                'ip'       => $this->getUserIpAddr(),
+            ]);
             return "The form session has expired. Please refresh the page and try again.";
         }
 
@@ -179,6 +207,11 @@ class KCBPublic
             $requestHost = $this->normalizeHost(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
 
             if ($refererHost && $requestHost && !$this->hostsMatch($refererHost, $requestHost)) {
+                $this->getKcb()->logWarning("Public form submission rejected: referer mismatch", [
+                    'referer' => $refererHost,
+                    'host'    => $requestHost,
+                    'ip'      => $this->getUserIpAddr(),
+                ]);
                 return "Invalid form submission source.";
             }
         }
@@ -258,9 +291,11 @@ class KCBPublic
         $email = isset($joinArray['txtEmail']) ? trim($joinArray['txtEmail']) : '';
         if ($email !== '') {
             if ($this->isDisposableEmail($email)) {
+                $this->getKcb()->logWarning("Join application rejected: disposable email address", ['email' => $email]);
                 return "Please use a valid email address.";
             }
             if ($this->getDb()->checkDupPendingUser($email)) {
+                $this->getKcb()->logNotice("Join application rejected: duplicate pending submission", ['email' => $email]);
                 return "Looks like you already submitted a request to join.";
             }
         }
@@ -270,16 +305,19 @@ class KCBPublic
             $recentRequests = $this->getDb()->checkRecentUser();
             foreach ($recentRequests as $record) {
                 if ($record["ip_address"] === $ipAddress) {
+                    $this->getKcb()->logNotice("Join application rejected: duplicate submission from recent IP", ['ip' => $ipAddress]);
                     return "A recent request from this IP address has already been submitted.";
                 }
             }
 
             if ($this->getDb()->countRecentSubmissionsByIp($ipAddress, '1 HOUR') >= 4) {
+                $this->getKcb()->logWarning("Join application rejected: IP rate limit exceeded (>4/hour)", ['ip' => $ipAddress]);
                 return "Too many requests from this IP address. Please wait an hour and try again.";
             }
         }
 
         if ($email !== '' && $this->getDb()->countRecentSubmissionsByEmail($email, '1 DAY') >= 2) {
+            $this->getKcb()->logWarning("Join application rejected: Email rate limit exceeded (>2/day)", ['email' => $email]);
             return "Too many requests using this email address. Please try again later.";
         }
 
