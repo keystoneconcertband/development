@@ -75,6 +75,21 @@ class DailySummaryService
             $recipient = 'webmaster@keystoneconcertband.com';
         }
 
+        // Check if daily summary email is disabled via environment variable (e.g. in dev environment)
+        if (!$this->isEmailEnabled() && !$forceSend && !$dryRun) {
+            return [
+                'status'       => 'disabled',
+                'date'         => $targetDate,
+                'recipient'    => $recipient,
+                'subject'      => $subject ?? "KCB Daily Report: $targetDate",
+                'issue_count'  => $issueCount,
+                'login_stats'  => $loginStats,
+                'stats'        => $stats,
+                'email_sent'   => false,
+                'message'      => "Daily summary email is disabled via environment variable (SEND_DAILY_SUMMARY_EMAIL=false).",
+            ];
+        }
+
         // Anti-spam protection: only send 1 summary email per day unless forceSend is explicitly true
         $sentMarkerFile = $logDir . '.sent_' . $targetDate . '.lock';
         if (file_exists($sentMarkerFile) && !$forceSend && !$dryRun) {
@@ -173,6 +188,34 @@ class DailySummaryService
 
         $records[] = $now;
         @file_put_contents($rateFile, json_encode(array_values($records)));
+        return true;
+    }
+
+    /**
+     * Check if daily summary emails are enabled in the environment
+     * Returns false if SEND_DAILY_SUMMARY_EMAIL or ENABLE_DAILY_SUMMARY_EMAIL is false/0/off/no/disabled
+     * or if DISABLE_DAILY_SUMMARY_EMAIL is true.
+     *
+     * @return bool
+     */
+    public function isEmailEnabled()
+    {
+        $val = getenv('SEND_DAILY_SUMMARY_EMAIL');
+        if ($val === false || $val === null || $val === '') {
+            $val = getenv('APPSETTING_SEND_DAILY_SUMMARY_EMAIL');
+        }
+        if ($val === false || $val === null || $val === '') {
+            $val = getenv('ENABLE_DAILY_SUMMARY_EMAIL');
+        }
+
+        if ($val !== false && $val !== null && $val !== '') {
+            return !in_array(strtolower(trim((string)$val)), ['false', '0', 'off', 'no', 'disabled'], true);
+        }
+
+        if (strtolower((string)getenv('DISABLE_DAILY_SUMMARY_EMAIL')) === 'true') {
+            return false;
+        }
+
         return true;
     }
 
