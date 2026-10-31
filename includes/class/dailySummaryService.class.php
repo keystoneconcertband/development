@@ -48,32 +48,27 @@ class DailySummaryService
             }
         }
 
-        if (!file_exists($logFile)) {
-            return [
-                'status'      => 'no_log_file',
-                'date'        => $targetDate,
-                'file'        => $logFile,
-                'issue_count' => 0,
-                'message'     => "No log file found for date $targetDate.",
-            ];
-        }
+        $issues = [];
+        $stats = [
+            'total'     => 0,
+            'debug'     => 0,
+            'info'      => 0,
+            'notice'    => 0,
+            'warnings'  => 0,
+            'errors'    => 0,
+            'critical'  => 0,
+        ];
 
-        $parsed = $this->parseLogFile($logFile);
-        $issues = $parsed['issues'];
-        $stats = $parsed['stats'];
+        if (file_exists($logFile)) {
+            $parsed = $this->parseLogFile($logFile);
+            $issues = $parsed['issues'];
+            $stats = $parsed['stats'];
+        }
 
         $issueCount = count($issues);
 
-        // Per user preference: only send email if issues occurred that day (unless forceSend is true)
-        if ($issueCount === 0 && !$forceSend) {
-            return [
-                'status'      => 'skipped',
-                'date'        => $targetDate,
-                'issue_count' => 0,
-                'stats'       => $stats,
-                'message'     => "No issues detected on $targetDate. Email notification skipped.",
-            ];
-        }
+        // Retrieve site login statistics for the target date
+        $loginStats = $this->getLoginStatsForDate($targetDate);
 
         $recipient = getenv('ALERT_EMAIL_RECIPIENT');
         if (empty($recipient)) {
@@ -85,34 +80,46 @@ class DailySummaryService
         if (file_exists($sentMarkerFile) && !$forceSend && !$dryRun) {
             $sentTime = @file_get_contents($sentMarkerFile);
             return [
-                'status'      => 'already_sent',
-                'date'        => $targetDate,
-                'recipient'   => $recipient,
-                'issue_count' => $issueCount,
-                'stats'       => $stats,
-                'sent_at'     => trim((string)$sentTime),
-                'message'     => "Daily summary email for $targetDate has already been sent (at " . trim((string)$sentTime) . "). Email skipped to prevent duplicate alerts.",
+                'status'       => 'already_sent',
+                'date'         => $targetDate,
+                'recipient'    => $recipient,
+                'issue_count'  => $issueCount,
+                'login_stats'  => $loginStats,
+                'stats'        => $stats,
+                'sent_at'      => trim((string)$sentTime),
+                'message'      => "Daily summary email for $targetDate has already been sent (at " . trim((string)$sentTime) . "). Email skipped to prevent duplicate alerts.",
             ];
         }
 
-        $htmlBody = $this->renderHtmlReport($targetDate, $issues, $stats, $recipient);
-        $subject = sprintf(
-            "[%s] KCB Daily Issue Report: %d issue%s on %s",
-            $issueCount > 0 ? "ALERT" : "INFO",
-            $issueCount,
-            $issueCount === 1 ? "" : "s",
-            $targetDate
-        );
+        $htmlBody = $this->renderHtmlReport($targetDate, $issues, $stats, $loginStats, $recipient);
+
+        $loginText = $loginStats['successful_logins'] . ' login' . ($loginStats['successful_logins'] === 1 ? '' : 's');
+        if ($issueCount > 0) {
+            $subject = sprintf(
+                "[ALERT] KCB Daily Report: %d issue%s, %s on %s",
+                $issueCount,
+                $issueCount === 1 ? "" : "s",
+                $loginText,
+                $targetDate
+            );
+        } else {
+            $subject = sprintf(
+                "[OK] KCB Daily Report: 0 issues, %s on %s",
+                $loginText,
+                $targetDate
+            );
+        }
 
         if ($dryRun) {
             return [
-                'status'      => 'dry_run',
-                'date'        => $targetDate,
-                'recipient'   => $recipient,
-                'subject'     => $subject,
-                'issue_count' => $issueCount,
-                'stats'       => $stats,
-                'issues'      => $issues,
+                'status'       => 'dry_run',
+                'date'         => $targetDate,
+                'recipient'    => $recipient,
+                'subject'      => $subject,
+                'issue_count'  => $issueCount,
+                'login_stats'  => $loginStats,
+                'stats'        => $stats,
+                'issues'       => $issues,
             ];
         }
 
@@ -124,13 +131,14 @@ class DailySummaryService
         }
 
         return [
-            'status'      => $emailSent ? 'sent' : 'failed',
-            'date'        => $targetDate,
-            'recipient'   => $recipient,
-            'subject'     => $subject,
-            'issue_count' => $issueCount,
-            'email_sent'  => $emailSent,
-            'stats'       => $stats,
+            'status'       => $emailSent ? 'sent' : 'failed',
+            'date'         => $targetDate,
+            'recipient'    => $recipient,
+            'subject'      => $subject,
+            'issue_count'  => $issueCount,
+            'login_stats'  => $loginStats,
+            'email_sent'   => $emailSent,
+            'stats'        => $stats,
         ];
     }
 
@@ -166,6 +174,121 @@ class DailySummaryService
         $records[] = $now;
         @file_put_contents($rateFile, json_encode(array_values($records)));
         return true;
+    }
+
+    /**
+     * Retrieve login statistics for the target date
+     *
+     * @param string $date YYYY-MM-DD
+     * @return array
+     */
+    public function getLoginStatsForDate($date)
+    {
+        $stats = [
+            'total_attempts'    => 0,
+            'successful_logins' => 0,
+            'unique_users'      => 0,
+            'failed_attempts'   => 0,
+            'recent_logins'     => [],
+        ];
+
+        try {
+            require_once __DIR__ . '/member.db.class.php';
+            $memberDb = new MemberDB();
+            $records = $memberDb->getDailyLoginStats($date);
+            if (is_array($records)) {
+                $uniqueSuccessful = [];
+                foreach ($records as $row) {
+                    $stats['total_attempts']++;
+                    $isValid = ($row['valid'] === 'valid' || $row['valid'] === 1 || $row['valid'] === '1');
+                    if ($isValid) {
+                        $stats['successful_logins']++;
+                        $uniqueSuccessful[$row['logonValue']] = true;
+                    } else {
+                        $stats['failed_attempts']++;
+                    }
+
+                    if (count($stats['recent_logins']) < 15) {
+                        $stats['recent_logins'][] = [
+                            'email'  => $row['logonValue'],
+                            'status' => $isValid ? 'Success' : ($row['valid'] ?: 'Failed'),
+                            'time'   => $row['estbd_dt_tm'],
+                        ];
+                    }
+                }
+                $stats['unique_users'] = count($uniqueSuccessful);
+                return $stats;
+            }
+        } catch (\Throwable $t) {
+            // Database might be unreachable or offline; extract from daily log
+        }
+
+        return $this->extractLoginsFromLogFile($date);
+    }
+
+    /**
+     * Fallback login extraction from daily log file
+     *
+     * @param string $date YYYY-MM-DD
+     * @return array
+     */
+    private function extractLoginsFromLogFile($date)
+    {
+        $stats = [
+            'total_attempts'    => 0,
+            'successful_logins' => 0,
+            'unique_users'      => 0,
+            'failed_attempts'   => 0,
+            'recent_logins'     => [],
+        ];
+
+        $logFile = $this->logger->getLogDir() . 'kcb-' . $date . '.log';
+        if (!file_exists($logFile)) {
+            return $stats;
+        }
+
+        $lines = @file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if (!$lines) {
+            return $stats;
+        }
+
+        $uniqueSuccessful = [];
+        foreach ($lines as $line) {
+            $isSuccess = (stripos($line, 'logged in') !== false || stripos($line, 'authenticated via') !== false);
+            $isFailed = (stripos($line, 'Invalid auth code') !== false || stripos($line, 'auth verification failed') !== false);
+
+            if ($isSuccess || $isFailed) {
+                $stats['total_attempts']++;
+                $email = 'unknown';
+                if (preg_match('/\{.*?"email"\s*:\s*"([^"]+)".*?\}/', $line, $m)) {
+                    $email = $m[1];
+                } elseif (preg_match('/Email:\s*([^\s\)]+)/i', $line, $m)) {
+                    $email = $m[1];
+                }
+
+                $time = 'Unknown';
+                if (preg_match('/^\[(.*?)\]/', $line, $tm)) {
+                    $time = $tm[1];
+                }
+
+                if ($isSuccess) {
+                    $stats['successful_logins']++;
+                    $uniqueSuccessful[$email] = true;
+                } else {
+                    $stats['failed_attempts']++;
+                }
+
+                if (count($stats['recent_logins']) < 15) {
+                    $stats['recent_logins'][] = [
+                        'email'  => $email,
+                        'status' => $isSuccess ? 'Success' : 'Failed',
+                        'time'   => $time,
+                    ];
+                }
+            }
+        }
+        $stats['unique_users'] = count($uniqueSuccessful);
+        return $stats;
     }
 
     /**
@@ -301,7 +424,7 @@ class DailySummaryService
     /**
      * Render a responsive HTML email report
      */
-    private function renderHtmlReport($date, array $issues, array $stats, $recipient = 'webmaster@keystoneconcertband.com')
+    private function renderHtmlReport($date, array $issues, array $stats, array $loginStats = [], $recipient = 'webmaster@keystoneconcertband.com')
     {
         $issueCount = count($issues);
         $headerColor = $issueCount > 0 ? '#b91c1c' : '#15803d';
@@ -366,12 +489,38 @@ class DailySummaryService
             );
         }
 
+        $loginRowsHtml = '';
+        if (!empty($loginStats['recent_logins'])) {
+            foreach ($loginStats['recent_logins'] as $login) {
+                $isSuccess = ($login['status'] === 'Success' || $login['status'] === 'valid');
+                $loginBadgeBg = $isSuccess ? '#f0fdf4' : '#fef2f2';
+                $loginBadgeCol = $isSuccess ? '#16a34a' : '#b91c1c';
+                $loginRowsHtml .= sprintf(
+                    "<tr style='border-bottom: 1px solid #e2e8f0;'>
+                        <td style='padding: 8px 10px; font-family: monospace; font-size: 12px; color: #334155; white-space: nowrap;'>%s</td>
+                        <td style='padding: 8px 10px; font-size: 13px; color: #0f172a;'>%s</td>
+                        <td style='padding: 8px 10px;'><span style='background:%s; color:%s; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;'>%s</span></td>
+                    </tr>",
+                    htmlspecialchars($login['time'] ?? 'Unknown'),
+                    htmlspecialchars($login['email'] ?? 'Unknown'),
+                    $loginBadgeBg,
+                    $loginBadgeCol,
+                    htmlspecialchars($login['status'] ?? 'Unknown')
+                );
+            }
+        }
+
+        $errorCriticalCount = $stats['errors'] + $stats['critical'];
+        $loginsCount = $loginStats['successful_logins'] ?? 0;
+        $uniqueUsersCount = $loginStats['unique_users'] ?? 0;
+        $failedLoginsCount = $loginStats['failed_attempts'] ?? 0;
+
         $html = "
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset='utf-8'>
-            <title>Keystone Concert Band - Daily Issue Report</title>
+            <title>Keystone Concert Band - Daily Report</title>
         </head>
         <body style='font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif; background-color:#f8fafc; margin:0; padding:20px; color:#0f172a;'>
             <table width='100%' cellpadding='0' cellspacing='0' style='max-width:850px; margin:0 auto; background:#ffffff; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; box-shadow:0 1px 3px rgba(0,0,0,0.05);'>
@@ -379,7 +528,7 @@ class DailySummaryService
                 <tr>
                     <td style='background:$headerColor; padding:24px; color:#ffffff;'>
                         <h2 style='margin:0 0 6px 0; font-size:22px; font-weight:700;'>Keystone Concert Band</h2>
-                        <div style='font-size:15px; opacity:0.95;'>Daily Issue Digest & System Alert — $date</div>
+                        <div style='font-size:15px; opacity:0.95;'>Daily Status & System Report — $date (" . ($issueCount > 0 ? "$issueCount Issues Detected" : "All Systems Healthy") . ")</div>
                     </td>
                 </tr>
                 <!-- Metric Summary Cards -->
@@ -387,40 +536,68 @@ class DailySummaryService
                     <td style='padding:20px;'>
                         <table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:20px;'>
                             <tr>
-                                <td width='25%' style='padding:8px;'>
+                                <td width='25%' style='padding:6px;'>
                                     <div style='background:#f1f5f9; padding:12px; border-radius:6px; text-align:center;'>
                                         <div style='font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600;'>Total Events</div>
                                         <div style='font-size:22px; font-weight:bold; color:#0f172a;'>{$stats['total']}</div>
                                     </div>
                                 </td>
-                                <td width='25%' style='padding:8px;'>
+                                <td width='25%' style='padding:6px;'>
+                                    <div style='background:#f0fdf4; padding:12px; border-radius:6px; text-align:center;'>
+                                        <div style='font-size:11px; text-transform:uppercase; color:#15803d; font-weight:600;'>Member Logins</div>
+                                        <div style='font-size:22px; font-weight:bold; color:#16a34a;'>$loginsCount</div>
+                                        <div style='font-size:10px; color:#64748b;'>$uniqueUsersCount unique</div>
+                                    </div>
+                                </td>
+                                <td width='25%' style='padding:6px;'>
                                     <div style='background:#fffbeb; padding:12px; border-radius:6px; text-align:center;'>
                                         <div style='font-size:11px; text-transform:uppercase; color:#92400e; font-weight:600;'>Warnings</div>
                                         <div style='font-size:22px; font-weight:bold; color:#b45309;'>{$stats['warnings']}</div>
                                     </div>
                                 </td>
-                                <td width='25%' style='padding:8px;'>
+                                <td width='25%' style='padding:6px;'>
                                     <div style='background:#fef2f2; padding:12px; border-radius:6px; text-align:center;'>
                                         <div style='font-size:11px; text-transform:uppercase; color:#991b1b; font-weight:600;'>Errors</div>
-                                        <div style='font-size:22px; font-weight:bold; color:#dc2626;'>{$stats['errors']}</div>
-                                    </div>
-                                </td>
-                                <td width='25%' style='padding:8px;'>
-                                    <div style='background:#fef2f2; padding:12px; border-radius:6px; text-align:center;'>
-                                        <div style='font-size:11px; text-transform:uppercase; color:#7f1d1d; font-weight:600;'>Critical</div>
-                                        <div style='font-size:22px; font-weight:bold; color:#991b1b;'>{$stats['critical']}</div>
+                                        <div style='font-size:22px; font-weight:bold; color:#dc2626;'>$errorCriticalCount</div>
                                     </div>
                                 </td>
                             </tr>
                         </table>
 
+                        <!-- Member Logins Section -->
+                        <h3 style='margin:20px 0 10px 0; font-size:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:6px;'>
+                            Member Site Logins ($loginsCount)
+                        </h3>";
+
+        if ($loginsCount === 0 && $failedLoginsCount === 0) {
+            $html .= "<p style='color:#64748b; padding:12px; background:#f8fafc; border-radius:6px; font-size:13px; margin:0 0 20px 0;'>No member logins were recorded for $date.</p>";
+        } else {
+            $html .= "
+                        <div style='margin-bottom:10px; font-size:13px; color:#334155;'>
+                            <strong>$loginsCount</strong> successful login(s) from <strong>$uniqueUsersCount</strong> unique member(s)" . ($failedLoginsCount > 0 ? " — <span style='color:#dc2626; font-weight:600;'>$failedLoginsCount failed attempt(s)</span>" : "") . "
+                        </div>
+                        <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse; margin-bottom:24px;'>
+                            <thead>
+                                <tr style='background:#f8fafc; border-bottom:2px solid #cbd5e1; text-align:left;'>
+                                    <th style='padding:8px 10px; font-size:12px; color:#475569;'>Time (EST)</th>
+                                    <th style='padding:8px 10px; font-size:12px; color:#475569;'>Member Email</th>
+                                    <th style='padding:8px 10px; font-size:12px; color:#475569;'>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                $loginRowsHtml
+                            </tbody>
+                        </table>";
+        }
+
+        $html .= "
                         <!-- Issue Table -->
-                        <h3 style='margin:0 0 12px 0; font-size:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:6px;'>
+                        <h3 style='margin:20px 0 12px 0; font-size:16px; color:#1e293b; border-bottom:2px solid #e2e8f0; padding-bottom:6px;'>
                             Detected Issues ({$issueCount})
                         </h3>";
 
         if ($issueCount === 0) {
-            $html .= "<p style='color:#16a34a; font-weight:600; padding:12px; background:#f0fdf4; border-radius:6px;'>No errors or warnings were logged for $date.</p>";
+            $html .= "<p style='color:#16a34a; font-weight:600; padding:12px; background:#f0fdf4; border-radius:6px; margin:0 0 10px 0;'>No errors or warnings were logged for $date.</p>";
         } else {
             $html .= "
                         <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse;'>

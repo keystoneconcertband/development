@@ -103,7 +103,7 @@ The application uses **Monolog** with PSR-3 compliance via `KcbLogger` (`include
 - **Daily Rotating Logs**: Stored as `logs/kcb-YYYY-MM-DD.log` using atomic thread-safe append locks (`LOCK_EX`).
 - **Retention**: Older log files beyond 30 days are purged automatically.
 - **Global Error Handling**: Uncaught exceptions, PHP warnings/notices, and fatal script terminations are captured automatically.
-- **Daily Issue Digest**: A GitHub Actions workflow (`.github/workflows/daily-log-summary.yml`) runs daily at 7:00 AM Eastern Time to trigger `api/cron/daily_log_summary.php`. If issues (`WARNING`, `ERROR`, `CRITICAL`) occurred that day, a categorized HTML alert digest is dispatched to `webmaster@keystoneconcertband.com` (or `ALERT_EMAIL_RECIPIENT`). If zero issues occurred, no email is sent.
+- **Daily Status & Issue Digest**: A GitHub Actions workflow (`.github/workflows/daily-log-summary.yml`) runs daily at 7:00 AM Eastern Time to trigger `api/cron/daily_log_summary.php`. A comprehensive HTML daily status digest is always emailed to `webmaster@keystoneconcertband.com` (or `ALERT_EMAIL_RECIPIENT`), reporting member logins for the day and full categorized breakdowns of any issues detected (or confirming all systems are healthy if 0 issues occurred).
 - **Abuse Prevention & Security**:
   - **Single Email Per Day Lock**: Enforces a daily lock (`logs/.sent_YYYY-MM-DD.lock`) so subsequent executions on the same day skip email dispatch, preventing duplicate emails or quota exhaustion from repeated hits. Use `--force` (or `&force=1` with valid key) to explicitly override.
   - **Public Web Access Blocking**: `scripts/.htaccess` blocks all public internet access to the `scripts/` directory at the Apache layer (allowing only local/private subnets).

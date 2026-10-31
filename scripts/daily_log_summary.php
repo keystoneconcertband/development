@@ -87,6 +87,14 @@ echo "Date:       " . ($result['date'] ?? 'N/A') . "\n";
 echo "Status:     " . ($result['status'] ?? 'unknown') . "\n";
 echo "Issues:     " . ($result['issue_count'] ?? 0) . "\n";
 
+if (!empty($result['login_stats'])) {
+    printf("Logins:     %d successful (%d unique members, %d total attempts)\n",
+        $result['login_stats']['successful_logins'] ?? 0,
+        $result['login_stats']['unique_users'] ?? 0,
+        $result['login_stats']['total_attempts'] ?? 0
+    );
+}
+
 if (isset($result['message'])) {
     echo "Message:    " . $result['message'] . "\n";
 }
@@ -98,6 +106,13 @@ if (!empty($result['stats'])) {
     echo "\nStats Breakdown:\n";
     foreach ($result['stats'] as $k => $v) {
         printf("  %-10s : %d\n", ucfirst($k), $v);
+    }
+}
+
+if ($dryRun && !empty($result['login_stats']['recent_logins'])) {
+    echo "\nMember Logins Today:\n";
+    foreach ($result['login_stats']['recent_logins'] as $login) {
+        printf("  [%s] %-30s - %s\n", $login['time'], $login['email'], $login['status']);
     }
 }
 
