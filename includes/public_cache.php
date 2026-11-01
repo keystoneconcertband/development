@@ -1,5 +1,9 @@
 <?php
 
+if (headers_sent()) {
+    return;
+}
+
 // Public pages can be cached only when the request is not tied to a session.
 if (session_status() === PHP_SESSION_NONE && isset($_COOKIE[session_name()])) {
     session_start();

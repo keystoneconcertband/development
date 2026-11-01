@@ -1,4 +1,5 @@
 <?php
+	require_once __DIR__ . '/includes/public_cache.php';
 	require_once 'includes/class/kcbPublic.class.php';
 	global $homepage;
 	$homepage = new KCBPublic();
