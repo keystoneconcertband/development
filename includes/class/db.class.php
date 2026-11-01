@@ -54,9 +54,14 @@ class DB
         $this->settings = parse_ini_file("settings.ini.php");
         $dsn            = 'mysql:dbname=' . $this->settings["dbname"] . ';host=' . $this->settings["host"] . '';
         try {
+            # Use Pdo\Mysql::ATTR_INIT_COMMAND for PHP 8.4+ and fallback to PDO::MYSQL_ATTR_INIT_COMMAND for older versions
+            $initCommand = defined('Pdo\Mysql::ATTR_INIT_COMMAND')
+                ? \Pdo\Mysql::ATTR_INIT_COMMAND
+                : PDO::MYSQL_ATTR_INIT_COMMAND;
+
             # Read settings from INI file, set UTF8
             $this->pdo = new PDO($dsn, $this->settings["user"], $this->settings["password"], array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                $initCommand => "SET NAMES utf8"
             ));
             
             # We can now log any exceptions on Fatal error. 
