@@ -32,7 +32,7 @@ jobs:
           TARGET_DATE: ${{ github.event.inputs.target_date }}
           FORCE: ${{ github.event.inputs.force }}
         run: |
-          URL="https://www.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}"
+          URL="https://dev.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}"
           if [ -n "$TARGET_DATE" ]; then
             URL="${URL}&date=${TARGET_DATE}"
           fi
@@ -60,4 +60,3 @@ jobs:
             echo "::error::Daily summary trigger returned status $HTTP_STATUS"
             exit 1
           fi
-
