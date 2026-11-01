@@ -51,10 +51,12 @@ class Member
             if (!isset($_COOKIE[$this->kcbCookie])) {
                 // If sendText is true (default), then send a text based upon their email account.
                 $response = $this->sendAuthRequest($email);
+                $this->getKcb()->logInfo("Authentication code generated and dispatched", ['email' => $email]);
             } else {
                 // Validate that the cookie auth code matches what is in the database
                 if (!$this->isValidAuthCookie($email)) {
                     // Send auth email, user's cookie is bad
+                    $this->getKcb()->logWarning("Login attempted with invalid auth cookie", ['email' => $email]);
                     $sendResponse = $this->sendAuthRequest($email);
                     if ($sendResponse === "auth_required_no_cookie") {
                         $response = "auth_failed_invalid_cookie";
@@ -67,8 +69,11 @@ class Member
 
                     // Save email address since user's session is now valid to continue.
                     $this->saveSession($email, $this->getDb()->getAuthCdGuid($email, $this->getAuthCdFromCookie()));
+                    $this->getKcb()->logInfo("Member authenticated via remember-me cookie", ['email' => $email]);
                 }
             }
+        } else {
+            $this->getKcb()->logWarning("Login attempted for invalid/unregistered email", ['email' => $email]);
         }
 
         $this->getDb()->logLogin($email, $response);
@@ -82,6 +87,7 @@ class Member
         $response = $this->isValidUser($email);
 
         if ($response !== "valid") {
+            $this->getKcb()->logWarning("Auth verification failed: user account not valid", ['email' => $email]);
             $this->getDb()->logLogin($email, $response);
             return $response;
         }
@@ -97,6 +103,7 @@ class Member
                 $response = "auth_invalid";
             }
 
+            $this->getKcb()->logWarning("Invalid auth code entered", ['email' => $email, 'ip' => $ipAddress]);
             $this->getDb()->logLogin($email, $response);
             return $response;
         }
@@ -104,16 +111,22 @@ class Member
         // See if code is from within the last MAX_EXPIRE mins
         $authCdTimestamp = $this->getDb()->getAuthCdTimestamp($email);
         if ($authCdTimestamp === false || $authCdTimestamp === null) {
-            $this->getKcb()->logMessage("Invalid auth timestamp for email: " . $email . " value: " . var_export($authCdDb['lst_tran_dt_tm'], true));
+            $this->getKcb()->logError("Invalid auth timestamp in database", [
+                'email' => $email,
+                'raw'   => var_export($authCdDb['lst_tran_dt_tm'], true),
+            ]);
             $response = "auth_old";
             $this->getDb()->logLogin($email, $response);
             return $response;
         }
 
         $authCdDtTm = $authCdTimestamp + 60 * self::MAX_EXPIRE;
-        $this->getKcb()->logMessage("AuthCdDtTm: " . date('Y-m-d h:i:sa', $authCdDtTm) . " (" . $authCdDtTm . ") Current Time: " . time() . " (" . date('Y-m-d h:i:sa', time()) . ") Email: " . $email);
 
         if (time() > $authCdDtTm) {
+            $this->getKcb()->logNotice("Expired auth code submitted", [
+                'email'     => $email,
+                'code_time' => date('Y-m-d H:i:s', $authCdTimestamp),
+            ]);
             if ($this->sendAuthRequest($email)) {
                 $response = "auth_old";
             } else {
@@ -129,14 +142,20 @@ class Member
 
         // Update user's account
         if (!$this->getDb()->setAuthCd($email, $guid)) {
+            $this->getKcb()->logError("Failed to set auth GUID in database", ['email' => $email]);
             $response = "db_error";
         } elseif (!$this->getDb()->updateLastLogin($email)) {
+            $this->getKcb()->logError("Failed to update last login timestamp in database", ['email' => $email]);
             $response = "db_error";
         } else {
             $this->saveSession($email, $guid);
             if ($auth_remember == "true") {
                 $this->saveCookie($email, $guid);
             }
+            $this->getKcb()->logInfo("Member verified auth code and logged in", [
+                'email'       => $email,
+                'remember_me' => ($auth_remember == "true"),
+            ]);
             $response = "valid";
         }
 
@@ -333,6 +352,14 @@ class Member
         $response = "valid";
         $invCount = $this->getDb()->getInvalidCount($email) + 1;
         $ipAddress = $this->getIpAddress();
+
+        if ($invCount >= 3) {
+            $this->getKcb()->logWarning("Repeated invalid auth code attempts detected", [
+                'email'         => $email,
+                'invalid_count' => $invCount,
+                'ip'            => $ipAddress,
+            ]);
+        }
 
         // Update login cd invalid_count
         if (!$this->getDb()->setLoginCdInvalidCount($email, $ipAddress, strval($invCount))) {

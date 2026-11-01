@@ -1,0 +1,16 @@
+<IfModule mod_authz_core.c>
+    # Deny public internet access; allow local loopback and private LAN/Docker subnets
+    <RequireAny>
+        Require local
+        Require ip 127.0.0.1
+        Require ip ::1
+        Require ip 10.0.0.0/8
+        Require ip 172.16.0.0/12
+        Require ip 192.168.0.0/16
+    </RequireAny>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+    Allow from 127.0.0.1 ::1 localhost 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+</IfModule>

@@ -63,19 +63,19 @@
     </div>
     <?php
 		$messages = $homepage->getHomepageMessages();
-		
+
 		foreach($messages as $msg) {
 			if($msg['message_type'] == "Regular") {
-				echo('<div class="alert alert-warning alert-dismissible fade show" role="alert">'
+				echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">'
 					. '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
 					. '<h4><i class="fa-solid fa-circle-exclamation me-2 mt-1" aria-hidden="true"></i>' . $msg['title'] . '</h4>'
-					. $msg['message'] . '</div>');
+					. $msg['message'] . '</div>';
 			}
 			else {
-				echo('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+				echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
 					. '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
 					. '<h4><i class="fa-solid fa-bullhorn me-2 mt-1" aria-hidden="true"></i>' . $msg['title'] . '</h4>'
-					. $msg['message'] . '</div>');
+					. $msg['message'] . '</div>';
 			}
 		}
 	?>
@@ -88,22 +88,22 @@
                 <h2>Upcoming Concert</h2>
                 <?php
 					$concert = $homepage->getCurrentConcert();
-									
+
 					if(!$concert) {
 						echo "<h4>There are no upcoming concerts.</h4>Our concert series is done for the season. Please check back again in early Spring to see our new concert schedule!";
 					}
 					else {
 						$today = date("Y-m-d");
 						$begin = date('Y-m-d', strtotime($concert['concertBegin']));
-					
+
 						if ($today == $begin) {
 							$begin = "Today";
 						}
 						else {
 							$begin = date('D, M d', strtotime($concert['concertBegin']));
 						}
-		
-						echo "<h4>" . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . "</h4>";			
+
+						echo "<h4>" . $begin . " at " . date('g:iA', strtotime($concert['concertBegin'])) . "</h4>";
 						echo "<h4><a href='https://maps.google.com/maps?q=" . urlencode($concert['address']) . "' target='_blank' style='border-bottom:none;'>" . $concert['Title'] . "</a></h4>";
 						echo "<div style='width: 100%'><iframe width='100%' height='340' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://maps.google.com/maps?width=100%25&amp;height=340&amp;hl=en&amp;q=" . urlencode($concert['address']) ."&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'></iframe></div>";
 					}

@@ -14,11 +14,11 @@ function formatAddress($mbr) {
 
 		if(!empty($mbr['address2'])) {
 			$address .= $mbr['address2'] . '<br />';
-		}	
-		
-		$address .= $mbr['city'] . ', ' . $mbr['state'] . ' ' . $mbr['zip'];				
+		}
+
+		$address .= $mbr['city'] . ', ' . $mbr['state'] . ' ' . $mbr['zip'];
 	}
-	
+
 	return $address;
 }
 

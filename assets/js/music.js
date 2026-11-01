@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
             { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
         ],
         columns: [
-            { data: null, 
+            { data: null,
               width: '60px',
               render: function (data) {
                 if (accountType === '1' || accountType === '2') {

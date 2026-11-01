@@ -1,10 +1,10 @@
-<?php 
+<?php
 	# This is the public page for music which the ajax requests call.
 	require_once __DIR__ . '/../../includes/class/protectedMusic.class.php';
 	header('Content-Type: application/json');
 
 	$music = new ProtectedMusic();
-	
+
 	if(isset($_POST['type']) && $_POST['type'] === "add") {
 		if(!isset($_POST['title'])) {
 			echo json_encode('Title is required.');
@@ -26,7 +26,7 @@
 		elseif(!isset($_POST['genre']) || $_POST['genre'] == "0") {
 			echo json_encode('Genre is required.');
 		}
-		else {			
+		else {
 			echo json_encode($music->editMusic($_POST['uid'], $_POST['title'], $_POST['notes'], $_POST['music_link'], $_POST['genre']));
 		}
 	}
@@ -34,7 +34,7 @@
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
 		}
-		else {			
+		else {
 			echo json_encode($music->deleteMusic($_POST['uid']));
 		}
 	}
@@ -42,7 +42,7 @@
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
 		}
-		else {			
+		else {
 			echo json_encode($music->getMusicRecord($_POST['uid']));
 		}
 	}
@@ -50,7 +50,7 @@
 		if(!isset($_POST['concert_date'])) {
 			echo json_encode('Concert date is missing.');
 		}
-		else {			
+		else {
 			echo json_encode($music->addConcert($_POST));
 		}
 	}
@@ -58,5 +58,5 @@
 		echo json_encode($music->getGenres());
 	}
 	else {
-		echo json_encode($music->getMusic());	
+		echo json_encode($music->getMusic());
 	}

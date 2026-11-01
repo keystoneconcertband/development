@@ -15,5 +15,5 @@ elseif ($email != null && $auth_cd != null) {
 	echo trim((string)$mbr->verifyAuthCd($email, $auth_cd, $auth_remember));
 }
 else {
-	echo "invalid_request";		
+	echo "invalid_request";
 }

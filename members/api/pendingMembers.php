@@ -1,4 +1,4 @@
-<?php 
+<?php
 	# This is the public page for member which the ajax requests call.
 	require_once __DIR__ . '/../../includes/class/protectedAdmin.class.php';
 	header('Content-Type: application/json');
@@ -9,7 +9,7 @@
 			echo json_encode('Unique Identifier is missing.');
 			return;
 		}
-			
+
 		$validRequest = true;
 
 		// Validate form
@@ -17,19 +17,19 @@
 			$response = 'First name is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['lastName'])) {
+		elseif(!isset($_POST['lastName'])) {
 			$response = 'Last name is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['address1'])) {
+		elseif(!isset($_POST['address1'])) {
 			$response = 'Address is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['city'])) {
+		elseif(!isset($_POST['city'])) {
 			$response = 'City is required.';
 			$validRequest = false;
 		}
-		else if(!isset($_POST['zip'])) {
+		elseif(!isset($_POST['zip'])) {
 			$response = 'Zip Code is required.';
 			$validRequest = false;
 		}
@@ -41,15 +41,15 @@
 					$emailExists = true;
 				}
 			}
-			
+
 			if(!$emailExists) {
 				$response = "At least one email address is required.";
 				$validRequest = false;
-			}			
+			}
 		}
-		
+
 		if($validRequest) {
-			echo json_encode($mbr->addPendingMember($_POST['uid'], $_POST));		
+			echo json_encode($mbr->addPendingMember($_POST['uid'], $_POST));
 		}
 		else {
 			echo json_encode($response);
@@ -59,7 +59,7 @@
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
 		}
-		else {			
+		else {
 			echo json_encode($mbr->getMemberRecord($_POST['uid']));
 		}
 	}
@@ -67,11 +67,11 @@
 		if(!isset($_POST['uid'])) {
 			echo json_encode('Unique Identifier is missing.');
 		}
-		else {			
+		else {
 			echo json_encode($mbr->deleteMember($_POST['uid'], true));
 		}
 	}
 	else {
 		$mbmrs = $mbr->getPendingMembers();
-		echo json_encode($mbmrs);	
+		echo json_encode($mbmrs);
 	}

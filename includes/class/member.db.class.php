@@ -259,6 +259,16 @@ class MemberDB
                                       ORDER by UID desc");
     }
 
+    // Get Login Stats for a specific date (YYYY-MM-DD)
+    public function getDailyLoginStats($date)
+    {
+        $this->getDb()->bind("dt", $date . '%');
+        return $this->getDb()->query("SELECT logonValue, valid, estbd_dt_tm
+                                      FROM kcb_logon_audit
+                                      WHERE estbd_dt_tm LIKE :dt
+                                      ORDER by estbd_dt_tm desc");
+    }
+
     /* UPDATE FUNCTIONS */
     public function setAuthCd($email, $guid)
     {

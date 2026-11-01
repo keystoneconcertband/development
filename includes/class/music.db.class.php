@@ -1,5 +1,6 @@
 <?php
 require_once "db.class.php";
+require_once "kcbLogger.class.php";
 
 class MusicDB
 {
@@ -94,13 +95,20 @@ class MusicDB
             if ($uid > 0) {
                 $retValue = 1;
                 $this->executeTransaction();
+                KcbLogger::getInstance()->info("Music track added successfully", ['uid' => $uid, 'title' => $title, 'user_id' => $user_id]);
             } else {
                 $this->rollBackTransaction();
                 $retValue = "add_music_error";
+                KcbLogger::getInstance()->error("Failed to add music track: invalid lastInsertId", ['title' => $title, 'user_id' => $user_id]);
             }
         } catch (Exception $e) {
             $this->rollBackTransaction();
             $retValue = "db_error";
+            KcbLogger::getInstance()->error("Exception while adding music track", [
+                'exception' => $e,
+                'title'     => $title,
+                'user_id'   => $user_id,
+            ]);
         }
 
         return $retValue;
@@ -124,13 +132,20 @@ class MusicDB
 
             if ($retValue) {
                 $this->executeTransaction();
+                KcbLogger::getInstance()->info("Music track updated successfully", ['uid' => $uid, 'title' => $title, 'user_id' => $user_id]);
             } else {
                 $this->rollBackTransaction();
                 $retValue = "edit_music_error";
+                KcbLogger::getInstance()->error("Failed to update music track: query returned zero affected rows", ['uid' => $uid, 'title' => $title]);
             }
         } catch (Exception $e) {
             $this->rollBackTransaction();
             $retValue = "db_error";
+            KcbLogger::getInstance()->error("Exception while editing music track", [
+                'exception' => $e,
+                'uid'       => $uid,
+                'title'     => $title,
+            ]);
         }
 
         return $retValue;

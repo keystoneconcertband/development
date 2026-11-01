@@ -192,15 +192,15 @@ function getInstrument($instrument) {
 	$members = $mbr->getMembers($instrument);
 
 	if(count($members) == 0){
-		echo("There are no members who currently play this instrument!<br /><a href='join.php'>Come join us!</a>");
+		echo "There are no members who currently play this instrument!<br /><a href='join.php'>Come join us!</a>";
 	}
 	else {
 		foreach ($members as $member) {
 			if ($member['displayFullName'] == '1') {
-				echo($member['firstName'] . ' ' . $member['lastName']);
+				echo $member['firstName'] . ' ' . $member['lastName'];
 			}
 			else {
-				echo($member['firstName'] . ' ' . substr($member['lastName'], 0, 1));
+				echo $member['firstName'] . ' ' . substr($member['lastName'], 0, 1);
 			}
 
 			if (++$counter != count($members)) {

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             { "orderable": false, "targets": 0 } // Disables sorting on the 1st column
         ],
         columns: [
-            { data: null, 
+            { data: null,
               width: '10px',
               render: function (data) {
                 return '<a href="#nojump"><span class="fa fa-edit" onclick="showEditRecord(' + data.uid + ')"></span></a>';

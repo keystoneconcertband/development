@@ -308,17 +308,28 @@ class DB
      */
     private function ExceptionLog($message, $sql = "")
     {
-        $exception = 'Unhandled Exception. <br />';
-        $exception .= $message;
-        $exception .= "<br /> The error has been logged.";
-        
+        $context = [];
         if (!empty($sql)) {
-            # Add the Raw SQL to the Log
-            $message .= "\r\nRaw SQL : " . $sql;
+            $context['sql'] = $sql;
         }
-        # Write into log
-        $this->log->write($message);
-        
+
+        $this->log->critical("Database PDO Exception: " . $message, $context);
+
+        $isApi = (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/api/') !== false)
+            || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
+        if (!headers_sent()) {
+            http_response_code(500);
+        }
+
+        if ($isApi) {
+            header('Content-Type: application/json');
+            return json_encode(['error' => 'A database error occurred. The incident has been logged.']);
+        }
+
+        $exception = 'Unhandled Database Exception. <br />';
+        $exception .= htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+        $exception .= "<br /> The error has been logged.";
         return $exception;
     }
 }
