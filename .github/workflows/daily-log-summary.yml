@@ -2,8 +2,9 @@ name: Daily Log Summary & Issue Alert
 
 on:
   schedule:
-    # Runs daily at 11:00 UTC (7:00 AM Eastern Time)
-    - cron: '0 11 * * *'
+    # Note: GitHub Actions cron expressions are in UTC, but the timezone field allows specifying the local timezone for the schedule.
+    - cron: '11 6 * * *'
+      timezone: "America/New_York"
   workflow_dispatch:
     inputs:
       target_date:
