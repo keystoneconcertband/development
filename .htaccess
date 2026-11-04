@@ -9,7 +9,7 @@
 </FilesMatch>
 
 # Deny direct access to dependency manifests and documentation
-<FilesMatch "^(composer\.(json|lock)|package\.json|yarn\.lock|README\.md)$">
+<FilesMatch "^(composer\.(json|lock)|package\.json|yarn\.lock|README\.md|AGENTS\.md)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
