@@ -28,3 +28,10 @@
     </IfModule>
 </FilesMatch>
 
+# Health check endpoint alias (/health -> /health.php)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^health/?$ health.php [L,QSA]
+</IfModule>
+
+

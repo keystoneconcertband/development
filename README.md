@@ -10,7 +10,7 @@ The application is structured into clearly separated modules for public views, m
 
 ```
 dev/
-├── api/                     # Public AJAX endpoints (booking, join, auth)
+├── api/                     # Public AJAX endpoints (booking, join, auth, health)
 ├── assets/                  # Consolidated static web assets
 │   ├── css/                 # Stylesheets (site.css, member.css)
 │   ├── docs/                # Band policies, bylaws, and uniform guidelines
@@ -35,6 +35,7 @@ dev/
 ├── concerts.php             # Public concert schedule
 ├── conductors.php           # Public conductor bios
 ├── donate.php               # Public donation details
+├── health.php               # System health check page & JSON status endpoint
 ├── join.php                 # Public membership application form
 ├── music.php                # Public recording player & track list
 ├── privacy.php              # Public privacy policy
@@ -119,6 +120,22 @@ The application uses **Monolog** with PSR-3 compliance via `KcbLogger` (`include
   # Or via HTTP:
   curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
   ```
+
+---
+
+## Health Checks & Monitoring
+
+The application provides a real-time system health check page and JSON probe:
+
+- **Web Browser Interface**: `http://localhost/health.php` (or `/health`)
+  - Displays real-time operational status for MySQL database connectivity, storage write permissions, PHP runtime metrics, and server environment.
+- **Automated Monitoring / Probes**: `http://localhost/api/health.php` or `http://localhost/health.php?format=json`
+  - Returns structured JSON payload with HTTP `200 OK` when healthy and HTTP `503 Service Unavailable` when degraded.
+  - Ideal for Azure Web App Health Check feature, Pingdom, UptimeRobot, or external alerting probes:
+    ```bash
+    curl "http://localhost/health.php?format=json"
+    curl "http://localhost/api/health.php"
+    ```
 
 ---
 
