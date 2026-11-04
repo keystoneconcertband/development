@@ -24,7 +24,7 @@ class DailySummaryService
     /**
      * Run daily log summary for a target date
      *
-     * @param string|null $targetDate YYYY-MM-DD format (defaults to today in Eastern Time)
+     * @param string|null $targetDate YYYY-MM-DD format (defaults to previous day in Eastern Time)
      * @param bool $forceSend Always send email even if 0 issues
      * @param bool $dryRun Output summary without sending email
      * @return array Result metrics and execution status
@@ -33,8 +33,9 @@ class DailySummaryService
     {
         $tz = new \DateTimeZone('America/New_York');
         if (empty($targetDate)) {
-            $now = new \DateTime('now', $tz);
-            $targetDate = $now->format('Y-m-d');
+            $date = new \DateTime('now', $tz);
+            $date->modify('-1 day');
+            $targetDate = $date->format('Y-m-d');
         }
 
         $logDir = $this->logger->getLogDir();
