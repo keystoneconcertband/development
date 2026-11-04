@@ -35,14 +35,31 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Clean up non-production files before publishing
+        run: |
+          # 1. Version control, CI/CD, and IDE configs
+          rm -rf .git .github .gitignore .gitattributes .vscode
+
+          # 2. Markdown, plaintext docs, and changelogs
+          find . -type f \( -name "*.md" -o -name "*.markdown" \) -delete
+          find . -type f \( -name "README*" -o -name "CHANGELOG*" -o -name "LICENSE*" -o -name "CONTRIBUTING*" -o -name "RELEASE-DATE-*" \) -delete
+
+          # 3. Dependency & build manifests (vendor/ is already installed)
+          rm -f composer.json composer.lock
+          rm -f pma/composer.json pma/composer.lock pma/package.json pma/yarn.lock pma/babel.config.json
+
+          # 4. phpMyAdmin setup & SQL schemas
+          rm -rf pma/setup pma/sql pma/config.sample.inc.php
+
+          # 5. OS metadata & source maps
+          find . -type f -name ".DS_Store" -delete
+          find . -type f -name "*.map" -delete
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v7
         with:
           name: php-app
-          path: release.zip
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,9 +73,6 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: php-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
