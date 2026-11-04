@@ -446,6 +446,10 @@ if ($wantsJson) {
                 <div class="mt-2 text-muted small">
                     Returns HTTP <strong>200 OK</strong> when healthy and HTTP <strong>503 Service Unavailable</strong> when degraded.
                 </div>
+                <div class="mt-2 pt-2 border-top text-muted small">
+                    <i class="fa-solid fa-triangle-exclamation text-warning me-1" aria-hidden="true"></i>
+                    <strong>Azure App Service Note:</strong> Azure Web Apps (Linux) runs on <strong>Nginx</strong> and does not evaluate Apache <code>.htaccess</code> rewrite rules. Accessing extensionless <code>/health</code> will return a 404 from Nginx; always use <code>/health.php</code> or <code>/api/health.php</code> directly.
+                </div>
             </div>
         </div>
     </main>
