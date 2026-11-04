@@ -34,10 +34,11 @@ This file provides a token-efficient, high-density architecture map and operatio
    - **Public Pages**: Do not call `session_start()` for anonymous visitors. Use `require_once __DIR__ . '/includes/public_cache.php'` to emit public edge cache headers (`max-age=3600`).
    - **Authenticated Member Pages (`members/`)**: Use `new Member(true)` which verifies authentication and starts the session.
    - **Health & API Endpoints**: Must emit strict no-cache headers (`Cache-Control: no-cache, no-store, must-revalidate`).
-5. **Security & Input Handling**:
+5. **Security, Privacy & Input Handling**:
    - Always use PDO prepared statements with parameter binding for SQL queries.
    - Always sanitize output with `htmlspecialchars()` before rendering dynamic values into HTML.
    - Protect webhooks / cron endpoints with `hash_equals()` against `APPSETTING_CRON_KEY` or `CRON_SECRET` and IP rate-limiting.
+   - **Health Diagnostics Privacy**: In `health.php`, sensitive infrastructure details (DB host/name, exact PHP patch versions, memory limits, internal filesystem paths, server machine hostnames, and raw DB exception strings) are masked for unauthenticated public viewers and revealed only to authenticated members/admins or probes with `?key=<CRON_KEY>`.
 
 ---
 
