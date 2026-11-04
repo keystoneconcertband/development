@@ -28,7 +28,9 @@
     </IfModule>
 </FilesMatch>
 
-# Health check endpoint alias (/health -> /health.php)
+# Health check endpoint alias for Apache environments (e.g. local Docker LAMP)
+# NOTE: Azure App Service (Linux) runs on Nginx and does not process .htaccess files.
+# Direct requests to extensionless /health will 404 on Azure; use /health.php or /api/health.php.
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^health/?$ health.php [L,QSA]

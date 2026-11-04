@@ -127,7 +127,7 @@ The application uses **Monolog** with PSR-3 compliance via `KcbLogger` (`include
 
 The application provides a real-time system health check page and JSON probe:
 
-- **Web Browser Interface**: `http://localhost/health.php` (or `/health`)
+- **Web Browser Interface**: `http://localhost/health.php`
   - Displays real-time operational status for MySQL database connectivity, storage write permissions, PHP runtime metrics, and server environment.
 - **Automated Monitoring / Probes**: `http://localhost/api/health.php` or `http://localhost/health.php?format=json`
   - Returns structured JSON payload with HTTP `200 OK` when healthy and HTTP `503 Service Unavailable` when degraded.
@@ -137,6 +137,9 @@ The application provides a real-time system health check page and JSON probe:
     curl "http://localhost/api/health.php"
     ```
 
+> [!IMPORTANT]
+> **Azure App Service & Nginx**: Azure Web Apps (Linux) runs on **Nginx** (e.g. `nginx/1.30.x`) and **does not process Apache `.htaccess` files**. Extensionless URLs such as `/health` will return an HTTP 404 from Nginx. Always configure Azure Health Check probes and links to use the explicit file path (`/health.php` or `/api/health.php`).
+
 ---
 
 ## Deployment
@@ -144,3 +147,6 @@ The application provides a real-time system health check page and JSON probe:
 The website is continuously deployed to Azure Web Apps via GitHub Actions workflows:
 - `dev` branch $\rightarrow$ `webserver-dev`
 - `main` branch $\rightarrow$ `webserver-prod`
+
+> [!NOTE]
+> Azure Web Apps runs on a Linux container with **Nginx + PHP-FPM**. Apache `.htaccess` directives (such as URL rewriting or `<FilesMatch>` blocks) are not evaluated by Nginx on Azure. If Nginx-level rewrite rules or server directives are required in Azure, they must be configured via custom Nginx configuration or an Azure startup script.
