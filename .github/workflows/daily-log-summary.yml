@@ -3,12 +3,12 @@ name: Daily Log Summary & Issue Alert
 on:
   schedule:
     # Note: GitHub Actions cron expressions are in UTC, but the timezone field allows specifying the local timezone for the schedule.
-    - cron: '11 6 * * *'
+    - cron: '2 0 * * *'
       timezone: "America/New_York"
   workflow_dispatch:
     inputs:
       target_date:
-        description: 'Target log date (YYYY-MM-DD, defaults to today)'
+        description: 'Target log date (YYYY-MM-DD, defaults to previous day)'
         required: false
         type: string
         default: ''
@@ -33,14 +33,15 @@ jobs:
           TARGET_DATE: ${{ github.event.inputs.target_date }}
           FORCE: ${{ github.event.inputs.force }}
         run: |
-          URL="https://dev.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}"
-          if [ -n "$TARGET_DATE" ]; then
-            URL="${URL}&date=${TARGET_DATE}"
+          if [ -z "$TARGET_DATE" ]; then
+            TARGET_DATE=$(TZ="America/New_York" date -d "yesterday" +%Y-%m-%d 2>/dev/null || TZ="America/New_York" date -v-1d +%Y-%m-%d)
           fi
+          URL="https://dev.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}&date=${TARGET_DATE}"
           if [ "$FORCE" = "true" ]; then
             URL="${URL}&force=1"
           fi
 
+          echo "Target Date: $TARGET_DATE"
           echo "Pinging Daily Summary API Endpoint..."
           HTTP_RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X GET "$URL")
           HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed -e '$d')
@@ -52,6 +53,7 @@ jobs:
 
           # Write to GitHub Step Summary
           echo "### Daily Log Summary Report" >> $GITHUB_STEP_SUMMARY
+          echo "- **Target Date:** \`$TARGET_DATE\`" >> $GITHUB_STEP_SUMMARY
           echo "- **HTTP Status:** \`$HTTP_STATUS\`" >> $GITHUB_STEP_SUMMARY
           echo '```json' >> $GITHUB_STEP_SUMMARY
           echo "$HTTP_BODY" >> $GITHUB_STEP_SUMMARY
