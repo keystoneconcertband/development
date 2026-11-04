@@ -6,6 +6,11 @@
  * MySQL database, storage permissions, and server environment).
  * Supports both responsive HTML presentation for administrators/browsers and
  * structured JSON output for monitoring probes (Azure Web Apps, UptimeRobot, etc.).
+ *
+ * Security: Sensitive infrastructure parameters (database host, database name,
+ * internal filesystem paths, exact PHP version, server machine hostname, and OS/SAPI)
+ * are masked for unauthenticated public viewers, while authorized administrators
+ * and authenticated monitoring probes have full telemetry access.
  */
 
 $startTime = microtime(true);
@@ -22,10 +27,27 @@ $isDev = strpos($serverName, 'dev') !== false
 // Ensure default timezone is set to Eastern Time
 date_default_timezone_set('America/New_York');
 
-// Populate session if session cookie exists so Member Area dropdown displays for authenticated users
+// Populate session if session cookie exists so Member Area dropdown and permissions are available
 if (session_status() === PHP_SESSION_NONE && isset($_COOKIE[session_name()])) {
     @session_start();
 }
+
+// Authentication & privilege check for viewing sensitive infrastructure details
+$isAuthenticated = !empty($_SESSION['email']);
+$isAdmin = $isAuthenticated && isset($_SESSION['accountType']) && in_array((int)$_SESSION['accountType'], [1, 2], true);
+
+// Check for authorized API key via GET parameter or Authorization Bearer header
+$expectedKey = getenv('APPSETTING_CRON_KEY') ?: getenv('CRON_SECRET');
+$providedKey = $_GET['key'] ?? '';
+if (empty($providedKey) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
+    if (preg_match('/Bearer\s+(\S+)/i', $_SERVER['HTTP_AUTHORIZATION'], $m)) {
+        $providedKey = $m[1];
+    }
+}
+$hasValidKey = !empty($expectedKey) && !empty($providedKey) && hash_equals((string)$expectedKey, (string)$providedKey);
+
+// Grant detailed view to authenticated members/admins, authorized monitoring keys, or local dev
+$canViewDetails = $isDev || $isAuthenticated || $hasValidKey;
 
 $checks = [];
 $overallHealthy = true;
@@ -49,11 +71,11 @@ if (!$phpOk && (in_array('pdo', $missingExtensions) || in_array('pdo_mysql', $mi
 
 $checks['php'] = [
     'status'             => $phpOk ? 'ok' : 'warning',
-    'version'            => PHP_VERSION,
-    'memory_usage'       => $phpMemoryUsage,
-    'memory_peak'        => $phpMemoryPeak,
-    'memory_limit'       => $phpMemoryLimit,
-    'max_execution_time' => (ini_get('max_execution_time') ?: '0') . 's',
+    'version'            => $canViewDetails ? PHP_VERSION : 'PHP 8.x',
+    'memory_usage'       => $canViewDetails ? $phpMemoryUsage : null,
+    'memory_peak'        => $canViewDetails ? $phpMemoryPeak : null,
+    'memory_limit'       => $canViewDetails ? $phpMemoryLimit : null,
+    'max_execution_time' => $canViewDetails ? ((ini_get('max_execution_time') ?: '0') . 's') : null,
     'missing_extensions' => $missingExtensions,
 ];
 
@@ -70,7 +92,7 @@ $dbError = null;
 $dbOk = false;
 
 if (empty($dbHost) || empty($dbName)) {
-    $dbError = 'Database configuration not found';
+    $dbError = $canViewDetails ? 'Database configuration not found' : 'Database service unconfigured';
     $overallHealthy = false;
 } else {
     try {
@@ -92,14 +114,15 @@ if (empty($dbHost) || empty($dbName)) {
     } catch (\Throwable $e) {
         $dbOk = false;
         $overallHealthy = false;
-        $dbError = $isDev ? $e->getMessage() : 'Unable to connect to database';
+        // Never expose raw database exceptions or passwords to public viewers
+        $dbError = $canViewDetails ? $e->getMessage() : 'Unable to connect to database service';
     }
 }
 
 $checks['database'] = [
     'status'     => $dbOk ? 'ok' : 'error',
-    'host'       => $dbHost,
-    'database'   => $dbName,
+    'host'       => $canViewDetails ? $dbHost : 'Protected',
+    'database'   => $canViewDetails ? $dbName : 'Protected',
     'latency_ms' => $dbLatencyMs,
     'error'      => $dbError,
 ];
@@ -115,19 +138,19 @@ $tempWritable = is_writable(sys_get_temp_dir());
 $checks['storage'] = [
     'status'        => $logsWritable ? 'ok' : 'warning',
     'logs_writable' => $logsWritable,
-    'logs_path'     => 'logs/',
+    'logs_path'     => $canViewDetails ? 'logs/' : 'Protected',
     'temp_writable' => $tempWritable,
 ];
 
 // 4. Server & Environment Check
 $checks['server'] = [
     'status'      => 'ok',
-    'environment' => $isDev ? 'development' : 'production',
+    'environment' => $canViewDetails ? ($isDev ? 'development' : 'production') : 'Protected',
     'time'        => date('Y-m-d H:i:s T'),
     'iso_time'    => date('c'),
-    'hostname'    => gethostname() ?: ($_SERVER['SERVER_NAME'] ?? 'unknown'),
-    'sapi'        => PHP_SAPI,
-    'os'          => PHP_OS,
+    'hostname'    => $canViewDetails ? (gethostname() ?: ($_SERVER['SERVER_NAME'] ?? 'unknown')) : 'Protected',
+    'sapi'        => $canViewDetails ? PHP_SAPI : 'Protected',
+    'os'          => $canViewDetails ? PHP_OS : 'Protected',
     'https'       => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['SERVER_PORT'] ?? '') == 443),
 ];
 
@@ -148,13 +171,25 @@ $wantsJson = (isset($_GET['format']) && $_GET['format'] === 'json')
 
 if ($wantsJson) {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode([
+
+    $response = [
         'status'      => $statusText,
         'http_code'   => $httpStatusCode,
         'timestamp'   => date('c'),
         'duration_ms' => $totalDurationMs,
-        'checks'      => $checks,
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        'services'    => [
+            'database' => $dbOk ? 'operational' : 'degraded',
+            'storage'  => $logsWritable ? 'operational' : 'degraded',
+            'runtime'  => $phpOk ? 'operational' : 'degraded',
+        ],
+    ];
+
+    // Only include detailed telemetry and internal configurations if authorized
+    if ($canViewDetails) {
+        $response['checks'] = $checks;
+    }
+
+    echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     exit;
 }
 ?>
@@ -212,8 +247,17 @@ if ($wantsJson) {
         <!-- Page Title & Quick Actions -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
             <div>
-                <h1 class="h2 mb-1">
-                    <i class="fa-solid fa-heart-pulse text-danger me-2" aria-hidden="true"></i>System Health
+                <h1 class="h2 mb-1 d-flex flex-wrap align-items-center gap-2">
+                    <i class="fa-solid fa-heart-pulse text-danger me-1" aria-hidden="true"></i>System Health
+                    <?php if ($canViewDetails): ?>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle fs-6 align-middle">
+                            <i class="fa-solid fa-unlock me-1" aria-hidden="true"></i>Admin View
+                        </span>
+                    <?php else: ?>
+                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-6 align-middle">
+                            <i class="fa-solid fa-shield-halved me-1" aria-hidden="true"></i>Public View
+                        </span>
+                    <?php endif; ?>
                 </h1>
                 <p class="text-muted mb-0">Real-time status diagnostics for Keystone Concert Band services.</p>
             </div>
@@ -221,7 +265,7 @@ if ($wantsJson) {
                 <a href="health.php" class="btn btn-outline-primary btn-sm">
                     <i class="fa-solid fa-rotate-right me-1" aria-hidden="true"></i>Refresh
                 </a>
-                <a href="health.php?format=json" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">
+                <a href="health.php?format=json<?= (!empty($providedKey) && $hasValidKey) ? '&key=' . urlencode($providedKey) : '' ?>" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">
                     <i class="fa-solid fa-code me-1" aria-hidden="true"></i>JSON View
                 </a>
             </div>
@@ -268,27 +312,38 @@ if ($wantsJson) {
                                     <i class="fa-solid fa-database" aria-hidden="true"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title mb-0">Database</h5>
-                                    <small class="text-muted">MySQL / MariaDB Connection</small>
+                                    <h5 class="card-title mb-0">Database Service</h5>
+                                    <small class="text-muted">MySQL / MariaDB Connectivity</small>
                                 </div>
                             </div>
                             <?php if ($checks['database']['status'] === 'ok'): ?>
-                                <span class="badge bg-success">Connected</span>
+                                <span class="badge bg-success">Operational</span>
                             <?php else: ?>
-                                <span class="badge bg-danger">Error</span>
+                                <span class="badge bg-danger">Degraded</span>
                             <?php endif; ?>
                         </div>
 
                         <?php if ($checks['database']['status'] === 'ok'): ?>
                             <ul class="list-group list-group-flush mb-0">
-                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                    <span class="metric-label">Host</span>
-                                    <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['database']['host']) ?></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                    <span class="metric-label">Database</span>
-                                    <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['database']['database']) ?></span>
-                                </li>
+                                <?php if ($canViewDetails): ?>
+                                    <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                        <span class="metric-label">Host</span>
+                                        <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['database']['host']) ?></span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                        <span class="metric-label">Database</span>
+                                        <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['database']['database']) ?></span>
+                                    </li>
+                                <?php else: ?>
+                                    <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                        <span class="metric-label">Connection</span>
+                                        <span class="metric-value text-success"><i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>Active</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                        <span class="metric-label">Target Details</span>
+                                        <span class="metric-value text-muted small"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>Protected</span>
+                                    </li>
+                                <?php endif; ?>
                                 <li class="list-group-item d-flex justify-content-between px-0 py-2">
                                     <span class="metric-label">Ping Latency</span>
                                     <span class="metric-value text-success"><?= htmlspecialchars((string)$checks['database']['latency_ms']) ?> ms</span>
@@ -297,7 +352,7 @@ if ($wantsJson) {
                         <?php else: ?>
                             <div class="alert alert-danger py-2 px-3 small mb-0 mt-2">
                                 <i class="fa-solid fa-circle-exclamation me-1" aria-hidden="true"></i>
-                                <?= htmlspecialchars((string)($checks['database']['error'] ?? 'Connection failed')) ?>
+                                <?= htmlspecialchars((string)($checks['database']['error'] ?? 'Connection unavailable')) ?>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -314,40 +369,61 @@ if ($wantsJson) {
                                     <i class="fa-solid fa-hard-drive" aria-hidden="true"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title mb-0">Storage & Logs</h5>
-                                    <small class="text-muted">Filesystem Write Permissions</small>
+                                    <h5 class="card-title mb-0">Storage & Filesystem</h5>
+                                    <small class="text-muted">Application Write Subsystem</small>
                                 </div>
                             </div>
                             <?php if ($checks['storage']['logs_writable']): ?>
-                                <span class="badge bg-success">Writable</span>
+                                <span class="badge bg-success">Operational</span>
                             <?php else: ?>
-                                <span class="badge bg-warning text-dark">Permission Issue</span>
+                                <span class="badge bg-warning text-dark">Degraded</span>
                             <?php endif; ?>
                         </div>
 
                         <ul class="list-group list-group-flush mb-0">
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Logs Directory</span>
-                                <span class="metric-value font-monospace">
-                                    logs/
-                                    <?php if ($checks['storage']['logs_writable']): ?>
-                                        <i class="fa-solid fa-check text-success ms-1" title="Writable" aria-hidden="true"></i>
-                                    <?php else: ?>
-                                        <i class="fa-solid fa-xmark text-danger ms-1" title="Not writable" aria-hidden="true"></i>
-                                    <?php endif; ?>
-                                </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Temp Directory</span>
-                                <span class="metric-value">
-                                    <?= $checks['storage']['temp_writable'] ? 'Writable' : 'Read-Only' ?>
-                                    <i class="fa-solid <?= $checks['storage']['temp_writable'] ? 'fa-check text-success' : 'fa-xmark text-danger' ?> ms-1" aria-hidden="true"></i>
-                                </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Logging Driver</span>
-                                <span class="metric-value">Monolog / Daily Rotate</span>
-                            </li>
+                            <?php if ($canViewDetails): ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Logs Directory</span>
+                                    <span class="metric-value font-monospace">
+                                        logs/
+                                        <?php if ($checks['storage']['logs_writable']): ?>
+                                            <i class="fa-solid fa-check text-success ms-1" title="Writable" aria-hidden="true"></i>
+                                        <?php else: ?>
+                                            <i class="fa-solid fa-xmark text-danger ms-1" title="Not writable" aria-hidden="true"></i>
+                                        <?php endif; ?>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Temp Directory</span>
+                                    <span class="metric-value">
+                                        <?= $checks['storage']['temp_writable'] ? 'Writable' : 'Read-Only' ?>
+                                        <i class="fa-solid <?= $checks['storage']['temp_writable'] ? 'fa-check text-success' : 'fa-xmark text-danger' ?> ms-1" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Logging Driver</span>
+                                    <span class="metric-value">Monolog / Daily Rotate</span>
+                                </li>
+                            <?php else: ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Log Write State</span>
+                                    <span class="metric-value text-success">
+                                        <?= $checks['storage']['logs_writable'] ? 'Ready' : 'Unavailable' ?>
+                                        <i class="fa-solid <?= $checks['storage']['logs_writable'] ? 'fa-check text-success' : 'fa-xmark text-danger' ?> ms-1" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Temp Subsystem</span>
+                                    <span class="metric-value text-success">
+                                        <?= $checks['storage']['temp_writable'] ? 'Ready' : 'Unavailable' ?>
+                                        <i class="fa-solid <?= $checks['storage']['temp_writable'] ? 'fa-check text-success' : 'fa-xmark text-danger' ?> ms-1" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Storage Paths</span>
+                                    <span class="metric-value text-muted small"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>Protected</span>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -364,25 +440,45 @@ if ($wantsJson) {
                                 </div>
                                 <div>
                                     <h5 class="card-title mb-0">PHP Runtime</h5>
-                                    <small class="text-muted">Engine & Memory Status</small>
+                                    <small class="text-muted">Application Engine State</small>
                                 </div>
                             </div>
-                            <span class="badge bg-success">v<?= htmlspecialchars((string)PHP_VERSION) ?></span>
+                            <span class="badge bg-success">
+                                <?= $canViewDetails ? 'v' . htmlspecialchars((string)PHP_VERSION) : 'Operational' ?>
+                            </span>
                         </div>
 
                         <ul class="list-group list-group-flush mb-0">
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Memory Usage</span>
-                                <span class="metric-value"><?= htmlspecialchars((string)$checks['php']['memory_usage']) ?> (Peak: <?= htmlspecialchars((string)$checks['php']['memory_peak']) ?>)</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Memory Limit</span>
-                                <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['php']['memory_limit']) ?></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Max Execution</span>
-                                <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['php']['max_execution_time']) ?></span>
-                            </li>
+                            <?php if ($canViewDetails): ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Memory Usage</span>
+                                    <span class="metric-value"><?= htmlspecialchars((string)$checks['php']['memory_usage']) ?> (Peak: <?= htmlspecialchars((string)$checks['php']['memory_peak']) ?>)</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Memory Limit</span>
+                                    <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['php']['memory_limit']) ?></span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Max Execution</span>
+                                    <span class="metric-value font-monospace"><?= htmlspecialchars((string)$checks['php']['max_execution_time']) ?></span>
+                                </li>
+                            <?php else: ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Engine State</span>
+                                    <span class="metric-value text-success"><i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>Running</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Core Extensions</span>
+                                    <span class="metric-value text-success">
+                                        <?= $phpOk ? 'All Loaded' : 'Missing modules' ?>
+                                        <i class="fa-solid <?= $phpOk ? 'fa-check text-success' : 'fa-triangle-exclamation text-warning' ?> ms-1" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Engine Config</span>
+                                    <span class="metric-value text-muted small"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>Protected</span>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -398,12 +494,12 @@ if ($wantsJson) {
                                     <i class="fa-solid fa-server" aria-hidden="true"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title mb-0">Environment</h5>
-                                    <small class="text-muted">Hosting & Server Details</small>
+                                    <h5 class="card-title mb-0">Server & Environment</h5>
+                                    <small class="text-muted">Host & System Telemetry</small>
                                 </div>
                             </div>
                             <span class="badge <?= $isDev ? 'bg-info text-dark' : 'bg-primary' ?>">
-                                <?= htmlspecialchars(ucfirst((string)$checks['server']['environment'])) ?>
+                                <?= $canViewDetails ? htmlspecialchars(ucfirst((string)$checks['server']['environment'])) : 'Online' ?>
                             </span>
                         </div>
 
@@ -412,19 +508,57 @@ if ($wantsJson) {
                                 <span class="metric-label">Server Time (EST/EDT)</span>
                                 <span class="metric-value"><?= htmlspecialchars((string)$checks['server']['time']) ?></span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Hostname</span>
-                                <span class="metric-value font-monospace small"><?= htmlspecialchars((string)$checks['server']['hostname']) ?></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between px-0 py-2">
-                                <span class="metric-label">Platform</span>
-                                <span class="metric-value"><?= htmlspecialchars((string)PHP_OS) ?> (<?= htmlspecialchars((string)PHP_SAPI) ?>)</span>
-                            </li>
+                            <?php if ($canViewDetails): ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Hostname</span>
+                                    <span class="metric-value font-monospace small"><?= htmlspecialchars((string)$checks['server']['hostname']) ?></span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Platform</span>
+                                    <span class="metric-value"><?= htmlspecialchars((string)PHP_OS) ?> (<?= htmlspecialchars((string)PHP_SAPI) ?>)</span>
+                                </li>
+                            <?php else: ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Protocol Security</span>
+                                    <span class="metric-value">
+                                        <?= $checks['server']['https'] ? '<span class="text-success"><i class="fa-solid fa-shield-halved me-1" aria-hidden="true"></i>HTTPS (Encrypted)</span>' : '<span class="text-warning">HTTP (Standard)</span>' ?>
+                                    </span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">Host & Platform OS</span>
+                                    <span class="metric-value text-muted small"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>Protected</span>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Privacy & Security Notice Banner -->
+        <?php if (!$canViewDetails): ?>
+            <div class="alert alert-light border small text-muted d-flex flex-wrap align-items-center justify-content-between p-3 mt-4 shadow-sm" role="status">
+                <div class="d-flex align-items-center mb-2 mb-md-0">
+                    <i class="fa-solid fa-shield-halved text-primary fs-5 me-2" aria-hidden="true"></i>
+                    <div>
+                        <strong>Privacy Protection:</strong> Sensitive infrastructure parameters (database hostnames, database names, PHP version strings, internal paths, and server telemetry) are masked for public security.
+                    </div>
+                </div>
+                <div>
+                    <a href="/members/index.php" class="btn btn-outline-primary btn-sm text-nowrap">
+                        <i class="fa-solid fa-right-to-bracket me-1" aria-hidden="true"></i>Member Login
+                    </a>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info border small d-flex align-items-center p-3 mt-4 shadow-sm" role="status">
+                <i class="fa-solid fa-circle-info text-info fs-5 me-2" aria-hidden="true"></i>
+                <div>
+                    <strong>Authorized Diagnostic View:</strong> Full infrastructure telemetry is active
+                    <?= $isAdmin ? '(Administrator)' : ($isAuthenticated ? '(Member Session)' : '(Dev / Authorized Key)') ?>.
+                </div>
+            </div>
+        <?php endif; ?>
 
         <!-- Monitoring Integration Guide -->
         <div class="card mt-4 health-card bg-light">
@@ -461,4 +595,3 @@ if ($wantsJson) {
     <?php require_once 'includes/common_js.php'; ?>
 </body>
 </html>
-

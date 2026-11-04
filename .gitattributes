@@ -1,0 +1,7 @@
+# Exclude markdown files and dev configs from export archives
+*.md export-ignore
+*.markdown export-ignore
+.github export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+

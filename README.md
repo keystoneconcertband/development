@@ -136,6 +136,7 @@ The application provides a real-time system health check page and JSON probe:
     curl "http://localhost/health.php?format=json"
     curl "http://localhost/api/health.php"
     ```
+- **Privacy & Information Masking**: Sensitive infrastructure parameters (database hostnames/names, exact PHP patch versions, memory limits, internal filesystem paths, server hostnames, and raw SQL exceptions) are masked from unauthenticated public visitors and exposed only to authenticated band members/administrators or probes with a valid key (`?key=...`).
 
 > [!IMPORTANT]
 > **Azure App Service & Nginx**: Azure Web Apps (Linux) runs on **Nginx** (e.g. `nginx/1.30.x`) and **does not process Apache `.htaccess` files**. Extensionless URLs such as `/health` will return an HTTP 404 from Nginx. Always configure Azure Health Check probes and links to use the explicit file path (`/health.php` or `/api/health.php`).
