@@ -22,9 +22,7 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle <?php if ($isMemberAreaActive) { ?>active<?php } ?>" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="<?php echo $isMemberAreaActive ? 'true' : 'false'; ?>">Member Area</a>
 						<ul class="dropdown-menu shadow-sm" aria-labelledby="membersDropdown">
-							<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "roster.php") { echo 'active'; } ?>" href="/roster.php">Public Roster</a></li>
 							<?php if(isset($_SESSION["email"])) { ?>
-								<li><hr class="dropdown-divider"></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/index.php">Overview</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/currentMembers.php') { echo 'active'; } ?>" href="/members/currentMembers.php">Current Members</a></li>
@@ -37,6 +35,7 @@
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/inactiveMembers.php") { echo 'active'; } ?>" href="/members/inactiveMembers.php">Inactive Members</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Pending Members</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/loginStats.php") { echo 'active'; } ?>" href="/members/loginStats.php">Login Stats</a></li>
+									<li><a class="dropdown-item <?php if (basename($_SERVER['PHP_SELF']) == "health.php") { echo 'active'; } ?>" href="/health.php">System Health</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/messageMembers.php") { echo 'active'; } ?>" href="/members/messageMembers.php">Message Members</a></li>
 								<?php } ?>
 								<li><hr class="dropdown-divider"></li>

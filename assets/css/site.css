@@ -3,7 +3,8 @@
 }
 
 .navbar .dropdown-menu {
-	margin-top: 0.35rem;
+	--bs-dropdown-spacer: 0;
+	margin-top: 0;
 	border: 0;
 	box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.16);
 }
@@ -35,7 +36,17 @@
 	}
 
 	.navbar .dropdown-menu {
-		margin-top: 0.2rem;
+		top: 100%;
+		margin-top: 0;
+	}
+
+	.navbar .dropdown-menu::before {
+		content: "";
+		position: absolute;
+		top: -8px;
+		left: 0;
+		right: 0;
+		height: 8px;
 	}
 }
 

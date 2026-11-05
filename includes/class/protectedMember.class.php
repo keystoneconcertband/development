@@ -110,29 +110,34 @@ class ProtectedMember {
 							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();
 								MemberDB::clearPublicMembersCache();
+								$this->getKcb()->logNotice("New band member profile created", ['uid' => $uid, 'user' => $updateUser]);
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
 								$retValue = "add_instrument_error";								
+								$this->getKcb()->logError("Failed to add instruments for member", ['uid' => $uid]);
 							}
 						}
 						else {
 							$this->getDb()->rollBackTransaction();
 							$retValue = "add_email_error";
+							$this->getKcb()->logError("Failed to add email for member", ['uid' => $uid]);
 						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
 						$retValue = "add_address_error";
+						$this->getKcb()->logError("Failed to add address for member", ['uid' => $uid]);
 					}
 				}
 				else {
 					$this->getDb()->rollBackTransaction();
 					$retValue = "add_member_error";
+					$this->getKcb()->logError("Failed to insert member base record");
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logMessage($e->getMessage());
+				$this->getKcb()->logError("Exception while adding member", ['exception' => $e]);
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -169,29 +174,34 @@ class ProtectedMember {
 							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();
 								MemberDB::clearPublicMembersCache();
+								$this->getKcb()->logNotice("Band member profile updated", ['uid' => $uid, 'user' => $updateUser]);
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
 								$retValue = "update_instrument_error";								
+								$this->getKcb()->logError("Failed to update instruments for member", ['uid' => $uid]);
 							}
 						}
 						else {
 							$this->getDb()->rollBackTransaction();
 							$retValue = "update_email_error";
+							$this->getKcb()->logError("Failed to update email for member", ['uid' => $uid]);
 						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
 						$retValue = "update_address_error";
+						$this->getKcb()->logError("Failed to update address for member", ['uid' => $uid]);
 					}
 				}
 				else {
 					$this->getDb()->rollBackTransaction();
 					$retValue = "update_member_error";
+					$this->getKcb()->logError("Failed to update base member record", ['uid' => $uid]);
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logMessage($e->getMessage());
+				$this->getKcb()->logError("Exception while updating member", ['exception' => $e, 'uid' => $uid]);
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}

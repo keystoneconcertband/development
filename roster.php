@@ -1,4 +1,5 @@
 <?php
+	require_once __DIR__ . '/includes/public_cache.php';
 	require_once 'includes/class/member.class.php';
 	require_once 'includes/asset.php';
 	$mbr = new Member(false, false);

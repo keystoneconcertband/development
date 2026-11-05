@@ -2,8 +2,10 @@
   "name": "keystoneconcertband/kcb-website",
   "description": "Root Composer configuration for the Keystone Concert Band website",
   "type": "project",
+  "license": "proprietary",
   "require": {
-    "phpmailer/phpmailer": "^6.10"
+    "phpmailer/phpmailer": "^6.10",
+    "monolog/monolog": "^3.7"
   },
   "autoload": {
     "classmap": [

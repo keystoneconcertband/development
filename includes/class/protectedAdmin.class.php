@@ -51,8 +51,10 @@ class ProtectedAdmin
 
         if ($this->getDb()->addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt, $_SESSION["email"])) {
             KCBPublicDb::clearHomepageMessagesCache();
+            $this->getKcb()->logNotice("Admin added homepage message", ['title' => $title, 'admin' => $_SESSION['email'] ?? '']);
             return "success";
         }
+        $this->getKcb()->logError("Failed to add homepage message", ['title' => $title]);
     }
 
     public function editHomepageMessage($uid, $title, $message, $message_type, $start_dt, $end_dt)
@@ -63,8 +65,10 @@ class ProtectedAdmin
 
         if ($this->getDb()->editHomepageMessage($uid, $title, $message, $message_type, $start_dt, $end_dt, $_SESSION["email"])) {
             KCBPublicDb::clearHomepageMessagesCache();
+            $this->getKcb()->logNotice("Admin updated homepage message", ['uid' => $uid, 'title' => $title, 'admin' => $_SESSION['email'] ?? '']);
             return "success";
         }
+        $this->getKcb()->logError("Failed to update homepage message", ['uid' => $uid, 'title' => $title]);
     }
 
     public function getHomepageMessages()
@@ -120,8 +124,10 @@ class ProtectedAdmin
 
         if ($this->getDb()->addSchedule($title, $concertBegin, $pants, $chair, $address, $_SESSION['email'] ?? '')) {
             KCBPublicDb::clearScheduleCache();
+            $this->getKcb()->logNotice("Admin added concert schedule", ['title' => $title, 'date' => $concertBegin, 'admin' => $_SESSION['email'] ?? '']);
             return "success";
         }
+        $this->getKcb()->logError("Failed to add concert schedule", ['title' => $title]);
     }
 
     public function editSchedule($uid, $title, $concertBegin, $pants, $chair, $address)
@@ -132,8 +138,10 @@ class ProtectedAdmin
 
         if ($this->getDb()->editSchedule($uid, $title, $concertBegin, $pants, $chair, $address, $_SESSION['email'] ?? '')) {
             KCBPublicDb::clearScheduleCache();
+            $this->getKcb()->logNotice("Admin updated concert schedule", ['uid' => $uid, 'title' => $title, 'admin' => $_SESSION['email'] ?? '']);
             return "success";
         }
+        $this->getKcb()->logError("Failed to update concert schedule", ['uid' => $uid, 'title' => $title]);
     }
 
     // Gets the current active members
@@ -210,20 +218,23 @@ class ProtectedAdmin
                     if($this->getDb()->deleteMember($uid, $updateUser)) {
                         $this->getDb()->executeTransaction();
                         MemberDB::clearPublicMembersCache();
+                        $this->getKcb()->logNotice("Admin deleted member record", ['uid' => $uid, 'admin' => $updateUser]);
                         $retValue = "success";
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
+						$this->getKcb()->logError("Failed to delete member record", ['uid' => $uid, 'admin' => $updateUser]);
 						$retValue = "delete_member_error";
 					}
 				}
 				else {
 					$this->getDb()->rollBackTransaction();
+					$this->getKcb()->logError("Failed to delete member emails during deletion", ['uid' => $uid, 'admin' => $updateUser]);
 					$retValue = "delete_email_error";
 				}
 			}
 			catch(Exception $e) {
-				$this->getKcb()->logMessage($e->getMessage());
+				$this->getKcb()->logError("Exception during member deletion", ['exception' => $e, 'uid' => $uid]);
 				$this->getDb()->rollBackTransaction();
 				$retValue = "db_error";
 			}
@@ -243,6 +254,14 @@ class ProtectedAdmin
             if($_SESSION['accountType'] === 1 || $_SESSION['accountType'] === 2) {
                 $validSession = true;
             }
+        }
+
+        if (!$validSession) {
+            $this->getKcb()->logWarning("Unauthorized administrative access attempt", [
+                'user'         => $_SESSION['email'] ?? 'anonymous',
+                'account_type' => $_SESSION['accountType'] ?? 'none',
+                'uri'          => $_SERVER['REQUEST_URI'] ?? 'unknown',
+            ]);
         }
 
         return $validSession;

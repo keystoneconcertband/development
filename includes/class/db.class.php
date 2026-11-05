@@ -54,9 +54,14 @@ class DB
         $this->settings = parse_ini_file("settings.ini.php");
         $dsn            = 'mysql:dbname=' . $this->settings["dbname"] . ';host=' . $this->settings["host"] . '';
         try {
+            # Use Pdo\Mysql::ATTR_INIT_COMMAND for PHP 8.4+ and fallback to PDO::MYSQL_ATTR_INIT_COMMAND for older versions
+            $initCommand = defined('Pdo\Mysql::ATTR_INIT_COMMAND')
+                ? \Pdo\Mysql::ATTR_INIT_COMMAND
+                : PDO::MYSQL_ATTR_INIT_COMMAND;
+
             # Read settings from INI file, set UTF8
             $this->pdo = new PDO($dsn, $this->settings["user"], $this->settings["password"], array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                $initCommand => "SET NAMES utf8"
             ));
             
             # We can now log any exceptions on Fatal error. 
@@ -308,17 +313,28 @@ class DB
      */
     private function ExceptionLog($message, $sql = "")
     {
-        $exception = 'Unhandled Exception. <br />';
-        $exception .= $message;
-        $exception .= "<br /> The error has been logged.";
-        
+        $context = [];
         if (!empty($sql)) {
-            # Add the Raw SQL to the Log
-            $message .= "\r\nRaw SQL : " . $sql;
+            $context['sql'] = $sql;
         }
-        # Write into log
-        $this->log->write($message);
-        
+
+        $this->log->critical("Database PDO Exception: " . $message, $context);
+
+        $isApi = (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/api/') !== false)
+            || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
+        if (!headers_sent()) {
+            http_response_code(500);
+        }
+
+        if ($isApi) {
+            header('Content-Type: application/json');
+            return json_encode(['error' => 'A database error occurred. The incident has been logged.']);
+        }
+
+        $exception = 'Unhandled Database Exception. <br />';
+        $exception .= htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+        $exception .= "<br /> The error has been logged.";
         return $exception;
     }
 }

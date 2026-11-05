@@ -10,7 +10,7 @@ The application is structured into clearly separated modules for public views, m
 
 ```
 dev/
-├── api/                     # Public AJAX endpoints (booking, join, auth)
+├── api/                     # Public AJAX endpoints (booking, join, auth, health)
 ├── assets/                  # Consolidated static web assets
 │   ├── css/                 # Stylesheets (site.css, member.css)
 │   ├── docs/                # Band policies, bylaws, and uniform guidelines
@@ -35,6 +35,7 @@ dev/
 ├── concerts.php             # Public concert schedule
 ├── conductors.php           # Public conductor bios
 ├── donate.php               # Public donation details
+├── health.php               # System health check page & JSON status endpoint
 ├── join.php                 # Public membership application form
 ├── music.php                # Public recording player & track list
 ├── privacy.php              # Public privacy policy
@@ -59,9 +60,33 @@ All local assets are referenced through the `asset()` helper function in `includ
 
 ---
 
+## Local Development & Docker Testing
+
+The application runs locally in a Docker LAMP container exposing Apache and MySQL:
+
+- **Web Access**: Navigate to `http://localhost` in your browser.
+- **Testing the Daily Log Summary**:
+  - In a browser or via `curl`:
+    ```bash
+    # View summary with dry-run output in plain text
+    curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
+
+    # Run and send issue alert email if issues occurred
+    curl "http://localhost/scripts/daily_log_summary.php"
+
+    # Test the cron API endpoint
+    curl "http://localhost/api/cron/daily_log_summary.php?key=kcb-daily-summary-token"
+    ```
+  - Via Docker CLI:
+    ```bash
+    docker exec -it <container_name> php /app/scripts/daily_log_summary.php --dry-run
+    ```
+
+---
+
 ## Composer Setup
 
-The project uses Composer for third-party libraries (e.g. `PHPMailer`) and class autoloading.
+The project uses Composer for third-party libraries (e.g. `PHPMailer`, `Monolog`) and class autoloading.
 
 To install dependencies locally:
 
@@ -73,8 +98,56 @@ The `vendor/` directory is managed by Composer and should not be committed to Gi
 
 ---
 
+## Logging & Daily Issue Alerting
+
+The application uses **Monolog** with PSR-3 compliance via `KcbLogger` (`includes/class/kcbLogger.class.php`) and a backward-compatible `Log` facade:
+- **Daily Rotating Logs**: Stored as `logs/kcb-YYYY-MM-DD.log` using atomic thread-safe append locks (`LOCK_EX`).
+- **Retention**: Older log files beyond 30 days are purged automatically.
+- **Global Error Handling**: Uncaught exceptions, PHP warnings/notices, and fatal script terminations are captured automatically.
+- **Daily Status & Issue Digest**: A GitHub Actions workflow (`.github/workflows/daily-log-summary.yml`) runs daily to trigger `api/cron/daily_log_summary.php`. A comprehensive HTML daily status digest is emailed to `webmaster@keystoneconcertband.com` (or `ALERT_EMAIL_RECIPIENT`), reporting member logins for the previous day and full categorized breakdowns of any issues detected (or confirming all systems are healthy if 0 issues occurred).
+- **Abuse Prevention & Security**:
+  - **Environment Control (Disabling in Dev)**: Set `SEND_DAILY_SUMMARY_EMAIL=false` (or `APPSETTING_SEND_DAILY_SUMMARY_EMAIL=false` / `ENABLE_DAILY_SUMMARY_EMAIL=false`) to completely disable email dispatch in development environments while still allowing local CLI `--dry-run` inspection.
+  - **Single Email Per Day Lock**: Enforces a daily lock (`logs/.sent_YYYY-MM-DD.lock`) so subsequent executions on the same day skip email dispatch, preventing duplicate emails or quota exhaustion from repeated hits. Use `--force` (or `&force=1` with valid key) to explicitly override.
+  - **Public Web Access Blocking**: `scripts/.htaccess` blocks all public internet access to the `scripts/` directory at the Apache layer (allowing only local/private subnets).
+  - **Token & Role Verification**: `api/cron/daily_log_summary.php` requires a valid authentication key (`?key=...` or `Authorization: Bearer <key>`) matching `APPSETTING_CRON_KEY`. In `scripts/daily_log_summary.php`, non-CLI web execution requires an active admin session, a valid key, or local development environment.
+  - **Rate Limiting**: Limits requests to 10 per hour per IP to guard against brute-force or denial-of-service attempts.
+  - **Security Auditing**: Unauthorized access attempts are recorded to the daily log as `WARNING` events with client IP and request details.
+- **CLI & Web Execution**: The summary script can be triggered via CLI inside the container or directly over HTTP:
+  ```bash
+  # Inside Docker container:
+  php /app/scripts/daily_log_summary.php [--date=YYYY-MM-DD] [--force] [--dry-run]
+
+  # Or via HTTP:
+  curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
+  ```
+
+---
+
+## Health Checks & Monitoring
+
+The application provides a real-time system health check page and JSON probe:
+
+- **Web Browser Interface**: `http://localhost/health.php`
+  - Displays real-time operational status for MySQL database connectivity, storage write permissions, PHP runtime metrics, and server environment.
+- **Automated Monitoring / Probes**: `http://localhost/api/health.php` or `http://localhost/health.php?format=json`
+  - Returns structured JSON payload with HTTP `200 OK` when healthy and HTTP `503 Service Unavailable` when degraded.
+  - Ideal for Azure Web App Health Check feature, Pingdom, UptimeRobot, or external alerting probes:
+    ```bash
+    curl "http://localhost/health.php?format=json"
+    curl "http://localhost/api/health.php"
+    ```
+- **Privacy & Information Masking**: Sensitive infrastructure parameters (database hostnames/names, exact PHP patch versions, memory limits, internal filesystem paths, server hostnames, and raw SQL exceptions) are masked from unauthenticated public visitors and exposed only to authenticated band members/administrators or probes with a valid key (`?key=...`).
+
+> [!IMPORTANT]
+> **Azure App Service & Nginx**: Azure Web Apps (Linux) runs on **Nginx** (e.g. `nginx/1.30.x`) and **does not process Apache `.htaccess` files**. Extensionless URLs such as `/health` will return an HTTP 404 from Nginx. Always configure Azure Health Check probes and links to use the explicit file path (`/health.php` or `/api/health.php`).
+
+---
+
 ## Deployment
 
 The website is continuously deployed to Azure Web Apps via GitHub Actions workflows:
 - `dev` branch $\rightarrow$ `webserver-dev`
 - `main` branch $\rightarrow$ `webserver-prod`
+
+> [!NOTE]
+> Azure Web Apps runs on a Linux container with **Nginx + PHP-FPM**. Apache `.htaccess` directives (such as URL rewriting or `<FilesMatch>` blocks) are not evaluated by Nginx on Azure. If Nginx-level rewrite rules or server directives are required in Azure, they must be configured via custom Nginx configuration or an Azure startup script.
