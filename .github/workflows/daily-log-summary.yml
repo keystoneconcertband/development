@@ -36,7 +36,7 @@ jobs:
           if [ -z "$TARGET_DATE" ]; then
             TARGET_DATE=$(TZ="America/New_York" date -d "yesterday" +%Y-%m-%d 2>/dev/null || TZ="America/New_York" date -v-1d +%Y-%m-%d)
           fi
-          URL="https://dev.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}&date=${TARGET_DATE}"
+          URL="https://www.keystoneconcertband.com/api/cron/daily_log_summary.php?key=${CRON_KEY}&date=${TARGET_DATE}"
           if [ "$FORCE" = "true" ]; then
             URL="${URL}&force=1"
           fi
