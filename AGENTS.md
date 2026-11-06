@@ -30,6 +30,7 @@ This file provides a token-efficient, high-density architecture map and operatio
    - Database layer lives in `includes/class/db.class.php` (used by `*.db.class.php`).
    - **Caution**: `new Db()` calls `die()` with an HTML dump on connection failure. For health checks, CLI utilities, or graceful failover, connect via raw `PDO` in a `try/catch` block.
    - PHP 8.4/8.5 compatibility: Use `defined('Pdo\Mysql::ATTR_INIT_COMMAND') ? \Pdo\Mysql::ATTR_INIT_COMMAND : PDO::MYSQL_ATTR_INIT_COMMAND`.
+   - **MySQL over SSL/TLS**: Configured via `includes/class/settings.ini.php` (`ssl=true`, `ssl_ca`, `ssl_verify`, `ssl_cert`, `ssl_key`) or environment variables (`MYSQL_SSL`, `MYSQL_SSL_CA`, etc.). Uses `defined('Pdo\Mysql::ATTR_SSL_*') ? \Pdo\Mysql::ATTR_SSL_* : PDO::MYSQL_ATTR_SSL_*`. If `ssl=true` without custom `ssl_ca`, auto-detects system CA bundle (`/etc/ssl/certs/ca-certificates.crt`).
 4. **Caching vs. Sessions**:
    - **Public Pages**: Do not call `session_start()` for anonymous visitors. Use `require_once __DIR__ . '/includes/public_cache.php'` to emit public edge cache headers (`max-age=3600`).
    - **Authenticated Member Pages (`members/`)**: Use `new Member(true)` which verifies authentication and starts the session.
