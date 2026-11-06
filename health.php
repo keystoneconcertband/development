@@ -86,10 +86,13 @@ $dbHost = getenv('MYSQL_HOST') ?: (getenv('DB_HOST') ?: ($settings['host'] ?? 'l
 $dbName = getenv('MYSQL_DATABASE') ?: (getenv('DB_NAME') ?: ($settings['dbname'] ?? 'kcb_prod'));
 $dbUser = getenv('MYSQL_USER') ?: (getenv('DB_USER') ?: ($settings['user'] ?? ''));
 $dbPass = getenv('MYSQL_PASSWORD') ?: (getenv('DB_PASSWORD') ?: ($settings['password'] ?? ''));
+$dbPort = getenv('MYSQL_PORT') ?: (getenv('DB_PORT') ?: ($settings['port'] ?? null));
 
 $dbLatencyMs = null;
 $dbError = null;
 $dbOk = false;
+$dbSslActive = false;
+$dbSslCipher = null;
 
 if (empty($dbHost) || empty($dbName)) {
     $dbError = $canViewDetails ? 'Database configuration not found' : 'Database service unconfigured';
@@ -97,20 +100,94 @@ if (empty($dbHost) || empty($dbName)) {
 } else {
     try {
         $dsn = "mysql:dbname={$dbName};host={$dbHost}";
+        if (!empty($dbPort)) {
+            $dsn .= ";port={$dbPort}";
+        }
+
         $initCommand = defined('Pdo\Mysql::ATTR_INIT_COMMAND')
             ? \Pdo\Mysql::ATTR_INIT_COMMAND
             : PDO::MYSQL_ATTR_INIT_COMMAND;
 
-        $dbStartTime = microtime(true);
-        $pdo = new PDO($dsn, $dbUser, $dbPass, [
+        $pdoOptions = [
             PDO::ATTR_TIMEOUT          => 3,
             PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
             $initCommand               => 'SET NAMES utf8',
-        ]);
+        ];
+
+        # SSL / TLS Configuration
+        $sslCa = getenv('MYSQL_SSL_CA') ?: (getenv('DB_SSL_CA') ?: ($settings['ssl_ca'] ?? null));
+        $sslCert = getenv('MYSQL_SSL_CERT') ?: (getenv('DB_SSL_CERT') ?: ($settings['ssl_cert'] ?? null));
+        $sslKey = getenv('MYSQL_SSL_KEY') ?: (getenv('DB_SSL_KEY') ?: ($settings['ssl_key'] ?? null));
+        $sslCipher = getenv('MYSQL_SSL_CIPHER') ?: (getenv('DB_SSL_CIPHER') ?: ($settings['ssl_cipher'] ?? null));
+
+        $sslEnabled = getenv('MYSQL_SSL') ?: (getenv('DB_SSL') ?: ($settings['ssl'] ?? false));
+        $sslEnabled = filter_var($sslEnabled, FILTER_VALIDATE_BOOLEAN) || !empty($sslCa) || !empty($sslCert);
+
+        if ($sslEnabled) {
+            $attrSslCa = defined('Pdo\Mysql::ATTR_SSL_CA') ? \Pdo\Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA;
+            $attrSslVerify = defined('Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT') ? \Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT : PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT;
+            $attrSslKey = defined('Pdo\Mysql::ATTR_SSL_KEY') ? \Pdo\Mysql::ATTR_SSL_KEY : PDO::MYSQL_ATTR_SSL_KEY;
+            $attrSslCert = defined('Pdo\Mysql::ATTR_SSL_CERT') ? \Pdo\Mysql::ATTR_SSL_CERT : PDO::MYSQL_ATTR_SSL_CERT;
+            $attrSslCipher = defined('Pdo\Mysql::ATTR_SSL_CIPHER') ? \Pdo\Mysql::ATTR_SSL_CIPHER : PDO::MYSQL_ATTR_SSL_CIPHER;
+
+            if (!empty($sslCa)) {
+                if (!file_exists($sslCa)) {
+                    if (file_exists(__DIR__ . '/' . ltrim($sslCa, '/'))) {
+                        $sslCa = __DIR__ . '/' . ltrim($sslCa, '/');
+                    }
+                }
+            } else {
+                $systemCaBundles = [
+                    '/etc/ssl/certs/ca-certificates.crt', // Debian / Ubuntu (Azure Web Apps Linux)
+                    '/etc/pki/tls/certs/ca-bundle.crt',     // RHEL / CentOS / AlmaLinux
+                    '/etc/ssl/ca-bundle.pem',              // openSUSE
+                    '/etc/ssl/cert.pem',                   // macOS / Alpine / FreeBSD
+                ];
+                foreach ($systemCaBundles as $caPath) {
+                    if (file_exists($caPath)) {
+                        $sslCa = $caPath;
+                        break;
+                    }
+                }
+            }
+
+            if (!empty($sslCa)) {
+                $pdoOptions[$attrSslCa] = $sslCa;
+            }
+            if (!empty($sslKey)) {
+                $pdoOptions[$attrSslKey] = $sslKey;
+            }
+            if (!empty($sslCert)) {
+                $pdoOptions[$attrSslCert] = $sslCert;
+            }
+            if (!empty($sslCipher)) {
+                $pdoOptions[$attrSslCipher] = $sslCipher;
+            }
+
+            $sslVerify = getenv('MYSQL_SSL_VERIFY_SERVER_CERT');
+            if ($sslVerify === false || $sslVerify === null) {
+                $sslVerify = $settings['ssl_verify'] ?? true;
+            }
+            $pdoOptions[$attrSslVerify] = filter_var($sslVerify, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        $dbStartTime = microtime(true);
+        $pdo = new PDO($dsn, $dbUser, $dbPass, $pdoOptions);
         $stmt = $pdo->query('SELECT 1');
         $stmt->fetch();
         $dbLatencyMs = round((microtime(true) - $dbStartTime) * 1000, 2);
         $dbOk = true;
+
+        try {
+            $cipherStmt = $pdo->query("SHOW STATUS LIKE 'Ssl_cipher'");
+            $cipherRow = $cipherStmt ? $cipherStmt->fetch(PDO::FETCH_NUM) : null;
+            if ($cipherRow && !empty($cipherRow[1])) {
+                $dbSslActive = true;
+                $dbSslCipher = $cipherRow[1];
+            }
+        } catch (\Throwable $e) {
+            // Ignore status query errors
+        }
     } catch (\Throwable $e) {
         $dbOk = false;
         $overallHealthy = false;
@@ -123,6 +200,8 @@ $checks['database'] = [
     'status'     => $dbOk ? 'ok' : 'error',
     'host'       => $canViewDetails ? $dbHost : 'Protected',
     'database'   => $canViewDetails ? $dbName : 'Protected',
+    'ssl'        => $dbSslActive,
+    'ssl_cipher' => $canViewDetails ? $dbSslCipher : ($dbSslActive ? 'Protected' : null),
     'latency_ms' => $dbLatencyMs,
     'error'      => $dbError,
 ];
@@ -344,6 +423,19 @@ if ($wantsJson) {
                                         <span class="metric-value text-muted small"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>Protected</span>
                                     </li>
                                 <?php endif; ?>
+                                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                                    <span class="metric-label">SSL Transport</span>
+                                    <span class="metric-value font-monospace">
+                                        <?php if (!empty($checks['database']['ssl'])): ?>
+                                            <span class="text-success"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>Encrypted</span>
+                                            <?php if ($canViewDetails && !empty($checks['database']['ssl_cipher'])): ?>
+                                                <span class="text-muted small ms-1">(<?= htmlspecialchars((string)$checks['database']['ssl_cipher']) ?>)</span>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <span class="text-muted"><i class="fa-solid fa-lock-open me-1" aria-hidden="true"></i>Unencrypted</span>
+                                        <?php endif; ?>
+                                    </span>
+                                </li>
                                 <li class="list-group-item d-flex justify-content-between px-0 py-2">
                                     <span class="metric-label">Ping Latency</span>
                                     <span class="metric-value text-success"><?= htmlspecialchars((string)$checks['database']['latency_ms']) ?> ms</span>

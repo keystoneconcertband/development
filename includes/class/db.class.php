@@ -51,24 +51,96 @@ class DB
      */
     private function Connect()
     {
-        $this->settings = parse_ini_file("settings.ini.php");
-        $dsn            = 'mysql:dbname=' . $this->settings["dbname"] . ';host=' . $this->settings["host"] . '';
+        $settingsFile = __DIR__ . '/settings.ini.php';
+        $this->settings = file_exists($settingsFile) ? @parse_ini_file($settingsFile) : [];
+
+        $host = getenv('MYSQL_HOST') ?: (getenv('DB_HOST') ?: ($this->settings['host'] ?? 'localhost'));
+        $dbname = getenv('MYSQL_DATABASE') ?: (getenv('DB_NAME') ?: ($this->settings['dbname'] ?? ''));
+        $user = getenv('MYSQL_USER') ?: (getenv('DB_USER') ?: ($this->settings['user'] ?? ''));
+        $password = getenv('MYSQL_PASSWORD') ?: (getenv('DB_PASSWORD') ?: ($this->settings['password'] ?? ''));
+        $port = getenv('MYSQL_PORT') ?: (getenv('DB_PORT') ?: ($this->settings['port'] ?? null));
+
+        $dsn = "mysql:dbname={$dbname};host={$host}";
+        if (!empty($port)) {
+            $dsn .= ";port={$port}";
+        }
+
         try {
             # Use Pdo\Mysql::ATTR_INIT_COMMAND for PHP 8.4+ and fallback to PDO::MYSQL_ATTR_INIT_COMMAND for older versions
             $initCommand = defined('Pdo\Mysql::ATTR_INIT_COMMAND')
                 ? \Pdo\Mysql::ATTR_INIT_COMMAND
                 : PDO::MYSQL_ATTR_INIT_COMMAND;
 
-            # Read settings from INI file, set UTF8
-            $this->pdo = new PDO($dsn, $this->settings["user"], $this->settings["password"], array(
-                $initCommand => "SET NAMES utf8"
-            ));
-            
-            # We can now log any exceptions on Fatal error. 
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
-            # Disable emulation of prepared statements, use REAL prepared statements instead.
-            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $options = [
+                $initCommand => 'SET NAMES utf8',
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ];
+
+            # SSL / TLS Configuration
+            $sslCa = getenv('MYSQL_SSL_CA') ?: (getenv('DB_SSL_CA') ?: ($this->settings['ssl_ca'] ?? null));
+            $sslCert = getenv('MYSQL_SSL_CERT') ?: (getenv('DB_SSL_CERT') ?: ($this->settings['ssl_cert'] ?? null));
+            $sslKey = getenv('MYSQL_SSL_KEY') ?: (getenv('DB_SSL_KEY') ?: ($this->settings['ssl_key'] ?? null));
+            $sslCipher = getenv('MYSQL_SSL_CIPHER') ?: (getenv('DB_SSL_CIPHER') ?: ($this->settings['ssl_cipher'] ?? null));
+
+            $sslEnabled = getenv('MYSQL_SSL') ?: (getenv('DB_SSL') ?: ($this->settings['ssl'] ?? false));
+            $sslEnabled = filter_var($sslEnabled, FILTER_VALIDATE_BOOLEAN) || !empty($sslCa) || !empty($sslCert);
+
+            if ($sslEnabled) {
+                $attrSslCa = defined('Pdo\Mysql::ATTR_SSL_CA') ? \Pdo\Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA;
+                $attrSslVerify = defined('Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT') ? \Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT : PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT;
+                $attrSslKey = defined('Pdo\Mysql::ATTR_SSL_KEY') ? \Pdo\Mysql::ATTR_SSL_KEY : PDO::MYSQL_ATTR_SSL_KEY;
+                $attrSslCert = defined('Pdo\Mysql::ATTR_SSL_CERT') ? \Pdo\Mysql::ATTR_SSL_CERT : PDO::MYSQL_ATTR_SSL_CERT;
+                $attrSslCipher = defined('Pdo\Mysql::ATTR_SSL_CIPHER') ? \Pdo\Mysql::ATTR_SSL_CIPHER : PDO::MYSQL_ATTR_SSL_CIPHER;
+
+                # Resolve relative path for CA certificate
+                if (!empty($sslCa)) {
+                    if (!file_exists($sslCa)) {
+                        $appRoot = dirname(__DIR__, 2);
+                        if (file_exists($appRoot . '/' . ltrim($sslCa, '/'))) {
+                            $sslCa = $appRoot . '/' . ltrim($sslCa, '/');
+                        } elseif (file_exists(__DIR__ . '/' . ltrim($sslCa, '/'))) {
+                            $sslCa = __DIR__ . '/' . ltrim($sslCa, '/');
+                        }
+                    }
+                } else {
+                    # Auto-discover OS CA bundle if SSL is requested but no custom CA file specified
+                    $systemCaBundles = [
+                        '/etc/ssl/certs/ca-certificates.crt', // Debian / Ubuntu (Azure Web Apps Linux)
+                        '/etc/pki/tls/certs/ca-bundle.crt',     // RHEL / CentOS / AlmaLinux
+                        '/etc/ssl/ca-bundle.pem',              // openSUSE
+                        '/etc/ssl/cert.pem',                   // macOS / Alpine / FreeBSD
+                    ];
+                    foreach ($systemCaBundles as $caPath) {
+                        if (file_exists($caPath)) {
+                            $sslCa = $caPath;
+                            break;
+                        }
+                    }
+                }
+
+                if (!empty($sslCa)) {
+                    $options[$attrSslCa] = $sslCa;
+                }
+                if (!empty($sslKey)) {
+                    $options[$attrSslKey] = $sslKey;
+                }
+                if (!empty($sslCert)) {
+                    $options[$attrSslCert] = $sslCert;
+                }
+                if (!empty($sslCipher)) {
+                    $options[$attrSslCipher] = $sslCipher;
+                }
+
+                $sslVerify = getenv('MYSQL_SSL_VERIFY_SERVER_CERT');
+                if ($sslVerify === false || $sslVerify === null) {
+                    $sslVerify = $this->settings['ssl_verify'] ?? true;
+                }
+                $options[$attrSslVerify] = filter_var($sslVerify, FILTER_VALIDATE_BOOLEAN);
+            }
+
+            # Connect using PDO
+            $this->pdo = new PDO($dsn, $user, $password, $options);
             
             # Connection succeeded, set the boolean to true.
             $this->bConnected = true;
