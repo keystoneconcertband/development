@@ -17,4 +17,4 @@ if (!isset($_SESSION["email"])) {
     $loginIntegrity = '';
     echo '<script src="' . asset('/assets/js/memberlogin.js', $loginIntegrity) . '" integrity="' . $loginIntegrity . '" crossorigin="anonymous"></script>' . "\n";
 }
-?>
+

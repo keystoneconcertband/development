@@ -322,13 +322,15 @@
 
   // Event Listeners
   if (frmLogin) {
-    frmLogin.addEventListener('submit', handleLoginSubmit);
+    frmLogin.addEventListener('submit', (e) => {
+      void handleLoginSubmit(e);
+    });
   }
 
   if (memberLoginButton) {
     memberLoginButton.addEventListener('click', (e) => {
       e.preventDefault();
-      handleLoginSubmit(e);
+      void handleLoginSubmit(e);
     });
   }
 
@@ -342,7 +344,7 @@
   if (btnResendCode) {
     btnResendCode.addEventListener('click', (e) => {
       e.preventDefault();
-      handleResendCode();
+      void handleResendCode();
     });
   }
 
