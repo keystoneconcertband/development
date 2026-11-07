@@ -60,7 +60,7 @@ if (!empty($_COOKIE['KCB_Cookie'])) {
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" form="frmLogin" class="btn btn-primary" id="memberLogin">
-                    <span class="spinner-border spinner-border-sm me-1 d-none" id="loginSpinner" role="status" aria-hidden="true"></span>
+                    <output class="spinner-border spinner-border-sm me-1 d-none" id="loginSpinner" aria-hidden="true"></output>
                     <span id="memberLoginText">Continue</span>
                 </button>
             </div>

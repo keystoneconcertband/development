@@ -236,10 +236,10 @@ class Member
     }
 
     // Send Auth Emails
-    private function sendAuthEmail($email, $member, $forceNew = false)
+    private function sendAuthEmail($email, $member)
     {
         $six_digit_random_number = (string)random_int(100000, 999999);
-        $response = $this->authCodeLogic($email, $six_digit_random_number, $forceNew);
+        $response = $this->authCodeLogic($email, $six_digit_random_number);
 
         // If valid to send email
         if ($response == "auth_required_no_cookie") {
@@ -268,7 +268,7 @@ class Member
         return $response;
     }
 
-    private function authCodeLogic($email, $six_digit_random_number, $forceNew = false)
+    private function authCodeLogic($email, $six_digit_random_number)
     {
         $response = "auth_required_no_cookie";
         $ipAddress = $this->getIpAddress();

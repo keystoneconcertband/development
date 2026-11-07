@@ -3,11 +3,11 @@ let dataTable;
 function escapeHtml(text) {
     if (text === null || text === undefined) return '';
     return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
 }
 
 function resolveStatusInfo(row) {
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return data || '';
                     }
                     if (!data) return '';
-                    const dateObj = new Date(data.replace(/-/g, '/'));
+                    const dateObj = new Date(data.replaceAll('-', '/'));
                     if (isNaN(dateObj)) return escapeHtml(data);
                     return dateObj.toLocaleString('en-US', {
                         month: 'short',
