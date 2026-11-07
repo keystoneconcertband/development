@@ -13,7 +13,7 @@ This file provides a token-efficient, high-density architecture map and operatio
 | **Frontend** | Bootstrap 5.3 + FontAwesome 6 | Bootswatch *Yeti* theme, responsive layout |
 | **Database** | MySQL / MariaDB | Configured via `includes/class/settings.ini.php` |
 | **Production Host** | Azure Web Apps (Linux) | **Nginx + PHP-FPM** (`dev` -> `webserver-dev`, `main` -> `webserver-prod`) |
-| **Local Dev** | Docker LAMP container | Apache + MySQL on `http://localhost:8080` |
+| **Local Dev** | Docker LAMP container (`mattrayner/lamp:latest`) | Apache + MySQL on `http://localhost:8080` |
 | **Timezone** | `America/New_York` | Enforced globally via `KcbBase` |
 
 ---
@@ -102,19 +102,19 @@ dev/
 ## 5. Development & Testing Commands
 
 ```bash
-# Health check diagnostics
-curl "http://localhost/health.php?format=json"
-curl "http://localhost/api/health.php"
+# Health check diagnostics (adjust port if mapped to 80)
+curl "http://localhost:8080/health.php?format=json"
+curl "http://localhost:8080/api/health.php"
 
 # Test daily log summary (dry-run without sending email)
-curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
-docker exec -it <container> php /app/scripts/daily_log_summary.php --dry-run
+curl "http://localhost:8080/scripts/daily_log_summary.php?dry-run=1"
+docker exec -it kcb-lamp php /app/scripts/daily_log_summary.php --dry-run
 
 # Test cron webhook endpoint
-curl "http://localhost/api/cron/daily_log_summary.php?key=kcb-daily-summary-token"
+curl "http://localhost:8080/api/cron/daily_log_summary.php?key=kcb-daily-summary-token"
 
 # Composer dependencies (run inside container or environment with PHP installed)
-composer install --prefer-dist --no-progress
+docker exec -it kcb-lamp composer install
 composer validate --no-check-publish
 ```
 

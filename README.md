@@ -60,26 +60,139 @@ All local assets are referenced through the `asset()` helper function in `includ
 
 ---
 
-## Local Development & Docker Testing
+## Local Development & Docker Setup
 
-The application runs locally in a Docker LAMP container exposing Apache and MySQL:
+The application runs locally using the [`mattrayner/lamp:latest`](https://hub.docker.com/r/mattrayner/lamp) Docker image, which bundles Apache, MySQL, PHP 8.x, Composer, and phpMyAdmin in a single container with multi-architecture support (Apple Silicon & Intel).
 
-- **Web Access**: Navigate to `http://localhost` in your browser.
+### 1. Starting the Container
+
+Run the following command from the repository root to start the LAMP container:
+
+```bash
+docker run -d \
+  --name kcb-lamp \
+  -p 8080:80 \
+  -p 3306:3306 \
+  -v "$(pwd)":/app \
+  -v kcb-mysql-data:/var/lib/mysql \
+  mattrayner/lamp:latest
+```
+
+> [!TIP]
+> To explicitly set your MySQL administrative password upon first initialization, pass the `MYSQL_ADMIN_PASS` environment variable:
+> ```bash
+> docker run -d \
+>   --name kcb-lamp \
+>   -p 8080:80 \
+>   -p 3306:3306 \
+>   -e MYSQL_ADMIN_PASS="your_password" \
+>   -v "$(pwd)":/app \
+>   -v kcb-mysql-data:/var/lib/mysql \
+>   mattrayner/lamp:latest
+> ```
+> If `MYSQL_ADMIN_PASS` is omitted, the container auto-generates a secure password on first boot. View it using `docker logs kcb-lamp`.
+
+#### Optional: Using Docker Compose
+Alternatively, you can manage the container with a `docker-compose.yml` file:
+
+```yaml
+services:
+  lamp:
+    image: mattrayner/lamp:latest
+    container_name: kcb-lamp
+    ports:
+      - "8080:80"
+      - "3306:3306"
+    volumes:
+      - .:/app
+      - kcb-mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ADMIN_PASS=your_password
+
+volumes:
+  kcb-mysql-data:
+```
+
+Start the stack with:
+```bash
+docker compose up -d
+```
+
+---
+
+### 2. Database Configuration
+
+1. **Credentials**: The container's administrative MySQL user is `admin`.
+2. **Local Settings**: Configure `includes/class/settings.ini.php` with your container credentials:
+   ```ini
+   [SQL]
+   host = localhost
+   user = admin
+   password = your_password
+   dbname = kcb_prod
+   ```
+3. **Database Creation**: Create the application database inside the container:
+   ```bash
+   docker exec -it kcb-lamp mysql -uadmin -p -e "CREATE DATABASE IF NOT EXISTS kcb_prod;"
+   ```
+4. **Database Import**: Import an existing SQL dump into `kcb_prod`:
+   ```bash
+   docker exec -i kcb-lamp mysql -uadmin -p kcb_prod < path/to/dump.sql
+   ```
+
+---
+
+### 3. Local Access URLs
+
+| Service | Host URL | Description |
+| :--- | :--- | :--- |
+| **Keystone Concert Band Site** | `http://localhost:8080/` | Main web application (served from `/app`) |
+| **System Health Dashboard** | `http://localhost:8080/health.php` | Operational health and diagnostics check |
+| **phpMyAdmin** | `http://localhost:8080/pma/` | Web-based MySQL database administration |
+| **MySQL Service** | `127.0.0.1:3306` | MySQL server accessible to external GUI clients |
+
+*(If you mapped port `80:80` instead of `8080:80`, replace `8080` with port `80` in the URLs above.)*
+
+---
+
+### 4. Container Management & Testing
+
+- **Lifecycle Commands**:
+  ```bash
+  # Stop container
+  docker stop kcb-lamp
+
+  # Start container
+  docker start kcb-lamp
+
+  # View container logs (including initial MySQL credentials)
+  docker logs kcb-lamp
+
+  # Open an interactive Bash shell
+  docker exec -it kcb-lamp bash
+  ```
+
+- **Managing Composer Dependencies**:
+  ```bash
+  # Run Composer install inside the container
+  docker exec -it kcb-lamp composer install
+  ```
+
 - **Testing the Daily Log Summary**:
   - In a browser or via `curl`:
     ```bash
     # View summary with dry-run output in plain text
-    curl "http://localhost/scripts/daily_log_summary.php?dry-run=1"
+    curl "http://localhost:8080/scripts/daily_log_summary.php?dry-run=1"
 
     # Run and send issue alert email if issues occurred
-    curl "http://localhost/scripts/daily_log_summary.php"
+    curl "http://localhost:8080/scripts/daily_log_summary.php"
 
-    # Test the cron API endpoint
-    curl "http://localhost/api/cron/daily_log_summary.php?key=kcb-daily-summary-token"
+    # Test the cron webhook endpoint
+    curl "http://localhost:8080/api/cron/daily_log_summary.php?key=kcb-daily-summary-token"
     ```
   - Via Docker CLI:
     ```bash
-    docker exec -it <container_name> php /app/scripts/daily_log_summary.php --dry-run
+    docker exec -it kcb-lamp php /app/scripts/daily_log_summary.php --dry-run
     ```
 
 ---
@@ -95,6 +208,54 @@ composer install
 ```
 
 The `vendor/` directory is managed by Composer and should not be committed to Git.
+
+---
+
+## Member Authentication & Login Flow
+
+The member portal uses a secure, passwordless authentication mechanism based on email One-Time Passcodes (OTP) and persistent "Remember Me" device recognition:
+
+- **Passwordless Verification**: Members enter their registered email address to receive a cryptographically secure 6-digit OTP code (`random_int`) via email.
+- **Expiration & Throttling**: Verification codes are valid for 15 minutes, with a 60-second resend cooldown timer to protect email delivery quotas and prevent spamming.
+- **Persistent Device Recognition ("Remember Me")**: When enabled, an RFC 4122 UUID v4 token is generated (`random_bytes(16)`) and stored as an `HttpOnly`, `SameSite=Strict` cookie (`KCB_Cookie`) with a 1-year sliding expiration.
+- **Logoff Behavior**: Logging off terminates the active PHP session (`$_SESSION` and session cookie) but preserves the persistent device cookie so returning members on personal devices can sign back in with a single click without re-entering an OTP code.
+- **Session Security**: Session IDs are regenerated upon verification (`session_regenerate_id(true)`) to prevent session fixation, and strict anti-caching headers are enforced on all auth endpoints.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Member as Band Member
+    participant Nav as Public Nav / Modal
+    participant JS as memberlogin.js
+    participant API as api/auth.php (POST)
+    participant Core as Member / MemberDB
+    participant SMTP as Brevo SMTP
+
+    Member->>Nav: Clicks "Member Login" (from Nav or Roster)
+    Nav->>JS: Displays Login Modal (inline alerts, email field)
+    Member->>JS: Enters email and submits
+    JS->>API: POST /api/auth.php { email }
+    API->>Core: Member::login($email)
+    alt Valid "Remember Me" Cookie Present
+        Core->>Core: Validates secure token in DB
+        Core->>Core: Regenerates Session ID & sets session
+        API-->>JS: { status: "valid", redirect: destinationUrl }
+        JS-->>Member: Instant redirect to Member Area
+    else Cookie Absent or Invalid
+        Core->>SMTP: Sends 6-digit CSPRNG code (15-min expiry)
+        API-->>JS: { status: "auth_required", cooldown: 60 }
+        JS-->>Member: Reveals OTP input, inline success alert, 60s resend timer
+        Member->>JS: Enters 6-digit OTP (+ optional "Remember Me")
+        JS->>API: POST /api/auth.php { email, auth_cd, auth_remember }
+        API->>Core: Member::verifyAuthCd(...)
+        Core->>Core: Regenerates Session ID & sets session
+        opt If Remember Me checked
+            Core->>Core: Issues secure CSPRNG token & sets cookie
+        end
+        API-->>JS: { status: "valid", redirect: destinationUrl }
+        JS-->>Member: Smooth redirect to destination
+    end
+```
 
 ---
 
