@@ -11,3 +11,10 @@
 
 		gtag('config', 'G-EBPFTM35MW');
 	</script>
+<?php
+if (!isset($_SESSION["email"])) {
+    require_once __DIR__ . '/asset.php';
+    $loginIntegrity = '';
+    echo '<script src="' . asset('/assets/js/memberlogin.js', $loginIntegrity) . '" integrity="' . $loginIntegrity . '" crossorigin="anonymous"></script>' . "\n";
+}
+

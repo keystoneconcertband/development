@@ -27,12 +27,12 @@ new protectedAdmin();
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<table id="kcbLogonTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+						<table id="kcbLogonTable" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th>Login ID</th>
+									<th>Email Address</th>
 									<th>Status</th>
-									<th>Date/Time</th>
+									<th>Date / Time</th>
 								</tr>
 							</thead>
 						</table>

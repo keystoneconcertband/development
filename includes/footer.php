@@ -3,3 +3,8 @@
         <p class="float-end"><a href="#">Back to top</a></p>
         <p>&copy; <?php echo date("Y"); ?> Keystone Concert Band | Site developer <a href="https://www.jonathangillette.net">Jonathan Gillette</a></p>
       </footer>
+<?php
+if (!isset($_SESSION["email"])) {
+    require_once __DIR__ . '/login_modal.php';
+}
+?>

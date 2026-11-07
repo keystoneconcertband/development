@@ -32,7 +32,7 @@
 
 	<?php require '../includes/common_js.php'; ?>
 	<script type="text/javascript">
-		var redirectTimeoutId = window.setTimeout(redirectToHomepage, 10000);
+		var redirectTimeoutId = window.setTimeout(redirectToHomepage, 2500);
 		
 		function redirectToHomepage() {
 			window.location.href = 'index.php';
