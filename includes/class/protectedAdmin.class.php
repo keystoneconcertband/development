@@ -34,14 +34,73 @@ class ProtectedAdmin
         return $this->getDb()->getMemberRecord($uid);
     }
 
-    // Gets the login stats for the website
+    // Gets the login stats for the website with human-readable labels
     public function getLoginStats()
     {
         if (!$this->validAdmin()) {
             return "access denied.";
         }
 
-        return $this->getDb()->getLoginStats();
+        $records = $this->getDb()->getLoginStats();
+        if (!is_array($records)) {
+            return [];
+        }
+
+        foreach ($records as &$row) {
+            $formatted = self::formatLoginStatus($row['valid'] ?? '');
+            $row['status_label'] = $formatted['label'];
+            $row['status_badge'] = $formatted['badge'];
+            $row['status_desc']  = $formatted['description'];
+        }
+        unset($row);
+
+        return $records;
+    }
+
+    public static function formatLoginStatus($raw)
+    {
+        $raw = is_string($raw) ? trim($raw) : '';
+
+        if ($raw === 'valid' || $raw === '1' || $raw === 'Success') {
+            return ['label' => 'Success', 'badge' => 'success', 'description' => 'Successful login'];
+        }
+        if ($raw === 'auth_required_no_cookie') {
+            return ['label' => 'Code Sent', 'badge' => 'info', 'description' => 'Verification code emailed'];
+        }
+        if ($raw === 'auth_cd_not_expired') {
+            return ['label' => 'Active Code Pending', 'badge' => 'info', 'description' => 'Active code still valid'];
+        }
+        if ($raw === 'auth_failed_invalid_cookie') {
+            return ['label' => 'Saved Cookie Expired', 'badge' => 'warning', 'description' => 'Remember-me session expired; new code emailed'];
+        }
+        if (str_starts_with($raw, 'resend_throttle__')) {
+            $remaining = substr($raw, strlen('resend_throttle__'));
+            return ['label' => 'Resend Throttled', 'badge' => 'secondary', 'description' => "Requested code too quickly ({$remaining}s remaining)"];
+        }
+        if (str_starts_with($raw, 'over_max_requests__')) {
+            $timeout = substr($raw, strlen('over_max_requests__'));
+            return ['label' => 'Account Locked', 'badge' => 'danger', 'description' => "Locked due to 3+ failed attempts (until {$timeout})"];
+        }
+        if ($raw === 'auth_invalid') {
+            return ['label' => 'Incorrect Code', 'badge' => 'danger', 'description' => 'Incorrect 6-digit code entered'];
+        }
+        if ($raw === 'auth_old') {
+            return ['label' => 'Code Expired', 'badge' => 'warning', 'description' => 'Code expired; new code emailed'];
+        }
+        if ($raw === 'invalid') {
+            return ['label' => 'Unregistered / Inactive', 'badge' => 'danger', 'description' => 'Email not registered or account disabled'];
+        }
+        if ($raw === 'invalid_pending') {
+            return ['label' => 'Pending Approval', 'badge' => 'warning', 'description' => 'Member application pending officer approval'];
+        }
+        if ($raw === 'invalid_request') {
+            return ['label' => 'Invalid Request', 'badge' => 'secondary', 'description' => 'Missing or invalid email address'];
+        }
+        if ($raw === 'db_error') {
+            return ['label' => 'Database Error', 'badge' => 'danger', 'description' => 'Database connection or query failure'];
+        }
+
+        return ['label' => $raw ?: 'Unknown', 'badge' => 'secondary', 'description' => $raw ?: 'Unknown status'];
     }
 
     public function addHomepageMessage($title, $message, $message_type, $start_dt, $end_dt)

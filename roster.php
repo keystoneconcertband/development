@@ -31,9 +31,6 @@
             <div class="col-lg-10">
                 <p>All members of the band are volunteers and play for the love of playing! Interested in adding your name to this page and joining the band? Just contact us via the <a href="join.php">Join Us</a> page and we'll be sure to get back to you!</p>
             </div>
-            <div class="col-lg-2 d-flex align-items-center">
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">KCB Member Login</a>
-            </div>
         </div>
 
         <div class="row g-4 mb-5 mt-4">
