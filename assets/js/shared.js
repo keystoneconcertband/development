@@ -328,3 +328,47 @@ function populateInstrument(data) {
     }
   });
 }
+
+function escapeHtml(text) {
+  if (text === null || text === undefined) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function linkify(text) {
+  if (!text) return '';
+  var normalized = String(text)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/\n?<br\s*\/?>\n?/gi, '\n');
+
+  var escaped = escapeHtml(normalized).replace(/\n/g, '<br>');
+  var urlRegex = /\b((?:https?:\/\/|www\.)[^\s<]+)/gi;
+
+  return escaped.replace(urlRegex, function (url) {
+    var trailing = '';
+    while (url.length > 0) {
+      var last = url[url.length - 1];
+      if ('.,!?:;'.indexOf(last) !== -1) {
+        trailing = last + trailing;
+        url = url.slice(0, -1);
+      } else if (last === ')' && (url.split(')').length - 1) > (url.split('(').length - 1)) {
+        trailing = last + trailing;
+        url = url.slice(0, -1);
+      } else {
+        break;
+      }
+    }
+
+    var href = url;
+    if (/^www\./i.test(href)) {
+      href = 'https://' + href;
+    }
+
+    return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + url + '</a>' + trailing;
+  });
+}

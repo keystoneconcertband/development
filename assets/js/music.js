@@ -24,12 +24,20 @@ document.addEventListener('DOMContentLoaded', function() {
               width: '10px';
             }},
             { data: 'title' },
-            { data: 'notes' },
+            {
+                data: 'notes',
+                render: function (data, type) {
+                    if (type === 'display') {
+                        return typeof linkify === 'function' ? linkify(data) : (data || '');
+                    }
+                    return data || '';
+                }
+            },
             { data: null, render: function (data) {
                 if (data.music_link && data.music_link !== '') {
-                    return '<a href="' + data.music_link + '" target="_blank">' + data.music_link + '</a><br />';
+                    return '<a href="' + data.music_link + '" target="_blank" rel="noopener noreferrer">' + data.music_link + '</a><br />';
                 }
-                return '<a href="http://www.youtube.com/results?search_query=' + data.title + '" target="_blank">http://www.youtube.com/results?search_query=' + data.title + '</a><br />';
+                return '<a href="http://www.youtube.com/results?search_query=' + encodeURIComponent(data.title) + '" target="_blank" rel="noopener noreferrer">http://www.youtube.com/results?search_query=' + data.title + '</a><br />';
             }},
             { data: 'genre' },
         ]
@@ -103,6 +111,12 @@ function showEditRecord(uid) {
 
     postUrlEncoded('api/music.php', params)
     .then(function (data) {
+        if (data && data.notes) {
+            data.notes = String(data.notes)
+                .replace(/\r\n/g, '\n')
+                .replace(/\r/g, '\n')
+                .replace(/\n?<br\s*\/?>\n?/gi, '\n');
+        }
         populateForm('#form_music', data);
         var uidField = document.getElementById('uid');
         if (uidField) uidField.value = uid;
