@@ -45,6 +45,15 @@
 					</li>
 					<?php } ?>
 				</ul>
+				<?php if(!isset($_SESSION["email"])) { ?>
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a class="nav-link btn btn-outline-light btn-sm px-3 ms-lg-2 mt-2 mt-lg-0 text-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" role="button">
+							<i class="fa fa-user me-1" aria-hidden="true"></i> Member Login
+						</a>
+					</li>
+				</ul>
+				<?php } ?>
 			</div>
 		</div>
 	</nav>

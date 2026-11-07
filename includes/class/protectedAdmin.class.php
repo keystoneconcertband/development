@@ -19,7 +19,8 @@ class ProtectedAdmin
         $this->log = new Log();
 
         if (!$this->validAdmin()) {
-            header('Location: adminAccess.php');
+            header('Location: /members/adminAccess.php');
+            exit;
         }
     }
 

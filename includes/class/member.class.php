@@ -5,7 +5,8 @@ require_once "member.db.class.php";
 
 class Member
 {
-    const MAX_EXPIRE = 30;
+    const MAX_EXPIRE = 15;
+    const RESEND_COOLDOWN = 60;
     private $kcbCookie = "KCB_Cookie";
     private $db;
     private $kcb;
@@ -18,7 +19,11 @@ class Member
 
         if ($authReq) {
             if (!$this->validSession()) {
-                header('Location: reauth.php');
+                $redirectParam = '';
+                if (!empty($_SERVER['REQUEST_URI'])) {
+                    $redirectParam = '?redirect=' . rawurlencode($_SERVER['REQUEST_URI']);
+                }
+                header('Location: /members/reauth.php' . $redirectParam);
                 exit;
             }
         }
@@ -68,7 +73,10 @@ class Member
                     $this->getDb()->updateLastLogin($email);
 
                     // Save email address since user's session is now valid to continue.
-                    $this->saveSession($email, $this->getDb()->getAuthCdGuid($email, $this->getAuthCdFromCookie()));
+                    $cookieGuid = $this->getAuthCdFromCookie();
+                    $this->saveSession($email, $this->getDb()->getAuthCdGuid($email, $cookieGuid));
+                    // Refresh 1-year sliding cookie expiration
+                    $this->saveCookie($email, $cookieGuid);
                     $this->getKcb()->logInfo("Member authenticated via remember-me cookie", ['email' => $email]);
                 }
             }
@@ -127,7 +135,8 @@ class Member
                 'email'     => $email,
                 'code_time' => date('Y-m-d H:i:s', $authCdTimestamp),
             ]);
-            if ($this->sendAuthRequest($email)) {
+            $sendRes = $this->sendAuthRequest($email);
+            if ($sendRes === "auth_required_no_cookie" || strpos($sendRes, "resend_throttle") === 0) {
                 $response = "auth_old";
             } else {
                 $response = "db_error";
@@ -227,27 +236,27 @@ class Member
     }
 
     // Send Auth Emails
-    private function sendAuthEmail($email, $member)
+    private function sendAuthEmail($email, $member, $forceNew = false)
     {
-        $six_digit_random_number = mt_rand(100000, 999999);
-        $response = $this->authCodeLogic($email, $six_digit_random_number);
+        $six_digit_random_number = (string)random_int(100000, 999999);
+        $response = $this->authCodeLogic($email, $six_digit_random_number, $forceNew);
 
-        // If valid
+        // If valid to send email
         if ($response == "auth_required_no_cookie") {
-            // Add MAX_EXPIRE time to the current time to show in the email when the code is valid until.
-            $date = new DateTime(date('Y-m-d h:i:sa'));
-            $dateInterval = "PT" . self::MAX_EXPIRE . "M";
-            $date->add(new DateInterval($dateInterval));
+            $date = new DateTime();
+            $date->add(new DateInterval("PT" . self::MAX_EXPIRE . "M"));
 
             $subject = "Keystone Concert Band Login Code";
-            $message = "Hi <b>" . $member['firstName'] . "</b>,<br><br>";
-            $message .= "A login code has been requested to login the members section of www.keystoneconcertband.com using your email address, <b>";
-            $message .= $email;
-            $message .= "</b>. To continue on the website, you must enter the login code provided below:<br><b>";
-            $message .= $six_digit_random_number . "</b><br><br>";
-            $message .= "Please note, this code is only valid until " . $date->format('Y-m-d h:ia') . ", and you will have only 3 tries to enter it successfully. ";
-            $message .= "If you enter an incorrect code more than 3 times within an hour, your account will be locked out for 1 hour.<br><br>";
-            $message .= "If you did not try to login the website recently, please delete this email as someone else tried to use your email address.\r\n\r\n";
+            $message = "Hi <b>" . htmlspecialchars($member['firstName'] ?? '', ENT_QUOTES, 'UTF-8') . "</b>,<br><br>";
+            $message .= "A login code has been requested to access the members section of www.keystoneconcertband.com using your email address, <b>";
+            $message .= htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
+            $message .= "</b>. To continue on the website, please enter the login code below:<br><br>";
+            $message .= "<span style='font-size:24px; font-weight:bold; letter-spacing:4px; background:#f4f4f4; padding:8px 16px; border-radius:4px;'>";
+            $message .= $six_digit_random_number;
+            $message .= "</span><br><br>";
+            $message .= "Please note, this code is valid for " . self::MAX_EXPIRE . " minutes (until " . $date->format('g:i A') . "), and you have 3 tries to enter it successfully. ";
+            $message .= "If you enter an incorrect code 3 times within an hour, your account will be locked out for 1 hour.<br><br>";
+            $message .= "If you did not request to log in to the website, you can safely ignore this email.<br><br>";
             $message .= "Thanks,<br>";
             $message .= "Jonathan Gillette";
 
@@ -259,7 +268,7 @@ class Member
         return $response;
     }
 
-    private function authCodeLogic($email, $six_digit_random_number)
+    private function authCodeLogic($email, $six_digit_random_number, $forceNew = false)
     {
         $response = "auth_required_no_cookie";
         $ipAddress = $this->getIpAddress();
@@ -271,17 +280,18 @@ class Member
             if ($authCdTimestamp === false || $authCdTimestamp === null) {
                 $response = "db_error";
             } else {
-                $authCdDtTm = $authCdTimestamp + 60 * self::MAX_EXPIRE;
+                $secondsSinceLast = time() - (int)$authCdTimestamp;
 
-                // Don't send another email if its been less than MAX_EXPIRE mins
-                if (time() <= $authCdDtTm) {
-                    $response = "auth_cd_not_expired";
+                // Enforce 60-second cooldown between generating/sending new codes
+                if ($secondsSinceLast < self::RESEND_COOLDOWN) {
+                    $remaining = self::RESEND_COOLDOWN - $secondsSinceLast;
+                    $response = "resend_throttle__" . $remaining;
                 } elseif (!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
                     $response = "db_error";
                 }
             }
         } else {
-            // Users first time logging in, just insert a new record
+            // User's first time logging in, just insert a new record
             if (!$this->getDb()->setLoginCd($member['UID'], $six_digit_random_number, "0", $ipAddress)) {
                 $response = "db_error";
             }
@@ -308,6 +318,37 @@ class Member
         ];
 
         setcookie($this->kcbCookie, $email . "," . $auth_cd, $cookieOptions);
+    }
+
+    // Revoke remember-me cookie and remove token from database
+    public function revokeRememberMeCookie($email = null)
+    {
+        if ($email === null && isset($_SESSION['email'])) {
+            $email = $_SESSION['email'];
+        }
+
+        $cookieAuthCd = $this->getAuthCdFromCookie();
+        if ($email) {
+            $this->getDb()->deleteAuthCdGuid($email, $cookieAuthCd ?: null);
+        }
+
+        $secure = true;
+        if (isset($_SERVER['HTTP_HOST']) && preg_match('/^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i', $_SERVER['HTTP_HOST'])) {
+            $secure = false;
+        }
+
+        $cookieOptions = [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'secure' => $secure,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ];
+
+        setcookie($this->kcbCookie, '', $cookieOptions);
+        if (isset($_COOKIE[$this->kcbCookie])) {
+            unset($_COOKIE[$this->kcbCookie]);
+        }
     }
 
     // Determines whether or not the cookie passed in from the client contains the valid auth code
@@ -366,25 +407,32 @@ class Member
             // Update login count and last login date.
             $this->getDb()->updateLastLogin($email);
 
-            $response =  "db_error";
+            $response = "db_error";
         }
 
         return $response;
     }
 
-    // Calculates GUID
+    // Calculates cryptographically secure RFC 4122 UUID v4
     private function guid()
     {
         if (function_exists('com_create_guid') === true) {
             return trim(com_create_guid(), '{}');
         }
 
-        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+        $bytes = random_bytes(16);
+        $bytes[6] = chr(ord($bytes[6]) & 0x0f | 0x40); // set version to 0100
+        $bytes[8] = chr(ord($bytes[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($bytes), 4));
     }
 
-    // Save session information
+    // Save session information and regenerate session ID to prevent fixation
     private function saveSession($email, $guid)
     {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
+
         $_SESSION["email"] = $email;
         $_SESSION["auth_cd_guid"] = $guid;
 

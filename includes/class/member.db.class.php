@@ -208,7 +208,7 @@ class MemberDB
                                             WHERE member_uid = :uid");
     }
 
-    // Get Auth Cd GUID
+    // Get Auth Cd GUID (with 365-day expiration check)
     public function getAuthCdGuid($email, $cookieAuthCd)
     {
         $this->getDb()->bind("email", $email);
@@ -218,9 +218,29 @@ class MemberDB
                                           INNER JOIN kcb_members m ON a.member_uid=m.uid
                                           INNER JOIN kcb_email_address e ON e.member_uid=m.uid
                                           WHERE e.email_address = :email
-                                            AND a.auth_cd_guid = :cookieAuthCd");
+                                            AND a.auth_cd_guid = :cookieAuthCd
+                                            AND a.lst_tran_dt_tm >= DATE_SUB(NOW(), INTERVAL 365 DAY)");
 
         return $retVal;
+    }
+
+    // Delete Auth Cd GUID (revocation on logoff or token invalidation)
+    public function deleteAuthCdGuid($email, $cookieAuthCd = null)
+    {
+        $this->getDb()->bind("email", $email);
+        if (!empty($cookieAuthCd)) {
+            $this->getDb()->bind("cookieAuthCd", $cookieAuthCd);
+            return $this->getDb()->query("DELETE a FROM kcb_member_auth a
+                                          INNER JOIN kcb_members m ON a.member_uid=m.uid
+                                          INNER JOIN kcb_email_address e ON e.member_uid=m.uid
+                                          WHERE e.email_address = :email
+                                            AND a.auth_cd_guid = :cookieAuthCd");
+        } else {
+            return $this->getDb()->query("DELETE a FROM kcb_member_auth a
+                                          INNER JOIN kcb_members m ON a.member_uid=m.uid
+                                          INNER JOIN kcb_email_address e ON e.member_uid=m.uid
+                                          WHERE e.email_address = :email");
+        }
     }
 
     // Get Auth Cd timestamp as epoch seconds using DB timezone
