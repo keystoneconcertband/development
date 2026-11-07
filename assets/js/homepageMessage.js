@@ -155,11 +155,11 @@ function checkDates(date) {
     });
 }
 
-function formSuccess(text) {
+function formSuccess(text, resetPaging = false) {
   showAlert('#pageAlert', true, text);
   var table = dataTable;
   if (table) {
-    table.ajax.reload();
+    table.ajax.reload(null, resetPaging);
   }
   if (formMessage) {
     formMessage.reset();
@@ -167,6 +167,9 @@ function formSuccess(text) {
   }
   var modal = document.getElementById("modal_add_edit");
   if (modal) {
+    if (document.activeElement && modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
     var bsModal = bootstrap.Modal.getInstance(modal);
     if (bsModal) bsModal.hide();
   }

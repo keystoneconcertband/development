@@ -10,6 +10,13 @@
 		gtag('js', new Date());
 
 		gtag('config', 'G-EBPFTM35MW');
+
+		// Prevent browser aria-hidden focus warnings when Bootstrap modals hide
+		document.addEventListener('hide.bs.modal', function (event) {
+			if (event.target && typeof event.target.contains === 'function' && event.target.contains(document.activeElement)) {
+				document.activeElement.blur();
+			}
+		});
 	</script>
 <?php
 if (!isset($_SESSION["email"])) {

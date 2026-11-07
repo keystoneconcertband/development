@@ -159,7 +159,7 @@ function deleteRecord(title, uid) {
     });
 }
 
-function formSuccess(text) {
+function formSuccess(text, resetPaging = false) {
   var pageAlert = document.getElementById("pageAlert");
   if (pageAlert) {
     pageAlert.className = "alert alert-success alert-dismissible fade show";
@@ -170,7 +170,7 @@ function formSuccess(text) {
   }
   var table = dataTable;
   if (table) {
-    table.ajax.reload();
+    table.ajax.reload(null, resetPaging);
   }
   if (formMusic) {
     formMusic.reset();
@@ -178,6 +178,9 @@ function formSuccess(text) {
   }
   var modal = document.getElementById("modal_add_edit");
   if (modal) {
+    if (document.activeElement && modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
     var bsModal = bootstrap.Modal.getInstance(modal);
     if (bsModal) bsModal.hide();
   }
