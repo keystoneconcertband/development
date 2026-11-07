@@ -40,6 +40,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 return '<a href="http://www.youtube.com/results?search_query=' + encodeURIComponent(data.title) + '" target="_blank" rel="noopener noreferrer">http://www.youtube.com/results?search_query=' + data.title + '</a><br />';
             }},
             { data: 'genre' },
+            {
+                data: 'estbd_dt_tm',
+                render: function (data, type) {
+                    if (!data || data === '0000-00-00 00:00:00' || data === '0000-00-00') return '';
+                    if (type === 'sort' || type === 'type') {
+                        return data;
+                    }
+                    const dateObj = new Date(String(data).replace(/-/g, '/'));
+                    if (isNaN(dateObj.getTime())) return escapeHtml(data);
+                    const formatted = dateObj.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                    if (type === 'filter') {
+                        return data + ' ' + formatted;
+                    }
+                    return formatted;
+                }
+            }
         ]
     });
 

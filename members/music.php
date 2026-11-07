@@ -60,6 +60,7 @@ new ProtectedMusic();
                                     <th>Notes</th>
                                     <th>Music Link</th>
                                     <th>Genre</th>
+                                    <th>Created Date</th>
                                 </tr>
                             </thead>
                         </table>
