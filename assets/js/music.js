@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (type === 'sort' || type === 'type') {
                         return data;
                     }
-                    const dateObj = new Date(String(data).replace(/-/g, '/'));
+                    const dateObj = new Date(String(data).replaceAll('-', '/'));
                     if (isNaN(dateObj.getTime())) return escapeHtml(data);
                     const formatted = dateObj.toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -164,8 +164,8 @@ function showEditRecord(uid) {
         var data = results[0];
         if (data && data.notes) {
             data.notes = String(data.notes)
-                .replace(/\r\n/g, '\n')
-                .replace(/\r/g, '\n')
+                .replaceAll('\r\n', '\n')
+                .replaceAll('\r', '\n')
                 .replace(/\n?<br\s*\/?>\n?/gi, '\n');
         }
         var uidField = document.getElementById('uid');

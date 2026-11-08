@@ -346,21 +346,21 @@ function populateInstrument(data) {
 function escapeHtml(text) {
   if (text === null || text === undefined) return '';
   return String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
 function linkify(text) {
   if (!text) return '';
   var normalized = String(text)
-    .replace(/\r\n/g, '\n')
-    .replace(/\r/g, '\n')
+    .replaceAll('\r\n', '\n')
+    .replaceAll('\r', '\n')
     .replace(/\n?<br\s*\/?>\n?/gi, '\n');
 
-  var escaped = escapeHtml(normalized).replace(/\n/g, '<br>');
+  var escaped = escapeHtml(normalized).replaceAll('\n', '<br>');
   var urlRegex = /\b((?:https?:\/\/|www\.)[^\s<]+)/gi;
 
   return escaped.replace(urlRegex, function (url) {
