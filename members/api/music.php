@@ -9,7 +9,7 @@
 		if(!isset($_POST['title'])) {
 			echo json_encode('Title is required.');
 		}
-		elseif(!isset($_POST['genre']) || $_POST['genre'] == "0") {
+		elseif(!isset($_POST['genre']) || trim($_POST['genre']) === '' || $_POST['genre'] == "0") {
 			echo json_encode('Genre is required.');
 		}
 		else {
@@ -23,7 +23,7 @@
 		elseif(!isset($_POST['title'])) {
 			echo json_encode('Title is required.');
 		}
-		elseif(!isset($_POST['genre']) || $_POST['genre'] == "0") {
+		elseif(!isset($_POST['genre']) || trim($_POST['genre']) === '' || $_POST['genre'] == "0") {
 			echo json_encode('Genre is required.');
 		}
 		else {

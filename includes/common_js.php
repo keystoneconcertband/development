@@ -10,6 +10,28 @@
 		gtag('js', new Date());
 
 		gtag('config', 'G-EBPFTM35MW');
+
+		// Prevent browser aria-hidden focus warnings when Bootstrap modals hide
+		document.addEventListener('hide.bs.modal', function (event) {
+			if (event.target && typeof event.target.contains === 'function' && event.target.contains(document.activeElement)) {
+				document.activeElement.blur();
+			}
+		});
+
+		// Automatically clear alerts inside modals when the modal closes
+		document.addEventListener('hidden.bs.modal', function (event) {
+			if (event.target && typeof event.target.querySelectorAll === 'function') {
+				event.target.querySelectorAll('.alert').forEach(function (alertEl) {
+					if (alertEl._hideTimeout) {
+						clearTimeout(alertEl._hideTimeout);
+						alertEl._hideTimeout = null;
+					}
+					alertEl.className = 'alert d-none';
+					alertEl.innerHTML = '';
+					alertEl.removeAttribute('role');
+				});
+			}
+		});
 	</script>
 <?php
 if (!isset($_SESSION["email"])) {

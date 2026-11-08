@@ -60,6 +60,7 @@ new ProtectedMusic();
                                     <th>Notes</th>
                                     <th>Music Link</th>
                                     <th>Genre</th>
+                                    <th>Created Date</th>
                                 </tr>
                             </thead>
                         </table>
@@ -96,8 +97,8 @@ new ProtectedMusic();
                             <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <label for="genre" class="form-label">Genre*</label>
-                                    <select class="form-select" name="genre" id="genre" required="true">
-                                        <option value="0" selected="Selected">Select type</option>
+                                    <select class="form-select" name="genre" id="genre" required>
+                                        <option value="" selected>Select type</option>
                                     </select>
                                     <div class="invalid-feedback">Please complete this field.</div>
                                 </div>

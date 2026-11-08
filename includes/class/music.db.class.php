@@ -33,7 +33,7 @@ class MusicDB
     // Gets the members by instrument
     public function getMusic()
     {
-        return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, m.genre 
+        return $this->getDb()->query("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, m.estbd_dt_tm 
                                       FROM kcb_music m 
                                       WHERE m.actv_flg = 1 
                                       ORDER BY m.title");
@@ -42,7 +42,7 @@ class MusicDB
     public function getMusicRecord($uid)
     {
         $this->getDb()->bind('uid', $uid);
-        return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, m.genre 
+        return $this->getDb()->row("SELECT m.uid, m.title, m.notes, m.music_link, m.genre, m.estbd_dt_tm 
                                     FROM kcb_music m 
                                     WHERE m.actv_flg = 1 
                                       AND m.uid = :uid");
