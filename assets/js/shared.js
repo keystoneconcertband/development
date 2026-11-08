@@ -156,6 +156,20 @@ function showAlert(selector, valid, msg) {
   }
 }
 
+function clearAlert(selector) {
+  var element = document.querySelector(selector);
+  if (!element) return;
+
+  if (element._hideTimeout) {
+    clearTimeout(element._hideTimeout);
+    element._hideTimeout = null;
+  }
+
+  element.className = 'alert d-none';
+  element.innerHTML = '';
+  element.removeAttribute('role');
+}
+
 function showMessage(selector, valid, msg, duplicateSelectors) {
   var element = document.querySelector(selector);
   var classes = valid ? 'h4 tada animated text-success' : 'h4 text-danger';

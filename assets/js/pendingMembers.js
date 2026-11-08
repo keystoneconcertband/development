@@ -95,6 +95,7 @@ if (modalEditDelete) {
             msgSubmit.className = '';
             msgSubmit.textContent = '';
         }
+        clearAlert('#formAlert');
     });
 
     modalEditDelete.addEventListener('hidden.bs.modal', function () {
@@ -104,6 +105,7 @@ if (modalEditDelete) {
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';
+        clearAlert('#formAlert');
         document.querySelectorAll('.emailContainers').forEach(function (el) {
             el.remove();
         });
@@ -131,6 +133,7 @@ function deleteEmail(emailContainer) {
 }
 
 function showEditRecord(uid) {
+    clearAlert('#formAlert');
     var params = new URLSearchParams({ type: 'getMemberRecord', uid: uid.toString() });
 
     postUrlEncoded('api/pendingMembers.php', params)
@@ -207,6 +210,7 @@ function formSuccess(text, resetPaging = false) {
     formMember.reset();
     formMember.classList.remove('was-validated');
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById('modal_edit_delete');
   if (modal) {
     if (document.activeElement && modal.contains(document.activeElement)) {

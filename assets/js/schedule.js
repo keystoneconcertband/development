@@ -92,6 +92,7 @@ function addRecord() {
 }
 
 function showEditRecord(uid) {
+    clearAlert('#formAlert');
     var params = new URLSearchParams({ type: 'getScheduleRecord', uid: uid.toString() });
 
     postUrlEncoded('api/schedule.php', params)
@@ -147,6 +148,7 @@ function formSuccess(text, resetPaging = false) {
     setConcertBegin('');
     formSchedule.classList.remove("was-validated");
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById("modal_add_edit");
   if (modal) {
     if (document.activeElement && modal.contains(document.activeElement)) {
@@ -171,6 +173,8 @@ if (modal) {
         var uid = document.getElementById('uid');
         var modalTitle = document.getElementById('modalAddEditLabel');
 
+        clearAlert('#formAlert');
+
         if (uid && uid.value) {
             if (modalTitle) modalTitle.textContent = 'Edit Schedule';
         } else {
@@ -180,12 +184,6 @@ if (modal) {
                 formSchedule.classList.remove('was-validated');
             }
             if (modalTitle) modalTitle.textContent = 'Add Schedule';
-            var formAlert = document.querySelector('#formAlert');
-            if (formAlert) {
-                formAlert.classList.add('d-none');
-                formAlert.innerHTML = '';
-                formAlert.removeAttribute('role');
-            }
         }
     });
 
@@ -197,5 +195,8 @@ if (modal) {
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        if (modalTitle) modalTitle.textContent = 'Add Schedule';
+        clearAlert('#formAlert');
     });
 }

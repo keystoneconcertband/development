@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var column = dataTable.column(0);
     column.visible(accountType === '1' || accountType === '2');
+
+    populateGenreDropdown();
 });
 
 var formMusic = document.getElementById('form_music');
@@ -94,7 +96,32 @@ if (modalAddEdit) {
             msgSubmit.className = '';
             msgSubmit.textContent = '';
         }
+        clearAlert('#formAlert');
+
+        var uidField = document.getElementById('uid');
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        if (uidField && uidField.value) {
+            if (modalTitle) modalTitle.textContent = 'Edit Music';
+        } else {
+            if (modalTitle) modalTitle.textContent = 'Add Music';
+            if (formMusic) {
+                formMusic.reset();
+                formMusic.classList.remove('was-validated');
+            }
+        }
         populateGenreDropdown();
+    });
+
+    modalAddEdit.addEventListener('hidden.bs.modal', function () {
+        if (formMusic) {
+            formMusic.reset();
+            formMusic.classList.remove('was-validated');
+        }
+        var uidField = document.getElementById('uid');
+        if (uidField) uidField.value = '';
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        if (modalTitle) modalTitle.textContent = 'Add Music';
+        clearAlert('#formAlert');
     });
 }
 
@@ -129,19 +156,48 @@ function addRecord() {
 function showEditRecord(uid) {
     var params = new URLSearchParams({ type: 'getMusicRecord', uid: uid.toString() });
 
-    postUrlEncoded('api/music.php', params)
-    .then(function (data) {
+    Promise.all([
+        postUrlEncoded('api/music.php', params),
+        populateGenreDropdown()
+    ])
+    .then(function (results) {
+        var data = results[0];
         if (data && data.notes) {
             data.notes = String(data.notes)
                 .replace(/\r\n/g, '\n')
                 .replace(/\r/g, '\n')
                 .replace(/\n?<br\s*\/?>\n?/gi, '\n');
         }
-        populateForm('#form_music', data);
         var uidField = document.getElementById('uid');
         if (uidField) uidField.value = uid;
-        var nbrPlaysDiv = document.getElementById('nbr_plays_div');
-        if (nbrPlaysDiv) nbrPlaysDiv.style.display = 'block';
+
+        populateForm('#form_music', data);
+
+        // Ensure genre is properly selected in the dropdown
+        var genreSelect = document.getElementById('genre');
+        if (genreSelect) {
+            var genreVal = (data && data.genre) ? String(data.genre).trim() : '';
+            if (genreVal && genreVal !== '0') {
+                genreSelect.value = genreVal;
+                if (genreSelect.value !== genreVal) {
+                    for (var i = 0; i < genreSelect.options.length; i++) {
+                        if (genreSelect.options[i].text.trim().toLowerCase() === genreVal.toLowerCase() ||
+                            genreSelect.options[i].value.trim().toLowerCase() === genreVal.toLowerCase()) {
+                            genreSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                genreSelect.value = '';
+            }
+        }
+
+        clearAlert('#formAlert');
+
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        if (modalTitle) modalTitle.textContent = 'Edit Music';
+
         var modal = document.getElementById('modal_add_edit');
         if (modal) {
             var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
@@ -149,7 +205,7 @@ function showEditRecord(uid) {
         }
     })
     .catch(function (error) {
-        showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
+        showAlert('#pageAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
         console.log(error);
     });
 }
@@ -194,14 +250,7 @@ function deleteRecord(title, uid) {
 }
 
 function formSuccess(text, resetPaging = false) {
-  var pageAlert = document.getElementById("pageAlert");
-  if (pageAlert) {
-    pageAlert.className = "alert alert-success alert-dismissible fade show";
-    pageAlert.innerHTML =
-      text +
-      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-    pageAlert.setAttribute("role", "alert");
-  }
+  showAlert('#pageAlert', true, text);
   var table = dataTable;
   if (table) {
     table.ajax.reload(null, resetPaging);
@@ -210,6 +259,7 @@ function formSuccess(text, resetPaging = false) {
     formMusic.reset();
     formMusic.classList.remove("was-validated");
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById("modal_add_edit");
   if (modal) {
     if (document.activeElement && modal.contains(document.activeElement)) {
@@ -226,22 +276,32 @@ function formError(text) {
     showAlert('#formAlert', false, text);
 }
 
+var genresPromise = null;
+
 function populateGenreDropdown() {
     var genreSelect = document.getElementById('genre');
-    if (!genreSelect) return;
-    if (genreSelect.options.length === 1) {
+    if (!genreSelect) return Promise.resolve();
+    if (genreSelect.options.length > 1) {
+        return Promise.resolve();
+    }
+    if (!genresPromise) {
         var params = new URLSearchParams({ type: 'getMusicGenres' });
-        postUrlEncoded('api/music.php', params)
+        genresPromise = postUrlEncoded('api/music.php', params)
         .then(function (data) {
-            data.forEach(function (value) {
-                var option = document.createElement('option');
-                option.textContent = value.genre;
-                genreSelect.appendChild(option);
-            });
+            if (Array.isArray(data)) {
+                data.forEach(function (value) {
+                    var option = document.createElement('option');
+                    option.value = value.genre;
+                    option.textContent = value.genre;
+                    genreSelect.appendChild(option);
+                });
+            }
         })
         .catch(function (error) {
-            showAlert('#formAlert', false, 'Oops! An error occurred opening the form. Please try again later.');
+            genresPromise = null;
+            showAlert('#formAlert', false, 'Oops! An error occurred loading genres. Please try again later.');
             console.log(error);
         });
     }
+    return genresPromise;
 }

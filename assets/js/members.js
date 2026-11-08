@@ -157,11 +157,7 @@ if (modalEditDelete) {
       modalEditDeleteLabel.textContent = "Add Member";
     }
 
-    var formAlert = document.getElementById("formAlert");
-    if (formAlert) {
-      formAlert.className = "alert d-none alert-dismissible fade show";
-      formAlert.textContent = "";
-    }
+    clearAlert('#formAlert');
   });
 
   modalEditDelete.addEventListener("hidden.bs.modal", function () {
@@ -171,6 +167,7 @@ if (modalEditDelete) {
     }
     var uid = document.getElementById("uid");
     if (uid) uid.value = "";
+    clearAlert('#formAlert');
     document.querySelectorAll(".emailContainers").forEach(function (el) {
       el.remove();
     });
@@ -217,6 +214,7 @@ function addRecord() {
 }
 
 function showEditRecord(uid) {
+  clearAlert('#formAlert');
   var params = new URLSearchParams({
     type: "getMemberRecord",
     uid: uid.toString(),
@@ -307,6 +305,7 @@ function formSuccess(text, resetPaging = false) {
     formMember.reset();
     formMember.classList.remove("was-validated");
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById("modal_edit_delete");
   if (modal) {
     if (document.activeElement && modal.contains(document.activeElement)) {
