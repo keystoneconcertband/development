@@ -221,7 +221,7 @@ class PendingMemberService
         }
 
         $completionUrl = $this->buildCompletionUrl($token, $baseUrl);
-        $emailSent = $this->sendActivationEmail($member, $emails, $completionUrl);
+        $emailSent = $this->sendActivationEmail($member, $emails, $completionUrl, $baseUrl);
 
         $this->logger->notice("Admin activated pending member for onboarding", [
             'uid'        => $uid,
@@ -431,7 +431,7 @@ class PendingMemberService
         }
 
         $completionUrl = $this->buildCompletionUrl($token, $baseUrl);
-        $sent = $this->sendReminderEmail($member, $emails, $completionUrl);
+        $sent = $this->sendReminderEmail($member, $emails, $completionUrl, $baseUrl);
 
         if (!$sent) {
             $this->logger->error("Failed to dispatch pending member reminder email", [
@@ -632,11 +632,13 @@ class PendingMemberService
 
     /* PRIVATE HELPERS */
 
-    private function sendActivationEmail(array $member, array $emails, $completionUrl)
+    private function sendActivationEmail(array $member, array $emails, $completionUrl, $baseUrl = null)
     {
         $firstName = htmlspecialchars((string)($member['firstName'] ?? 'Musician'), ENT_QUOTES, 'UTF-8');
         $safeUrl = htmlspecialchars($completionUrl, ENT_QUOTES, 'UTF-8');
-        $loginUrl = htmlspecialchars(KcbBase::getSiteBaseUrl() . '/roster.php?login=1', ENT_QUOTES, 'UTF-8');
+        $base = !empty($baseUrl) ? rtrim((string)$baseUrl, '/') : KcbBase::getSiteBaseUrl();
+        $loginUrl = htmlspecialchars($base . '/members/reauth.php', ENT_QUOTES, 'UTF-8');
+        $siteGuideHtml = $this->buildSiteOverviewHtml($base);
 
         $subject = 'Welcome to Keystone Concert Band - Please Complete Your Member Info';
         $body = "<p>Hi <strong>{$firstName}</strong>,</p>"
@@ -647,16 +649,48 @@ class PendingMemberService
             . "</p>"
             . "<p>Or copy and paste this link into your browser:<br><a href='{$safeUrl}'>{$safeUrl}</a></p>"
             . "<p>You can also sign in anytime at <a href='{$loginUrl}'>Member Login</a> using your email address on file to access the completion form.</p>"
+            . $siteGuideHtml
             . "<p>Thanks,<br>Keystone Concert Band</p>";
 
         return $this->kcb->sendEmail($emails, $body, $subject, true);
     }
 
-    private function sendReminderEmail(array $member, array $emails, $completionUrl)
+    private function buildSiteOverviewHtml($baseUrl)
+    {
+        $base = rtrim((string)$baseUrl, '/');
+        $homeUrl = htmlspecialchars($base . '/index.php', ENT_QUOTES, 'UTF-8');
+        $loginUrl = htmlspecialchars($base . '/members/reauth.php', ENT_QUOTES, 'UTF-8');
+        $overviewUrl = htmlspecialchars($base . '/members/index.php', ENT_QUOTES, 'UTF-8');
+        $myInfoUrl = htmlspecialchars($base . '/members/myInfo.php', ENT_QUOTES, 'UTF-8');
+        $rosterUrl = htmlspecialchars($base . '/members/currentMembers.php', ENT_QUOTES, 'UTF-8');
+        $musicUrl = htmlspecialchars($base . '/members/music.php', ENT_QUOTES, 'UTF-8');
+        $docsUrl = htmlspecialchars($base . '/members/documents.php', ENT_QUOTES, 'UTF-8');
+        $bylawsUrl = htmlspecialchars($base . '/assets/docs/KCB_Bylaws_2021.pdf', ENT_QUOTES, 'UTF-8');
+        $policiesUrl = htmlspecialchars($base . '/assets/docs/KCB_Policy_March_2023.pdf', ENT_QUOTES, 'UTF-8');
+        $concertsUrl = htmlspecialchars($base . '/concerts.php', ENT_QUOTES, 'UTF-8');
+
+        return "<div style='margin:24px 0;padding:16px 20px;background-color:#f8f9fa;border:1px solid #dee2e6;border-left:4px solid #008cba;border-radius:4px;font-family:Arial,sans-serif;font-size:14px;line-height:1.5;'>"
+            . "<h3 style='margin:0 0 10px 0;font-size:16px;color:#008cba;'>About the Keystone Concert Band Website</h3>"
+            . "<p style='margin:0 0 10px 0;'>Once your account is active, you can explore everything in our Member Area on <a href='{$homeUrl}'>keystoneconcertband.com</a>:</p>"
+            . "<p style='margin:0 0 10px 0;'><strong>How Member Login Works:</strong> There is no password to remember—click <strong>Member Login</strong> in the top menu (or visit <a href='{$loginUrl}'>Member Login</a>) and enter your email address on file to receive a one-time login code.</p>"
+            . "<ul style='margin:0 0 12px 18px;padding:0;'>"
+            . "<li style='margin-bottom:6px;'><a href='{$overviewUrl}'><strong>Member Overview</strong></a>: Quick dashboard with member announcements, links, and band resources.</li>"
+            . "<li style='margin-bottom:6px;'><a href='{$myInfoUrl}'><strong>My Info</strong></a>: View or update your phone number, mailing address, email addresses, emergency contact, instruments, and public roster display preference anytime.</li>"
+            . "<li style='margin-bottom:6px;'><a href='{$rosterUrl}'><strong>Current Members</strong></a>: Member directory showing fellow musicians across every instrument section.</li>"
+            . "<li style='margin-bottom:6px;'><a href='{$musicUrl}'><strong>Music Library</strong></a>: Browse pieces in the band library along with notes and reference links.</li>"
+            . "<li style='margin-bottom:6px;'><a href='{$docsUrl}'><strong>Band Documents</strong></a>: Access band files, including the <a href='{$bylawsUrl}'>KCB Bylaws</a> and <a href='{$policiesUrl}'>Band Policies</a>.</li>"
+            . "<li style='margin-bottom:0;'><a href='{$concertsUrl}'><strong>Concerts &amp; Calendar</strong></a>: See upcoming concert dates, venues, uniform notes, and the band Google Calendar.</li>"
+            . "</ul>"
+            . "<p style='margin:0;color:#555;'><strong>Rehearsals:</strong> Wednesdays from 7:00 PM to 9:00 PM (early February through mid-December) in the community room at Good Shepherd Lutheran Church, 3700 Rutherford St., Harrisburg (Paxtang).</p>"
+            . "</div>";
+    }
+
+    private function sendReminderEmail(array $member, array $emails, $completionUrl, $baseUrl = null)
     {
         $firstName = htmlspecialchars((string)($member['firstName'] ?? 'Musician'), ENT_QUOTES, 'UTF-8');
         $safeUrl = htmlspecialchars($completionUrl, ENT_QUOTES, 'UTF-8');
-        $loginUrl = htmlspecialchars(KcbBase::getSiteBaseUrl() . '/roster.php?login=1', ENT_QUOTES, 'UTF-8');
+        $base = !empty($baseUrl) ? rtrim((string)$baseUrl, '/') : KcbBase::getSiteBaseUrl();
+        $loginUrl = htmlspecialchars($base . '/members/reauth.php', ENT_QUOTES, 'UTF-8');
 
         $activatedDateText = '';
         if (!empty($member['activated_dt_tm'])) {

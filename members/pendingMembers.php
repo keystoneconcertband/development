@@ -448,6 +448,33 @@ $pageTitle = $viewMode === 'admin'
                             </form>
                         </div>
                     </div>
+
+                    <div class="card shadow-sm mt-4 border-info">
+                        <div class="card-body p-4">
+                            <h2 class="h5 mt-0 mb-2 text-primary">
+                                <i class="fa-solid fa-compass me-2" aria-hidden="true"></i>Explore the Keystone Concert Band Website
+                            </h2>
+                            <p class="text-muted small mb-3">
+                                Once you submit your info, use <strong>Member Login</strong> in the navigation bar (with a one-time verification code sent to your email—no password needed) to access the Member Area:
+                            </p>
+                            <div class="row g-3 small">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><strong>Overview:</strong> Band updates and quick links across the member portal.</li>
+                                        <li class="mb-2"><strong>My Info:</strong> Keep your phone, address, emails, instruments, emergency contact, and roster privacy setting up to date.</li>
+                                        <li class="mb-0"><strong>Current Members:</strong> Browse the active musician directory and instrument sections.</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><strong>Music Library:</strong> View pieces in the library, rehearsal notes, and listening links.</li>
+                                        <li class="mb-2"><strong>Documents:</strong> Download band files, including our <a href="/assets/docs/KCB_Bylaws_2021.pdf" target="_blank">Bylaws</a> and <a href="/assets/docs/KCB_Policy_March_2023.pdf" target="_blank">Band Policies</a>.</li>
+                                        <li class="mb-0"><strong><a href="/concerts.php">Concerts &amp; Calendar</a>:</strong> Upcoming concerts, call times, locations, and Wednesday rehearsals (7:00–9:00 PM at Good Shepherd Lutheran Church, Paxtang).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
