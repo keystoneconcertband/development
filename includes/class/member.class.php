@@ -443,5 +443,6 @@ class Member
         $_SESSION['office'] = $member['office'];
         $_SESSION['firstName'] = $member['firstName'];
         $_SESSION['lastName'] = $member['lastName'];
+        $_SESSION['pending_info'] = (int)($member['pending_info'] ?? 0);
     }
 }

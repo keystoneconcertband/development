@@ -1,0 +1,58 @@
+name: Pending Member Onboarding Reminders
+
+on:
+  schedule:
+    # Run daily at 14:00 UTC (9:00 AM EST / 10:00 AM EDT)
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (check due reminders without sending emails)'
+        required: false
+        default: false
+        type: boolean
+      force:
+        description: 'Force sending even if SEND_PENDING_REMINDER_EMAIL is disabled'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  send-pending-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger pending member reminder endpoint
+        env:
+          CRON_KEY: ${{ secrets.CRON_KEY || 'kcb-daily-summary-token' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          FORCE: ${{ github.event.inputs.force || 'false' }}
+        run: |
+          URL="https://www.keystoneconcertband.com/api/cron/pending_member_reminders.php"
+          QUERY=""
+          if [ "$DRY_RUN" = "true" ]; then
+            QUERY="dry_run=1"
+          fi
+          if [ "$FORCE" = "true" ]; then
+            if [ -n "$QUERY" ]; then
+              QUERY="${QUERY}&force=1"
+            else
+              QUERY="force=1"
+            fi
+          fi
+          if [ -n "$QUERY" ]; then
+            URL="${URL}?${QUERY}"
+          fi
+
+          RESPONSE=$(curl -sS -w "\nHTTP_STATUS:%{http_code}" \
+            -H "Authorization: Bearer ${CRON_KEY}" \
+            "${URL}")
+
+          HTTP_STATUS=$(printf '%s\n' "$RESPONSE" | sed -n 's/^HTTP_STATUS://p')
+          BODY=$(printf '%s\n' "$RESPONSE" | sed '/^HTTP_STATUS:/d')
+
+          echo "$BODY"
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "Endpoint returned HTTP status ${HTTP_STATUS}"
+            exit 1
+          fi

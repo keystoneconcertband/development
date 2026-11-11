@@ -64,13 +64,29 @@ class KcbBase
     public function logError($message, array $context = [])    { $this->logger->error($message, $context); }
     public function logCritical($message, array $context = []) { $this->logger->critical($message, $context); }
 
-    public function sendEmail($toAddress, $message, $title, $html = true)
+    public function sendEmail($toAddress, $message, $title, $html = true, $ccAddress = null)
     {
+        $toList = $this->parseEmailAddresses($toAddress);
+        $ccList = $this->parseEmailAddresses($ccAddress);
+
+        if (empty($toList)) {
+            $this->logger->error("Cannot send email: no valid recipient address provided", [
+                'to'      => $toAddress,
+                'cc'      => $ccAddress,
+                'subject' => $title,
+            ]);
+            return false;
+        }
+
         $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
 
         // Can't email from localhost unless BREVO credentials are explicitly provided for testing
         if ($serverName === 'localhost' && empty(getenv('APPSETTING_BREVO_USERNAME'))) {
-            $this->logger->info("Email sending simulated on localhost", ['to' => $toAddress, 'subject' => $title]);
+            $logContext = ['to' => $toList, 'subject' => $title];
+            if (!empty($ccList)) {
+                $logContext['cc'] = $ccList;
+            }
+            $this->logger->info("Email sending simulated on localhost", $logContext);
             return true;
         }
 
@@ -89,7 +105,12 @@ class KcbBase
 
             //Recipients
             $mail->setFrom('jonathang@keystoneconcertband.com', 'KCB Website');
-            $mail->addAddress($toAddress);
+            foreach ($toList as $recipient) {
+                $mail->addAddress($recipient);
+            }
+            foreach ($ccList as $ccRecipient) {
+                $mail->addCC($ccRecipient);
+            }
 
             //Content
             $mail->isHTML($html);
@@ -97,16 +118,92 @@ class KcbBase
             $mail->Body    = $message;
 
             $mail->send();
-            $this->logger->info("Email dispatched successfully", ['to' => $toAddress, 'subject' => $title]);
+            $logContext = ['to' => $toList, 'subject' => $title];
+            if (!empty($ccList)) {
+                $logContext['cc'] = $ccList;
+            }
+            $this->logger->info("Email dispatched successfully", $logContext);
             return true;
         } catch (Exception $e) {
             $this->logger->error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}", [
-                'to'      => $toAddress,
+                'to'      => $toList,
+                'cc'      => $ccList,
                 'subject' => $title,
                 'error'   => $mail->ErrorInfo,
             ]);
             return false;
         }
+    }
+
+    /**
+     * Returns the configured webmaster email address.
+     *
+     * @return string
+     */
+    public static function getWebmasterEmail()
+    {
+        return getenv('APPSETTING_WEBMASTER_EMAIL')
+            ?: (getenv('WEBMASTER_EMAIL') ?: 'webmaster@keystoneconcertband.com');
+    }
+
+    /**
+     * Returns the configured band director email address.
+     *
+     * @return string
+     */
+    public static function getBandDirectorEmail()
+    {
+        return getenv('APPSETTING_BAND_DIRECTOR_EMAIL')
+            ?: (getenv('BAND_DIRECTOR_EMAIL') ?: 'kcbmaestro@hotmail.com');
+    }
+
+    /**
+     * Resolves the canonical base URL for links inside emails.
+     *
+     * @return string
+     */
+    public static function getSiteBaseUrl()
+    {
+        $configured = getenv('APPSETTING_SITE_URL') ?: getenv('SITE_URL');
+        if (!empty($configured)) {
+            return rtrim(trim((string)$configured), '/');
+        }
+
+        $host = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
+        $host = trim((string)$host);
+        if ($host !== '' && preg_match('/^[a-zA-Z0-9.-]+(:\d+)?$/', $host)) {
+            $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+                || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443);
+            $scheme = $isHttps ? 'https' : 'http';
+            return $scheme . '://' . $host;
+        }
+
+        return 'https://www.keystoneconcertband.com';
+    }
+
+    /**
+     * Normalizes a single email string, comma-separated list, or array into unique valid addresses.
+     *
+     * @param string|array|null $addresses
+     * @return array
+     */
+    private function parseEmailAddresses($addresses)
+    {
+        if (empty($addresses)) {
+            return [];
+        }
+
+        $rawItems = is_array($addresses) ? $addresses : preg_split('/[,;]+/', (string)$addresses);
+        $valid = [];
+        foreach ($rawItems as $item) {
+            $email = trim((string)$item);
+            if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) !== false) {
+                $valid[strtolower($email)] = $email;
+            }
+        }
+
+        return array_values($valid);
     }
 
     private function defaultSettings($showErrors)

@@ -4,11 +4,66 @@ require_once "db.class.php";
 class MemberDB
 {
    private $db;
+   private static $onboardingSchemaReady = null;
+   private const ONBOARDING_SCHEMA_CACHE_KEY = 'kcb_pending_onboarding_schema_v1';
 
     /* PUBLIC FUNCTIONS */
     public function __construct()
     {
         $this->setDB(new Db());
+    }
+
+    /**
+     * Ensures onboarding columns/indexes exist on kcb_members.
+     * Cached in-memory and in APCu to avoid repeated INFORMATION_SCHEMA checks.
+     *
+     * @return bool
+     */
+    public function ensurePendingOnboardingSchema()
+    {
+        if (self::$onboardingSchemaReady === true) {
+            return true;
+        }
+
+        $cached = self::getPublicCache(self::ONBOARDING_SCHEMA_CACHE_KEY, $cacheHit);
+        if ($cacheHit && $cached === true) {
+            self::$onboardingSchemaReady = true;
+            return true;
+        }
+
+        $columnDefinitions = [
+            'pending_info' => "ALTER TABLE `kcb_members` ADD COLUMN `pending_info` TINYINT(1) NOT NULL DEFAULT 0 AFTER `accountType`",
+            'activation_token' => "ALTER TABLE `kcb_members` ADD COLUMN `activation_token` VARCHAR(64) NULL DEFAULT NULL AFTER `pending_info`",
+            'activated_dt_tm' => "ALTER TABLE `kcb_members` ADD COLUMN `activated_dt_tm` DATETIME NULL DEFAULT NULL AFTER `activation_token`",
+            'info_completed_dt_tm' => "ALTER TABLE `kcb_members` ADD COLUMN `info_completed_dt_tm` DATETIME NULL DEFAULT NULL AFTER `activated_dt_tm`",
+            'reminder_count' => "ALTER TABLE `kcb_members` ADD COLUMN `reminder_count` INT NOT NULL DEFAULT 0 AFTER `info_completed_dt_tm`",
+            'last_reminder_dt_tm' => "ALTER TABLE `kcb_members` ADD COLUMN `last_reminder_dt_tm` DATETIME NULL DEFAULT NULL AFTER `reminder_count`",
+        ];
+
+        $allReady = true;
+        foreach ($columnDefinitions as $col => $ddl) {
+            if (!$this->getDb()->hasColumn('kcb_members', $col)) {
+                if (!$this->getDb()->tryExec($ddl)) {
+                    $allReady = false;
+                }
+            }
+        }
+
+        if ($allReady) {
+            if (!$this->getDb()->hasIndex('kcb_members', 'idx_kcb_members_activation_token')) {
+                $this->getDb()->tryExec("ALTER TABLE `kcb_members` ADD INDEX `idx_kcb_members_activation_token` (`activation_token`)");
+            }
+            if (!$this->getDb()->hasIndex('kcb_members', 'idx_kcb_members_pending_info')) {
+                $this->getDb()->tryExec("ALTER TABLE `kcb_members` ADD INDEX `idx_kcb_members_pending_info` (`pending_info`, `disabled`, `accountType`)");
+            }
+
+            self::$onboardingSchemaReady = true;
+            self::setPublicCache(self::ONBOARDING_SCHEMA_CACHE_KEY, true, 3600);
+            return true;
+        }
+
+        self::$onboardingSchemaReady = false;
+        return false;
     }
 
     /* Transactions */
@@ -38,13 +93,14 @@ class MemberDB
             return $cached;
         }
 
+        $pendingFilter = $this->ensurePendingOnboardingSchema() ? " AND m.pending_info = 0" : "";
         $this->getDb()->bind("instrument", $instrument);
         $members = $this->getDb()->query("SELECT firstName, lastName, displayFullName
                                           FROM kcb_members m
                                           JOIN kcb_instrument i ON m.UID = i.member_uid
                                           WHERE i.instrument = :instrument
-                                            AND disabled = 0
-                                            AND accountType <> 3
+                                            AND m.disabled = 0
+                                            AND m.accountType <> 3{$pendingFilter}
                                           ORDER BY lastName, firstName");
         self::setPublicCache($cacheKey, $members, 3600);
         return $members;
@@ -80,8 +136,9 @@ class MemberDB
     // Gets the member information by email address
     public function getMember($email)
     {
+        $pendingCol = $this->ensurePendingOnboardingSchema() ? "m.pending_info" : "0 AS pending_info";
         $this->getDb()->bind("email", $email);
-        return $this->getDb()->row("SELECT m.UID, m.accountType, m.office, m.firstName, m.lastName,
+        return $this->getDb()->row("SELECT m.UID, m.accountType, {$pendingCol}, m.office, m.firstName, m.lastName,
                                            m.`text`, m.displayFullName,
                                            m.lastLogon, m.logonCount, m.disabled_dt_tm, m.disabled,
                                            a.address1, a.address2, a.city, a.state, a.zip
@@ -94,13 +151,21 @@ class MemberDB
     // Gets member record by Member UID
     public function getMemberRecord($uid)
     {
+        $hasOnboarding = $this->ensurePendingOnboardingSchema();
+        $extraCols = $hasOnboarding
+            ? ", m.accountType, m.pending_info, m.activation_token, m.activated_dt_tm, m.info_completed_dt_tm, m.reminder_count, m.last_reminder_dt_tm, m.disabled"
+            : ", m.accountType, 0 AS pending_info, NULL AS activation_token, NULL AS activated_dt_tm, NULL AS info_completed_dt_tm, 0 AS reminder_count, NULL AS last_reminder_dt_tm, m.disabled";
+        $extraGroupBy = $hasOnboarding
+            ? ", m.accountType, m.pending_info, m.activation_token, m.activated_dt_tm, m.info_completed_dt_tm, m.reminder_count, m.last_reminder_dt_tm, m.disabled"
+            : ", m.accountType, m.disabled";
+
         $this->getDb()->bind("uid", $uid);
         return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, 'PA' AS state,
                                         a.zip, m.office, m.displayFullName,
-                                        GROUP_CONCAT(DISTINCT li.instrument) AS `instrument`,
-                                        m.emergency_contact_name, m.emergency_contact_phone
+                                        GROUP_CONCAT(DISTINCT COALESCE(NULLIF(li.instrument, ''), i.instrument)) AS `instrument`,
+                                        m.emergency_contact_name, m.emergency_contact_phone{$extraCols}
                                     FROM kcb_members m
                                     LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                     LEFT OUTER JOIN kcb_address a ON a.member_uid = m.uid
@@ -109,12 +174,13 @@ class MemberDB
                                     WHERE m.UID = :uid
                                     GROUP BY m.UID, lastName, firstName, m.`text`,
                                         address1, address2, city, state, zip, office, displayFullName,
-                                        m.emergency_contact_name, m.emergency_contact_phone");
+                                        m.emergency_contact_name, m.emergency_contact_phone{$extraGroupBy}");
     }
 
     // Gets all active members
     public function getActiveMembers()
     {
+        $pendingFilter = $this->ensurePendingOnboardingSchema() ? "\n                                        AND m.pending_info = 0" : "";
         return $this->getDb()->query("SELECT m.uid, m.firstName, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
                                         a.address1, a.address2, a.city, a.state, a.zip, m.office,
@@ -126,7 +192,7 @@ class MemberDB
                                       LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
                                       WHERE m.disabled = 0
-                                        AND m.accountType <> 3
+                                        AND m.accountType <> 3{$pendingFilter}
                                       GROUP BY m.UID, fullName, m.`text`,
                                         address1, address2, city, state, zip, office,
                                         m.emergency_contact_name, m.emergency_contact_phone
@@ -151,19 +217,41 @@ class MemberDB
                                       ORDER BY lastName, firstName");
     }
 
-    // Gets all pending members
+    // Gets all pending members (awaiting approval OR activated and awaiting profile info)
     public function getPendingMembers()
     {
-        return $this->getDb()->query("SELECT m.uid, CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
+        if ($this->ensurePendingOnboardingSchema()) {
+            return $this->getDb()->query("SELECT m.uid, m.firstName, m.lastName,
+                                            CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
+                                            GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`, m.estbd_dt_tm,
+                                            GROUP_CONCAT(DISTINCT COALESCE(NULLIF(li.display_text, ''), i.instrument)) AS `instrument`,
+                                            m.accountType, m.pending_info, m.activation_token,
+                                            m.activated_dt_tm, m.reminder_count, m.last_reminder_dt_tm
+                                          FROM kcb_members m
+                                          LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
+                                          LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
+                                          LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
+                                          WHERE (m.accountType = 3 OR m.pending_info = 1)
+                                            AND m.disabled = 0
+                                          GROUP BY m.UID, m.firstName, m.lastName, fullName, m.`text`, m.estbd_dt_tm,
+                                            m.accountType, m.pending_info, m.activation_token,
+                                            m.activated_dt_tm, m.reminder_count, m.last_reminder_dt_tm
+                                          ORDER BY m.estbd_dt_tm DESC, m.lastName, m.firstName");
+        }
+
+        return $this->getDb()->query("SELECT m.uid, m.firstName, m.lastName,
+                                        CONCAT(IF(m.lastName IS NOT NULL AND m.lastName != '', CONCAT(m.lastName, IF(m.firstName IS NOT NULL AND m.firstName != '', ', ', '')), ''), IFNULL(m.firstName, '')) AS fullName,
                                         GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`, m.estbd_dt_tm,
-                                        GROUP_CONCAT(DISTINCT li.display_text) AS `instrument`
+                                        GROUP_CONCAT(DISTINCT COALESCE(NULLIF(li.display_text, ''), i.instrument)) AS `instrument`,
+                                        m.accountType, 0 AS pending_info, NULL AS activation_token,
+                                        NULL AS activated_dt_tm, 0 AS reminder_count, NULL AS last_reminder_dt_tm
                                       FROM kcb_members m
                                       LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
                                       LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
                                       LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
-                                      WHERE m.accountType = 3 and disabled = 0
-                                      GROUP BY m.UID, fullName, m.`text`, estbd_dt_tm
-                                      ORDER BY lastName, firstName");
+                                      WHERE m.accountType = 3 AND m.disabled = 0
+                                      GROUP BY m.UID, m.firstName, m.lastName, fullName, m.`text`, m.estbd_dt_tm, m.accountType
+                                      ORDER BY m.estbd_dt_tm DESC, m.lastName, m.firstName");
     }
 
     // Checks that the account shouldn't be locked out because more than 3 auth_code attempts were made in the last hour.
@@ -388,7 +476,7 @@ class MemberDB
         $this->getDb()->bind("updateUser", $updateUser);
         $this->getDb()->bind("updateUser2", $updateUser);
 
-        if (array_key_exists('displayFullName', $mbrArray)) {
+        if (!empty($mbrArray['displayFullName'])) {
             $this->getDb()->bind('displayFullName', "1");
         } else {
             $this->getDb()->bind('displayFullName', "0");
@@ -410,14 +498,23 @@ class MemberDB
 
     public function updatePendingMember($uid, $mbrArray, $updateUser)
     {
+        $member = $this->getMemberRecord($uid);
+        if (!$member) {
+            return false;
+        }
+
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind("updateUser", $updateUser);
 
+        $onboardingSql = $this->ensurePendingOnboardingSchema()
+            ? ", pending_info = 0, activation_token = NULL, activated_dt_tm = COALESCE(activated_dt_tm, now()), info_completed_dt_tm = COALESCE(info_completed_dt_tm, now())"
+            : "";
+
         $retVal = $this->getDb()->query("UPDATE kcb_members
-                                         SET accountType = 0, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
+                                         SET accountType = 0{$onboardingSql}, lst_tran_dt_tm=now(), lst_updtd_by = :updateUser
                                          WHERE UID = :uid");
 
-        $pendingMemberActivated = $retVal > 0;
+        $pendingMemberActivated = ($retVal !== false);
 
         if ($pendingMemberActivated) {
             $retVal = $this->updateMember($uid, $mbrArray, $updateUser);
@@ -434,6 +531,275 @@ class MemberDB
         }
 
         return $pendingMemberActivated && $retVal !== false;
+    }
+
+    /**
+     * Activates a pending member into the onboarding-awaiting-info state and assigns an activation token.
+     *
+     * @param int $uid
+     * @param string $token
+     * @param string $updateUser
+     * @return bool
+     */
+    public function activatePendingMemberForOnboarding($uid, $token, $updateUser)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return false;
+        }
+
+        $this->getDb()->bind('uid', (int)$uid);
+        $this->getDb()->bind('token', $token);
+        $this->getDb()->bind('updateUser', $updateUser);
+
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET accountType = 0,
+                                             pending_info = 1,
+                                             activation_token = :token,
+                                             activated_dt_tm = COALESCE(activated_dt_tm, now()),
+                                             info_completed_dt_tm = NULL,
+                                             lst_tran_dt_tm = now(),
+                                             lst_updtd_by = :updateUser
+                                         WHERE UID = :uid
+                                           AND disabled = 0
+                                           AND (accountType = 3 OR pending_info = 1)");
+
+        if ($retVal === false) {
+            return false;
+        }
+
+        $emailRes = $this->activateEmail($uid, $updateUser);
+        $instrRes = $this->updateLastUpdateOnInstrument($uid, $updateUser);
+
+        return $emailRes !== false && $instrRes !== false;
+    }
+
+    /**
+     * Retrieves an activated pending member waiting to complete info by activation token.
+     *
+     * @param string $token
+     * @return array|false
+     */
+    public function getPendingMemberByToken($token)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return false;
+        }
+
+        $this->getDb()->bind('token', $token);
+        return $this->getDb()->row("SELECT m.uid, m.lastName, m.firstName,
+                                        GROUP_CONCAT(DISTINCT email_address) AS `email`, m.`text`,
+                                        a.address1, a.address2, a.city, 'PA' AS state,
+                                        a.zip, m.office, m.displayFullName,
+                                        GROUP_CONCAT(DISTINCT COALESCE(NULLIF(li.instrument, ''), i.instrument)) AS `instrument`,
+                                        m.emergency_contact_name, m.emergency_contact_phone,
+                                        m.accountType, m.pending_info, m.activation_token,
+                                        m.activated_dt_tm, m.info_completed_dt_tm,
+                                        m.reminder_count, m.last_reminder_dt_tm, m.disabled
+                                    FROM kcb_members m
+                                    LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
+                                    LEFT OUTER JOIN kcb_address a ON a.member_uid = m.uid
+                                    LEFT OUTER JOIN kcb_instrument i ON m.uid = i.member_uid
+                                    LEFT OUTER JOIN lkp_instrument li ON i.instrument = li.instrument
+                                    WHERE m.activation_token = :token
+                                      AND m.disabled = 0
+                                      AND m.pending_info = 1
+                                    GROUP BY m.UID, m.lastName, m.firstName, m.`text`,
+                                        a.address1, a.address2, a.city, state, a.zip, m.office, m.displayFullName,
+                                        m.emergency_contact_name, m.emergency_contact_phone,
+                                        m.accountType, m.pending_info, m.activation_token,
+                                        m.activated_dt_tm, m.info_completed_dt_tm,
+                                        m.reminder_count, m.last_reminder_dt_tm, m.disabled");
+    }
+
+    /**
+     * Retrieves a member record if they are currently awaiting profile completion.
+     *
+     * @param int $uid
+     * @return array|null
+     */
+    public function getPendingMemberForOnboarding($uid)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return null;
+        }
+
+        $record = $this->getMemberRecord((int)$uid);
+        if (!$record || (int)($record['disabled'] ?? 1) !== 0 || (int)($record['pending_info'] ?? 0) !== 1) {
+            return null;
+        }
+
+        return $record;
+    }
+
+    /**
+     * Marks onboarding profile completion finished and invalidates the single-use activation token.
+     *
+     * @param int $uid
+     * @param string $updateUser
+     * @return bool
+     */
+    public function markPendingInfoCompleted($uid, $updateUser)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return false;
+        }
+
+        $this->getDb()->bind('uid', (int)$uid);
+        $this->getDb()->bind('updateUser', $updateUser);
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET accountType = 0,
+                                             pending_info = 0,
+                                             activation_token = NULL,
+                                             info_completed_dt_tm = now(),
+                                             lst_tran_dt_tm = now(),
+                                             lst_updtd_by = :updateUser
+                                         WHERE UID = :uid
+                                           AND disabled = 0");
+        return $retVal !== false;
+    }
+
+    /**
+     * Ensures an onboarding member has an activation token if one was missing.
+     *
+     * @param int $uid
+     * @param string $token
+     * @param string $updateUser
+     * @return bool
+     */
+    public function setActivationTokenIfMissing($uid, $token, $updateUser)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return false;
+        }
+
+        $this->getDb()->bind('uid', (int)$uid);
+        $this->getDb()->bind('token', $token);
+        $this->getDb()->bind('updateUser', $updateUser);
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET activation_token = :token,
+                                             activated_dt_tm = COALESCE(activated_dt_tm, now()),
+                                             lst_tran_dt_tm = now(),
+                                             lst_updtd_by = :updateUser
+                                         WHERE UID = :uid
+                                           AND (activation_token IS NULL OR activation_token = '')");
+        return $retVal !== false;
+    }
+
+    /**
+     * Increments reminder count and updates last reminder timestamp.
+     *
+     * @param int $uid
+     * @param string $updateUser
+     * @return bool
+     */
+    public function recordReminderSent($uid, $updateUser)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return false;
+        }
+
+        $this->getDb()->bind('uid', (int)$uid);
+        $this->getDb()->bind('updateUser', $updateUser);
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET reminder_count = reminder_count + 1,
+                                             last_reminder_dt_tm = now(),
+                                             lst_tran_dt_tm = now(),
+                                             lst_updtd_by = :updateUser
+                                         WHERE UID = :uid");
+        return $retVal !== false;
+    }
+
+    /**
+     * Fetches activated members who have not completed their info and are due for an automated reminder.
+     *
+     * @param string $firstCutoffDt  Y-m-d H:i:s cutoff for first reminder
+     * @param string $repeatCutoffDt Y-m-d H:i:s cutoff for subsequent reminders
+     * @param int $maxReminders
+     * @return array
+     */
+    public function getPendingMembersDueForReminder($firstCutoffDt, $repeatCutoffDt, $maxReminders = 3)
+    {
+        if (!$this->ensurePendingOnboardingSchema()) {
+            return [];
+        }
+
+        $this->getDb()->bind('firstCutoff', $firstCutoffDt);
+        $this->getDb()->bind('repeatCutoff', $repeatCutoffDt);
+        $this->getDb()->bind('maxReminders', (int)$maxReminders);
+
+        return $this->getDb()->query("SELECT m.uid, m.firstName, m.lastName,
+                                        GROUP_CONCAT(DISTINCT e.email_address) AS `email`,
+                                        m.activation_token, m.activated_dt_tm,
+                                        m.reminder_count, m.last_reminder_dt_tm
+                                      FROM kcb_members m
+                                      LEFT OUTER JOIN kcb_email_address e ON e.member_uid = m.UID
+                                      WHERE m.disabled = 0
+                                        AND m.accountType = 0
+                                        AND m.pending_info = 1
+                                        AND m.info_completed_dt_tm IS NULL
+                                        AND m.reminder_count < :maxReminders
+                                        AND (
+                                            (m.reminder_count = 0 AND m.activated_dt_tm IS NOT NULL AND m.activated_dt_tm <= :firstCutoff)
+                                            OR
+                                            (m.reminder_count >= 1 AND m.last_reminder_dt_tm IS NOT NULL AND m.last_reminder_dt_tm <= :repeatCutoff)
+                                        )
+                                      GROUP BY m.UID, m.firstName, m.lastName,
+                                        m.activation_token, m.activated_dt_tm,
+                                        m.reminder_count, m.last_reminder_dt_tm
+                                      ORDER BY m.activated_dt_tm ASC");
+    }
+
+    /**
+     * Checks whether an email address is already owned by a different member UID.
+     *
+     * @param string $email
+     * @param int $uid
+     * @return bool
+     */
+    public function emailBelongsToOtherMember($email, $uid)
+    {
+        $this->getDb()->bind('email', trim($email));
+        $this->getDb()->bind('uid', (int)$uid);
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_email_address
+                                           WHERE LOWER(email_address) = LOWER(:email)
+                                             AND member_uid <> :uid") > 0;
+    }
+
+    /**
+     * Inserts or updates a member's address row cleanly.
+     *
+     * @param int $uid
+     * @param array $mbrArray
+     * @param string $updateUser
+     * @return mixed
+     */
+    public function upsertAddress($uid, $mbrArray, $updateUser)
+    {
+        if ($this->getMemberAddressCount($uid) > 0) {
+            return $this->updateAddress($uid, $mbrArray, $updateUser);
+        }
+
+        return $this->insertAddress($uid, $mbrArray, $updateUser);
+    }
+
+    /**
+     * Returns lookup map of instrument code => display label.
+     *
+     * @return array
+     */
+    public function getInstrumentDisplayMap()
+    {
+        $rows = $this->getDb()->query("SELECT instrument, display_text FROM lkp_instrument");
+        $map = [];
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                if (!empty($row['instrument'])) {
+                    $map[$row['instrument']] = $row['display_text'] ?: $row['instrument'];
+                }
+            }
+        }
+        return $map;
     }
 
     public function reactivateMember($uid, $mbrArray, $updateUser)
@@ -500,7 +866,7 @@ class MemberDB
         $this->getDb()->bind('emergency_contact_phone', $emergency_contact_phone);
         $this->getDb()->bind('updateUser', $updateUser);
 
-        if (array_key_exists('displayFullName', $mbrArray)) {
+        if (!empty($mbrArray['displayFullName'])) {
             $this->getDb()->bind('displayFullName', "1");
         } else {
             $this->getDb()->bind('displayFullName', "0");
@@ -540,7 +906,7 @@ class MemberDB
     {
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('address1', $mbrArray['address1']);
-        $this->getDb()->bind('address2', $mbrArray['address2']);
+        $this->getDb()->bind('address2', $mbrArray['address2'] ?? '');
         $this->getDb()->bind('city', $mbrArray['city']);
         $this->getDb()->bind('zip', $mbrArray['zip']);
         $this->getDb()->bind("updateUser", $updateUser);
@@ -555,7 +921,7 @@ class MemberDB
     {
         $this->getDb()->bind('uid', $uid);
         $this->getDb()->bind('address1', $mbrArray['address1']);
-        $this->getDb()->bind('address2', $mbrArray['address2']);
+        $this->getDb()->bind('address2', $mbrArray['address2'] ?? '');
         $this->getDb()->bind('city', $mbrArray['city']);
         $this->getDb()->bind('zip', $mbrArray['zip']);
         $this->getDb()->bind("updateUser", $updateUser);

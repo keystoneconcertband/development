@@ -3,6 +3,7 @@
 // member is its parent
 require_once "member.class.php";
 require_once "kcbPublic.db.class.php";
+require_once "pendingMemberService.class.php";
 
 class ProtectedAdmin
 {
@@ -220,51 +221,42 @@ class ProtectedAdmin
             return "access denied.";
         }
 
-        $retValue = "success";
-        $updateUser = $_SESSION["email"];
-        $instrument = "";
-        $email = "";
+        $service = new PendingMemberService($this->getKcb(), $this->getDb());
+        $result = $service->completePendingMemberInfo((int)$uid, $mbrArray, $_SESSION["email"], true);
+        if ($result['status'] === 'success') {
+            return "success";
+        }
+        return $result['message'] ?? "activate_member_error";
+    }
 
-        if (isset($_POST['instrument'])) {
-            $instrument = $mbrArray['instrument'];
+    public function activatePendingMember($uid)
+    {
+        if (!$this->validAdmin()) {
+            return ['status' => 'error', 'message' => 'Access denied.'];
         }
 
-        if (isset($_POST['email'])) {
-            $email = $mbrArray['email'];
+        $service = new PendingMemberService($this->getKcb(), $this->getDb());
+        return $service->activatePendingMember((int)$uid, $_SESSION['email'], KcbBase::getSiteBaseUrl());
+    }
+
+    public function sendPendingMemberReminder($uid)
+    {
+        if (!$this->validAdmin()) {
+            return ['status' => 'error', 'message' => 'Access denied.'];
         }
 
-        try {
-            $this->getDb()->beginTransaction();
+        $service = new PendingMemberService($this->getKcb(), $this->getDb());
+        return $service->sendReminderToMember((int)$uid, $_SESSION['email'], KcbBase::getSiteBaseUrl(), false);
+    }
 
-            if ($this->getDb()->updatePendingMember($uid, $mbrArray, $updateUser)) {
-                if ($this->getDb()->insertAddress($uid, $mbrArray, $updateUser)) {
-                    if ($this->updateEmails($uid, $email, true)) {
-                        if ($this->updateInstruments($uid, $instrument)) {
-                            $this->getDb()->executeTransaction();
-                            MemberDB::clearPublicMembersCache();
-                        } else {
-                            $this->getDb()->rollBackTransaction();
-                            $retValue = "update_instrument_error";
-                        }
-                    } else {
-                        $this->getDb()->rollBackTransaction();
-                        $retValue = "update_email_error";
-                    }
-                } else {
-                    $this->getDb()->rollBackTransaction();
-                    $retValue = "update_address_error";
-                }
-            } else {
-                $this->getDb()->rollBackTransaction();
-                $retValue = "activate_member_error";
-            }
-        } catch (Exception $e) {
-            $this->getKcb()->logMessage($e->getMessage());
-            $this->getDb()->rollBackTransaction();
-            $retValue = "db_error";
+    public function sendDuePendingMemberReminders()
+    {
+        if (!$this->validAdmin()) {
+            return ['status' => 'error', 'message' => 'Access denied.'];
         }
 
-        return $retValue;
+        $service = new PendingMemberService($this->getKcb(), $this->getDb());
+        return $service->runAutomaticReminders(false, false, KcbBase::getSiteBaseUrl());
     }
 
 	public function deleteMember($uid, $deleteEmailAddress) {
@@ -325,116 +317,6 @@ class ProtectedAdmin
         }
 
         return $validSession;
-    }
-
-    private function updateEmails($uid, $emailArray, $delEmail)
-    {
-        $result = true;
-        $emails = $this->getDb()->getEmailAddresses($uid);
-
-        // Convert array of arrays to single array this can handle
-        $currEmails = array();
-        foreach ($emails as $email) {
-            if ($email['email_address'] !== '') {
-                $currEmails[] = $email['email_address'];
-            }
-        }
-
-        $newEmails = array();
-        foreach ($emailArray as $eml) {
-            if ($eml !== '') {
-                $newEmails[] = $eml;
-            }
-        }
-
-        // Populate arrays with differences
-        $emailsToAdd = array_diff($newEmails, $currEmails);
-        $emailsToDel = array_diff($currEmails, $newEmails);
-
-        foreach ($emailsToAdd as $value) {
-            if ($value !== "") {
-                try {
-                    $this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
-                    $result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);
-                } catch (Exception $e) {
-                    $this->getKcb()->logMessage($e->getMessage());
-                    $result = false;
-                }
-            }
-        }
-
-        // No need to run if we had a failure above...
-        if ($result) {
-            foreach ($emailsToDel as $value) {
-                if ($value !== "") {
-                    try {
-                        $this->kcb->sendEmail('webmaster@keystoneconcertband.com','Delete email: ' . $value, 'KCB Email Update [Delete]');
-                        if ($delEmail) {
-                            $result = $this->getDb()->delEmail($value, $uid);
-                        } else {
-                            $result = $this->getDb()->deactivateEmail($value, $uid, $_SESSION["email"]);
-                        }
-                    } catch (Exception $e) {
-                        $this->getKcb()->logMessage($e->getMessage());
-                        $result = false;
-                    }
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    private function updateInstruments($uid, $instrumentArray)
-    {
-        $result = true;
-        $instruments = $this->getDb()->getMemberInstruments($uid);
-
-        // Convert array of arrays to single array this can handle
-        $currInstruments = array();
-        foreach ((array)$instruments as $instr) {
-            if ($instr['instrument'] !== '') {
-                $currInstruments[] = $instr['instrument'];
-            }
-        }
-
-        $newInstruments = array();
-        foreach ((array)$instrumentArray as $instr) {
-            if ($instr !== '') {
-                $newInstruments[] = $instr;
-            }
-        }
-
-        // Populate arrays with differences
-        $instrumentsToAdd = array_diff($newInstruments, $currInstruments);
-        $instrumentsToDel = array_diff($currInstruments, $newInstruments);
-
-        foreach ($instrumentsToAdd as $value) {
-            if ($value !== "") {
-                try {
-                    $result = $this->getDb()->addInstrument($value, $uid, $_SESSION["email"]);
-                } catch (Exception $e) {
-                    $this->getKcb()->logMessage($e->getMessage());
-                    $result = false;
-                }
-            }
-        }
-
-        // No need to run if we had a failure above...
-        if ($result) {
-            foreach ($instrumentsToDel as $value) {
-                if ($value !== "") {
-                    try {
-                        $result = $this->getDb()->delInstrument($value, $uid);
-                    } catch (Exception $e) {
-                        $this->getKcb()->logMessage($e->getMessage());
-                        $result = false;
-                    }
-                }
-            }
-        }
-
-        return $result;
     }
 
     private function getDb()
