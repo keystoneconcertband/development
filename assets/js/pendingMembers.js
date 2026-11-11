@@ -394,11 +394,46 @@
 
         var alertEl = document.getElementById('memberFormAlert');
         var cardEl = document.getElementById('pendingInfoCard');
+        var siteGuideEl = document.getElementById('siteGuideCard');
         var successPanelEl = document.getElementById('completionSuccessPanel');
         var successMsgEl = document.getElementById('completionSuccessMessage');
         var submitBtnEl = document.getElementById('submitPendingInfoBtn');
+        var declineCardEl = document.getElementById('declineConfirmCard');
+        var declineFormEl = document.getElementById('declineMembershipForm');
+        var declineSuccessEl = document.getElementById('declineSuccessPanel');
+        var declineSuccessMsgEl = document.getElementById('declineSuccessMessage');
+        var showDeclineBtnEl = document.getElementById('showDeclineCardBtn');
+        var cancelDeclineBtnEl = document.getElementById('cancelDeclineBtn');
+        var confirmDeclineBtnEl = document.getElementById('confirmDeclineBtn');
         var emailContainerEl = document.getElementById('memberEmailContainer');
         var addEmailBtnEl = document.getElementById('memberAddEmailBtn');
+
+        function toggleDeclineView(showDecline, shouldScroll) {
+            clearAlert(alertEl);
+            if (cardEl) {
+                cardEl.classList.toggle('d-none', Boolean(showDecline));
+            }
+            if (declineCardEl) {
+                declineCardEl.classList.toggle('d-none', !showDecline);
+            }
+            if (shouldScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showFinalPanel(panelEl, msgEl, message, fallbackMessage) {
+            clearAlert(alertEl);
+            [cardEl, declineCardEl, siteGuideEl].forEach(function (el) {
+                if (el) {
+                    el.classList.add('d-none');
+                }
+            });
+            if (panelEl && msgEl) {
+                msgEl.textContent = message || fallbackMessage;
+                panelEl.classList.remove('d-none');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         bindRosterPreview(
             document.getElementById('firstName'),
@@ -411,6 +446,22 @@
         bindPhoneFormatting(document.getElementById('emergency_contact_phone'));
         setupEmailManager(emailContainerEl, addEmailBtnEl);
 
+        if (showDeclineBtnEl) {
+            showDeclineBtnEl.addEventListener('click', function () {
+                toggleDeclineView(true, true);
+            });
+        }
+
+        if (cancelDeclineBtnEl) {
+            cancelDeclineBtnEl.addEventListener('click', function () {
+                toggleDeclineView(false, true);
+            });
+        }
+
+        if (appEl && appEl.dataset && appEl.dataset.initialAction === 'decline') {
+            toggleDeclineView(true, false);
+        }
+
         formEl.addEventListener('submit', function (e) {
             e.preventDefault();
             if (!validateProfileForm(formEl, alertEl, emailContainerEl, '.member-instrument-checkbox')) {
@@ -422,15 +473,12 @@
 
             postApiForm('/members/api/pendingMembers.php', params)
                 .then(function (data) {
-                    clearAlert(alertEl);
-                    if (cardEl) {
-                        cardEl.classList.add('d-none');
-                    }
-                    if (successPanelEl && successMsgEl) {
-                        successMsgEl.textContent = data.message || 'Thank you! Your member information has been submitted.';
-                        successPanelEl.classList.remove('d-none');
-                    }
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    showFinalPanel(
+                        successPanelEl,
+                        successMsgEl,
+                        data.message,
+                        'Thank you! Your member information has been submitted.'
+                    );
                 })
                 .catch(function (err) {
                     showAlert(alertEl, 'danger', err.message || 'Unable to submit your member information.');
@@ -439,6 +487,32 @@
                     setButtonBusy(submitBtnEl, false);
                 });
         });
+
+        if (declineFormEl) {
+            declineFormEl.addEventListener('submit', function (e) {
+                e.preventDefault();
+                clearAlert(alertEl);
+
+                var params = new URLSearchParams(new FormData(declineFormEl));
+                setButtonBusy(confirmDeclineBtnEl, true, 'Declining...');
+
+                postApiForm('/members/api/pendingMembers.php', params)
+                    .then(function (data) {
+                        showFinalPanel(
+                            declineSuccessEl,
+                            declineSuccessMsgEl,
+                            data.message,
+                            'You have been removed from our pending list and will not receive any further emails.'
+                        );
+                    })
+                    .catch(function (err) {
+                        showAlert(alertEl, 'danger', err.message || 'Unable to process your request right now.');
+                    })
+                    .finally(function () {
+                        setButtonBusy(confirmDeclineBtnEl, false);
+                    });
+            });
+        }
     }
 
     function initAdminMode(appEl) {

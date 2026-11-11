@@ -659,6 +659,51 @@ class MemberDB
     }
 
     /**
+     * Marks a pending/onboarding member as declined, disables their account, and clears tokens/flags.
+     *
+     * @param int $uid
+     * @param string $updateUser
+     * @return bool
+     */
+    public function declinePendingMembership($uid, $updateUser)
+    {
+        $hasSchema = $this->ensurePendingOnboardingSchema();
+        $onboardingSql = $hasSchema
+            ? ", pending_info = 0, activation_token = NULL, info_completed_dt_tm = NULL"
+            : "";
+
+        $this->getDb()->bind('uid', (int)$uid);
+        $this->getDb()->bind('updateUser', $updateUser);
+        $retVal = $this->getDb()->query("UPDATE kcb_members
+                                         SET disabled = 1,
+                                             disabled_dt_tm = now(){$onboardingSql},
+                                             lst_tran_dt_tm = now(),
+                                             lst_updtd_by = :updateUser
+                                         WHERE UID = :uid
+                                           AND disabled = 0");
+        return $retVal !== false;
+    }
+
+    /**
+     * Deactivates all email rows for a member UID so they receive no further emails.
+     *
+     * @param int $uid
+     * @param string $updateUser
+     * @return bool
+     */
+    public function deactivateMemberEmails($uid, $updateUser)
+    {
+        $this->getDb()->bind('uid', (int)$uid);
+        $this->getDb()->bind('updateUser', $updateUser);
+        $retVal = $this->getDb()->query("UPDATE kcb_email_address
+                                         SET actv_flg = 0,
+                                             lst_tran_dt_tm = now(),
+                                             lst_updtd_by = :updateUser
+                                         WHERE member_uid = :uid");
+        return $retVal !== false;
+    }
+
+    /**
      * Ensures an onboarding member has an activation token if one was missing.
      *
      * @param int $uid

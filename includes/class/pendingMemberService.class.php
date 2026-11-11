@@ -395,6 +395,76 @@ class PendingMemberService
     }
 
     /**
+     * Allows a pending/onboarding member to decline joining the band, disables their account,
+     * invalidates onboarding tokens, deactivates their email addresses, and stops all future emails.
+     *
+     * @param int $uid
+     * @param string $actorEmail
+     * @param string $reason
+     * @return array
+     */
+    public function declinePendingMembership($uid, $actorEmail, $reason = '')
+    {
+        $uid = (int)$uid;
+        if ($uid <= 0) {
+            return ['status' => 'error', 'message' => 'Invalid member identifier.'];
+        }
+
+        $member = $this->db->getMemberRecord($uid);
+        if (!$member || (int)($member['disabled'] ?? 1) !== 0) {
+            return ['status' => 'error', 'message' => 'Member record could not be found or is already inactive.'];
+        }
+
+        if ((int)($member['pending_info'] ?? 0) !== 1 && (int)($member['accountType'] ?? -1) !== 3) {
+            return ['status' => 'error', 'message' => 'Only pending or onboarding memberships can be declined on this page.'];
+        }
+
+        $emails = $this->splitCsv($member['email'] ?? '');
+        $auditUser = trim((string)$actorEmail) !== ''
+            ? trim((string)$actorEmail)
+            : (!empty($emails) ? $emails[0] : 'MEMBER_DECLINED');
+        $cleanReason = trim((string)$reason);
+        if (mb_strlen($cleanReason) > 500) {
+            $cleanReason = mb_substr($cleanReason, 0, 500);
+        }
+
+        try {
+            $this->db->beginTransaction();
+
+            if (!$this->db->declinePendingMembership($uid, $auditUser)) {
+                $this->db->rollBackTransaction();
+                return ['status' => 'error', 'message' => 'Unable to withdraw your membership request in database.'];
+            }
+
+            if (!$this->db->deactivateMemberEmails($uid, $auditUser)) {
+                $this->db->rollBackTransaction();
+                return ['status' => 'error', 'message' => 'Unable to deactivate your email notifications.'];
+            }
+
+            $this->db->executeTransaction();
+            MemberDB::clearPublicMembersCache();
+        } catch (Exception $e) {
+            $this->db->rollBackTransaction();
+            $this->logger->error("Exception declining pending membership", ['uid' => $uid, 'exception' => $e]);
+            return ['status' => 'error', 'message' => 'A database error occurred while processing your decline request.'];
+        }
+
+        $this->sendDeclinedMembershipNotification($uid, $member, $emails, $cleanReason, $auditUser);
+
+        $this->logger->notice("Pending member declined to join band; future emails stopped", [
+            'uid'    => $uid,
+            'name'   => trim(($member['firstName'] ?? '') . ' ' . ($member['lastName'] ?? '')),
+            'emails' => $emails,
+            'actor'  => $auditUser,
+        ]);
+
+        return [
+            'status'  => 'success',
+            'message' => 'Your application has been withdrawn and your email addresses have been opted out. You will not receive any future emails from Keystone Concert Band.',
+        ];
+    }
+
+    /**
      * Sends a reminder email to a specific activated pending member who has not yet submitted missing info.
      *
      * @param int $uid
@@ -630,6 +700,18 @@ class PendingMemberService
         return $base . '/members/pendingMembers.php?token=' . rawurlencode($token);
     }
 
+    /**
+     * Builds the decline/opt-out confirmation URL with explicit .php path (required for Azure Nginx).
+     *
+     * @param string $token
+     * @param string|null $baseUrl
+     * @return string
+     */
+    public function buildDeclineUrl($token, $baseUrl = null)
+    {
+        return $this->buildCompletionUrl($token, $baseUrl) . '&action=decline';
+    }
+
     /* PRIVATE HELPERS */
 
     private function sendActivationEmail(array $member, array $emails, $completionUrl, $baseUrl = null)
@@ -639,6 +721,7 @@ class PendingMemberService
         $base = !empty($baseUrl) ? rtrim((string)$baseUrl, '/') : KcbBase::getSiteBaseUrl();
         $loginUrl = htmlspecialchars($base . '/members/reauth.php', ENT_QUOTES, 'UTF-8');
         $siteGuideHtml = $this->buildSiteOverviewHtml($base);
+        $declineFooterHtml = $this->buildDeclineFooterHtml($completionUrl);
 
         $subject = 'Welcome to Keystone Concert Band - Please Complete Your Member Info';
         $body = "<p>Hi <strong>{$firstName}</strong>,</p>"
@@ -650,9 +733,20 @@ class PendingMemberService
             . "<p>Or copy and paste this link into your browser:<br><a href='{$safeUrl}'>{$safeUrl}</a></p>"
             . "<p>You can also sign in anytime at <a href='{$loginUrl}'>Member Login</a> using your email address on file to access the completion form.</p>"
             . $siteGuideHtml
-            . "<p>Thanks,<br>Keystone Concert Band</p>";
+            . "<p>Thanks,<br>Keystone Concert Band</p>"
+            . $declineFooterHtml;
 
         return $this->kcb->sendEmail($emails, $body, $subject, true);
+    }
+
+    private function buildDeclineFooterHtml($completionUrl)
+    {
+        $declineUrl = htmlspecialchars($completionUrl . '&action=decline', ENT_QUOTES, 'UTF-8');
+        return "<hr style='border:0;border-top:1px solid #dee2e6;margin:20px 0 12px 0;'>"
+            . "<p style='margin:0;font-size:12px;color:#6c757d;'>"
+            . "No longer planning to join the Keystone Concert Band? You can "
+            . "<a href='{$declineUrl}' style='color:#6c757d;'>decline membership and stop all future emails</a>."
+            . "</p>";
     }
 
     private function buildSiteOverviewHtml($baseUrl)
@@ -709,9 +803,47 @@ class PendingMemberService
             . "</p>"
             . "<p>Or copy and paste this link into your browser:<br><a href='{$safeUrl}'>{$safeUrl}</a></p>"
             . "<p>Alternatively, you can sign in via <a href='{$loginUrl}'>Member Login</a> with your email address on file.</p>"
-            . "<p>Thanks,<br>Keystone Concert Band</p>";
+            . "<p>Thanks,<br>Keystone Concert Band</p>"
+            . $this->buildDeclineFooterHtml($completionUrl);
 
         return $this->kcb->sendEmail($emails, $body, $subject, true);
+    }
+
+    private function sendDeclinedMembershipNotification($uid, array $member, array $emails, $reason, $auditUser)
+    {
+        $fullName = htmlspecialchars(trim(($member['firstName'] ?? '') . ' ' . ($member['lastName'] ?? '')), ENT_QUOTES, 'UTF-8');
+        if ($fullName === '') {
+            $fullName = 'Member #' . (int)$uid;
+        }
+        $emailHtml = !empty($emails)
+            ? implode('<br>', array_map(function ($e) {
+                return htmlspecialchars($e, ENT_QUOTES, 'UTF-8');
+            }, $emails))
+            : '<em>None on file</em>';
+        $reasonHtml = $reason !== ''
+            ? nl2br(htmlspecialchars($reason, ENT_QUOTES, 'UTF-8'))
+            : '<em>No reason provided</em>';
+        $declinedBy = htmlspecialchars((string)$auditUser, ENT_QUOTES, 'UTF-8');
+        $declinedAt = htmlspecialchars(date('M j, Y g:i A T'), ENT_QUOTES, 'UTF-8');
+
+        $subject = 'KCB Pending Member Declined to Join - ' . trim(($member['firstName'] ?? '') . ' ' . ($member['lastName'] ?? ''));
+        $body = "<p>A pending member has declined to join the Keystone Concert Band and opted out of future emails:</p>"
+            . "<table cellpadding='8' cellspacing='0' border='1' style='border-collapse:collapse;border-color:#dee2e6;font-family:Arial,sans-serif;font-size:14px;'>"
+            . "<tr><th align='left' style='background:#f8f9fa;'>Member UID</th><td>" . (int)$uid . "</td></tr>"
+            . "<tr><th align='left' style='background:#f8f9fa;'>Name</th><td>{$fullName}</td></tr>"
+            . "<tr><th align='left' style='background:#f8f9fa;'>Email Address(es)</th><td>{$emailHtml}</td></tr>"
+            . "<tr><th align='left' style='background:#f8f9fa;'>Optional Reason</th><td>{$reasonHtml}</td></tr>"
+            . "<tr><th align='left' style='background:#f8f9fa;'>Processed By</th><td>{$declinedBy} on {$declinedAt}</td></tr>"
+            . "</table>"
+            . "<p style='margin-top:16px;color:#555;'>Their account has been disabled, their email address(es) have been deactivated, and all automated onboarding reminder emails have been stopped.</p>";
+
+        return $this->kcb->sendEmail(
+            KcbBase::getWebmasterEmail(),
+            $body,
+            $subject,
+            true,
+            KcbBase::getBandDirectorEmail()
+        );
     }
 
     private function sendCompletedInfoNotification($uid, array $normalized, $actorEmail)

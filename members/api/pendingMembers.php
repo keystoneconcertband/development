@@ -27,8 +27,7 @@ $service = new PendingMemberService();
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 $action = isset($_REQUEST['type']) ? trim((string)$_REQUEST['type']) : '';
 
-// Self-service (token-based or logged-in pending member) completion endpoint
-if ($action === 'completePendingInfo') {
+$resolveSelfServicePendingMember = static function () use ($method, $verifyCsrf, $service, $jsonExit): array {
     if ($method !== 'POST') {
         $jsonExit(405, ['status' => 'error', 'message' => 'Method not allowed.']);
     }
@@ -62,8 +61,15 @@ if ($action === 'completePendingInfo') {
         $actorEmail = (string)$_SESSION['email'];
         $isOwnSession = true;
     } else {
-        $jsonExit(401, ['status' => 'error', 'message' => 'Please use your emailed onboarding link or sign in to submit your member information.']);
+        $jsonExit(401, ['status' => 'error', 'message' => 'Please use your emailed onboarding link or sign in to continue.']);
     }
+
+    return [$targetMember, $actorEmail, $isOwnSession];
+};
+
+// Self-service (token-based or logged-in pending member) completion endpoint
+if ($action === 'completePendingInfo') {
+    [$targetMember, $actorEmail, $isOwnSession] = $resolveSelfServicePendingMember();
 
     $result = $service->completePendingMemberInfo((int)$targetMember['uid'], $_POST, $actorEmail, true);
     if (($result['status'] ?? '') !== 'success') {
@@ -86,6 +92,40 @@ if ($action === 'completePendingInfo') {
         $result['redirect'] = null;
     }
 
+    $jsonExit(200, $result);
+}
+
+// Self-service (token-based or logged-in pending member) membership decline / email opt-out endpoint
+if ($action === 'declineMembership') {
+    [$targetMember, $actorEmail, $isOwnSession] = $resolveSelfServicePendingMember();
+
+    $reason = (string)($_POST['reason'] ?? '');
+    $result = $service->declinePendingMembership((int)$targetMember['uid'], $actorEmail, $reason);
+    if (($result['status'] ?? '') !== 'success') {
+        $jsonExit(400, $result);
+    }
+
+    if ($isOwnSession) {
+        $memberSession->revokeRememberMeCookie($_SESSION['email'] ?? null);
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+        }
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
+    }
+
+    $result['redirect'] = null;
     $jsonExit(200, $result);
 }
 

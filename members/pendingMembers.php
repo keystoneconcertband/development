@@ -17,6 +17,7 @@ if (empty($_SESSION['pending_members_csrf'])) {
 $csrfToken = $_SESSION['pending_members_csrf'];
 
 $token = isset($_GET['token']) ? trim((string)$_GET['token']) : '';
+$requestedDecline = isset($_GET['action']) && $_GET['action'] === 'decline';
 $isLoggedIn = !empty($_SESSION['email']) && !empty($_SESSION['uid']);
 $isAdmin = $isLoggedIn && isset($_SESSION['accountType']) && in_array((int)$_SESSION['accountType'], [1, 2], true);
 
@@ -68,7 +69,9 @@ $formatDisplayPhone = function ($raw) {
 
 $pageTitle = $viewMode === 'admin'
     ? 'Pending Members - Keystone Concert Band'
-    : 'Complete Member Information - Keystone Concert Band';
+    : ($requestedDecline && $viewMode === 'member_form'
+        ? 'Decline Membership - Keystone Concert Band'
+        : 'Complete Member Information - Keystone Concert Band');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +89,8 @@ $pageTitle = $viewMode === 'admin'
           class="container pt-3 pb-4 flex-grow-1"
           data-view-mode="<?php echo htmlspecialchars($viewMode, ENT_QUOTES, 'UTF-8'); ?>"
           data-csrf-token="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>"
-          data-logged-in="<?php echo $isLoggedIn ? '1' : '0'; ?>">
+          data-logged-in="<?php echo $isLoggedIn ? '1' : '0'; ?>"
+          data-initial-action="<?php echo ($viewMode === 'member_form' && $requestedDecline) ? 'decline' : ''; ?>">
 
         <?php if ($viewMode === 'admin') { ?>
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 pb-3 mb-3 border-bottom">
@@ -307,7 +311,54 @@ $pageTitle = $viewMode === 'admin'
                         </div>
                     </div>
 
-                    <div id="pendingInfoCard" class="card shadow-sm">
+                    <div id="declineSuccessPanel" class="card shadow-sm border-secondary d-none mb-4">
+                        <div class="card-body p-4 text-center">
+                            <div class="text-secondary mb-3">
+                                <i class="fa-solid fa-envelope-circle-check fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <h2 class="h4 mt-0 mb-2">Membership Invitation Declined</h2>
+                            <p id="declineSuccessMessage" class="mb-4 text-muted"></p>
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <a href="/index.php" class="btn btn-primary">Return to Homepage</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="declineConfirmCard" class="card shadow-sm border-danger<?php echo $requestedDecline ? '' : ' d-none'; ?> mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start gap-3 pb-3 mb-3 border-bottom">
+                                <div class="text-danger pt-1">
+                                    <i class="fa-solid fa-envelope-circle-xmark fa-2x" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <h2 class="h4 mt-0 mb-1">Decline Membership Invitation</h2>
+                                    <p class="text-muted mb-0">
+                                        If you no longer plan to join Keystone Concert Band, please confirm below. Your pending account will be deactivated and you will not receive any future reminder or band emails.
+                                    </p>
+                                </div>
+                            </div>
+                            <form id="declineMembershipForm" novalidate>
+                                <input type="hidden" name="type" value="declineMembership">
+                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
+                                <div class="mb-3">
+                                    <label for="declineReason" class="form-label">Optional Note for the Band Director / Webmaster</label>
+                                    <textarea id="declineReason" name="reason" class="form-control" rows="3" maxlength="500" placeholder="Optional: let us know why your plans changed (e.g., schedule conflict, moved away)."></textarea>
+                                    <div class="form-text">Up to 500 characters. Leaving this blank is completely fine.</div>
+                                </div>
+                                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 pt-3 border-top">
+                                    <button type="button" id="cancelDeclineBtn" class="btn btn-outline-secondary">
+                                        <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>Go Back to Form
+                                    </button>
+                                    <button type="submit" id="confirmDeclineBtn" class="btn btn-danger">
+                                        <i class="fa-solid fa-ban me-1" aria-hidden="true"></i>Decline Membership &amp; Stop Future Emails
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="pendingInfoCard" class="card shadow-sm<?php echo $requestedDecline ? ' d-none' : ''; ?>">
                         <div class="card-body p-4">
                             <form id="pendingInfoForm" novalidate>
                                 <input type="hidden" name="type" value="completePendingInfo">
@@ -446,10 +497,18 @@ $pageTitle = $viewMode === 'admin'
                                     </button>
                                 </div>
                             </form>
+                            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 pt-3 mt-3 border-top">
+                                <span class="small text-muted">
+                                    No longer planning to join Keystone Concert Band?
+                                </span>
+                                <button type="button" id="showDeclineCardBtn" class="btn btn-outline-danger btn-sm text-nowrap">
+                                    <i class="fa-solid fa-ban me-1" aria-hidden="true"></i>Decline &amp; Stop Future Emails
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card shadow-sm mt-4 border-info">
+                    <div id="siteGuideCard" class="card shadow-sm mt-4 border-info">
                         <div class="card-body p-4">
                             <h2 class="h5 mt-0 mb-2 text-primary">
                                 <i class="fa-solid fa-compass me-2" aria-hidden="true"></i>Explore the Keystone Concert Band Website
@@ -515,7 +574,7 @@ $pageTitle = $viewMode === 'admin'
                             </div>
                             <h1 class="h3 mb-2">Onboarding Link Unavailable or Already Used</h1>
                             <p class="text-muted mb-4">
-                                This pending member onboarding link is invalid, has expired, or has already been submitted.
+                                This pending member onboarding link is invalid, has expired, or has already been completed or declined.
                                 If you have already been activated, you can sign in with your email address to access the member portal.
                             </p>
                             <div class="d-flex flex-wrap justify-content-center gap-2">
