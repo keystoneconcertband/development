@@ -9,6 +9,7 @@
 require_once __DIR__ . '/kcbBase.class.php';
 require_once __DIR__ . '/member.db.class.php';
 require_once __DIR__ . '/kcbLogger.class.php';
+require_once __DIR__ . '/exchangeContactService.class.php';
 
 class PendingMemberService
 {
@@ -40,11 +41,15 @@ class PendingMemberService
     /** @var KcbLogger */
     private $logger;
 
-    public function __construct(?KcbBase $kcb = null, ?MemberDB $db = null)
+    /** @var ExchangeContactService */
+    private $exchangeContactService;
+
+    public function __construct(?KcbBase $kcb = null, ?MemberDB $db = null, ?ExchangeContactService $exchangeContactService = null)
     {
         $this->kcb = $kcb ?: new KcbBase(false);
         $this->db = $db ?: new MemberDB();
         $this->logger = KcbLogger::getInstance();
+        $this->exchangeContactService = $exchangeContactService ?: new ExchangeContactService($this->kcb, $this->db);
     }
 
     /**
@@ -363,9 +368,18 @@ class PendingMemberService
             return ['status' => 'error', 'message' => 'A database error occurred while saving your information.'];
         }
 
+        $contactSyncResult = $this->exchangeContactService->syncMemberEmailsDiff(
+            $uid,
+            $normalized['email'],
+            [],
+            $normalized['firstName'],
+            $normalized['lastName'],
+            $auditUser
+        );
+
         $emailSent = true;
         if ($sendNotification) {
-            $emailSent = $this->sendCompletedInfoNotification($uid, $normalized, $auditUser);
+            $emailSent = $this->sendCompletedInfoNotification($uid, $normalized, $auditUser, $contactSyncResult);
             if (!$emailSent) {
                 $this->logger->error("Member info saved, but notification email to webmaster/director failed", [
                     'uid'    => $uid,
@@ -846,7 +860,7 @@ class PendingMemberService
         );
     }
 
-    private function sendCompletedInfoNotification($uid, array $normalized, $actorEmail)
+    private function sendCompletedInfoNotification($uid, array $normalized, $actorEmail, array $contactSyncResult = [])
     {
         $instrumentMap = $this->getInstrumentOptions();
         $instrumentLabels = [];
@@ -878,6 +892,16 @@ class PendingMemberService
         $submittedBy = htmlspecialchars((string)$actorEmail, ENT_QUOTES, 'UTF-8');
         $submittedAt = htmlspecialchars(date('M j, Y g:i A T'), ENT_QUOTES, 'UTF-8');
 
+        $contactNote = "Please add the member's email address(es) to the band contacts if not already added.";
+        if (!empty($contactSyncResult['success'])) {
+            $contactNote = !empty($contactSyncResult['simulated'])
+                ? "Microsoft 365 Contact sync was simulated on localhost."
+                : "The member's email address(es) were automatically synced to Microsoft 365 Contacts.";
+        } elseif (!empty($contactSyncResult['configured'])) {
+            $errDetail = htmlspecialchars((string)($contactSyncResult['message'] ?? 'unknown error'), ENT_QUOTES, 'UTF-8');
+            $contactNote = "Automated Microsoft 365 Contact sync failed ({$errDetail}). Please add the member's email address(es) manually.";
+        }
+
         $subject = 'KCB Pending Member Info Submitted - ' . $normalized['firstName'] . ' ' . $normalized['lastName'];
         $body = "<p>A pending member has completed their onboarding information on the Keystone Concert Band website:</p>"
             . "<table cellpadding='8' cellspacing='0' border='1' style='border-collapse:collapse;border-color:#dee2e6;font-family:Arial,sans-serif;font-size:14px;'>"
@@ -891,7 +915,7 @@ class PendingMemberService
             . "<tr><th align='left' style='background:#f8f9fa;'>Instrument(s)</th><td>{$instrHtml}</td></tr>"
             . "<tr><th align='left' style='background:#f8f9fa;'>Submitted By</th><td>{$submittedBy} on {$submittedAt}</td></tr>"
             . "</table>"
-            . "<p style='margin-top:16px;color:#555;'>Please add the member's email address(es) to the band mailing list if not already added.</p>";
+            . "<p style='margin-top:16px;color:#555;'>{$contactNote}</p>";
 
         return $this->kcb->sendEmail(
             KcbBase::getWebmasterEmail(),

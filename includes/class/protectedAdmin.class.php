@@ -4,6 +4,7 @@
 require_once "member.class.php";
 require_once "kcbPublic.db.class.php";
 require_once "pendingMemberService.class.php";
+require_once "exchangeContactService.class.php";
 
 class ProtectedAdmin
 {
@@ -262,6 +263,9 @@ class ProtectedAdmin
 	public function deleteMember($uid, $deleteEmailAddress) {
 		if ($this->validAdmin()) {
 			$updateUser = $_SESSION["email"];
+			$memberRecord = $this->getDb()->getMemberRecord($uid);
+			$wasActive = ExchangeContactService::isMemberActive($memberRecord);
+			$activeEmails = $wasActive ? $this->getDb()->getActiveEmailList($uid) : [];
 			
 			try {
 				$this->getDb()->beginTransaction();
@@ -271,6 +275,17 @@ class ProtectedAdmin
                         $this->getDb()->executeTransaction();
                         MemberDB::clearPublicMembersCache();
                         $this->getKcb()->logNotice("Admin deleted member record", ['uid' => $uid, 'admin' => $updateUser]);
+                        if ($wasActive && !empty($activeEmails)) {
+                            $syncService = new ExchangeContactService($this->getKcb(), $this->getDb());
+                            $syncService->syncOrNotifyWebmaster(
+                                $uid,
+                                [],
+                                $activeEmails,
+                                $memberRecord['firstName'] ?? '',
+                                $memberRecord['lastName'] ?? '',
+                                $updateUser
+                            );
+                        }
                         $retValue = "success";
 					}
 					else {

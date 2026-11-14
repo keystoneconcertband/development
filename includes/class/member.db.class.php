@@ -350,6 +350,40 @@ class MemberDB
                                       WHERE member_uid = :uid");
     }
 
+    /**
+     * Returns active email addresses for a member UID.
+     *
+     * @param int $uid
+     * @return array
+     */
+    public function getActiveEmailAddresses($uid)
+    {
+        $this->getDb()->bind("uid", (int)$uid);
+        return $this->getDb()->query("SELECT email_address
+                                      FROM kcb_email_address
+                                      WHERE member_uid = :uid
+                                        AND (actv_flg = 1 OR actv_flg IS NULL)");
+    }
+
+    /**
+     * Returns a flat list of non-empty active email strings for a member UID.
+     *
+     * @param int $uid
+     * @return array
+     */
+    public function getActiveEmailList($uid)
+    {
+        $rows = $this->getActiveEmailAddresses($uid);
+        $emails = [];
+        foreach ((array)$rows as $row) {
+            $addr = trim((string)($row['email_address'] ?? ''));
+            if ($addr !== '') {
+                $emails[] = $addr;
+            }
+        }
+        return $emails;
+    }
+
     // Get all instruments for the user
     public function getMemberInstruments($uid)
     {
@@ -809,6 +843,54 @@ class MemberDB
                                            FROM kcb_email_address
                                            WHERE LOWER(email_address) = LOWER(:email)
                                              AND member_uid <> :uid") > 0;
+    }
+
+    /**
+     * Checks whether an email address is actively owned by another active member UID.
+     *
+     * @param string $email
+     * @param int $excludeUid
+     * @return bool
+     */
+    public function emailUsedByOtherActiveMember($email, $excludeUid)
+    {
+        $pendingFilter = $this->ensurePendingOnboardingSchema() ? " AND m.pending_info = 0" : "";
+        $this->getDb()->bind('email', trim((string)$email));
+        $this->getDb()->bind('uid', (int)$excludeUid);
+        return (int)$this->getDb()->single("SELECT COUNT(*)
+                                           FROM kcb_email_address e
+                                           INNER JOIN kcb_members m ON m.UID = e.member_uid
+                                           WHERE LOWER(e.email_address) = LOWER(:email)
+                                             AND e.member_uid <> :uid
+                                             AND (e.actv_flg = 1 OR e.actv_flg IS NULL)
+                                             AND m.disabled = 0
+                                             AND m.accountType <> 3{$pendingFilter}") > 0;
+    }
+
+    /**
+     * Returns active member email rows for Exchange Online contact synchronization.
+     *
+     * @param int|null $uid Optional single member UID filter
+     * @return array
+     */
+    public function getAllActiveMemberContactRows($uid = null)
+    {
+        $pendingFilter = $this->ensurePendingOnboardingSchema() ? " AND m.pending_info = 0" : "";
+        $uidFilter = '';
+        if ($uid !== null && (int)$uid > 0) {
+            $this->getDb()->bind('uid', (int)$uid);
+            $uidFilter = " AND m.UID = :uid";
+        }
+
+        return $this->getDb()->query("SELECT m.UID AS uid, m.firstName, m.lastName, e.email_address
+                                      FROM kcb_members m
+                                      INNER JOIN kcb_email_address e ON e.member_uid = m.UID
+                                      WHERE m.disabled = 0
+                                        AND m.accountType <> 3{$pendingFilter}
+                                        AND (e.actv_flg = 1 OR e.actv_flg IS NULL)
+                                        AND e.email_address IS NOT NULL
+                                        AND TRIM(e.email_address) <> ''{$uidFilter}
+                                      ORDER BY m.lastName, m.firstName, m.UID");
     }
 
     /**
