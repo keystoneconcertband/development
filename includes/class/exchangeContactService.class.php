@@ -635,8 +635,12 @@ class ExchangeContactService
 
         $body = @file_get_contents($url, false, $context);
         $statusCode = 0;
-        if (isset($http_response_header) && is_array($http_response_header)) {
-            foreach ($http_response_header as $headerLine) {
+        $responseHeaders = function_exists('http_get_last_response_headers')
+            ? http_get_last_response_headers()
+            : ($http_response_header ?? null);
+
+        if (is_array($responseHeaders)) {
+            foreach ($responseHeaders as $headerLine) {
                 if (preg_match('/^HTTP\/\S+\s+(\d{3})/i', $headerLine, $m)) {
                     $statusCode = (int)$m[1];
                 }
