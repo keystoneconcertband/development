@@ -279,9 +279,9 @@ class ExchangeContactService
             ];
         }
 
-        $serverName = $_SERVER['SERVER_NAME'] ?? '';
+        $isLocal = self::isLocalEnvironment();
         $syncOnLocalhost = $this->isTruthy($this->getSetting('APPSETTING_EXO_CONTACT_SYNC_ON_LOCALHOST', 'EXO_CONTACT_SYNC_ON_LOCALHOST'));
-        if ($serverName === 'localhost' && !$syncOnLocalhost) {
+        if ($isLocal && !$syncOnLocalhost) {
             $this->logger->info("Exchange contact sync simulated on localhost", [
                 'operations' => array_map(function ($op) {
                     return ['action' => $op['action'], 'email' => $op['email']];
@@ -523,6 +523,7 @@ class ExchangeContactService
 
     /**
      * Sends an HTTP POST JSON payload using cURL with a stream-context fallback.
+     * Enforces SSRF protection by strictly validating the destination URL and restricting protocols.
      *
      * @param string $url
      * @param array $payload
@@ -531,6 +532,19 @@ class ExchangeContactService
      */
     private function postJson($url, array $payload, $secret = '')
     {
+        $safeUrl = self::validateSafeWebhookUrl($url, $this->isLocalEnvironment(), true);
+        if ($safeUrl === null) {
+            $this->logger->error("Exchange contact sync blocked: webhook URL failed SSRF validation", [
+                'target' => $this->sanitizeUrlForLog($url),
+            ]);
+            return [
+                'success'     => false,
+                'http_status' => 0,
+                'error'       => 'SSRF validation failed: destination URL is unsafe, invalid, or targets a private/reserved address.',
+            ];
+        }
+        $url = $safeUrl;
+
         $json = json_encode($payload, JSON_UNESCAPED_SLASHES);
         if ($json === false) {
             return ['success' => false, 'http_status' => 0, 'error' => 'Failed to encode JSON payload.'];
@@ -544,13 +558,15 @@ class ExchangeContactService
             $headers[] = 'X-KCB-Webhook-Secret: ' . $secret;
         }
 
+        $isLocalDev = $this->isLocalEnvironment();
+
         if (function_exists('curl_init')) {
             $ch = curl_init($url);
             if ($ch === false) {
                 return ['success' => false, 'http_status' => 0, 'error' => 'Unable to initialize cURL.'];
             }
 
-            curl_setopt_array($ch, [
+            $curlOptions = [
                 CURLOPT_POST           => true,
                 CURLOPT_POSTFIELDS     => $json,
                 CURLOPT_HTTPHEADER     => $headers,
@@ -559,7 +575,25 @@ class ExchangeContactService
                 CURLOPT_TIMEOUT        => self::DEFAULT_TIMEOUT_SECONDS,
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_SSL_VERIFYHOST => 2,
-            ]);
+                CURLOPT_FOLLOWLOCATION => false,
+                CURLOPT_MAXREDIRS      => 0,
+            ];
+
+            if (defined('CURLOPT_PROTOCOLS_STR')) {
+                $curlOptions[CURLOPT_PROTOCOLS_STR] = $isLocalDev ? 'https,http' : 'https';
+                if (defined('CURLOPT_REDIR_PROTOCOLS_STR')) {
+                    $curlOptions[CURLOPT_REDIR_PROTOCOLS_STR] = '';
+                }
+            } else {
+                if (defined('CURLOPT_PROTOCOLS')) {
+                    $curlOptions[CURLOPT_PROTOCOLS] = CURLPROTO_HTTPS | ($isLocalDev ? CURLPROTO_HTTP : 0);
+                }
+                if (defined('CURLOPT_REDIR_PROTOCOLS')) {
+                    $curlOptions[CURLOPT_REDIR_PROTOCOLS] = 0;
+                }
+            }
+
+            curl_setopt_array($ch, $curlOptions);
 
             $body = curl_exec($ch);
             $errno = curl_errno($ch);
@@ -579,13 +613,19 @@ class ExchangeContactService
             ];
         }
 
+        if (!preg_match('#^https?://#i', $url)) {
+            return ['success' => false, 'http_status' => 0, 'error' => 'Invalid URL protocol for stream request.'];
+        }
+
         $context = stream_context_create([
             'http' => [
-                'method'        => 'POST',
-                'header'        => implode("\r\n", $headers) . "\r\n",
-                'content'       => $json,
-                'timeout'       => self::DEFAULT_TIMEOUT_SECONDS,
-                'ignore_errors' => true,
+                'method'          => 'POST',
+                'header'          => implode("\r\n", $headers) . "\r\n",
+                'content'         => $json,
+                'timeout'         => self::DEFAULT_TIMEOUT_SECONDS,
+                'ignore_errors'   => true,
+                'follow_location' => 0,
+                'max_redirects'   => 0,
             ],
             'ssl' => [
                 'verify_peer'      => true,
@@ -615,6 +655,163 @@ class ExchangeContactService
         ];
     }
 
+    /**
+     * Validates and sanitizes a webhook URL against Server-Side Request Forgery (SSRF).
+     *
+     * Enforces:
+     * 1. Valid URL syntax.
+     * 2. Scheme must be strictly HTTPS (HTTP allowed only for localhost/127.0.0.1 in local development).
+     * 3. No embedded credentials (username/password in URL).
+     * 4. Port restricted to 443 for HTTPS (and 80/custom dev port for localhost).
+     * 5. Destination host cannot be private, reserved, loopback, or cloud-metadata IP
+     *    (RFC 1918, RFC 3927, 169.254.169.254, 127.0.0.0/8, etc.).
+     * 6. When $resolveDns is true, resolves host IPs and validates every resolved address.
+     * 7. Optional domain allowlist via EXO_CONTACT_WEBHOOK_ALLOWED_DOMAINS.
+     *
+     * @param mixed $url
+     * @param bool|null $allowLocalDev
+     * @param bool $resolveDns
+     * @return string|null Returns the sanitized/validated URL, or null if unsafe.
+     */
+    public static function validateSafeWebhookUrl($url, ?bool $allowLocalDev = null, bool $resolveDns = true)
+    {
+        if (!is_string($url) || trim($url) === '') {
+            return null;
+        }
+
+        $url = trim($url);
+        if (!preg_match('#^https?://#i', $url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
+            return null;
+        }
+
+        $parts = parse_url($url);
+        if (!is_array($parts)) {
+            return null;
+        }
+
+        $scheme = strtolower((string)($parts['scheme'] ?? ''));
+        if ($scheme !== 'https' && $scheme !== 'http') {
+            return null;
+        }
+
+        // Forbid embedded credentials
+        if (!empty($parts['user']) || !empty($parts['pass'])) {
+            return null;
+        }
+
+        $host = strtolower(trim((string)($parts['host'] ?? '')));
+        if ($host === '') {
+            return null;
+        }
+
+        $isLocal = ($allowLocalDev !== null) ? $allowLocalDev : self::isLocalEnvironment();
+
+        // HTTP is only permitted for localhost or loopback in local dev mode
+        if ($scheme === 'http') {
+            if (!$isLocal || !in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+                return null;
+            }
+        }
+
+        // Validate port
+        if (isset($parts['port'])) {
+            $port = (int)$parts['port'];
+            if ($scheme === 'https' && $port !== 443) {
+                // If local dev, allow custom ports (e.g. 8443) on localhost
+                if (!$isLocal || !in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+                    return null;
+                }
+            } elseif ($scheme === 'http' && $port !== 80) {
+                if (!$isLocal || !in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+                    return null;
+                }
+            }
+        }
+
+        // Check local loopback in dev
+        if (in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+            return $isLocal ? $url : null;
+        }
+
+        // Optional domain allowlist check (if configured)
+        $allowedDomainsSetting = getenv('APPSETTING_EXO_CONTACT_WEBHOOK_ALLOWED_DOMAINS')
+            ?: (getenv('EXO_CONTACT_WEBHOOK_ALLOWED_DOMAINS') ?: ($_ENV['EXO_CONTACT_WEBHOOK_ALLOWED_DOMAINS'] ?? ''));
+        if (trim((string)$allowedDomainsSetting) !== '') {
+            $allowedList = array_filter(array_map('trim', explode(',', strtolower((string)$allowedDomainsSetting))));
+            $matched = false;
+            foreach ($allowedList as $domain) {
+                if ($domain === '') {
+                    continue;
+                }
+                if ($host === $domain || str_ends_with($host, '.' . $domain)) {
+                    $matched = true;
+                    break;
+                }
+            }
+            if (!$matched) {
+                return null;
+            }
+        }
+
+        // If host is an IP literal
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            // Must not be private or reserved (blocks 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8, 169.254.0.0/16, ::1, etc.)
+            if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+                return null;
+            }
+            return $url;
+        }
+
+        // Host is a domain name: validate FQDN syntax
+        if (!preg_match('/^[a-z0-9]([a-z0-9\-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]{0,61}[a-z0-9])?)+$/i', $host)) {
+            return null;
+        }
+
+        if (!$resolveDns) {
+            return $url;
+        }
+
+        // Resolve DNS records and verify all destination IPs
+        $resolvedIps = @gethostbynamel($host);
+        if ($resolvedIps === false || empty($resolvedIps)) {
+            return null;
+        }
+
+        $allIps = (array)$resolvedIps;
+        if (function_exists('dns_get_record')) {
+            $aaaa = @dns_get_record($host, DNS_AAAA);
+            if (is_array($aaaa)) {
+                foreach ($aaaa as $rec) {
+                    if (!empty($rec['ipv6'])) {
+                        $allIps[] = $rec['ipv6'];
+                    }
+                }
+            }
+        }
+
+        foreach ($allIps as $ip) {
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+                return null;
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Checks if runtime environment is local development.
+     *
+     * @return bool
+     */
+    public static function isLocalEnvironment()
+    {
+        $serverName = $_SERVER['SERVER_NAME'] ?? '';
+        $appEnv = strtolower((string)(getenv('APP_ENV') ?: (getenv('APPSETTING_APP_ENV') ?: ($_ENV['APP_ENV'] ?? ''))));
+        return $serverName === 'localhost'
+            || $appEnv === 'local'
+            || $appEnv === 'development';
+    }
+
     private function isSyncFlagEnabled()
     {
         $raw = $this->getSetting('APPSETTING_EXO_CONTACT_SYNC_ENABLED', 'EXO_CONTACT_SYNC_ENABLED');
@@ -628,22 +825,11 @@ class ExchangeContactService
     private function getWebhookUrl()
     {
         $raw = trim((string)$this->getSetting('APPSETTING_EXO_CONTACT_WEBHOOK_URL', 'EXO_CONTACT_WEBHOOK_URL'));
-        if ($raw === '' || filter_var($raw, FILTER_VALIDATE_URL) === false) {
+        if ($raw === '') {
             return null;
         }
 
-        $parts = parse_url($raw);
-        $scheme = strtolower((string)($parts['scheme'] ?? ''));
-        $host = strtolower((string)($parts['host'] ?? ''));
-
-        if ($scheme === 'https') {
-            return $raw;
-        }
-        if ($scheme === 'http' && in_array($host, ['localhost', '127.0.0.1'], true)) {
-            return $raw;
-        }
-
-        return null;
+        return self::validateSafeWebhookUrl($raw, $this->isLocalEnvironment(), false);
     }
 
     private function getSetting($primary, $fallback = null)
@@ -660,9 +846,6 @@ class ExchangeContactService
             }
             if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
                 return $_ENV[$key];
-            }
-            if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
-                return $_SERVER[$key];
             }
         }
 

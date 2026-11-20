@@ -89,6 +89,7 @@ In your **Azure Web App** (`webserver-prod` / `webserver-dev`) > **Settings > En
 | `EXO_CONTACT_WEBHOOK_URL` | `https://...azure-automation.net/webhooks?token=...` | Exposed to PHP as `APPSETTING_EXO_CONTACT_WEBHOOK_URL` |
 | `EXO_CONTACT_WEBHOOK_SECRET` | Same value as `EXO_WEBHOOK_SECRET` | Optional extra header verification (`X-KCB-Webhook-Secret`) |
 | `EXO_CONTACT_SYNC_ENABLED` | `true` (or `false` on `webserver-dev`) | Set `false` in dev if you don't want dev edits touching prod M365 contacts |
+| `EXO_CONTACT_WEBHOOK_ALLOWED_DOMAINS` | `azure-automation.net,azurewebsites.net` | Optional comma-separated domain allowlist for SSRF hardening |
 
 ---
 
