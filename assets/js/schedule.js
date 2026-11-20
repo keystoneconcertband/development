@@ -92,6 +92,7 @@ function addRecord() {
 }
 
 function showEditRecord(uid) {
+    clearAlert('#formAlert');
     var params = new URLSearchParams({ type: 'getScheduleRecord', uid: uid.toString() });
 
     postUrlEncoded('api/schedule.php', params)
@@ -136,19 +137,23 @@ function editRecord() {
     });
 }
 
-function formSuccess(text) {
+function formSuccess(text, resetPaging = false) {
   showAlert('#pageAlert', true, text);
   var table = dataTable;
   if (table) {
-    table.ajax.reload();
+    table.ajax.reload(null, resetPaging);
   }
   if (formSchedule) {
     formSchedule.reset();
     setConcertBegin('');
     formSchedule.classList.remove("was-validated");
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById("modal_add_edit");
   if (modal) {
+    if (document.activeElement && modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
     var bsModal = bootstrap.Modal.getInstance(modal);
     if (bsModal) bsModal.hide();
   }
@@ -168,6 +173,8 @@ if (modal) {
         var uid = document.getElementById('uid');
         var modalTitle = document.getElementById('modalAddEditLabel');
 
+        clearAlert('#formAlert');
+
         if (uid && uid.value) {
             if (modalTitle) modalTitle.textContent = 'Edit Schedule';
         } else {
@@ -177,12 +184,6 @@ if (modal) {
                 formSchedule.classList.remove('was-validated');
             }
             if (modalTitle) modalTitle.textContent = 'Add Schedule';
-            var formAlert = document.querySelector('#formAlert');
-            if (formAlert) {
-                formAlert.classList.add('d-none');
-                formAlert.innerHTML = '';
-                formAlert.removeAttribute('role');
-            }
         }
     });
 
@@ -194,5 +195,8 @@ if (modal) {
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        if (modalTitle) modalTitle.textContent = 'Add Schedule';
+        clearAlert('#formAlert');
     });
 }

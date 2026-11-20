@@ -106,6 +106,7 @@ if (modalEditDelete) {
             msgSubmit.className = '';
             msgSubmit.textContent = '';
         }
+        clearAlert('#formAlert');
     });
 
     modalEditDelete.addEventListener('hidden.bs.modal', function () {
@@ -115,6 +116,7 @@ if (modalEditDelete) {
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';
+        clearAlert('#formAlert');
         document.querySelectorAll('.emailContainers').forEach(function (el) {
             el.remove();
         });
@@ -130,6 +132,7 @@ if (modalEditDelete) {
 }
 
 function showEditRecord(uid) {
+    clearAlert('#formAlert');
     var params = new URLSearchParams({ type: 'getMemberRecord', uid: uid.toString() });
 
     postUrlEncoded('api/inactiveMembers.php', params)
@@ -179,18 +182,22 @@ function submitForm() {
     });
 }
 
-function formSuccess(text) {
+function formSuccess(text, resetPaging = false) {
   showAlert('#pageAlert', true, text);
   var table = dataTable;
   if (table) {
-    table.ajax.reload();
+    table.ajax.reload(null, resetPaging);
   }
   if (formMember) {
     formMember.reset();
     formMember.classList.remove('was-validated');
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById('modal_edit_delete');
   if (modal) {
+    if (document.activeElement && modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
     var bsModal = bootstrap.Modal.getInstance(modal);
     if (bsModal) bsModal.hide();
   }

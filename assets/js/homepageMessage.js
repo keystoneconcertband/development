@@ -43,6 +43,22 @@ if (formMessage) {
 
 const modalAddEdit = document.getElementById('modal_add_edit');
 if (modalAddEdit) {
+    modalAddEdit.addEventListener('show.bs.modal', function () {
+        var uid = document.getElementById('uid');
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        clearAlert('#formAlert');
+
+        if (uid && uid.value) {
+            if (modalTitle) modalTitle.textContent = 'Edit Homepage Message';
+        } else {
+            if (formMessage) {
+                formMessage.reset();
+                formMessage.classList.remove('was-validated');
+            }
+            if (modalTitle) modalTitle.textContent = 'Add Homepage Message';
+        }
+    });
+
     modalAddEdit.addEventListener('hidden.bs.modal', function () {
         if (formMessage) {
             formMessage.reset();
@@ -50,6 +66,9 @@ if (modalAddEdit) {
         }
         var uid = document.getElementById('uid');
         if (uid) uid.value = '';
+        var modalTitle = document.getElementById('modalAddEditLabel');
+        if (modalTitle) modalTitle.textContent = 'Add Homepage Message';
+        clearAlert('#formAlert');
     });
 }
 
@@ -88,6 +107,7 @@ function addRecord() {
 }
 
 function showEditRecord(uid) {
+    clearAlert('#formAlert');
     var params = new URLSearchParams({ type: 'getHomepageMessageRecord', uid: uid.toString() });
 
     postUrlEncoded('api/homepageMessage.php', params)
@@ -155,18 +175,22 @@ function checkDates(date) {
     });
 }
 
-function formSuccess(text) {
+function formSuccess(text, resetPaging = false) {
   showAlert('#pageAlert', true, text);
   var table = dataTable;
   if (table) {
-    table.ajax.reload();
+    table.ajax.reload(null, resetPaging);
   }
   if (formMessage) {
     formMessage.reset();
     formMessage.classList.remove("was-validated");
   }
+  clearAlert('#formAlert');
   var modal = document.getElementById("modal_add_edit");
   if (modal) {
+    if (document.activeElement && modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
     var bsModal = bootstrap.Modal.getInstance(modal);
     if (bsModal) bsModal.hide();
   }

@@ -156,6 +156,20 @@ function showAlert(selector, valid, msg) {
   }
 }
 
+function clearAlert(selector) {
+  var element = document.querySelector(selector);
+  if (!element) return;
+
+  if (element._hideTimeout) {
+    clearTimeout(element._hideTimeout);
+    element._hideTimeout = null;
+  }
+
+  element.className = 'alert d-none';
+  element.innerHTML = '';
+  element.removeAttribute('role');
+}
+
 function showMessage(selector, valid, msg, duplicateSelectors) {
   var element = document.querySelector(selector);
   var classes = valid ? 'h4 tada animated text-success' : 'h4 text-danger';
@@ -326,5 +340,49 @@ function populateInstrument(data) {
     if (checkbox) {
       checkbox.checked = true;
     }
+  });
+}
+
+function escapeHtml(text) {
+  if (text === null || text === undefined) return '';
+  return String(text)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function linkify(text) {
+  if (!text) return '';
+  var normalized = String(text)
+    .replaceAll('\r\n', '\n')
+    .replaceAll('\r', '\n')
+    .replace(/\n?<br\s*\/?>\n?/gi, '\n');
+
+  var escaped = escapeHtml(normalized).replaceAll('\n', '<br>');
+  var urlRegex = /\b((?:https?:\/\/|www\.)[^\s<]+)/gi;
+
+  return escaped.replace(urlRegex, function (url) {
+    var trailing = '';
+    while (url.length > 0) {
+      var last = url[url.length - 1];
+      if ('.,!?:;'.indexOf(last) !== -1) {
+        trailing = last + trailing;
+        url = url.slice(0, -1);
+      } else if (last === ')' && (url.split(')').length - 1) > (url.split('(').length - 1)) {
+        trailing = last + trailing;
+        url = url.slice(0, -1);
+      } else {
+        break;
+      }
+    }
+
+    var href = url;
+    if (/^www\./i.test(href)) {
+      href = 'https://' + href;
+    }
+
+    return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + url + '</a>' + trailing;
   });
 }
