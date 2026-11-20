@@ -51,8 +51,8 @@ jobs:
           rm -f composer.json composer.lock
           rm -f pma/composer.json pma/composer.lock pma/package.json pma/yarn.lock pma/babel.config.json
 
-          # 4. phpMyAdmin setup & SQL schemas
-          rm -rf pma/setup pma/sql pma/config.sample.inc.php
+          # 4. phpMyAdmin setup & SQL schemas & Azure runbook templates
+          rm -rf pma/setup pma/sql pma/config.sample.inc.php scripts/azure
 
           # 5. OS metadata & source maps
           find . -type f -name ".DS_Store" -delete

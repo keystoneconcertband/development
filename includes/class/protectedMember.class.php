@@ -2,10 +2,12 @@
 // This class is for methods which must be protected, so use must have a valid session to run these queries
 // member is its parent
 require_once "member.class.php";
+require_once "exchangeContactService.class.php";
 	
 class ProtectedMember {
 	private $db;
 	private $kcb;
+	private $exchangeContactService;
 	
 	/* PUBLIC FUNCTIONS */
 	public function __construct() {			
@@ -101,16 +103,25 @@ class ProtectedMember {
 
 			try {
 				$this->getDb()->beginTransaction();
+				$emailChanges = ['added' => [], 'removed' => []];
 				
 				$uid = $this->getDb()->insertMember($mbrArray, $updateUser);
 				
 				if($uid !== 0) {
 					if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email, true, false)) {
+						if($this->updateEmails($uid, $email, true, false, $emailChanges, false)) {
 							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();
 								MemberDB::clearPublicMembersCache();
 								$this->getKcb()->logNotice("New band member profile created", ['uid' => $uid, 'user' => $updateUser]);
+								$this->getExchangeContactService()->syncOrNotifyWebmaster(
+									$uid,
+									$emailChanges['added'],
+									[],
+									$mbrArray['firstName'] ?? '',
+									$mbrArray['lastName'] ?? '',
+									$updateUser
+								);
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
@@ -167,14 +178,27 @@ class ProtectedMember {
 			
 			try {
 				$this->getDb()->beginTransaction();
+				$emailChanges = ['added' => [], 'removed' => []];
 								
 				if($this->getDb()->updateMember($uid, $mbrArray, $updateUser)) {
 					if($this->upsertAddress($uid, $mbrArray, $updateUser)) {
-						if($this->updateEmails($uid, $email, true, false)) {
+						if($this->updateEmails($uid, $email, true, false, $emailChanges, false)) {
 							if($this->updateInstruments($uid, $instrument)) {
 								$this->getDb()->executeTransaction();
 								MemberDB::clearPublicMembersCache();
 								$this->getKcb()->logNotice("Band member profile updated", ['uid' => $uid, 'user' => $updateUser]);
+								$memberRecord = $this->getDb()->getMemberRecord($uid);
+								if (ExchangeContactService::isMemberActive($memberRecord)
+									&& (!empty($emailChanges['added']) || !empty($emailChanges['removed']))) {
+									$this->getExchangeContactService()->syncOrNotifyWebmaster(
+										$uid,
+										$emailChanges['added'],
+										$emailChanges['removed'],
+										$memberRecord['firstName'] ?? ($mbrArray['firstName'] ?? ''),
+										$memberRecord['lastName'] ?? ($mbrArray['lastName'] ?? ''),
+										$updateUser
+									);
+								}
 							}
 							else {
 								$this->getDb()->rollBackTransaction();
@@ -217,14 +241,29 @@ class ProtectedMember {
 		if ($this->validAdmin()) {
 			$retValue = "success";
 			$updateUser = $_SESSION["email"];
+			$memberRecord = $this->getDb()->getMemberRecord($uid);
+			$wasActive = ExchangeContactService::isMemberActive($memberRecord);
+			$activeEmails = $wasActive ? $this->getDb()->getActiveEmailList($uid) : [];
 			
 			try {
 				$this->getDb()->beginTransaction();
+				$emailChanges = ['added' => [], 'removed' => []];
 				
 				if($this->getDb()->removeMember($uid, $updateUser)) {
-					if($this->updateEmails($uid, array(), $deleteEmailAddress, false)) {
+					if($this->updateEmails($uid, array(), $deleteEmailAddress, false, $emailChanges, false)) {
 						$this->getDb()->executeTransaction();
 						MemberDB::clearPublicMembersCache();
+						$emailsToSync = $wasActive ? $activeEmails : [];
+						if (!empty($emailsToSync)) {
+							$this->getExchangeContactService()->syncOrNotifyWebmaster(
+								$uid,
+								[],
+								$emailsToSync,
+								$memberRecord['firstName'] ?? '',
+								$memberRecord['lastName'] ?? '',
+								$updateUser
+							);
+						}
 					}
 					else {
 						$this->getDb()->rollBackTransaction();
@@ -254,6 +293,19 @@ class ProtectedMember {
 		$retVal = $this->getDb()->reactivateMember($uid, $mbrArray, $updateUser);
 		
 		if($retVal) {
+			MemberDB::clearPublicMembersCache();
+			$memberRecord = $this->getDb()->getMemberRecord($uid);
+			$emailsToSync = $this->getDb()->getActiveEmailList($uid);
+			if (!empty($emailsToSync)) {
+				$this->getExchangeContactService()->syncOrNotifyWebmaster(
+					$uid,
+					$emailsToSync,
+					[],
+					$memberRecord['firstName'] ?? ($mbrArray['firstName'] ?? ''),
+					$memberRecord['lastName'] ?? ($mbrArray['lastName'] ?? ''),
+					$updateUser
+				);
+			}
 			return "success";
 		}
 		else {
@@ -291,20 +343,23 @@ class ProtectedMember {
 	}
 	
 	// TEST PENDING MEMBERS
-	private function updateEmails($uid, $emailArray, $delEmail, $pendingUser) {
-		$result = true;					
+	private function updateEmails($uid, $emailArray, $delEmail, $pendingUser, &$emailChanges = null, $sendNotificationEmails = true) {
+		$result = true;
+		$emailChanges = ['added' => [], 'removed' => []];
 		$emails = $this->getDb()->getEmailAddresses($uid);
 
 		// Convert array of arrays to single array this can handle	
 		$currEmails = array();
-		foreach($emails as $email) {
-			if($email['email_address'] !== '') {
-				$currEmails[] = $email['email_address'];
+		foreach((array)$emails as $email) {
+			$addr = trim((string)($email['email_address'] ?? ''));
+			if($addr !== '') {
+				$currEmails[] = $addr;
 			}
 		}
 		
 		$newEmails = array();
-		foreach($emailArray as $value) {
+		foreach((array)$emailArray as $value) {
+			$value = trim((string)$value);
 			if($value !== '') {
 				// Store email address in array		
 				$newEmails[] = $value;
@@ -313,12 +368,15 @@ class ProtectedMember {
 				// Otherwise if the user changed nothing, it wouldn't be added since it was already in the 
 				// database from their initial inquiry.					
 				if($pendingUser) {
-					try {
-						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email: " . $value, "KCB Email Update [Pending]");
-					}
-					catch(Exception $e) {
-						$this->getKcb()->logMessage($e->getMessage());
-						return false;
+					$emailChanges['added'][] = $value;
+					if($sendNotificationEmails) {
+						try {
+							$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Add email: " . $value, "KCB Email Update [Pending]");
+						}
+						catch(Exception $e) {
+							$this->getKcb()->logMessage($e->getMessage());
+							return false;
+						}
 					}
 				}
 			}
@@ -335,7 +393,10 @@ class ProtectedMember {
 					try {
 						// Pending users were added above, so no need to re-add again.
 						if(!$pendingUser) {
-							$this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
+							$emailChanges['added'][] = $value;
+							if($sendNotificationEmails) {
+								$this->kcb->sendEmail('webmaster@keystoneconcertband.com','Add email: ' . $value, 'KCB Email Update [Add]');
+							}
 						}
 						$result = $this->getDb()->addEmail($value, $uid, $_SESSION["email"]);						
 					}
@@ -359,7 +420,10 @@ class ProtectedMember {
 							$result = $this->getDb()->deactivateEmail($value, $uid, $_SESSION["email"]);
 						}
 
-						$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email: " . $value, "KCB Email Update [Remove]");
+						$emailChanges['removed'][] = $value;
+						if($sendNotificationEmails) {
+							$this->kcb->sendEmail("webmaster@keystoneconcertband.com", "Remove email: " . $value, "KCB Email Update [Remove]");
+						}
 					}
 					catch(Exception $e) {
 						$this->getKcb()->logMessage($e->getMessage());
@@ -438,6 +502,13 @@ class ProtectedMember {
 	
 	private function setKcb($kcb) {
 		$this->kcb = $kcb;
+	}
+
+	private function getExchangeContactService() {
+		if ($this->exchangeContactService === null) {
+			$this->exchangeContactService = new ExchangeContactService($this->getKcb(), $this->getDb());
+		}
+		return $this->exchangeContactService;
 	}
 }
 ?>

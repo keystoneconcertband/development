@@ -70,6 +70,9 @@ $jsonResponse = [
 ];
 
 if ($rawResponse === 'valid') {
+    if ($safeRedirect === '/members/index.php' && !empty($_SESSION['pending_info'])) {
+        $safeRedirect = '/members/pendingMembers.php';
+    }
     $jsonResponse['status'] = 'valid';
     $jsonResponse['redirect'] = $safeRedirect;
     $jsonResponse['message'] = 'Authentication successful.';
