@@ -1,6 +1,15 @@
 <?php
 require_once '../includes/class/member.class.php';
+require_once '../includes/class/pendingMemberService.class.php';
 new Member(true);
+
+$pendingInfoBanner = false;
+if (!empty($_SESSION['uid'])) {
+    $pendingService = new PendingMemberService();
+    $pendingRecord = $pendingService->getPendingMemberForSessionUid((int)$_SESSION['uid']);
+    $pendingInfoBanner = ($pendingRecord !== null);
+    $_SESSION['pending_info'] = $pendingInfoBanner ? 1 : 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,9 +34,18 @@ new Member(true);
             <div class="col-lg-12">
                 <div class="mb-4 pb-2 border-bottom">
                     <h2>Hey there
-                        <?php echo $_SESSION["office"] . ' ' ?: "" ?><?php echo $_SESSION["firstName"] ?: 'Firstname'?>
+                        <?php echo htmlspecialchars((!empty($_SESSION["office"]) ? $_SESSION["office"] . ' ' : '') . ($_SESSION["firstName"] ?: 'Firstname'), ENT_QUOTES, 'UTF-8'); ?>
                     </h2>
                 </div>
+                <?php if ($pendingInfoBanner) { ?>
+                <div class="alert alert-warning d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 shadow-sm mb-3" role="alert">
+                    <div>
+                        <i class="fa-solid fa-clipboard-list me-2" aria-hidden="true"></i>
+                        <strong>Action Required:</strong> Please finish completing your member profile (address, emergency contact, and roster display preference).
+                    </div>
+                    <a href="/members/pendingMembers.php" class="btn btn-warning btn-sm fw-semibold text-nowrap">Complete Member Info</a>
+                </div>
+                <?php } ?>
                 <!--
                 <div class='alert alert-info'><strong>Discord</strong><br />Please join us on Discord (a group chat
                     platform) at <a href="https://discord.gg/Szux9TQ" target="_blank">https://discord.gg/Szux9TQ</a>

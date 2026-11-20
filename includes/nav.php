@@ -24,11 +24,14 @@
 						<ul class="dropdown-menu shadow-sm" aria-labelledby="membersDropdown">
 							<?php if(isset($_SESSION["email"])) { ?>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/index.php") { echo 'active'; } ?>" href="/members/index.php">Overview</a></li>
+								<?php if(!empty($_SESSION['pending_info'])) { ?>
+									<li><a class="dropdown-item fw-semibold <?php if ($_SERVER['PHP_SELF'] == "/members/pendingMembers.php") { echo 'active'; } ?>" href="/members/pendingMembers.php">Complete Member Info</a></li>
+								<?php } ?>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/myInfo.php") { echo 'active'; } ?>" href="/members/myInfo.php">My Info</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == '/members/currentMembers.php') { echo 'active'; } ?>" href="/members/currentMembers.php">Current Members</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/documents.php") { echo 'active'; } ?>" href="/members/documents.php">Documents</a></li>
 								<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/music.php") { echo 'active'; } ?>" href="/members/music.php">Music</a></li>
-								<?php if($_SESSION['accountType'] !== 0) { ?>
+								<?php if(in_array((int)$_SESSION['accountType'], [1, 2], true)) { ?>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/homepageMessage.php") { echo 'active'; } ?>" href="/members/homepageMessage.php">Homepage Message</a></li>
 									<li><a class="dropdown-item <?php if ($_SERVER['PHP_SELF'] == "/members/schedule.php") { echo 'active'; } ?>" href="/members/schedule.php">Schedule</a></li>

@@ -375,6 +375,62 @@ class DB
         $this->sQuery->closeCursor(); // Frees up the connection to the server so that other SQL statements may be issued
         return $result;
     }
+
+    /**
+     * Checks whether a column exists on a table in the active database schema.
+     *
+     * @param string $table
+     * @param string $column
+     * @return bool
+     */
+    public function hasColumn($table, $column)
+    {
+        $this->bind('tableName', $table);
+        $this->bind('columnName', $column);
+        return (int)$this->single("SELECT COUNT(*)
+                                   FROM INFORMATION_SCHEMA.COLUMNS
+                                   WHERE TABLE_SCHEMA = DATABASE()
+                                     AND TABLE_NAME = :tableName
+                                     AND COLUMN_NAME = :columnName") > 0;
+    }
+
+    /**
+     * Checks whether an index exists on a table in the active database schema.
+     *
+     * @param string $table
+     * @param string $indexName
+     * @return bool
+     */
+    public function hasIndex($table, $indexName)
+    {
+        $this->bind('tableName', $table);
+        $this->bind('indexName', $indexName);
+        return (int)$this->single("SELECT COUNT(*)
+                                   FROM INFORMATION_SCHEMA.STATISTICS
+                                   WHERE TABLE_SCHEMA = DATABASE()
+                                     AND TABLE_NAME = :tableName
+                                     AND INDEX_NAME = :indexName") > 0;
+    }
+
+    /**
+     * Executes a DDL/non-fatal SQL statement without terminating on PDOException.
+     *
+     * @param string $sql
+     * @return bool
+     */
+    public function tryExec($sql)
+    {
+        if (!$this->bConnected) {
+            $this->Connect();
+        }
+        try {
+            $this->pdo->exec($sql);
+            return true;
+        } catch (PDOException $e) {
+            $this->log->warning("Non-fatal SQL exec failed: " . $e->getMessage(), ['sql' => $sql]);
+            return false;
+        }
+    }
     
     /**	
      * Writes the log and returns the exception
